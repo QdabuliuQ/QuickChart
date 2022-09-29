@@ -1,19 +1,40 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+const EditPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/EditPage/EditPage.vue')
+const ChartPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPage/ChartPage.vue')
+const ChartPanel = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPanel/ChartPanel.vue')
+const MapPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/MapPage/MapPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
+  { path: '/', redirect: '/EditPage' },
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/EditPage',
+    name: 'EditPage',
+    component: EditPage,
+    children: [
+      {
+        path: '/ChartPage',
+        name: 'ChartPage',
+        meta: {
+          typeIndex: 0
+        },
+        component: ChartPage,
+        children: [
+          {
+            path: '/Chart',
+            name: 'Chart',
+            component: ChartPanel
+          }
+        ]
+      },
+      {
+        path: '/MapPage',
+        name: 'MapPage',
+        meta: {
+          typeIndex: 1
+        },
+        component: MapPage
+      },
+    ]
   }
 ]
 
