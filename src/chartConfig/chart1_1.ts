@@ -1,7 +1,9 @@
-const leftText = '左边距'
-const topText = '上边距'
-const bottomText = '下边距'
-const rightText = '右边距'
+// const leftText = '左边距'
+// const topText = '上边距'
+// const bottomText = '下边距'
+// const rightText = '右边距'
+import { leftText, topText, bottomText, rightText, colors } from "./constant";
+
 
 export default [
   {
@@ -16,7 +18,7 @@ export default [
         right: 0,
         top: 0,
         bottom: 0,
-        backgroundColor: '',
+        backgroundColor: 'transparent',
         textStyle: {
           color: '#333',
           fontWeight: 'bolder',
@@ -169,7 +171,7 @@ export default [
         icon: 'circle',
         left: 'auto',
         top: 'auto',
-        right: 'auto',
+        right: 1,
         bottom: 'auto',
         width: 'auto',
         height: 'auto',
@@ -204,12 +206,12 @@ export default [
           },
           {
             value: 'arrow',
-            label: '剪头',
+            label: '箭头',
           },
         ],
         left: 0,
         top: 0,
-        right: 0,
+        right: 1,
         bottom: 0,
         width: 0,
         height: 0,
@@ -242,6 +244,60 @@ export default [
     }
   },
   {
+    name: '水印',
+    opName: 'waterMark',
+    defaultOption: {
+      waterMark: {
+        show: false,
+        text: '',
+        opacity: 0.5,
+        color: '#ccc',
+        size: 20,
+        rotate: 4
+      }
+    },
+    allOption: {
+      waterMark: {
+        show: false,
+        text: '',
+        opacity: 0.5,
+        color: '#ccc',
+        size: 20,
+        rotate: 4
+      }
+    },
+    opNameList: {
+      show: '显示水印',
+      text: '水印文本',
+      opacity: '透明度',
+      color: '字体颜色',
+      size: '字体大小',
+      rotate: '旋转角度'
+    }
+  },
+  {
+    name: '颜色',
+    opName: 'color',
+    defaultOption: {
+      color: [
+        colors[0],
+        colors[1],
+      ]
+    },
+    allOption: {
+      color: [
+        {
+          title: '系列1',
+          c: colors[0]
+        },
+        {
+          title: '系列2',
+          c: colors[1]
+        },
+      ]
+    },
+  },
+  {
     name: 'x轴',
     opName: 'xAxis',
     defaultOption: {
@@ -260,15 +316,23 @@ export default [
       },
     }
   },
-  
+
   {
     name: '数据',
     opName: 'series',
     defaultOption: {
-      series: {
-        data: [150, 230, 224, 218, 135, 147, 260],
-        type: 'line'
-      },
+      series: [
+        {
+          name: '系列1',
+          data: [150, 230, 224, 218, 135, 147, 260],
+          type: 'line'
+        },
+        {
+          name: '系列2',
+          data: [222, 340, 224, 111, 135, 19, 260],
+          type: 'line'
+        },
+      ]
     },
   },
 ]

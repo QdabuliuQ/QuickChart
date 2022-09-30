@@ -32,6 +32,17 @@
             :allOption="item.allOption"
             :opNameList="item.opNameList"
           />
+          <paramsWatermark
+            v-else-if="item.name == '水印'"
+            :defaultOption="item.defaultOption"
+            :allOption="item.allOption"
+            :opNameList="item.opNameList"
+          />
+          <paramsColor
+            v-else-if="item.name == '颜色'"
+            :defaultOption="item.defaultOption"
+            :allOption="item.allOption"
+          />
         </el-collapse-item>
       </el-collapse>
     </el-scrollbar>
@@ -50,6 +61,8 @@ import paramsTitle from "@/views/ChartPanel/components/paramsTitle.vue";
 import paramsCanvas from "@/views/ChartPanel/components/paramsCanvas.vue";
 import paramsGrid from "@/views/ChartPanel/components/paramsGrid.vue";
 import paramsLegend from "@/views/ChartPanel/components/paramsLegend.vue";
+import paramsWatermark from "@/views/ChartPanel/components/paramsWatermark.vue";
+import paramsColor from "@/views/ChartPanel/components/paramsColor.vue";
 
 interface comInitData {
   height: string;
@@ -64,6 +77,8 @@ export default defineComponent({
     paramsCanvas,
     paramsGrid,
     paramsLegend,
+    paramsWatermark,
+    paramsColor,
   },
   setup(props) {
     const _this: any = getCurrentInstance();

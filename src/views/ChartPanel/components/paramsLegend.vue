@@ -22,6 +22,7 @@
             key == 'width' ||
             key == 'height'
           "
+          :min="0"
           size="small"
           v-model="allOption.legend[key]"
         />
@@ -39,11 +40,9 @@
           />
         </el-select>
         <el-input-number
-          v-else-if="
-            key == 'itemWidth' ||
-            key == 'itemHeight'
-          "
+          v-else-if="key == 'itemWidth' || key == 'itemHeight'"
           size="small"
+          :min="10"
           v-model="defaultOption.legend[key]"
         />
       </div>
@@ -52,13 +51,44 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  watch,
+  getCurrentInstance,
+} from "vue";
+
+let timer: any
 export default defineComponent({
   name: "paramsLegend",
   props: ["defaultOption", "allOption", "opNameList"],
-  setup() {
+  setup(props) {
+    const _this: any = getCurrentInstance()
     const data = reactive({});
-    onMounted(() => {});
+    watch(() => props.defaultOption, (e) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        _this.proxy.$Bus.emit('optionChange', props.defaultOption)
+      }, 500);
+    }, {
+      deep: true
+    })
+    watch(() => props.allOption, (e) => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        let d = props.allOption.legend
+        props.defaultOption.legend.left = d.left ? d.left : 'auto'
+        props.defaultOption.legend.top = d.top ? d.top : 'auto'
+        props.defaultOption.legend.right = d.right ? d.right : 'auto'
+        props.defaultOption.legend.bottom = d.bottom ? d.bottom : 'auto'
+        props.defaultOption.legend.width = d.width ? d.width : 'auto'
+        props.defaultOption.legend.height = d.height ? d.height : 'auto'
+        _this.proxy.$Bus.emit('optionChange', props.defaultOption)
+      }, 500);
+    }, {
+      deep: true
+    })
     return {
       ...toRefs(data),
     };
