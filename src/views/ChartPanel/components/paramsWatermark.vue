@@ -82,7 +82,7 @@ export default defineComponent({
               repeat: "repeat",
             };
           } else {
-            backgroundColor = "transparent";
+            backgroundColor = "#fff";
           }
           _this.proxy.$Bus.emit("optionChange", {
             backgroundColor,

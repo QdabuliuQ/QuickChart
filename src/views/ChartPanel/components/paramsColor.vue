@@ -44,7 +44,7 @@ export default defineComponent({
             newColor.push(item.c);
           }
           _this.proxy.$Bus.emit('optionChange', {
-            color: newColor
+            color: newColor,
           })
         }, 500);
       },

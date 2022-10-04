@@ -1,6 +1,19 @@
 <template>
   <div id="chartParams">
     <el-scrollbar :height="height">
+      <div class="chartCover">
+        <img :src="image" alt="">
+      </div>
+      <div class="btnList">
+        <div @click="createCode" style="margin-right: 10px" class="btnItem">
+          <i class="iconfont i_code"></i>
+          配置
+        </div>
+        <div @click="downloadChart" class="btnItem">
+          <i class="iconfont i_download"></i>
+          下载
+        </div>
+      </div>
       <el-collapse :accordion='true' v-if="options.length">
         <el-collapse-item
           v-for="item in options"
@@ -43,6 +56,12 @@
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
           />
+          <paramsXasis
+            v-else-if="item.name == 'x轴'"
+            :defaultOption="item.defaultOption.xAxis"
+            :allOption="item.allOption.xAxis"
+            :opNameList="item.opNameList"
+          />
         </el-collapse-item>
       </el-collapse>
     </el-scrollbar>
@@ -57,17 +76,20 @@ import {
   toRefs,
   getCurrentInstance,
 } from "vue";
+import { useRouter } from "vue-router";
 import paramsTitle from "@/views/ChartPanel/components/paramsTitle.vue";
 import paramsCanvas from "@/views/ChartPanel/components/paramsCanvas.vue";
 import paramsGrid from "@/views/ChartPanel/components/paramsGrid.vue";
 import paramsLegend from "@/views/ChartPanel/components/paramsLegend.vue";
 import paramsWatermark from "@/views/ChartPanel/components/paramsWatermark.vue";
 import paramsColor from "@/views/ChartPanel/components/paramsColor.vue";
+import paramsXasis from "@/views/ChartPanel/components/paramsXasis.vue";
 
 interface comInitData {
-  height: string;
-  config: any;
-  options: any;
+  height: string
+  config: any
+  options: any
+  image: string
 }
 
 export default defineComponent({
@@ -79,14 +101,25 @@ export default defineComponent({
     paramsLegend,
     paramsWatermark,
     paramsColor,
+    paramsXasis,
   },
   setup(props) {
+    const router = useRouter()
     const _this: any = getCurrentInstance();
     const data: comInitData = reactive({
       height: "",
       config: null,
       options: [],
+      image: ''
     });
+
+    const createCode = (): void => {
+      _this.proxy.$Bus.emit('createCode')
+    }
+    const downloadChart = (): void => {
+      _this.proxy.$Bus.emit('downloadChart')
+    }
+
     onMounted(() => {
       import('@/chartConfig/chart1_1').then((res: any) => {
         let tmpOption: any[] = []
@@ -95,6 +128,8 @@ export default defineComponent({
         }
         data.options = tmpOption;
       })
+      
+      data.image = require('@/assets/image/'+router.currentRoute.value.query.id+'.jpg')
 
       // 监听窗口大小变化
       _this.proxy.$Bus.on("resize", (e: number) => {
@@ -109,6 +144,8 @@ export default defineComponent({
 
     });
     return {
+      createCode,
+      downloadChart,
       ...toRefs(data),
     };
   },
@@ -119,6 +156,48 @@ export default defineComponent({
 #chartParams {
   height: 100%;
   background-color: @curColor;
+  .chartCover {
+    width: 90%;
+    height: 130px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    margin: 10px auto;
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+  }
+  .btnList {
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    user-select: none;
+    .btnItem {
+      flex: 1;
+      padding: 6px 0 8px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: @theme;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      &:hover {
+        background-color: @hover;
+      }
+      i {
+        margin-right: 5px;
+        font-size: 18px;
+      }
+    }
+  }
   .optionItem {
     padding: 6px 0;
     font-size: 12px;
@@ -126,20 +205,14 @@ export default defineComponent({
     align-items: center;
     justify-content: space-between;
     color: #a9a8a8;
-    &:first-child {
-      margin-top: 6px;
-    }
-    &:last-child {
-      margin-bottom: 6px;
-    }
     .optionOperation {
-      width: 60%;
+      width: 55%;
       display: flex;
       justify-content: flex-end;
     }
   }
   .el-collapse {
-    padding:12px;
+    padding: 0 12px 12px;
     border-bottom: 0;
     .el-collapse-item__wrap {
       border: 0;
@@ -159,6 +232,7 @@ export default defineComponent({
       box-sizing: border-box;
       color: rgb(179, 179, 179);
       border-bottom: 1px solid #575757;
+      user-select: none;
     }
   }
 }
