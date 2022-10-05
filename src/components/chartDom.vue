@@ -1,5 +1,4 @@
 <template>
-<!-- backgroundColor: bgc, -->
   <div
     :style="{
       width: width + 'px',
@@ -63,21 +62,17 @@ export default defineComponent({
     const downloadFile = (fileName: string, content: string) => {
       let aLink = document.createElement("a");
       let blob = base64ToBlob(content); //new Blob([content]);
-
       let evt = document.createEvent("HTMLEvents");
       evt.initEvent("click", true, true); //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
       aLink.download = fileName;
       aLink.href = URL.createObjectURL(blob);
-
-      // aLink.dispatchEvent(evt);
-      //aLink.click()
       aLink.dispatchEvent(
         new MouseEvent("click", {
           bubbles: true,
           cancelable: true,
           view: window,
         })
-      ); //兼容火狐
+      );
     };
     //base64转blob
     const base64ToBlob = (code: string) => {
@@ -85,9 +80,7 @@ export default defineComponent({
       let contentType = parts[0].split(":")[1];
       let raw = window.atob(parts[1]);
       let rawLength = raw.length;
-
       let uInt8Array = new Uint8Array(rawLength);
-
       for (let i = 0; i < rawLength; ++i) {
         uInt8Array[i] = raw.charCodeAt(i);
       }
@@ -112,23 +105,16 @@ export default defineComponent({
           myChart.setOption(tmpOption);
           data.option = tmpOption;
           data.code = tmpOption;
-
           getCode()
         }
       );
 
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
-        console.log(e);
-        
         myChart.setOption(e);
         let k: string = Object.keys(e)[0];
-        console.log(k, data.option);
-        
         for (let key in data.option) {
           if (key == k) {
-            console.log('111');
-            
             data.option[key] = e[key];
             break;
           }
@@ -143,7 +129,6 @@ export default defineComponent({
         data.height = height;
         data.option.backgroundColor = bgc
         getCode()
-        // data.bgc = bgc;
         myChart.setOption({
           backgroundColor: bgc
         })

@@ -18,46 +18,49 @@
         <el-collapse-item
           v-for="item in options"
           :key="item.opName"
-          :title="item.name"
           :name="item.opName"
         >
+          <template #title>
+            <i style="margin-right: 5px" :class="['iconfont', item.icon]"></i>
+            {{item.name}}
+          </template>
           <paramsTitle
-            v-if="item.name == '标题'"
+            v-if="item.opName == 'title' && item.menuOption"
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
             :opNameList="item.opNameList"
           />
           <paramsCanvas
-            v-else-if="item.name == '画布'"
+            v-else-if="item.opName == 'canvas' && item.menuOption"
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
             :opNameList="item.opNameList"
           />
           <paramsGrid
-            v-else-if="item.name == '图表布局'"
+            v-else-if="item.opName == 'grid' && item.menuOption"
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
             :opNameList="item.opNameList"
           />
           <paramsLegend
-            v-else-if="item.name == '图例'"
+            v-else-if="item.opName == 'legend' && item.menuOption"
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
             :opNameList="item.opNameList"
           />
           <paramsWatermark
-            v-else-if="item.name == '水印'"
+            v-else-if="item.opName == 'waterMark' && item.menuOption"
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
             :opNameList="item.opNameList"
           />
           <paramsColor
-            v-else-if="item.name == '颜色'"
+            v-else-if="item.opName == 'color' && item.menuOption"
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
           />
           <paramsXasis
-            v-else-if="item.name == 'x轴'"
+            v-else-if="item.opName == 'xAxis' && item.menuOption"
             :defaultOption="item.defaultOption.xAxis"
             :allOption="item.allOption.xAxis"
             :opNameList="item.opNameList"
@@ -75,15 +78,16 @@ import {
   onMounted,
   toRefs,
   getCurrentInstance,
+  defineAsyncComponent
 } from "vue";
 import { useRouter } from "vue-router";
-import paramsTitle from "@/views/ChartPanel/components/paramsTitle.vue";
-import paramsCanvas from "@/views/ChartPanel/components/paramsCanvas.vue";
-import paramsGrid from "@/views/ChartPanel/components/paramsGrid.vue";
-import paramsLegend from "@/views/ChartPanel/components/paramsLegend.vue";
-import paramsWatermark from "@/views/ChartPanel/components/paramsWatermark.vue";
-import paramsColor from "@/views/ChartPanel/components/paramsColor.vue";
-import paramsXasis from "@/views/ChartPanel/components/paramsXasis.vue";
+const paramsTitle = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsTitle.vue"))
+const paramsCanvas = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsCanvas.vue"))
+const paramsGrid = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsGrid.vue"))
+const paramsLegend = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsLegend.vue"))
+const paramsWatermark = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsWatermark.vue"))
+const paramsColor = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsColor.vue"))
+const paramsXasis = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsXasis.vue"))
 
 interface comInitData {
   height: string

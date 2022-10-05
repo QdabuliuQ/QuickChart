@@ -1,10 +1,10 @@
 <template>
   <div id="paramsPanel">
     <div class="panelBtnList">
-      <div @click="btnClick(0)" :class="[type==0?'active':'', 'btnItem']">
+      <div @click="btnClick(0)" :class="[type == 0 ? 'active' : '', 'btnItem']">
         编辑数据
       </div>
-      <div @click="btnClick(1)" :class="[type==1?'active':'', 'btnItem']">
+      <div @click="btnClick(1)" :class="[type == 1 ? 'active' : '', 'btnItem']">
         编辑表格
       </div>
     </div>
@@ -15,34 +15,38 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+} from "vue";
 import chartParams from "@/components/chartParams.vue";
 interface comInitData {
-  type: number
+  type: number;
 }
 
 export default defineComponent({
-  name: 'paramsPanel',
+  name: "paramsPanel",
   components: {
-    chartParams
+    chartParams,
   },
   setup() {
     const data: comInitData = reactive({
-      type: 1
-    })
+      type: 1,
+    });
 
     const btnClick = (e: number) => {
-      data.type = e
-    }
-    
-    onMounted(() => {
-    })
+      data.type = e;
+    };
+
+    onMounted(() => {});
     return {
       btnClick,
       ...toRefs(data),
-    }
-  }
-})
+    };
+  },
+});
 </script>
 
 <style lang='less'>
@@ -60,12 +64,12 @@ export default defineComponent({
       text-align: center;
       padding: 9px 0;
       color: rgb(150, 150, 150);
-      transition: .2s all linear;
+      transition: 0.2s all linear;
       cursor: pointer;
     }
     .active {
       background-color: @curColor;
-      color: #Fff;
+      color: #fff;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
     }

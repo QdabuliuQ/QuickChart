@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_3mfu079exh.woff2?t=1664793532836') format('woff2'),
-       url('//at.alicdn.com/t/c/font_3670180_3mfu079exh.woff?t=1664793532836') format('woff'),
-       url('//at.alicdn.com/t/c/font_3670180_3mfu079exh.ttf?t=1664793532836') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_yli4pyzw64q.woff2?t=1664978431918') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3670180_yli4pyzw64q.woff?t=1664978431918') format('woff'),
+       url('//at.alicdn.com/t/c/font_3670180_yli4pyzw64q.ttf?t=1664978431918') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,50 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_delete:before {
+  content: "\e601";
+}
+
+.i_plus:before {
+  content: "\eb89";
+}
+
+.i_legend:before {
+  content: "\e762";
+}
+
+.i_color:before {
+  content: "\e630";
+}
+
+.i_grid:before {
+  content: "\e655";
+}
+
+.i_canvas:before {
+  content: "\e6b5";
+}
+
+.i_mark:before {
+  content: "\e662";
+}
+
+.i_Y:before {
+  content: "\e6eb";
+}
+
+.i_X:before {
+  content: "\e6ec";
+}
+
+.i_title:before {
+  content: "\e61d";
+}
+
+.i_loading:before {
+  content: "\e676";
 }
 
 .i_code:before {

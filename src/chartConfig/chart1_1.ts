@@ -14,11 +14,15 @@ import {
   borderType,
   locationType
 } from "./constant";
+import getColor from '@/utils/getColor';
 
-export default [
+const config = [
   {
-    name: '标题',
+    name: '标题样式',
     opName: 'title',
+    chartOption: true,
+    menuOption: true,
+    icon: 'i_title',
     defaultOption: {
       title: {
         text: '图表标题',
@@ -81,8 +85,11 @@ export default [
     }
   },
   {
-    name: '画布',
+    name: '图表画布',
     opName: 'canvas',
+    chartOption: false,
+    menuOption: true,
+    icon: 'i_canvas',
     defaultOption: {
       width: 700,
       height: 500,
@@ -102,6 +109,9 @@ export default [
   {
     name: '图表布局',
     opName: 'grid',
+    chartOption: true,
+    menuOption: true,
+    icon: 'i_grid',
     defaultOption: {
       grid: {
         show: false,
@@ -156,8 +166,11 @@ export default [
     }
   },
   {
-    name: '图例',
+    name: '图例样式',
     opName: 'legend',
+    chartOption: true,
+    menuOption: true,
+    icon: 'i_legend',
     defaultOption: {
       legend: {
         show: true,
@@ -237,8 +250,11 @@ export default [
     }
   },
   {
-    name: '水印',
+    name: '图表水印',
     opName: 'waterMark',
+    chartOption: false,
+    menuOption: true,
+    icon: 'i_mark',
     defaultOption: {
       waterMark: {
         show: false,
@@ -269,8 +285,11 @@ export default [
     }
   },
   {
-    name: '颜色',
+    name: '系列颜色',
     opName: 'color',
+    chartOption: true,
+    menuOption: true,
+    icon: 'i_color',
     defaultOption: {
       color: [
         colors[0],
@@ -278,21 +297,15 @@ export default [
       ]
     },
     allOption: {
-      color: [
-        {
-          title: '系列1',
-          c: colors[0]
-        },
-        {
-          title: '系列2',
-          c: colors[1]
-        },
-      ]
+      color: <any>[]
     },
   },
   {
-    name: 'x轴',
+    name: 'X轴样式',
     opName: 'xAxis',
+    chartOption: true,
+    menuOption: true,
+    icon: 'i_X',
     defaultOption: {
       xAxis: [{
         show: true,
@@ -516,16 +529,20 @@ export default [
   {
     name: 'y轴',
     opName: 'yAxis',
+    chartOption: true,
+    menuOption: true,
+    icon: 'i_Y',
     defaultOption: {
       yAxis: {
         type: 'value',
       },
     }
   },
-  
   {
     name: '数据',
     opName: 'series',
+    chartOption: true,
+    menuOption: false,
     defaultOption: {
       series: [
         {
@@ -534,8 +551,8 @@ export default [
           type: 'line'
         },
         {
-          name: '系列2',
-          data: [222, 340, 224, 111, 135, 19, 260],
+          name: '系列3',
+          data: [110, 290, 124, 558, 133, 147, 660],
           type: 'line'
         },
       ]
@@ -543,16 +560,10 @@ export default [
   },
 ]
 
-// xAxis: {
-//   type: 'category',
-//   data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-// },
-// yAxis: {
-//   type: 'value'
-// },
-// series: [
-//   {
-//     data: [150, 230, 224, 218, 135, 147, 260],
-//     type: 'line'
-//   }
-// ]
+let allColorsOption = getColor(config[config.length-1].defaultOption.series, 'all')
+let colorsOption = getColor(config[config.length-1].defaultOption.series)
+config[5]!.allOption!.color = allColorsOption
+config[5].defaultOption.color = colorsOption
+console.log(config);
+
+export default config

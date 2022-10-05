@@ -1,7 +1,8 @@
 <template>
   <div id="ChartPanel">
     <div class="chartContent">
-      <el-scrollbar :height="height">
+      <loading v-if="load" />
+      <el-scrollbar v-else :height="height">
         <chartDom />
       </el-scrollbar>
     </div>
@@ -17,14 +18,19 @@ import {
   toRefs,
   watch,
   getCurrentInstance,
+  defineAsyncComponent,
 } from "vue";
-import paramsPanel from "@/components/paramsPanel.vue";
 import { useRouter } from "vue-router";
+import loading from "@/components/loading.vue";
+const paramsPanel = defineAsyncComponent(
+  () => import("@/components/paramsPanel.vue")
+);
 import chartDom from "@/components/chartDom.vue";
 
 interface comInitData {
-  id: string
-  height: string
+  id: string;
+  height: string;
+  load: boolean
 }
 
 export default defineComponent({
@@ -32,21 +38,26 @@ export default defineComponent({
   components: {
     paramsPanel,
     chartDom,
+    loading,
   },
   setup() {
     const _this: any = getCurrentInstance();
     const router = useRouter();
     const data: comInitData = reactive({
       id: "",
-      height: document.documentElement.clientHeight + 'px'
+      height: document.documentElement.clientHeight + "px",
+      load: true
     });
     onMounted(() => {
       data.id = router.currentRoute.value.query.id as string;
       _this.proxy.$Bus.emit("idChange", data.id);
 
-      _this.proxy.$Bus.on('resize', (e: number) => {
-        data.height = e + 'px'
-      })
+      _this.proxy.$Bus.on("resize", (e: number) => {
+        data.height = e + "px";
+      });
+      setTimeout(() => {
+        data.load = false
+      }, 1000);
     });
 
     watch(

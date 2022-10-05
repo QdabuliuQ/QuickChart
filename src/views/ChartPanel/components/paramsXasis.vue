@@ -1,14 +1,19 @@
 <template>
   <div id="paramsXasis">
     <div class="xasisContainer">
-      <el-select v-model="activeXasis">
-        <el-option
-          v-for="item in xAsisList"
+      <div class="asisTargetList">
+        <div
+          v-for="(item, index) in xAsisList"
           :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
+          :class="[activeIndex == index ? 'activeTarget' : '', 'targetItem']"
+        >
+          {{ item.label }}
+          <div class="deleteIcon">
+            <i class="iconfont i_delete"></i>
+          </div>
+        </div>
+        <div v-if="xAsisList.length < 2" class="targetAddBtn"><i class="iconfont i_plus"></i>添加X轴</div>
+      </div>
       <div class="paramsList">
         <div v-for="(value, key) in allOption[activeIndex]" :key="key">
           <div
@@ -347,7 +352,7 @@ interface comInitData {
   activeIndex: number;
   activeXasis: string;
 }
-let timer: any
+let timer: any;
 
 export default defineComponent({
   name: "paramsXasis",
@@ -365,16 +370,20 @@ export default defineComponent({
       activeXasis: "X轴1",
     });
 
-    watch(() => props.defaultOption, (e) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        _this.proxy.$Bus.emit('optionChange', {
-          xAxis: e
-        })
-      }, 500);
-    }, {
-      deep: true
-    })
+    watch(
+      () => props.defaultOption,
+      (e) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          _this.proxy.$Bus.emit("optionChange", {
+            xAxis: e,
+          });
+        }, 500);
+      },
+      {
+        deep: true,
+      }
+    );
 
     onMounted(() => {
       if (props.defaultOption.length == 2) {
@@ -395,6 +404,60 @@ export default defineComponent({
 #paramsXasis {
   .xasisContainer {
     padding: 12px 0;
+    .asisTargetList {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      .targetItem {
+        padding: 3px 10px 3.5px 12px;
+        border-radius: 6px;
+        margin-right: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background-color: rgba(12, 12, 12, 0.203);
+        .deleteIcon {
+          width: 15px;
+          height: 15px;
+          position: relative;
+          top: .5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 3px;
+          border-radius: 50%;
+          &:hover {
+            background-color: #fff;
+            color: @theme;
+          }
+          .iconfont {
+            position: relative;
+            top: 0.5px;
+            font-size: 12px;
+          }
+        }
+      }
+      .targetAddBtn {
+        padding: 2px 12px 2.5px;
+        border-radius: 4px;
+        margin-right: 10px;
+        color: #a9a8a8;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background-color: rgba(12, 12, 12, 0.203);
+        i {
+          margin-right: 3px;
+          font-size: 14px;
+          position: relative;
+          top: 1px;
+        }
+      }
+      .activeTarget {
+        color: #fff;
+        background-color: @theme;
+      }
+    }
     .childItem {
       padding: 7px 0;
       font-size: 12px;

@@ -36,7 +36,6 @@ export default defineComponent({
       () => props.allOption.color,
       (e: any) => {
         clearTimeout(timer);
-        console.log(e);
         
         timer = setTimeout(() => {
           let newColor = [];
