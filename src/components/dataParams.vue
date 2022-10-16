@@ -12,11 +12,11 @@
             </div>
             <div class="optionBtn">
               <el-button
-                @click="editData(item.name, item.data)"
+                @click="editData(item.name, item.data, index)"
                 type="primary"
                 size="small"
-                >编辑数据</el-button
-              >
+                >编辑</el-button>
+              <el-button @click="deleteData(index)" size="small" type="danger">删除</el-button>
             </div>
           </div>
           <div class="addDataItem">
@@ -32,12 +32,12 @@
       <h4>编辑数据</h4>
     </template>
     <template #default>
-      <dataExcel />
+      <dataExcel ref="dataExcelRef" :key="values" :seriesName='seriesName' :values='values' :keys="keys" />
     </template>
     <template #footer>
       <div style="flex: auto">
-        <el-button>取消</el-button>
-        <el-button type="primary">保存</el-button>
+        <el-button @click="dataTableDrawer = false">取消</el-button>
+        <el-button @click="saveData" type="primary">保存</el-button>
       </div>
     </template>
   </el-drawer>
@@ -50,6 +50,7 @@ import {
   toRefs,
   onMounted,
   getCurrentInstance,
+  ref
 } from "vue";
 import useCommonStore from "@/store/common";
 import dataExcel from './dataExcel.vue'
@@ -59,6 +60,10 @@ interface comInitData {
   series: any[] | null;
   xAxis: any[] | null;
   dataTableDrawer: boolean;
+  values: number[] | null
+  keys: number[] | string[] | null
+  seriesName: string | number
+  dataType: string
 }
 
 export default defineComponent({
@@ -69,16 +74,54 @@ export default defineComponent({
   },
   setup() {
     const _this: any = getCurrentInstance();
-    const common = useCommonStore();
+    const common: any = useCommonStore();
+    const dataExcelRef = ref()
     const data: comInitData = reactive({
       height: "",
       series: null,
       xAxis: null,
       dataTableDrawer: false,
-      
+      values: [],
+      keys: [],
+      seriesName: "",
+      dataType: ""
     });
 
-    const editData = (name: string, _data: number[]) => {
+    // 保存数据
+    const saveData = () => {
+      // 修改的series数据
+      if(data.dataType.length == 2) {
+        let series = common.option.series
+        // 修改数据
+        series[parseInt(data.dataType[1])].data = dataExcelRef.value.values
+        // 发送数据
+        _this.proxy.$Bus.emit('optionChange', {
+          series
+        })
+      } else {  // 修改的是轴数据
+
+      }
+      // 关闭抽屉
+      data.dataTableDrawer = false
+      data.dataType = ""
+    }
+    // 删除数据
+    const deleteData = (i: number) => {
+      let series = common.option.series
+      series.splice(i, 1)
+      console.log(series);
+      
+      // 发送数据
+      _this.proxy.$Bus.emit('optionChange', {
+        series
+      })
+    }
+    // 编辑数据
+    const editData = (name: string, _data: number[], index: number) => {
+      data.dataType = 's' + index
+      data.seriesName = name
+      data.values = _data
+      data.keys = common.option.xAxis[0].type == 'category' ? common.option.xAxis[0].data : common.option.yAxis[0].data
       data.dataTableDrawer = true;
     };
     const getData = () => {
@@ -96,6 +139,9 @@ export default defineComponent({
       });
     });
     return {
+      dataExcelRef,
+      saveData,
+      deleteData,
       editData,
       ...toRefs(data),
     };

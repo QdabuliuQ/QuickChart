@@ -116,13 +116,19 @@ export default defineComponent({
 
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
-        myChart.setOption(e);
+        
         let k: string = Object.keys(e)[0];
+        if (k != 'series') {
+          myChart.setOption(e);
+        }
         for (let key in data.option) {
           if (key == k) {
             data.option[key] = e[key];
             break;
           }
+        }
+        if (k == 'series') {
+          myChart.setOption(data.option, true);
         }
         common.$patch((state: any) => {
           state.option = data.option

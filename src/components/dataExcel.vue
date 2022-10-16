@@ -4,28 +4,53 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
+
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
 Spreadsheet.locale("zh-cn", zhCN);
 
 interface comInitData {
-  sheetObj: any
+  sheetObj: any;
 }
 
 export default defineComponent({
   name: "dataExcel",
-  setup() {
+  props: ["keys", "values", "seriesName"],
+  setup(props) {
     const willtableRef = ref();
     const data: comInitData = reactive({
-      sheetObj: null
+      sheetObj: null,
     });
+
+    // 根据keys和values创建数据
+    const createData = () => {
+      let e_data: any = {
+        0: {
+          cells: {
+            0: { text: props.seriesName, editable: true },
+            1: { text: "值/数据", editable: false },
+          },
+        },
+      };
+      for (let i = 0, j = 1; i < props.keys.length; i++, j++) {
+        e_data[j] = {
+          cells: {
+            0: { text: props.keys[i], editable: false },
+            1: { text: props.values[i], editable: true },
+          },
+        };
+      }
+      return e_data;
+    };
 
     // 初始化图表
     const initData = () => {
       setTimeout(() => {
         let w = document.getElementById("dataExcel")?.clientWidth;
         let h = document.getElementById("dataExcel")?.clientHeight;
-        let option: any = {  // 图表配置
+
+        let option: any = {
+          // 图表配置
           mode: "edit", // edit | read
           showToolbar: false, // 顶部工具栏
           showGrid: true,
@@ -64,15 +89,7 @@ export default defineComponent({
 
         const data1 = {
           name: "sheet11",
-          rows: {
-            0: {
-              cells: {
-                0: { text: "id0", editable: false },
-                1: { text: "name0", editable: false },
-              },
-            },
-            1: { cells: { 0: { text: "id1" }, 1: { text: "name1" } } },
-          },
+          rows: createData(),
         };
 
         data.sheetObj = new Spreadsheet("#dataExcel", option)
@@ -86,11 +103,12 @@ export default defineComponent({
         data.sheetObj.sheet.data.setFreeze(1, 0);
 
         // 编辑单元格触发
-        // s.on('cell-selected', (cell, ri, ci) => {
-        // console.log('cell:', cell, ', ri:', ri, ', ci:', ci);
-        // }).on('cell-edited', (text, ri, ci) => {
-        //     console.log('text:', text, ', ri: ', ri, ', ci:', ci);
-        // });
+        data.sheetObj.on(
+          "cell-edited",
+          (text: string, ri: number, ci: number) => {
+            props.values[ri] = parseInt(text);
+          }
+        );
 
         // data validation
         data.sheetObj.validate();

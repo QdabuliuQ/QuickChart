@@ -21,9 +21,12 @@ import {
   reactive,
   onMounted,
   toRefs,
+  defineAsyncComponent
 } from "vue";
-import chartParams from "@/components/chartParams.vue";
-import dataParams from "@/components/dataParams.vue";
+const chartParams = defineAsyncComponent(() => import("@/components/chartParams.vue"))
+const dataParams = defineAsyncComponent(() => import("@/components/dataParams.vue"))
+// import chartParams from "@/components/chartParams.vue";
+// import dataParams from "@/components/dataParams.vue";
 interface comInitData {
   type: number;
 }
