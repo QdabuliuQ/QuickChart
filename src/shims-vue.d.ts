@@ -5,3 +5,4 @@ declare module '*.vue' {
   export default component
 }
 declare module 'vue-highlightjs'
+declare module 'x-data-spreadsheet/src/locale/zh-cn'

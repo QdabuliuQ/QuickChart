@@ -1,7 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+
+// 引入pinia
+import { createPinia } from 'pinia'
+// 引入组件库
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -21,4 +24,4 @@ app.config.globalProperties.$Bus = Mit;
 app.config.globalProperties.$echarts = echarts // 全局挂载echarts
 
 // app.use(ElementPlus).use(hljsVuePlugin).use(store).use(router).mount('#app')
-app.use(ElementPlus).use(hljsVuePlugin).use(store).use(router).mount('#app')
+app.use(ElementPlus).use(hljsVuePlugin).use(createPinia()).use(router).mount('#app')

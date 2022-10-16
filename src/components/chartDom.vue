@@ -31,6 +31,7 @@ import {
   getCurrentInstance,
 } from "vue";
 import { useRouter } from "vue-router";
+import useCommonStore from '@/store/common';
 
 interface comInitData {
   options: any;
@@ -45,6 +46,7 @@ interface comInitData {
 export default defineComponent({
   name: "chartDom",
   setup() {
+    const common = useCommonStore();
     const router = useRouter();
     const _this: any = getCurrentInstance();
     const chartDomRef = ref();
@@ -105,6 +107,9 @@ export default defineComponent({
           myChart.setOption(tmpOption);
           data.option = tmpOption;
           data.code = tmpOption;
+          common.$patch((state: any) => {
+            state.option = tmpOption
+          })
           getCode()
         }
       );
@@ -119,6 +124,9 @@ export default defineComponent({
             break;
           }
         }
+        common.$patch((state: any) => {
+          state.option = data.option
+        })
         getCode()
       });
 

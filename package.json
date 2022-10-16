@@ -13,9 +13,11 @@
     "element-plus": "^2.2.17",
     "highlight.js": "^11.6.0",
     "mitt": "^3.0.0",
+    "pinia": "^2.0.23",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "x-data-spreadsheet": "^1.1.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.11",

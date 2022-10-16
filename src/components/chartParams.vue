@@ -65,6 +65,12 @@
             :allOption="item.allOption.xAxis"
             :opNameList="item.opNameList"
           />
+          <paramsYasis
+            v-else-if="item.opName == 'yAxis' && item.menuOption"
+            :defaultOption="item.defaultOption.yAxis"
+            :allOption="item.allOption.yAxis"
+            :opNameList="item.opNameList"
+          />
         </el-collapse-item>
       </el-collapse>
     </el-scrollbar>
@@ -88,6 +94,7 @@ const paramsLegend = defineAsyncComponent(() => import("@/views/ChartPanel/compo
 const paramsWatermark = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsWatermark.vue"))
 const paramsColor = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsColor.vue"))
 const paramsXasis = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsXasis.vue"))
+const paramsYasis = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsYasis.vue"))
 
 interface comInitData {
   height: string
@@ -106,6 +113,7 @@ export default defineComponent({
     paramsWatermark,
     paramsColor,
     paramsXasis,
+    paramsYasis,
   },
   setup(props) {
     const router = useRouter()
@@ -131,6 +139,7 @@ export default defineComponent({
           if(item.allOption) tmpOption.push(item)
         }
         data.options = tmpOption;
+        
       })
       
       data.image = require('@/assets/image/'+router.currentRoute.value.query.id+'.jpg')

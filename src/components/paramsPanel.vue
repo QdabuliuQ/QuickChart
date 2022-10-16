@@ -9,7 +9,8 @@
       </div>
     </div>
     <div class="paramsContainer">
-      <chartParams />
+      <dataParams v-if="type == 0" />
+      <chartParams v-show="type == 1" />
     </div>
   </div>
 </template>
@@ -22,6 +23,7 @@ import {
   toRefs,
 } from "vue";
 import chartParams from "@/components/chartParams.vue";
+import dataParams from "@/components/dataParams.vue";
 interface comInitData {
   type: number;
 }
@@ -30,6 +32,7 @@ export default defineComponent({
   name: "paramsPanel",
   components: {
     chartParams,
+    dataParams
   },
   setup() {
     const data: comInitData = reactive({

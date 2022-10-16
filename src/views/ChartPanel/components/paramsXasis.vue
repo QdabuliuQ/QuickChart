@@ -3,18 +3,31 @@
     <div class="xasisContainer">
       <div class="asisTargetList">
         <div
+          @click="toggleItem(index)"
           v-for="(item, index) in xAsisList"
           :key="item.value"
           :class="[activeIndex == index ? 'activeTarget' : '', 'targetItem']"
         >
           {{ item.label }}
-          <div class="deleteIcon">
+          <div @click.stop="deleteItem(index)" class="deleteIcon">
             <i class="iconfont i_delete"></i>
           </div>
         </div>
-        <div v-if="xAsisList.length < 2" class="targetAddBtn"><i class="iconfont i_plus"></i>添加X轴</div>
+        <div
+          v-if="xAsisList.length < 2"
+          @click="addAsisTarget"
+          class="targetAddBtn"
+        >
+          <i class="iconfont i_plus"></i>添加X轴
+        </div>
       </div>
-      <div class="paramsList">
+      <div style="margin-top: 5px" class="optionItem">
+        <div>轴数据</div>
+        <el-button @click="xAsisDialog = true" type="primary" size="small"
+          >编辑数据</el-button
+        >
+      </div>
+      <div :key="activeIndex" class="paramsList">
         <div v-for="(value, key) in allOption[activeIndex]" :key="key">
           <div
             v-if="
@@ -270,7 +283,7 @@
             </div>
           </div>
           <div
-            v-show="defaultOption[activeIndex].axisLabel.show || key != 'show'"
+            v-show="defaultOption[activeIndex].axisLabel.show"
             v-for="(value, key, index) in allOption[activeIndex].axisLabel"
             :class="[index == 0 ? '' : 'childOptionOperation']"
           >
@@ -351,6 +364,9 @@ interface comInitData {
   xAsisList: { label: string; value: number }[];
   activeIndex: number;
   activeXasis: string;
+  tempOption: any;
+  allTempOption: any;
+  xAsisDialog: boolean;
 }
 let timer: any;
 
@@ -368,13 +384,38 @@ export default defineComponent({
       ],
       activeIndex: 0,
       activeXasis: "X轴1",
+      tempOption: null,
+      allTempOption: null,
+      xAsisDialog: true,
     });
+
+    const addAsisTarget = () => {
+      data.xAsisList.push({
+        label: "X轴" + (data.xAsisList[0].value + 2),
+        value: data.xAsisList[0].value + 1,
+      });
+      props.defaultOption.push(JSON.parse(JSON.stringify(data.tempOption)));
+      props.allOption.push(JSON.parse(JSON.stringify(data.allTempOption)));
+    };
+    // 删除
+    const deleteItem = (i: number) => {
+      if (data.xAsisList.length == 2) {
+        data.xAsisList.splice(i, 1);
+        props.defaultOption.splice(i, 1);
+      }
+    };
+    // 切换
+    const toggleItem = (i: number) => {
+      data.activeIndex = i;
+    };
 
     watch(
       () => props.defaultOption,
       (e) => {
         clearTimeout(timer);
         timer = setTimeout(() => {
+          console.log(e);
+
           _this.proxy.$Bus.emit("optionChange", {
             xAxis: e,
           });
@@ -386,6 +427,8 @@ export default defineComponent({
     );
 
     onMounted(() => {
+      data.tempOption = props.defaultOption[0];
+      data.allTempOption = props.allOption[0];
       if (props.defaultOption.length == 2) {
         data.xAsisList.push({
           label: "X轴2",
@@ -394,6 +437,9 @@ export default defineComponent({
       }
     });
     return {
+      toggleItem,
+      deleteItem,
+      addAsisTarget,
       ...toRefs(data),
     };
   },
@@ -409,7 +455,8 @@ export default defineComponent({
       align-items: center;
       font-size: 12px;
       .targetItem {
-        padding: 3px 10px 3.5px 12px;
+        height: 30px;
+        padding: 0 10px;
         border-radius: 6px;
         margin-right: 10px;
         cursor: pointer;
@@ -420,7 +467,7 @@ export default defineComponent({
           width: 15px;
           height: 15px;
           position: relative;
-          top: .5px;
+          top: 0.5px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -438,7 +485,8 @@ export default defineComponent({
         }
       }
       .targetAddBtn {
-        padding: 2px 12px 2.5px;
+        height: 30px;
+        padding: 0 12px;
         border-radius: 4px;
         margin-right: 10px;
         color: #a9a8a8;
@@ -454,6 +502,7 @@ export default defineComponent({
         }
       }
       .activeTarget {
+        height: 29px;
         color: #fff;
         background-color: @theme;
       }
