@@ -2,19 +2,23 @@
   <div id="chartParams">
     <el-scrollbar :height="height">
       <div class="chartCover">
-        <img :src="image" alt="">
+        <img :src="image" alt="" />
       </div>
       <div class="btnList">
-        <div @click="createCode" style="margin-right: 10px" class="btnItem">
-          <i class="iconfont i_code"></i>
+        <el-button @click="createCode" type="success">
+          <template #icon>
+            <i class="iconfont i_code"></i>
+          </template>
           配置
-        </div>
-        <div @click="downloadChart" class="btnItem">
-          <i class="iconfont i_download"></i>
+        </el-button>
+        <el-button @click="downloadChart" color="#626aef">
+          <template #icon>
+            <i class="iconfont i_download"></i>
+          </template>
           下载
-        </div>
+        </el-button>
       </div>
-      <el-collapse :accordion='true' v-if="options.length">
+      <el-collapse :accordion="true" v-if="options.length">
         <el-collapse-item
           v-for="item in options"
           :key="item.opName"
@@ -22,7 +26,7 @@
         >
           <template #title>
             <i style="margin-right: 5px" :class="['iconfont', item.icon]"></i>
-            {{item.name}}
+            {{ item.name }}
           </template>
           <paramsTitle
             v-if="item.opName == 'title' && item.menuOption"
@@ -59,14 +63,16 @@
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
           />
-          <paramsXasis
+          <paramsAsis
             v-else-if="item.opName == 'xAxis' && item.menuOption"
+            :asis="'xAxis'"
             :defaultOption="item.defaultOption.xAxis"
             :allOption="item.allOption.xAxis"
             :opNameList="item.opNameList"
           />
-          <paramsYasis
+          <paramsAsis
             v-else-if="item.opName == 'yAxis' && item.menuOption"
+            :asis="'yAxis'"
             :defaultOption="item.defaultOption.yAxis"
             :allOption="item.allOption.yAxis"
             :opNameList="item.opNameList"
@@ -84,23 +90,36 @@ import {
   onMounted,
   toRefs,
   getCurrentInstance,
-  defineAsyncComponent
+  defineAsyncComponent,
 } from "vue";
 import { useRouter } from "vue-router";
-const paramsTitle = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsTitle.vue"))
-const paramsCanvas = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsCanvas.vue"))
-const paramsGrid = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsGrid.vue"))
-const paramsLegend = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsLegend.vue"))
-const paramsWatermark = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsWatermark.vue"))
-const paramsColor = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsColor.vue"))
-const paramsXasis = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsXasis.vue"))
-const paramsYasis = defineAsyncComponent(() => import("@/views/ChartPanel/components/paramsYasis.vue"))
+const paramsTitle = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsTitle.vue")
+);
+const paramsCanvas = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsCanvas.vue")
+);
+const paramsGrid = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsGrid.vue")
+);
+const paramsLegend = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsLegend.vue")
+);
+const paramsWatermark = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsWatermark.vue")
+);
+const paramsColor = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsColor.vue")
+);
+const paramsAsis = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsAsis.vue")
+);
 
 interface comInitData {
-  height: string
-  config: any
-  options: any
-  image: string
+  height: string;
+  config: any;
+  options: any;
+  image: string;
 }
 
 export default defineComponent({
@@ -112,37 +131,37 @@ export default defineComponent({
     paramsLegend,
     paramsWatermark,
     paramsColor,
-    paramsXasis,
-    paramsYasis,
+    paramsAsis,
   },
   setup(props) {
-    const router = useRouter()
+    const router = useRouter();
     const _this: any = getCurrentInstance();
     const data: comInitData = reactive({
       height: "",
       config: null,
       options: [],
-      image: ''
+      image: "",
     });
 
     const createCode = (): void => {
-      _this.proxy.$Bus.emit('createCode')
-    }
+      _this.proxy.$Bus.emit("createCode");
+    };
     const downloadChart = (): void => {
-      _this.proxy.$Bus.emit('downloadChart')
-    }
+      _this.proxy.$Bus.emit("downloadChart");
+    };
 
     onMounted(() => {
-      import('@/chartConfig/chart1_1').then((res: any) => {
-        let tmpOption: any[] = []
+      import("@/chartConfig/chart1_1").then((res: any) => {
+        let tmpOption: any[] = [];
         for (const item of res.default) {
-          if(item.allOption) tmpOption.push(item)
+          if (item.allOption) tmpOption.push(item);
         }
         data.options = tmpOption;
-        
-      })
-      
-      data.image = require('@/assets/image/'+router.currentRoute.value.query.id+'.jpg')
+      });
+
+      data.image = require("@/assets/image/" +
+        router.currentRoute.value.query.id +
+        ".jpg");
 
       // 监听窗口大小变化
       _this.proxy.$Bus.on("resize", (e: number) => {
@@ -154,7 +173,6 @@ export default defineComponent({
         let res = require("@/chartConfig/chart" + e + ".ts");
         data.options = res.default;
       });
-
     });
     return {
       createCode,
@@ -191,23 +209,12 @@ export default defineComponent({
     justify-content: space-between;
     margin-bottom: 5px;
     user-select: none;
-    .btnItem {
-      flex: 1;
-      padding: 6px 0 8px;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: @theme;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-      &:hover {
-        background-color: @hover;
-      }
-      i {
-        margin-right: 5px;
-        font-size: 18px;
+    .el-button {
+      font-size: 13px !important;
+      padding: 6px 20px !important;
+      span {
+        position: relative;
+        top: -1px;
       }
     }
   }

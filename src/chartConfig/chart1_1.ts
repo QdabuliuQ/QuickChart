@@ -688,12 +688,12 @@ const config = [
     defaultOption: {
       series: [
         {
-          name: '系列1',
+          name: '系列一',
           data: [150, 230, 224, 218, 135, 147, 260],
           type: 'line'
         },
         {
-          name: '系列3',
+          name: '系列二',
           data: [110, 290, 124, 558, 133, 147, 660],
           type: 'line'
         },
@@ -706,6 +706,28 @@ let allColorsOption = getColor(config[config.length-1].defaultOption.series, 'al
 let colorsOption = getColor(config[config.length-1].defaultOption.series)
 config[5]!.allOption!.color = allColorsOption
 config[5].defaultOption.color = colorsOption
-console.log(config);
+
+export const createExcelData = () => {
+  let excelData: any = {}
+  excelData[0] = {
+    cells: {
+      0: { text: '时间' },
+      1: { text: "系列一" },
+      2: { text: "系列二" },
+    }
+  }
+  let p = (config[6].defaultOption as any).xAxis[0].data
+  let q = (config[8].defaultOption as any).series
+  for(let i = 0, j = 0; i < p.length; i ++) {
+    excelData[i+1] = {
+      cells: {
+        0: { text: p[i] },
+        1: { text: q[0].data[i] },
+        2: { text: q[1].data[i] },
+      }
+    }
+  }
+  return excelData
+}
 
 export default config

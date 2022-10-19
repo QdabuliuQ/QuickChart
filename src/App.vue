@@ -41,4 +41,9 @@ html, body {
     font-size: 12px;
   }
 } 
+.el-button {
+  span {
+    font-size: 13px !important;
+  }
+}
 </style>
