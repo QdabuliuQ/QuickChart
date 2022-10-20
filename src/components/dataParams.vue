@@ -18,27 +18,15 @@
             </el-button>
           </div>
           <div class="rightBtn">
-            <el-button class="saveBtn" type="info">
+            <el-button class="resetBtn" type="info">
               <template #icon>
                 <i class="iconfont i_refresh"></i>
               </template>
               重置
             </el-button>
-            <el-button class="saveBtn" type="success">
-              <template #icon>
-                <i class="iconfont i_save"></i>
-              </template>
-              保存
-            </el-button>
           </div>
         </div>
-        <dataExcel
-          ref="dataExcelRef"
-          :key="values"
-          :seriesName="seriesName"
-          :values="values"
-          :keys="keys"
-        />
+        <dataExcel ref="dataExcelRef"/>
       </div>
     </div>
   </div>
@@ -55,6 +43,7 @@ import {
 } from "vue";
 import useCommonStore from "@/store/common";
 import dataExcel from "./dataExcel.vue";
+import loading from './loading.vue'
 
 interface comInitData {
   height: string;
@@ -72,6 +61,7 @@ export default defineComponent({
   props: ["type"],
   components: {
     dataExcel,
+    loading
   },
   setup() {
     const _this: any = getCurrentInstance();
@@ -88,74 +78,7 @@ export default defineComponent({
       dataType: "",
     });
 
-    // 添加X轴
-    const addXasis = () => {};
-    // 添加数据
-    const addSeriesData = () => {
-      let d = {
-        name: "系列" + (common.option.series.length + 1),
-        data: [],
-        type: "line",
-      };
-      let series = common.option.series;
-      series.push(d);
-      _this.proxy.$Bus.emit("optionChange", {
-        series,
-      });
-    };
-    // 保存数据
-    const saveData = () => {
-      // 修改的series数据
-      if (data.dataType.length == 2) {
-        let series = common.option.series;
-        // 修改数据
-        let seriesName =
-          dataExcelRef.value.sheetObj.getData()[0].rows[0].cells[0].text;
-
-        series[parseInt(data.dataType[1])].name = seriesName;
-        series[parseInt(data.dataType[1])].data = dataExcelRef.value.values;
-        // 发送数据
-        _this.proxy.$Bus.emit("optionChange", {
-          series,
-        });
-      } else {
-        // 修改的是轴数据
-      }
-      // 关闭抽屉
-      data.dataTableDrawer = false;
-      data.dataType = "";
-    };
-    // 删除数据
-    const deleteData = (i: number) => {
-      let series = common.option.series;
-      series.splice(i, 1);
-      console.log(series);
-
-      // 发送数据
-      _this.proxy.$Bus.emit("optionChange", {
-        series,
-      });
-    };
-    // 编辑数据
-    const editData = (name: string, _data: number[], index: number) => {
-      data.dataType = "s" + index;
-      data.seriesName = name;
-      data.values = _data;
-      data.keys =
-        common.option.xAxis[0].type == "category"
-          ? common.option.xAxis[0].data
-          : common.option.yAxis[0].data;
-      data.dataTableDrawer = true;
-    };
-    const getData = () => {
-      let { series } = common.option as any;
-      data.series = series;
-
-      let { xAxis } = common.option as any;
-      data.xAxis = xAxis;
-    };
     onMounted(() => {
-      getData();
       // 监听窗口大小变化
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - 54.8 + "px";
@@ -164,10 +87,6 @@ export default defineComponent({
     return {
       common,
       dataExcelRef,
-      addSeriesData,
-      saveData,
-      deleteData,
-      editData,
       ...toRefs(data),
     };
   },

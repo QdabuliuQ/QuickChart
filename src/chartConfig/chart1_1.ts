@@ -707,6 +707,7 @@ let colorsOption = getColor(config[config.length-1].defaultOption.series)
 config[5]!.allOption!.color = allColorsOption
 config[5].defaultOption.color = colorsOption
 
+// 创建初始数据
 export const createExcelData = () => {
   let excelData: any = {}
   excelData[0] = {
@@ -728,6 +729,34 @@ export const createExcelData = () => {
     }
   }
   return excelData
+}
+
+// 收集数据并进行转换
+export const conveyExcelData = (rows: any) => {
+  let dataObj: any = {
+    categoryData: [],
+    series: []
+  }
+  // 遍历数据项
+  let rowsTLength = Object.keys(rows[0].cells).length;
+  for(let i = 1; i < rowsTLength; i ++) {
+    dataObj.series.push({  // 创建series
+      name: rows[0].cells[i].text,
+      data: [],
+      type: 'line'
+    })
+  }
+  
+  let rowsALength = Object.keys(rows).length - 1;
+  for(let i = 1; i < rowsALength; i ++) {
+    let rowsItemLength = Object.keys(rows[i].cells).length;
+    dataObj.categoryData.push(rows[i].cells[0].text)
+    // 将对应数据放入series当中
+    for(let j = 1; j < rowsItemLength; j ++) {
+      dataObj.series[j-1].data.push(rows[i].cells[j].text)
+    }
+  }
+  return dataObj
 }
 
 export default config

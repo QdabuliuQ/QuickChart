@@ -3,45 +3,36 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
-
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  ref,
+  getCurrentInstance,
+} from "vue";
+import { useRouter } from "vue-router";
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
 Spreadsheet.locale("zh-cn", zhCN);
 
 interface comInitData {
   sheetObj: any;
+  excelData: any;
 }
 
+let timer: any;
 export default defineComponent({
   name: "dataExcel",
-  props: ["keys", "values", "seriesName"],
-  setup(props) {
+  emits: ['loadSuccess'],
+  setup(props, context) {
+    const _this: any = getCurrentInstance() 
+    const router = useRouter();
     const willtableRef = ref();
     const data: comInitData = reactive({
       sheetObj: null,
+      excelData: null,
     });
-
-    // 根据keys和values创建数据
-    const createData = () => {
-      let e_data: any = {
-        0: {
-          cells: {
-            0: { text: props.seriesName, editable: true },
-            1: { text: "值/数据", editable: false },
-          },
-        },
-      };
-      for (let i = 0, j = 1; i < props.keys.length; i++, j++) {
-        e_data[j] = {
-          cells: {
-            0: { text: props.keys[i], editable: false },
-            1: { text: props.values[i], editable: true },
-          },
-        };
-      }
-      return e_data;
-    };
 
     // 初始化图表
     const initData = () => {
@@ -65,7 +56,7 @@ export default defineComponent({
             height: 25,
           },
           col: {
-            len: 5,
+            len: 30,
             width: 100,
             indexWidth: 60,
             minWidth: 60,
@@ -89,14 +80,13 @@ export default defineComponent({
 
         const data1 = {
           name: "sheet11",
-          rows: createData(),
+          rows: data.excelData,
         };
 
         data.sheetObj = new Spreadsheet("#dataExcel", option)
           .loadData(data1) // load data
           .change((res) => {
             // 导出数据
-            console.log(res);
           });
 
         // 设置冻结
@@ -106,16 +96,35 @@ export default defineComponent({
         data.sheetObj.on(
           "cell-edited",
           (text: string, ri: number, ci: number) => {
-            props.values[ri] = parseInt(text);
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              let chartOption = conveyData(data.sheetObj.getData()[0].rows);
+              _this.proxy.$Bus.emit('dataChange', {
+                data: chartOption.categoryData,
+                series: chartOption.series
+              });
+            }, 400);
           }
         );
 
         // data validation
         data.sheetObj.validate();
+
+        context.emit('loadSuccess', false)
+        console.log(4444);
+        
       }, 200);
     };
 
+    let createInitiativeData: any = null;
+    let conveyData: any = null;
+
     onMounted(() => {
+      createInitiativeData = require("@/chartConfig/chart" +
+        router.currentRoute.value.query.id).createExcelData;
+      conveyData = require("@/chartConfig/chart" +
+        router.currentRoute.value.query.id).conveyExcelData;
+      data.excelData = createInitiativeData();
       initData();
     });
 

@@ -46,7 +46,7 @@ interface comInitData {
 export default defineComponent({
   name: "chartDom",
   setup() {
-    const common = useCommonStore();
+    const common: any = useCommonStore();
     const router = useRouter();
     const _this: any = getCurrentInstance();
     const chartDomRef = ref();
@@ -116,7 +116,6 @@ export default defineComponent({
 
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
-        
         let k: string = Object.keys(e)[0];
         if (k != 'series') {
           myChart.setOption(e);
@@ -135,6 +134,19 @@ export default defineComponent({
         })
         getCode()
       });
+
+      // 监听图表数据变化
+      _this.proxy.$Bus.on('dataChange', (e: any) => {
+        let optionName = common.option.xAxis[0].type == 'category' ? 'xAxis' : 'yAxis'
+        let axisOption = common.option.xAxis[0].type == 'category' ? common.option.xAxis : common.option.yAxis
+        axisOption[0].data = e.data
+        
+        let newOption = {
+          [optionName]: axisOption,
+          series: e.series
+        }
+        myChart.setOption(newOption);
+      })
 
       // 监听图表画布配置变化
       _this.proxy.$Bus.on("canvasChange", (e: any) => {
