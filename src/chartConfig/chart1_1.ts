@@ -708,23 +708,31 @@ config[5]!.allOption!.color = allColorsOption
 config[5].defaultOption.color = colorsOption
 
 // 创建初始数据
-export const createExcelData = () => {
+export const createExcelData = (config: any) => {
   let excelData: any = {}
-  excelData[0] = {
-    cells: {
-      0: { text: '时间' },
-      1: { text: "系列一" },
-      2: { text: "系列二" },
+  
+  let series = config.series
+  let xAxis = config.xAxis[0].data
+  
+  // 初始化
+  for(let i = 0; i < xAxis.length + 1; i ++) {
+    excelData[i] = {
+      cells:  {}
     }
   }
-  let p = (config[6].defaultOption as any).xAxis[0].data
-  let q = (config[8].defaultOption as any).series
-  for(let i = 0, j = 0; i < p.length; i ++) {
-    excelData[i+1] = {
-      cells: {
-        0: { text: p[i] },
-        1: { text: q[0].data[i] },
-        2: { text: q[1].data[i] },
+  for(let i = 0; i < series.length; i ++) {
+    excelData[0].cells[i+1] = {
+      text: series[i].name
+    }
+  }
+  
+  for(let i = 0; i < xAxis.length; i ++) {
+    excelData[i+1].cells[0] = {
+      text: xAxis[i]
+    }
+    for(let j = 0; j < series.length; j ++) {
+      excelData[i+1].cells[j+1] = {
+        text: series[j].data[i]
       }
     }
   }
@@ -733,20 +741,22 @@ export const createExcelData = () => {
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
+  console.log(rows);
+  
   let dataObj: any = {
     categoryData: [],
     series: []
   }
   // 遍历数据项
   let rowsTLength = Object.keys(rows[0].cells).length;
-  for(let i = 1; i < rowsTLength; i ++) {
+  
+  for(let i = 1; i <= rowsTLength; i ++) {
     dataObj.series.push({  // 创建series
       name: rows[0].cells[i].text,
       data: [],
       type: 'line'
     })
   }
-  
   let rowsALength = Object.keys(rows).length - 1;
   for(let i = 1; i < rowsALength; i ++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;

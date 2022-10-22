@@ -19,14 +19,12 @@
 import {
   defineComponent,
   reactive,
-  onMounted,
   toRefs,
   defineAsyncComponent
 } from "vue";
-const chartParams = defineAsyncComponent(() => import("@/components/chartParams.vue"))
-const dataParams = defineAsyncComponent(() => import("@/components/dataParams.vue"))
-// import chartParams from "@/components/chartParams.vue";
-// import dataParams from "@/components/dataParams.vue";
+const chartParams = defineAsyncComponent(() => import("@/components/paramsPanel/components/chartParams.vue"))
+const dataParams = defineAsyncComponent(() => import("@/components/paramsPanel/components/dataParams.vue"))
+
 interface comInitData {
   type: number;
 }
@@ -46,7 +44,6 @@ export default defineComponent({
       data.type = e;
     };
 
-    onMounted(() => {});
     return {
       btnClick,
       ...toRefs(data),
@@ -64,7 +61,8 @@ export default defineComponent({
     padding: 20px 0 0;
     display: flex;
     align-items: center;
-    font-size: 13px;
+    font-size: 12.5px;
+    font-weight: bold;
     .btnItem {
       flex: 1;
       text-align: center;
@@ -75,7 +73,7 @@ export default defineComponent({
     }
     .active {
       background-color: @curColor;
-      color: #fff;
+      color: @theme;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
     }

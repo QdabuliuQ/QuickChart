@@ -31,7 +31,7 @@ import {
   getCurrentInstance,
 } from "vue";
 import { useRouter } from "vue-router";
-import useCommonStore from '@/store/common';
+import useCommonStore from "@/store/common";
 
 interface comInitData {
   options: any;
@@ -89,36 +89,23 @@ export default defineComponent({
       return new Blob([uInt8Array], { type: contentType });
     };
     const getCode = () => {
-      Reflect.deleteProperty(data.option, 'waterMark')
+      Reflect.deleteProperty(data.option, "waterMark");
       let jdata: any = JSON.stringify(data.option, null, 4);
       data.code = jdata.replace(/"(\w+)":/g, "$1:");
-    }
+    };
 
     onMounted(() => {
-      let tmpOption: any = {};
-      let myChart: any = null;
-      import("@/chartConfig/chart" + router.currentRoute.value.query.id).then(
-        (res: any) => {
-          for (let item of res.default) {
-            tmpOption[item.opName] = item.defaultOption[item.opName];
-          }
-          tmpOption.backgroundColor = '#fff'
-          myChart = _this.proxy.$echarts.init(chartDomRef.value);
-          myChart.setOption(tmpOption);
-          data.option = tmpOption;
-          data.code = tmpOption;
-          common.$patch((state: any) => {
-            state.option = tmpOption
-          })
-          getCode()
-        }
-      );
+      let chartInstance: any = _this.proxy.$echarts.init(chartDomRef.value);
+      chartInstance.setOption(common.option);
+      data.option = common.option;
+      data.code = common.option;
+      getCode();
 
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
         let k: string = Object.keys(e)[0];
-        if (k != 'series') {
-          myChart.setOption(e);
+        if (k != "series") {
+          chartInstance.setOption(e);
         }
         for (let key in data.option) {
           if (key == k) {
@@ -126,52 +113,76 @@ export default defineComponent({
             break;
           }
         }
-        if (k == 'series') {
-          myChart.setOption(data.option, true);
+        if (k == "series") {
+          chartInstance.setOption(data.option, true);
         }
         common.$patch((state: any) => {
-          state.option = data.option
-        })
-        getCode()
+          state.option = data.option;
+        });
+        getCode();
       });
 
       // 监听图表数据变化
-      _this.proxy.$Bus.on('dataChange', (e: any) => {
-        let optionName = common.option.xAxis[0].type == 'category' ? 'xAxis' : 'yAxis'
-        let axisOption = common.option.xAxis[0].type == 'category' ? common.option.xAxis : common.option.yAxis
-        axisOption[0].data = e.data
-        
+      _this.proxy.$Bus.on("dataChange", (e: any) => {
+        let optionName =
+          common.option.xAxis[0].type == "category" ? "xAxis" : "yAxis";
+        let axisOption =
+          common.option.xAxis[0].type == "category"
+            ? common.option.xAxis
+            : common.option.yAxis;
+        axisOption[0].data = e.data;
+
         let newOption = {
           [optionName]: axisOption,
-          series: e.series
-        }
-        myChart.setOption(newOption);
-      })
+          series: e.series,
+        };
+        chartInstance.setOption(newOption);
+        // 修改pinia数据
+        common.$patch((state: any) => {
+          state.option.series = e.series;
+          state.option[optionName] = axisOption;
+        });
+      });
 
       // 监听图表画布配置变化
       _this.proxy.$Bus.on("canvasChange", (e: any) => {
         let { width, height, bgc } = e;
         data.width = width;
         data.height = height;
-        data.option.backgroundColor = bgc
-        getCode()
-        myChart.setOption({
-          backgroundColor: bgc
-        })
+        data.option.backgroundColor = bgc;
+        getCode();
+        chartInstance.setOption({
+          backgroundColor: bgc,
+        });
       });
 
       // 生成代码
       _this.proxy.$Bus.on("createCode", () => {
-        getCode()
+        getCode();
         data.codeDialog = true;
       });
 
       // 下载图表
       _this.proxy.$Bus.on("downloadChart", () => {
-        let res = myChart.getDataURL({
+        let res = chartInstance.getDataURL({
           pixelRatio: 2,
         });
-        downloadFile('chart.png', res)
+        downloadFile("chart.png", res);
+      });
+
+      // 重置数据
+      _this.proxy.$Bus.on("resetChartData", () => {
+        let p = common.option.series
+        console.log(p);
+
+        common.$patch((state: any) => {
+          state.option.series = state.defaultOption.series;
+          state.option.xAxis = state.defaultOption.xAxis;
+          state.option.yAxis = state.defaultOption.yAxis;
+        });
+        setTimeout(() => {
+          chartInstance.setOption(common.option, true);
+        }, 0);
       });
     });
     return {

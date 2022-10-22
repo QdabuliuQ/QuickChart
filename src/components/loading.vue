@@ -2,7 +2,7 @@
   <div id="loading">
     <div
       class="loadingContainer"
-      element-loading-text="加载中"
+      :element-loading-text="text"
       element-loading-background="#292929"
       v-loading="isLoading"
     ></div>
@@ -10,34 +10,50 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+} from "vue";
 
 interface comInitData {
-  isLoading: boolean
+  isLoading: boolean;
+}
+
+interface Props {
+  text?: string | number;
 }
 
 export default defineComponent({
-  name: 'loading',
+  name: "loading",
+  props: {
+    text: {
+      type: String,
+      default: "加载中...",
+    },
+  },
   setup() {
     const data: comInitData = reactive({
-      isLoading: true
-    })
-    onMounted(() => {
-    })
+      isLoading: true,
+    });
+    onMounted(() => {});
     return {
       ...toRefs(data),
-    }
-  }
-})
+    };
+  },
+});
 </script>
 
 <style lang='less'>
 #loading {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 99;
   .loadingContainer {
     width: 100%;
-  height: 100%;
+    height: 100%;
   }
   .el-loading-mask {
     z-index: 1;

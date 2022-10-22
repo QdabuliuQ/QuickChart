@@ -18,7 +18,7 @@
             </el-button>
           </div>
           <div class="rightBtn">
-            <el-button class="resetBtn" type="info">
+            <el-button @click="resetChartData" class="resetBtn" type="info">
               <template #icon>
                 <i class="iconfont i_refresh"></i>
               </template>
@@ -26,7 +26,9 @@
             </el-button>
           </div>
         </div>
-        <dataExcel ref="dataExcelRef"/>
+        <div class="excelDataBox" style="height: 100%" element-loading-background="rgba(0, 0, 0, 1)" v-loading="loading">
+          <dataExcel :key="key" ref="dataExcelRef"/>
+        </div>
       </div>
     </div>
   </div>
@@ -42,8 +44,8 @@ import {
   ref,
 } from "vue";
 import useCommonStore from "@/store/common";
-import dataExcel from "./dataExcel.vue";
-import loading from './loading.vue'
+import dataExcel from "@/components/dataExcel.vue";
+import loading from '@/components/loading.vue'
 
 interface comInitData {
   height: string;
@@ -54,6 +56,8 @@ interface comInitData {
   keys: number[] | string[] | null;
   seriesName: string | number;
   dataType: string;
+  key: number
+  loading: boolean
 }
 
 export default defineComponent({
@@ -76,17 +80,36 @@ export default defineComponent({
       keys: [],
       seriesName: "",
       dataType: "",
+      key: 0,
+      loading: true
     });
+
+    // 重置图表数据
+    const resetChartData = () => {
+      data.loading = true
+      _this.proxy.$Bus.emit("resetChartData")
+      setTimeout(() => {
+        data.key ++
+      }, 0);
+      setTimeout(() => {
+        data.loading = false
+      }, 400);
+    }
 
     onMounted(() => {
       // 监听窗口大小变化
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - 54.8 + "px";
       });
+
+      setTimeout(() => {
+        data.loading = false
+      }, 400);
     });
     return {
       common,
       dataExcelRef,
+      resetChartData,
       ...toRefs(data),
     };
   },
@@ -127,6 +150,10 @@ export default defineComponent({
     .excelBox {
       padding: 0 10px;
       height: 91%;
+      .excelDataBox {
+        border-radius: 6px;
+        overflow: hidden;
+      }
       .topBtnList {
         display: flex;
         align-items: center;

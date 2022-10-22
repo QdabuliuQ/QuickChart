@@ -1,5 +1,6 @@
 <template>
   <div id="dataExcel"></div>
+  <loading v-if="!sheetObj" />
 </template>
 
 <script lang='ts'>
@@ -12,26 +13,37 @@ import {
   getCurrentInstance,
 } from "vue";
 import { useRouter } from "vue-router";
+import useCommonStore from '@/store/common'
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
 Spreadsheet.locale("zh-cn", zhCN);
+import loading from './loading.vue'
 
 interface comInitData {
   sheetObj: any;
   excelData: any;
+  initativeData: any; // 初始数据
+  option: any;
 }
 
 let timer: any;
+let createInitiativeData: any = null;
+let conveyData: any = null;
 export default defineComponent({
   name: "dataExcel",
-  emits: ['loadSuccess'],
-  setup(props, context) {
-    const _this: any = getCurrentInstance() 
+  components: {
+    loading
+  },
+  setup() {
+    const common: any = useCommonStore()
+    const _this: any = getCurrentInstance();
     const router = useRouter();
     const willtableRef = ref();
     const data: comInitData = reactive({
       sheetObj: null,
       excelData: null,
+      initativeData: null,
+      option: null,
     });
 
     // 初始化图表
@@ -40,7 +52,7 @@ export default defineComponent({
         let w = document.getElementById("dataExcel")?.clientWidth;
         let h = document.getElementById("dataExcel")?.clientHeight;
 
-        let option: any = {
+        data.option = {
           // 图表配置
           mode: "edit", // edit | read
           showToolbar: false, // 顶部工具栏
@@ -82,8 +94,7 @@ export default defineComponent({
           name: "sheet11",
           rows: data.excelData,
         };
-
-        data.sheetObj = new Spreadsheet("#dataExcel", option)
+        data.sheetObj = new Spreadsheet("#dataExcel", data.option)
           .loadData(data1) // load data
           .change((res) => {
             // 导出数据
@@ -95,36 +106,40 @@ export default defineComponent({
         // 编辑单元格触发
         data.sheetObj.on(
           "cell-edited",
-          (text: string, ri: number, ci: number) => {
+          () => {
+            // 防抖
             clearTimeout(timer);
             timer = setTimeout(() => {
               let chartOption = conveyData(data.sheetObj.getData()[0].rows);
-              _this.proxy.$Bus.emit('dataChange', {
+              _this.proxy.$Bus.emit("dataChange", {
                 data: chartOption.categoryData,
-                series: chartOption.series
+                series: chartOption.series,
               });
-            }, 400);
+            }, 500);
           }
         );
 
+        let chartOption = conveyData(data.sheetObj.getData()[0].rows);
+        _this.proxy.$Bus.emit("dataChange", {
+          data: chartOption.categoryData,
+          series: chartOption.series,
+        });
+
         // data validation
         data.sheetObj.validate();
-
-        context.emit('loadSuccess', false)
-        console.log(4444);
-        
       }, 200);
     };
-
-    let createInitiativeData: any = null;
-    let conveyData: any = null;
-
+    
     onMounted(() => {
+      data.sheetObj = null
       createInitiativeData = require("@/chartConfig/chart" +
         router.currentRoute.value.query.id).createExcelData;
       conveyData = require("@/chartConfig/chart" +
         router.currentRoute.value.query.id).conveyExcelData;
-      data.excelData = createInitiativeData();
+        
+      data.excelData = createInitiativeData(common.option);
+      data.initativeData = createInitiativeData(common.option);
+      
       initData();
     });
 

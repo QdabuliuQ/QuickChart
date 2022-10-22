@@ -93,6 +93,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useRouter } from "vue-router";
+import useCommonStore from '@/store/common';
 const paramsTitle = defineAsyncComponent(
   () => import("@/views/ChartPanel/components/paramsTitle.vue")
 );
@@ -134,6 +135,7 @@ export default defineComponent({
     paramsAsis,
   },
   setup(props) {
+    const common: any = useCommonStore()
     const router = useRouter();
     const _this: any = getCurrentInstance();
     const data: comInitData = reactive({
@@ -151,13 +153,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      import("@/chartConfig/chart1_1").then((res: any) => {
-        let tmpOption: any[] = [];
-        for (const item of res.default) {
-          if (item.allOption) tmpOption.push(item);
-        }
-        data.options = tmpOption;
-      });
+      data.options = common.chartConfig;
 
       data.image = require("@/assets/image/" +
         router.currentRoute.value.query.id +
