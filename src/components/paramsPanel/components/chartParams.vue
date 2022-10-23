@@ -63,14 +63,14 @@
             :defaultOption="item.defaultOption"
             :allOption="item.allOption"
           />
-          <paramsAsis
+          <paramsAxis
             v-else-if="item.opName == 'xAxis' && item.menuOption"
             :asis="'xAxis'"
             :defaultOption="item.defaultOption.xAxis"
             :allOption="item.allOption.xAxis"
             :opNameList="item.opNameList"
           />
-          <paramsAsis
+          <paramsAxis
             v-else-if="item.opName == 'yAxis' && item.menuOption"
             :asis="'yAxis'"
             :defaultOption="item.defaultOption.yAxis"
@@ -91,6 +91,7 @@ import {
   toRefs,
   getCurrentInstance,
   defineAsyncComponent,
+  watch
 } from "vue";
 import { useRouter } from "vue-router";
 import useCommonStore from '@/store/common';
@@ -112,8 +113,8 @@ const paramsWatermark = defineAsyncComponent(
 const paramsColor = defineAsyncComponent(
   () => import("@/views/ChartPanel/components/paramsColor.vue")
 );
-const paramsAsis = defineAsyncComponent(
-  () => import("@/views/ChartPanel/components/paramsAsis.vue")
+const paramsAxis = defineAsyncComponent(
+  () => import("@/views/ChartPanel/components/paramsAxis.vue")
 );
 
 interface comInitData {
@@ -125,6 +126,7 @@ interface comInitData {
 
 export default defineComponent({
   name: "chartParams",
+  props: ['type'],
   components: {
     paramsTitle,
     paramsCanvas,
@@ -132,7 +134,7 @@ export default defineComponent({
     paramsLegend,
     paramsWatermark,
     paramsColor,
-    paramsAsis,
+    paramsAxis,
   },
   setup(props) {
     const common: any = useCommonStore()
@@ -151,10 +153,9 @@ export default defineComponent({
     const downloadChart = (): void => {
       _this.proxy.$Bus.emit("downloadChart");
     };
-
+    
     onMounted(() => {
       data.options = common.chartConfig;
-
       data.image = require("@/assets/image/" +
         router.currentRoute.value.query.id +
         ".jpg");
@@ -170,6 +171,13 @@ export default defineComponent({
         data.options = res.default;
       });
     });
+
+    watch(() => props.type, (n: number) => {
+      if(n) {
+        data.options = common.chartConfig;
+        _this.proxy.$Bus.emit('updateData', common.option)
+      }
+    })
     return {
       createCode,
       downloadChart,

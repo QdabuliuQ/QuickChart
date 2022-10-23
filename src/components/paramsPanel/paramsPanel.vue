@@ -10,7 +10,7 @@
     </div>
     <div class="paramsContainer">
       <dataParams v-if="type == 0" />
-      <chartParams v-show="type == 1" />
+      <chartParams :type='type' v-show="type == 1" />
     </div>
   </div>
 </template>

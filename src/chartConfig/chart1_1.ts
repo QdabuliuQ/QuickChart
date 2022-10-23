@@ -1,11 +1,11 @@
-import { 
-  leftText, 
-  topText, 
-  bottomText, 
-  rightText, 
-  colors, 
-  shadowY, 
-  shadowX, 
+import {
+  leftText,
+  topText,
+  bottomText,
+  rightText,
+  colors,
+  shadowY,
+  shadowX,
   shadowColor,
   shadowBlur,
   fontWeight,
@@ -292,10 +292,7 @@ const config = [
     menuOption: true,
     icon: 'i_color',
     defaultOption: {
-      color: [
-        colors[0],
-        colors[1],
-      ]
+      color: colors
     },
     allOption: {
       color: <any>[]
@@ -684,54 +681,54 @@ const config = [
     name: '数据',
     opName: 'series',
     chartOption: true,
-    menuOption: false,
+    menuOption: true,
     defaultOption: {
       series: [
         {
           name: '系列一',
           data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line'
+          type: 'line',
         },
         {
           name: '系列二',
           data: [110, 290, 124, 558, 133, 147, 660],
-          type: 'line'
+          type: 'line',
         },
       ]
     },
   },
 ]
 
-let allColorsOption = getColor(config[config.length-1].defaultOption.series, 'all')
-let colorsOption = getColor(config[config.length-1].defaultOption.series)
-config[5]!.allOption!.color = allColorsOption
-config[5].defaultOption.color = colorsOption
+// let allColorsOption = getColor(config[config.length - 1].defaultOption.series, 'all')
+// let colorsOption = getColor(config[config.length - 1].defaultOption.series)
+// config[5]!.allOption!.color = allColorsOption
+// config[5].defaultOption.color = colorsOption
 
 // 创建初始数据
 export const createExcelData = (config: any) => {
   let excelData: any = {}
-  
+
   let series = config.series
   let xAxis = config.xAxis[0].data
-  
+
   // 初始化
-  for(let i = 0; i < xAxis.length + 1; i ++) {
+  for (let i = 0; i < xAxis.length + 1; i++) {
     excelData[i] = {
-      cells:  {}
+      cells: {}
     }
   }
-  for(let i = 0; i < series.length; i ++) {
-    excelData[0].cells[i+1] = {
+  for (let i = 0; i < series.length; i++) {
+    excelData[0].cells[i + 1] = {
       text: series[i].name
     }
   }
-  
-  for(let i = 0; i < xAxis.length; i ++) {
-    excelData[i+1].cells[0] = {
+
+  for (let i = 0; i < xAxis.length; i++) {
+    excelData[i + 1].cells[0] = {
       text: xAxis[i]
     }
-    for(let j = 0; j < series.length; j ++) {
-      excelData[i+1].cells[j+1] = {
+    for (let j = 0; j < series.length; j++) {
+      excelData[i + 1].cells[j + 1] = {
         text: series[j].data[i]
       }
     }
@@ -741,16 +738,14 @@ export const createExcelData = (config: any) => {
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  console.log(rows);
-  
   let dataObj: any = {
     categoryData: [],
     series: []
   }
   // 遍历数据项
   let rowsTLength = Object.keys(rows[0].cells).length;
-  
-  for(let i = 1; i <= rowsTLength; i ++) {
+
+  for (let i = 1; i <= rowsTLength; i++) {
     dataObj.series.push({  // 创建series
       name: rows[0].cells[i].text,
       data: [],
@@ -758,12 +753,12 @@ export const conveyExcelData = (rows: any) => {
     })
   }
   let rowsALength = Object.keys(rows).length - 1;
-  for(let i = 1; i < rowsALength; i ++) {
+  for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
     dataObj.categoryData.push(rows[i].cells[0].text)
     // 将对应数据放入series当中
-    for(let j = 1; j < rowsItemLength; j ++) {
-      dataObj.series[j-1].data.push(rows[i].cells[j].text)
+    for (let j = 1; j < rowsItemLength; j++) {
+      dataObj.series[j - 1].data.push(rows[i].cells[j].text)
     }
   }
   return dataObj

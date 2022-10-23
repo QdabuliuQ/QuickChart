@@ -4,13 +4,20 @@
       <div class="excelBox">
         <div class="topBtnList" style="margin: 8px 0">
           <div class="leftBtn">
-            <el-button color="#626aef">
+            <input
+              @change="changeEvent"
+              accept=".xls,.xlsx"
+              ref="uploadExecelInputRef"
+              style="display: none"
+              type="file"
+            />
+            <el-button @click="uploadExcel" color="#626aef">
               <template #icon>
                 <i class="iconfont i_upload"></i>
               </template>
               上传数据
             </el-button>
-            <el-button color="#626aef" >
+            <el-button @click="exportExcel" color="#626aef">
               <template #icon>
                 <i class="iconfont i_download"></i>
               </template>
@@ -26,8 +33,13 @@
             </el-button>
           </div>
         </div>
-        <div class="excelDataBox" style="height: 100%" element-loading-background="rgba(0, 0, 0, 1)" v-loading="loading">
-          <dataExcel :key="key" ref="dataExcelRef"/>
+        <div
+          class="excelDataBox"
+          style="height: 100%"
+          element-loading-background="rgba(0, 0, 0, 1)"
+          v-loading="loading"
+        >
+          <dataExcel :key="key" ref="dataExcelRef" />
         </div>
       </div>
     </div>
@@ -45,7 +57,9 @@ import {
 } from "vue";
 import useCommonStore from "@/store/common";
 import dataExcel from "@/components/dataExcel.vue";
-import loading from '@/components/loading.vue'
+import loading from "@/components/loading.vue";
+import { exportFile, importFile, stox } from "@/utils/excelOpe";
+import { fileType } from "@/utils/fileType";
 
 interface comInitData {
   height: string;
@@ -56,8 +70,8 @@ interface comInitData {
   keys: number[] | string[] | null;
   seriesName: string | number;
   dataType: string;
-  key: number
-  loading: boolean
+  key: number;
+  loading: boolean;
 }
 
 export default defineComponent({
@@ -65,12 +79,13 @@ export default defineComponent({
   props: ["type"],
   components: {
     dataExcel,
-    loading
+    loading,
   },
   setup() {
     const _this: any = getCurrentInstance();
     const common: any = useCommonStore();
     const dataExcelRef = ref();
+    const uploadExecelInputRef = ref();
     const data: comInitData = reactive({
       height: "",
       series: null,
@@ -81,20 +96,49 @@ export default defineComponent({
       seriesName: "",
       dataType: "",
       key: 0,
-      loading: true
+      loading: true,
     });
 
     // 重置图表数据
     const resetChartData = () => {
-      data.loading = true
-      _this.proxy.$Bus.emit("resetChartData")
+      data.loading = true;
+      _this.proxy.$Bus.emit("resetChartData");
       setTimeout(() => {
-        data.key ++
+        data.key++;
       }, 0);
       setTimeout(() => {
-        data.loading = false
+        data.loading = false;
       }, 400);
-    }
+    };
+
+    // 导出文件
+    const exportExcel = () => {
+      exportFile(dataExcelRef.value.sheetObj.getData());
+    };
+    // 导入文件
+    const uploadExcel = () => {
+      uploadExecelInputRef.value.click();
+    };
+    // 监听上传的文件
+    const changeEvent = (e: any) => {
+      let file = uploadExecelInputRef.value.files[0];
+      if (fileType(file.name) == "excel") {
+        importFile(file, (workbook) => {
+          dataExcelRef.value.sheetObj.loadData(stox(workbook));
+          console.log(dataExcelRef.value.sheetObj.getData());
+
+        });
+        
+      } else {
+        // 类型错误
+        _this.proxy.$notice({
+          title: "文件类型错误",
+          message: "请上传xls，xlsx类型的文件",
+          type: "error",
+          position: "top-left",
+        });
+      }
+    };
 
     onMounted(() => {
       // 监听窗口大小变化
@@ -103,12 +147,16 @@ export default defineComponent({
       });
 
       setTimeout(() => {
-        data.loading = false
+        data.loading = false;
       }, 400);
     });
     return {
       common,
       dataExcelRef,
+      uploadExecelInputRef,
+      exportExcel,
+      changeEvent,
+      uploadExcel,
       resetChartData,
       ...toRefs(data),
     };
