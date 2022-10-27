@@ -158,7 +158,7 @@ export default defineComponent({
       data.options = common.chartConfig;
       data.image = require("@/assets/image/" +
         router.currentRoute.value.query.id +
-        ".jpg");
+        ".webp");
 
       // 监听窗口大小变化
       _this.proxy.$Bus.on("resize", (e: number) => {
@@ -196,14 +196,14 @@ export default defineComponent({
     height: 130px;
     overflow: hidden;
     position: relative;
-    border-radius: 10px;
+    border-radius: 8px;
     margin: 10px auto;
     img {
+      width: 100%;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 100%;
     }
   }
   .btnList {

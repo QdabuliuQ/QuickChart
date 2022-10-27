@@ -1,40 +1,55 @@
 <template>
-  <div class="chartItem">
-    <div class="imageContainer">
-      <div @click="router.push('/Chart?id='+id)" class="mask">
-        插入图表
+  <el-popover
+    :visible='visible'
+    placement="right"
+    :width="300"
+    :hide-after='50'
+  >
+    <template #reference>
+      <div @mouseenter="visible = true" @mouseleave="visible = false" class="chartItem">
+        <div class="imageContainer">
+          <div @click="router.push('/Chart?id=' + id)" class="mask">
+            插入图表
+          </div>
+          <img :src="cover" alt="" />
+        </div>
+        <div>{{ name }}</div>
       </div>
-      <img :src="cover" alt="">
-    </div>
-    <div>{{name}}</div>
-  </div>
+    </template>
+    <img style="width: 100%; position: relative; top: 2px; border-radius: 7px;" :src="cover" alt="">
+  </el-popover>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
+interface comInitData{
+  visible: boolean
+}
+
 export default defineComponent({
-  name: 'chartItem',
-  props: ['cover', 'id', 'name'],
+  name: "chartItem",
+  props: ["cover", "id", "name"],
   setup() {
-    const router = useRouter()
-    const data = reactive({})
-    onMounted(() => {
-    })
+    const router = useRouter();
+    const data: comInitData = reactive({
+      visible: false
+    });
     return {
       router,
       ...toRefs(data),
-    }
-  }
-})
+    };
+  },
+});
 </script>
 
 <style lang='less'>
 .chartItem {
   width: 100%;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
+  
   .imageContainer {
     display: flex;
     align-items: center;
@@ -52,13 +67,15 @@ export default defineComponent({
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(255, 180, 75, 0.582);
-      color: #Fff;
+      background-color: rgba(255, 180, 75, 0.509);
+      color: #fff;
       font-weight: bold;
       font-size: 14px;
       cursor: pointer;
       opacity: 0;
-      transition: .2s all linear;
+      transition: 0.2s all linear;
+      box-sizing: border-box;
+      border: 2px solid @theme;
     }
   }
   img {

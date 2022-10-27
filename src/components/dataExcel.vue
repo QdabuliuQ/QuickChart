@@ -13,29 +13,29 @@ import {
   getCurrentInstance,
 } from "vue";
 import { useRouter } from "vue-router";
-import useCommonStore from '@/store/common'
+import useCommonStore from "@/store/common";
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
 Spreadsheet.locale("zh-cn", zhCN);
-import loading from './loading.vue'
+import loading from "./loading.vue";
 
 interface comInitData {
   sheetObj: any;
   excelData: any;
   initativeData: any; // 初始数据
   option: any;
+  createInitiativeData: any;
+  conveyData: any;
 }
 
 let timer: any;
-let createInitiativeData: any = null;
-let conveyData: any = null;
 export default defineComponent({
   name: "dataExcel",
   components: {
-    loading
+    loading,
   },
   setup() {
-    const common: any = useCommonStore()
+    const common: any = useCommonStore();
     const _this: any = getCurrentInstance();
     const router = useRouter();
     const willtableRef = ref();
@@ -44,7 +44,17 @@ export default defineComponent({
       excelData: null,
       initativeData: null,
       option: null,
+      createInitiativeData: {},
+      conveyData: {},
     });
+
+    const setExcelData = () => {
+      let chartOption = data.conveyData(data.sheetObj.getData()[0].rows);
+      _this.proxy.$Bus.emit("dataChange", {
+        data: chartOption.categoryData,
+        series: chartOption.series,
+      });
+    };
 
     // 初始化图表
     const initData = () => {
@@ -104,47 +114,37 @@ export default defineComponent({
         data.sheetObj.sheet.data.setFreeze(1, 0);
 
         // 编辑单元格触发
-        data.sheetObj.on(
-          "cell-edited",
-          () => {
-            // 防抖
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-              let chartOption = conveyData(data.sheetObj.getData()[0].rows);
-              _this.proxy.$Bus.emit("dataChange", {
-                data: chartOption.categoryData,
-                series: chartOption.series,
-              });
-            }, 500);
-          }
-        );
-
-        let chartOption = conveyData(data.sheetObj.getData()[0].rows);
-        _this.proxy.$Bus.emit("dataChange", {
-          data: chartOption.categoryData,
-          series: chartOption.series,
+        data.sheetObj.on("cell-edited", () => {
+          // 防抖
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            setExcelData()
+          }, 500);
         });
+
+        setExcelData()
 
         // data validation
         data.sheetObj.validate();
       }, 200);
     };
-    
+
     onMounted(() => {
-      data.sheetObj = null
-      createInitiativeData = require("@/chartConfig/chart" +
+      data.sheetObj = null;
+      data.createInitiativeData = require("@/chartConfig/chart" +
         router.currentRoute.value.query.id).createExcelData;
-      conveyData = require("@/chartConfig/chart" +
+      data.conveyData = require("@/chartConfig/chart" +
         router.currentRoute.value.query.id).conveyExcelData;
-        
-      data.excelData = createInitiativeData(common.option);
-      data.initativeData = createInitiativeData(common.option);
-      
+
+      data.excelData = data.createInitiativeData(common.option);
+      data.initativeData = data.createInitiativeData(common.option);
+
       initData();
     });
 
     return {
       willtableRef,
+      setExcelData,
       ...toRefs(data),
     };
   },

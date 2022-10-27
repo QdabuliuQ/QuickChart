@@ -65,7 +65,6 @@ export default defineComponent({
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - typeTitleRef.value.offsetHeight - 5 + "px";
       });
-      console.log(typeTitleRef.value.offsetHeight);
     });
     return {
       typeTitleRef,
@@ -113,7 +112,7 @@ export default defineComponent({
           padding: 0 10px 20px;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          grid-gap: 10px;
+          grid-gap: 8px;
         }
       }
     }

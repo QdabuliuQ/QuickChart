@@ -125,8 +125,13 @@ export default defineComponent({
       if (fileType(file.name) == "excel") {
         importFile(file, (workbook) => {
           dataExcelRef.value.sheetObj.loadData(stox(workbook));
-          console.log(dataExcelRef.value.sheetObj.getData());
-
+          _this.proxy.$notice({
+            title: "成功",
+            message: "文件上传成功",
+            type: "success",
+            position: "top-left",
+          })
+          dataExcelRef.value.setExcelData()
         });
         
       } else {
