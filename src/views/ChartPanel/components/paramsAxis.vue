@@ -381,7 +381,7 @@ export default defineComponent({
 <style lang='less'>
 #paramsAsis {
   .asisContainer {
-    padding: 12px 0;
+    // padding: 12px 0;
     .childItem {
       padding: 7px 0;
       font-size: 12px;
