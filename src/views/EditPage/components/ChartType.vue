@@ -2,7 +2,7 @@
   <div id="ChartType">
     <el-scrollbar :height="height">
       <div @click="toggle('/ChartPage', 0)" style="margin-top: 30px" :class="[type == 0 ? 'active': '', 'typeItem']">
-        <i class="iconfont i_chart"></i>
+        <i style="font-size: 20px" class="iconfont i_bar"></i>
         <span>图表</span>
       </div>
       <div @click="toggle('/MapPage', 1)" :class="[type == 1 ? 'active': '', 'typeItem']">

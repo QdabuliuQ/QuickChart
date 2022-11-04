@@ -1,43 +1,67 @@
 <template>
   <el-popover
-    :visible='visible'
+    :visible="visible"
     placement="right"
     :width="300"
-    :hide-after='50'
+    :hide-after="50"
   >
     <template #reference>
-      <div @mouseenter="visible = true" @mouseleave="visible = false" class="chartItem">
+      <div
+        @mouseenter="visible = true"
+        @mouseleave="visible = false"
+        class="chartItem"
+      >
         <div class="imageContainer">
-          <div @click="router.push('/Chart?id=' + id)" class="mask">
-            插入图表
-          </div>
+          <div @click="toggleChart" class="mask">插入图表</div>
           <img :src="cover" alt="" />
         </div>
         <div>{{ name }}</div>
       </div>
     </template>
-    <img style="width: 100%; position: relative; top: 2px; border-radius: 7px;" :src="cover" alt="">
+    <img
+      style="width: 100%; position: relative; top: 2px; border-radius: 7px"
+      :src="cover"
+      alt=""
+    />
   </el-popover>
 </template>
 
 <script lang='ts'>
 import { defineComponent, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
-
-interface comInitData{
-  visible: boolean
+import { ElMessageBox } from "element-plus";
+interface comInitData {
+  visible: boolean;
 }
 
 export default defineComponent({
   name: "chartItem",
   props: ["cover", "id", "name"],
-  setup() {
+  setup(props) {
     const router = useRouter();
     const data: comInitData = reactive({
-      visible: false
+      visible: false,
     });
+
+    const toggleChart = () => {
+
+      let curId = router.currentRoute.value.query.id;
+      if (curId != props.id && router.currentRoute.value.path == "/Chart") {
+        ElMessageBox.confirm("单图中插入新图表将会替换原图表及数据", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }).then(() => {
+          router.push("/Chart?id=" + props.id);
+        });
+      } else if( curId != props.id){
+        router.push("/Chart?id=" + props.id);
+      }
+    };
+
     return {
       router,
+      toggleChart,
       ...toRefs(data),
     };
   },
@@ -49,7 +73,7 @@ export default defineComponent({
   width: 100%;
   text-align: center;
   font-size: 12px;
-  
+
   .imageContainer {
     display: flex;
     align-items: center;
@@ -81,6 +105,7 @@ export default defineComponent({
   img {
     width: 100%;
     cursor: pointer;
+    user-select: none;
   }
 }
 </style>

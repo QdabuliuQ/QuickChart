@@ -30,7 +30,7 @@ import {
   ref,
   getCurrentInstance,
 } from "vue";
-import { useRouter } from "vue-router";
+
 import useCommonStore from "@/store/common";
 
 interface comInitData {
@@ -47,7 +47,6 @@ export default defineComponent({
   name: "chartDom",
   setup() {
     const common: any = useCommonStore();
-    const router = useRouter();
     const _this: any = getCurrentInstance();
     const chartDomRef = ref();
     const data: comInitData = reactive({
@@ -136,6 +135,7 @@ export default defineComponent({
           [optionName]: axisOption,
           series: e.series,
         };
+        
         chartInstance.setOption(newOption);
         // 修改pinia数据
         common.$patch((state: any) => {

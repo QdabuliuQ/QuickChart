@@ -3,7 +3,7 @@ import {
   topText,
   bottomText,
   rightText,
-} from "../constant";
+} from "@/chartConfig/constant";
 
 import { Common } from "../interface";
 interface LegendInterface {

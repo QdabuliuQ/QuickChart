@@ -1,6 +1,6 @@
 import {
   colors,
-} from "../constant";
+} from "@/chartConfig/constant";
 import { Common } from "../interface";
 interface ColorInterface {
   defaultOption: {

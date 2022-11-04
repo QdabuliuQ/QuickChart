@@ -36,13 +36,12 @@ import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
 import loading from "@/components/loading.vue";
 
-let timeout: number = 1200;
 // 定义异步组件，这里这样写是为了查看效果
 const paramsPanel = defineAsyncComponent(() => {
   return new Promise((resolve, reject) => {
     (async function () {
       try {
-        await asynImport(timeout);
+        await asynImport(700);
         const res: any = await import(
           "@/components/paramsPanel/paramsPanel.vue"
         );
@@ -97,7 +96,8 @@ export default defineComponent({
     });
 
     const getChartOption = (cb?:()=>void) => {
-      import("@/chartConfig/chart" + router.currentRoute.value.query.id).then(
+      let res: any = router.currentRoute.value.query.id?.toString().split('_')
+      import(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`).then(
         (res: any) => {
           let tmpOption: any = {}; // 临时配置
           let defaultOption: any = {}; // 默认配置

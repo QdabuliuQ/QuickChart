@@ -131,15 +131,15 @@ export default defineComponent({
 
     onMounted(() => {
       data.sheetObj = null;
-      data.createInitiativeData = require("@/chartConfig/chart" +
-        router.currentRoute.value.query.id).createExcelData;
-      data.conveyData = require("@/chartConfig/chart" +
-        router.currentRoute.value.query.id).conveyExcelData;
+      let res: any = router.currentRoute.value.query.id?.toString().split('_')
+      data.createInitiativeData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`).createExcelData;
+      data.conveyData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`).conveyExcelData;
 
       data.excelData = data.createInitiativeData(common.option);
       data.initativeData = data.createInitiativeData(common.option);
 
       initData();
+      
     });
 
     return {

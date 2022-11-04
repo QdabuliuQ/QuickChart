@@ -20,6 +20,9 @@ import 'highlight.js/styles/atom-one-dark.css'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
 
+// animate动画
+import 'animate.css/animate.min.css' 
+
 // 字体图表
 import "@/assets/icon/icon.css"
 
@@ -28,6 +31,7 @@ import mitt from 'mitt'
 
 const app = createApp(App)
 app.config.globalProperties.$notice = ElNotification;
+
 const Mit = mitt();
 app.config.globalProperties.$Bus = Mit;
 app.config.globalProperties.$echarts = echarts // 全局挂载echarts

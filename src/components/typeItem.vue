@@ -1,12 +1,17 @@
 <template>
   <div id="typeItem">
     <div class="itemContainer">
-      <div ref="typeTitleRef" class="title">插入图表</div>
+      <div ref="typeTitleRef" class="title">
+        <i @click="router.push('/')" class="iconfont i_home"></i>
+        插入图表
+      </div>
       <el-scrollbar :height="height">
         <div class="itemList">
           <div class="itemBox" v-for="item in list" :key="item.id">
             <div @click="item.show = !item.show" class="typeCard">
-              <i :class="['iconfont', item.show ? 'i_show' : 'i_hide']"></i>
+              <i
+                :class="['iconfont', item.show ? 'rotateIcon' : '', 'i_hide']"
+              ></i>
               {{ item.type }}
             </div>
             <div v-show="item.show" class="listContainer">
@@ -34,6 +39,7 @@ import {
   ref,
   getCurrentInstance,
 } from "vue";
+import { useRouter } from "vue-router";
 import chartItem from "./chartItem.vue";
 import list, { ListInt } from "@/utils/chartItem";
 
@@ -48,6 +54,7 @@ export default defineComponent({
     chartItem,
   },
   setup() {
+    const router = useRouter()
     const _this: any = getCurrentInstance();
     const typeTitleRef = ref();
     const data: comInitData = reactive({
@@ -67,6 +74,7 @@ export default defineComponent({
       });
     });
     return {
+      router,
       typeTitleRef,
       ...toRefs(data),
     };
@@ -81,28 +89,38 @@ export default defineComponent({
   background-color: @curColor;
   .itemContainer {
     .title {
+      position: relative;
       padding: 20px 10px 0;
       text-align: center;
       font-size: 14px;
       font-weight: bold;
       margin-bottom: 10px;
+      .iconfont {
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        cursor: pointer;
+        font-size: 20px;
+      }
     }
     .itemList {
       padding-bottom: 15px;
       .itemBox {
         .typeCard {
-          padding: 8px 10px;
+          padding: 10px;
           margin-bottom: 5px;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
           color: #fff;
           font-weight: bold;
           display: flex;
           align-items: center;
+          .rotateIcon {
+            transform: rotateZ(90deg) !important;
+          }
           i {
             margin-right: 5px;
-            position: relative;
-            top: 1px;
+            transition: 0.1s all linear;
           }
           &:hover {
             background: @theme;

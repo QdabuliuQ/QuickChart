@@ -4,7 +4,7 @@ import {
   bottomText,
   rightText,
   fontWeight,
-} from "../constant";
+} from "@/chartConfig/constant";
 
 import { Common } from "../interface";
 interface TitleInterface {

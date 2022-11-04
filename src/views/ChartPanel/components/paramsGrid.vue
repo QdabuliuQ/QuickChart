@@ -84,7 +84,6 @@ export default defineComponent({
           data.bgc = e.backgroundColor == "transparent" ? "" : e.backgroundColor;
 
           _this.proxy.$Bus.emit('optionChange', props.defaultOption)
-          console.log(props.defaultOption);
           
         }, 500);
       },

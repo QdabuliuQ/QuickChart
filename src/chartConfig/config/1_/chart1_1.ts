@@ -1,15 +1,15 @@
 import {
   asisOpNameList
-} from "./constant";
-
-import title from "./common/title";
-import canvas from "./common/canvas";
-import grid from "./common/grid";
-import legend from "./common/legend";
-import waterMark from "./common/waterMark";
-import color from "./common/color";
-import xAxis, { xAxisOption } from "./common/xAxis";
-import yAxis, { yAxisOption } from "./common/yAxis";
+} from "@/chartConfig/constant";
+import { create } from "@/chartConfig/conveyUtils/lineConvey";
+import title from "@/chartConfig/commonParams/title";
+import canvas from "@/chartConfig/commonParams/canvas";
+import grid from "@/chartConfig/commonParams/grid";
+import legend from "@/chartConfig/commonParams/legend";
+import waterMark from "@/chartConfig/commonParams/waterMark";
+import color from "@/chartConfig/commonParams/color";
+import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
+import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 
 const config = [
   title,
@@ -81,36 +81,7 @@ const config = [
 ]
 
 // 创建初始数据
-export const createExcelData = (config: any) => {
-  let excelData: any = {}
-
-  let series = config.series
-  let xAxis = config.xAxis[0].data
-
-  // 初始化
-  for (let i = 0; i < xAxis.length + 1; i++) {
-    excelData[i] = {
-      cells: {}
-    }
-  }
-  for (let i = 0; i < series.length; i++) {
-    excelData[0].cells[i + 1] = {
-      text: series[i].name
-    }
-  }
-
-  for (let i = 0; i < xAxis.length; i++) {
-    excelData[i + 1].cells[0] = {
-      text: xAxis[i]
-    }
-    for (let j = 0; j < series.length; j++) {
-      excelData[i + 1].cells[j + 1] = {
-        text: series[j].data[i]
-      }
-    }
-  }
-  return excelData
-}
+export const createExcelData = create
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {

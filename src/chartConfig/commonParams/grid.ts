@@ -7,7 +7,7 @@ import {
   shadowX,
   shadowColor,
   shadowBlur,
-} from "../constant";
+} from "@/chartConfig/constant";
 import { Common } from "../interface";
 interface GridInterface {
   defaultOption: {

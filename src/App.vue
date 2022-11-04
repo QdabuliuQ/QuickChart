@@ -33,7 +33,7 @@ export default defineComponent({
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #1c1c1c;
+  background-color: #282828;
   color: #d0d0d0;
 }
 .paramsSelectPopperClass {
@@ -45,5 +45,8 @@ html, body {
   span {
     font-size: 13px !important;
   }
+}
+.el-button:focus-visible {
+  outline: 2px solid transparent !important;
 }
 </style>

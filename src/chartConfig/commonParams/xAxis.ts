@@ -4,11 +4,11 @@ import {
   fontStyle,
   borderType,
   locationType,
-} from "../constant";
+} from "@/chartConfig/constant";
 
-let yAxis = {
+let xAxis = {
   show: true,
-  position: 'left',
+  position: 'bottom',
   offset: 0,
   name: '',
   nameLocation: 'end',
@@ -89,16 +89,16 @@ let yAxis = {
   },
 }
 
-export let yAxisOption = {
+export let xAxisOption = {
   show: true,
   position: [
     {
-      value: 'left',
-      label: '左侧'
+      value: 'top',
+      label: '上方'
     },
     {
-      value: 'right',
-      label: '右侧'
+      value: 'bottom',
+      label: '下方'
     },
   ],
   inverse: false,  // 反向坐标
@@ -181,4 +181,4 @@ export let yAxisOption = {
   },
 }
 
-export default yAxis
+export default xAxis

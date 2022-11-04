@@ -21,6 +21,7 @@
       <div class="collapseContainer">
         <div v-for="item in options" :key="item.opName" class="collapseItem">
           <div
+            v-if="item.menuOption"
             @click="toggleItem(item.opName)"
             :class="[
               activeIndex == item.opName ? 'activeCollapseTitle' : '',
@@ -43,158 +44,69 @@
           </div>
           <div v-show="activeIndex == item.opName" class="collapseContent">
             <paramsTitle
-              class='paramsPanel'
-              v-if="
-                collapseList[item.opName] &&
-                item.opName == 'title' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-if="collapseList[item.opName] && item.opName == 'title'"
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
               :opNameList="item.opNameList"
             />
             <paramsCanvas
-              class='paramsPanel'
-              v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'canvas' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-else-if="collapseList[item.opName] && item.opName == 'canvas'"
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
               :opNameList="item.opNameList"
             />
             <paramsGrid
-              class='paramsPanel'
-              v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'grid' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-else-if="collapseList[item.opName] && item.opName == 'grid'"
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
               :opNameList="item.opNameList"
             />
             <paramsLegend
-              class='paramsPanel'
-              v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'legend' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-else-if="collapseList[item.opName] && item.opName == 'legend'"
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
               :opNameList="item.opNameList"
             />
             <paramsWatermark
-              class='paramsPanel'
+              class="paramsPanel"
               v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'waterMark' &&
-                item.menuOption
+                collapseList[item.opName] && item.opName == 'waterMark'
               "
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
               :opNameList="item.opNameList"
             />
             <paramsColor
-              class='paramsPanel'
-              v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'color' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-else-if="collapseList[item.opName] && item.opName == 'color'"
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
             />
             <paramsAxis
-              class='paramsPanel'
-              v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'xAxis' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-else-if="collapseList[item.opName] && item.opName == 'xAxis'"
               :asis="'xAxis'"
               :defaultOption="item.defaultOption.xAxis"
               :allOption="item.allOption.xAxis"
               :opNameList="item.opNameList"
             />
             <paramsAxis
-              class='paramsPanel'
-              v-else-if="
-                collapseList[item.opName] &&
-                item.opName == 'yAxis' &&
-                item.menuOption
-              "
+              class="paramsPanel"
+              v-else-if="collapseList[item.opName] && item.opName == 'yAxis'"
               :asis="'yAxis'"
               :defaultOption="item.defaultOption.yAxis"
               :allOption="item.allOption.yAxis"
               :opNameList="item.opNameList"
             />
+            <component v-if="item.uniqueOption" :is="item.component"></component>
+
           </div>
         </div>
       </div>
-      <!-- <el-collapse v-model='activeIndex' :accordion="true" v-if="options.length">
-        <el-collapse-item
-          v-for="item in options"
-          :key="item.opName"
-          :name="item.opName"
-        >
-          <template #title>
-            <i style="margin-right: 5px" :class="['iconfont', item.icon]"></i>
-            {{ item.name }}
-          </template>
-          <paramsTitle
-            v-if="item.opName == 'title' && item.menuOption"
-            :defaultOption="item.defaultOption"
-            :allOption="item.allOption"
-            :opNameList="item.opNameList"
-          />
-          <paramsCanvas
-            v-else-if="item.opName == 'canvas' && item.menuOption"
-            :defaultOption="item.defaultOption"
-            :allOption="item.allOption"
-            :opNameList="item.opNameList"
-          />
-          <paramsGrid
-            v-else-if="item.opName == 'grid' && item.menuOption"
-            :defaultOption="item.defaultOption"
-            :allOption="item.allOption"
-            :opNameList="item.opNameList"
-          />
-          <paramsLegend
-            v-else-if="item.opName == 'legend' && item.menuOption"
-            :defaultOption="item.defaultOption"
-            :allOption="item.allOption"
-            :opNameList="item.opNameList"
-          />
-          <paramsWatermark
-            v-else-if="item.opName == 'waterMark' && item.menuOption"
-            :defaultOption="item.defaultOption"
-            :allOption="item.allOption"
-            :opNameList="item.opNameList"
-          />
-          <paramsColor
-            v-else-if="item.opName == 'color' && item.menuOption"
-            :defaultOption="item.defaultOption"
-            :allOption="item.allOption"
-          />
-          <paramsAxis
-            v-else-if="item.opName == 'xAxis' && item.menuOption"
-            :asis="'xAxis'"
-            :defaultOption="item.defaultOption.xAxis"
-            :allOption="item.allOption.xAxis"
-            :opNameList="item.opNameList"
-          />
-          <paramsAxis
-            v-else-if="item.opName == 'yAxis' && item.menuOption"
-            :asis="'yAxis'"
-            :defaultOption="item.defaultOption.yAxis"
-            :allOption="item.allOption.yAxis"
-            :opNameList="item.opNameList"
-          />
-        </el-collapse-item>
-      </el-collapse> -->
     </el-scrollbar>
   </div>
 </template>
@@ -272,8 +184,6 @@ export default defineComponent({
         data.activeIndex = "";
       } else {
         data.activeIndex = e;
-        console.log(data.collapseList[e], e);
-
         if (!data.collapseList[e]) {
           data.collapseList[e] = true;
         }
@@ -288,13 +198,12 @@ export default defineComponent({
 
     onMounted(() => {
       data.options = common.chartConfig;
-
+      
       for (let item of data.options) {
         if (item.menuOption) {
           data.collapseList[item.opName] = false;
         }
       }
-      console.log(data.collapseList);
 
       data.image = require("@/assets/image/" +
         router.currentRoute.value.query.id +
@@ -342,6 +251,7 @@ export default defineComponent({
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      user-select: none;
     }
   }
   .btnList {
@@ -420,30 +330,9 @@ export default defineComponent({
       .paramsPanel {
         padding: 0 12px;
       }
-    }
-  }
-  .el-collapse {
-    padding: 0 12px 12px;
-    border-bottom: 0;
-    .el-collapse-item__wrap {
-      border: 0;
-    }
-    .el-collapse-item__content {
-      padding-bottom: 0;
-    }
-    .is-active {
-      color: @theme !important;
-      .el-collapse-item__header {
-        border-bottom: 1px solid @theme;
+      .uniqueOptionContainer {
+        padding: 0 12px;
       }
-    }
-    .el-collapse-item__header {
-      font-weight: bold;
-      height: 40px;
-      box-sizing: border-box;
-      color: rgb(179, 179, 179);
-      border-bottom: 1px solid #575757;
-      user-select: none;
     }
   }
 }
