@@ -283,6 +283,19 @@ export default defineComponent({
       justify-content: flex-end;
     }
   }
+  .seriesItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 12px;
+    color: #a9a8a8;
+    .optionOperation {
+      width: 55%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
   .collapseContainer {
     margin: 15px 0;
     .collapseItem {

@@ -1,7 +1,7 @@
 import { markRaw } from "vue";
 import useCommonStore from "@/store/common";
 // 导入独立组件
-import paramsBarColor from "@/views/ChartPanel/components/paramsBarColor.vue";
+import paramsBarText from "@/views/ChartPanel/components/paramsBarText.vue";
 
 import {
   asisOpNameList
@@ -11,8 +11,10 @@ import canvas from "@/chartConfig/commonParams/canvas";
 import grid from "@/chartConfig/commonParams/grid";
 import legend from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
-import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+
+grid.defaultOption.grid.top = 80
+grid.defaultOption.grid.bottom = 30
+console.log(grid);
 
 const common: any = useCommonStore()
 
@@ -26,20 +28,29 @@ export default [
     name: 'X轴样式',
     opName: 'xAxis',
     chartOption: true,
-    menuOption: true,
+    menuOption: false,
     icon: 'i_X',
     defaultOption: {
       xAxis: [{
-        ...xAxis,
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        type: 'value',
+        position: 'top',
+        splitLine: {
+          lineStyle: {
+            type: 'dashed'
+          }
+        }
       }],
     },
     allOption: {
       xAxis: [
         {
-          ...xAxisOption,
-          type: 'category',
+          type: 'value',
+          position: 'top',
+          splitLine: {
+            lineStyle: {
+              type: 'dashed'
+            }
+          }
         }
       ]
     },
@@ -49,19 +60,49 @@ export default [
     name: 'Y轴样式',
     opName: 'yAxis',
     chartOption: true,
-    menuOption: true,
+    menuOption: false,
     icon: 'i_Y',
     defaultOption: {
       yAxis: [{
-        ...yAxis,
-        type: 'value',
+        type: 'category',
+        axisLine: { show: false },
+        axisLabel: { show: false },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        data: [
+          'ten',
+          'nine',
+          'eight',
+          'seven',
+          'six',
+          'five',
+          'four',
+          'three',
+          'two',
+          'one'
+        ]
       }],
     },
     allOption: {
       yAxis: [
         {
-          ...yAxisOption,
-          type: 'value',
+          type: 'category',
+          axisLine: { show: false },
+          axisLabel: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false },
+          data: [
+            'ten',
+            'nine',
+            'eight',
+            'seven',
+            'six',
+            'five',
+            'four',
+            'three',
+            'two',
+            'one'
+          ]
         }
       ]
     },
@@ -76,58 +117,36 @@ export default [
       series: [
         {
           name: '系列一',
-          data: [
-            {
-              value: 100,
-              itemStyle: {
-              }
-            },
-            {
-              value: 200,
-              itemStyle: {
-                color: '#a90000'
-              }
-            },
-            {
-              value: 150,
-              itemStyle: {
-              }
-            },
-            {
-              value: 80,
-              itemStyle: {
-              }
-            },
-            {
-              value: 70,
-              itemStyle: {
-              }
-            },
-            {
-              value: 110,
-              itemStyle: {
-              }
-            },
-            {
-              value:130,
-              itemStyle: {
-              }
-            },
-            
-          ],
           type: 'bar',
-        }
+          stack: 'Total',
+          label: {
+            show: true,
+            formatter: '{b}'
+          },
+          data: [
+            { value: -0.07, label: {position: 'right'} },
+            { value: -0.09, label: {position: 'right'} },
+            { value: 0.2, label: {position: 'right'} },
+            { value: 0.44, label: {position: 'right'} },
+            { value: -0.23, label: {position: 'right'} },
+            { value: 0.08, label: {position: 'right'} },
+            { value: -0.17, label: {position: 'right'} },
+            { value: 0.47, label: {position: 'right'} },
+            { value: -0.36, label: {position: 'right'} },
+            { value: 0.18, label: {position: 'right'} },
+          ]
+        },
       ]
     }
   },
   {
-    name: '柱体样式',
-    opName: 'barStyle',
+    name: '字体位置',
+    opName: 'textStyle',
     chartOption: false,
     menuOption: true,
     uniqueOption: true,
     icon: 'i_bar',
-    component: markRaw(paramsBarColor),
+    component: markRaw(paramsBarText),
     allOption: {}
   }
 ]
@@ -136,10 +155,10 @@ export const createExcelData = (config: any) => {
   let excelData: any = {}
 
   let series = config.series
-  let xAxis = config.xAxis[0].data
+  let yAxis = config.yAxis[0].data
 
   // 初始化
-  for (let i = 0; i < xAxis.length + 1; i++) {
+  for (let i = 0; i < yAxis.length + 1; i++) {
     excelData[i] = {
       cells: {}
     }
@@ -150,13 +169,13 @@ export const createExcelData = (config: any) => {
     }
   }
 
-  for (let i = 0; i < xAxis.length; i++) {
+  for (let i = 0; i < yAxis.length; i++) {
     excelData[i + 1].cells[0] = {
-      text: xAxis[i]
+      text: yAxis[i]
     }
     for (let j = 0; j < series.length; j++) {
       excelData[i + 1].cells[j + 1] = {
-        text: series[j].data[i].value
+        text: series[j].data[i]?.value
       }
     }
   }
@@ -166,8 +185,7 @@ export const createExcelData = (config: any) => {
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
   let series = common.option.series
-  console.log(common.option.series, '---');
-  
+
   let dataObj: any = {
     categoryData: [],
     series: []
@@ -178,15 +196,20 @@ export const conveyExcelData = (rows: any) => {
   for (let i = 1; i <= rowsTLength; i++) {
     dataObj.series.push({  // 创建series
       name: rows[0].cells[i].text,
-      data: series[i - 1].data,
+      data: series[i - 1] ? series[i - 1].data : [],
       type: 'bar',
+      stack: 'Total',
+      label: {
+        show: true,
+        formatter: '{b}'
+      },
     })
-    
+
   }
   let rowsALength = Object.keys(rows).length - 1;
   for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
-    
+
     dataObj.categoryData.push(rows[i].cells[0].text)
     // 将对应数据放入series当中
     for (let j = 1; j < rowsItemLength; j++) {
@@ -195,13 +218,15 @@ export const conveyExcelData = (rows: any) => {
       } else {
         dataObj.series[j - 1].data[i - 1] = {
           value: rows[i].cells[j].text,
-          itemStyle: {
+          label: {
+            position: 'right'
           }
         }
       }
-      
+
     }
   }
-  
+  console.log(dataObj, '-=====');
+
   return dataObj
 }

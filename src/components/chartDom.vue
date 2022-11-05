@@ -123,13 +123,26 @@ export default defineComponent({
 
       // 监听图表数据变化
       _this.proxy.$Bus.on("dataChange", (e: any) => {
-        let optionName =
-          common.option.xAxis[0].type == "category" ? "xAxis" : "yAxis";
-        let axisOption =
-          common.option.xAxis[0].type == "category"
+        console.log(e, '=====');
+        
+        let optionName = ''
+        let axisOption: any = null
+        if(e.opName) {
+          optionName = e.opName
+        } else {
+          optionName = common.option.xAxis[0].type == "category" ? "xAxis" : "yAxis";
+        }
+
+        if(e.opName) {
+          axisOption = common.option[optionName]
+          axisOption.data = e.data
+        } else {
+          axisOption = common.option.xAxis[0].type == "category"
             ? common.option.xAxis
             : common.option.yAxis;
-        axisOption[0].data = e.data;
+          axisOption[0].data = e.data;
+        }
+         
 
         let newOption = {
           [optionName]: axisOption,

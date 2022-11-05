@@ -53,6 +53,7 @@ export default defineComponent({
       _this.proxy.$Bus.emit("dataChange", {
         data: chartOption.categoryData,
         series: chartOption.series,
+        opName: chartOption.opName
       });
     };
 
