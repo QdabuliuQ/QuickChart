@@ -1,4 +1,5 @@
-
+import lodash from 'lodash'
+import useCommonStore from "@/store/common";
 import { create } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
@@ -10,6 +11,8 @@ import legend from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+
+const common: any = useCommonStore()
 
 export default [
   title,
@@ -82,8 +85,10 @@ export default [
 export const createExcelData = create
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
+  let xAxis = lodash.cloneDeep(common.option.xAxis)
+  let data = []
   let dataObj: any = {
-    categoryData: [],
+    xAxis,
     series: []
   }
   // 遍历数据项
@@ -99,11 +104,21 @@ export const conveyExcelData = (rows: any) => {
   let rowsALength = Object.keys(rows).length - 1;
   for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
-    dataObj.categoryData.push(rows[i].cells[0].text)
+    data.push(rows[i].cells[0].text)
     // 将对应数据放入series当中
     for (let j = 1; j < rowsItemLength; j++) {
+      if (!dataObj.series[j - 1]) {
+        dataObj.series[j - 1] = {  // 创建series
+          name: '',
+          data: [],
+          type: 'bar',
+        }
+      }
       dataObj.series[j - 1].data.push(rows[i].cells[j].text)
+      
     }
   }
+  dataObj.xAxis[0].data = data
+
   return dataObj
 }

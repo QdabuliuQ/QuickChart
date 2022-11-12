@@ -50,11 +50,14 @@ export default defineComponent({
 
     const setExcelData = () => {
       let chartOption = data.conveyData(data.sheetObj.getData()[0].rows);
-      _this.proxy.$Bus.emit("dataChange", {
-        data: chartOption.categoryData,
-        series: chartOption.series,
-        opName: chartOption.opName
-      });
+      // _this.proxy.$Bus.emit("dataChange", {
+      //   data: chartOption.categoryData,
+      //   series: chartOption.series,
+      //   // opName: chartOption.opName
+      // });
+      _this.proxy.$Bus.emit("dataChange", chartOption);
+      console.log(chartOption);
+      
     };
 
     // 初始化图表

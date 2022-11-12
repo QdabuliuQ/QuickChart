@@ -123,37 +123,17 @@ export default defineComponent({
 
       // 监听图表数据变化
       _this.proxy.$Bus.on("dataChange", (e: any) => {
-        console.log(e, '=====');
-        
-        let optionName = ''
-        let axisOption: any = null
-        if(e.opName) {
-          optionName = e.opName
-        } else {
-          optionName = common.option.xAxis[0].type == "category" ? "xAxis" : "yAxis";
-        }
 
-        if(e.opName) {
-          axisOption = common.option[optionName]
-          axisOption.data = e.data
-        } else {
-          axisOption = common.option.xAxis[0].type == "category"
-            ? common.option.xAxis
-            : common.option.yAxis;
-          axisOption[0].data = e.data;
+        let piniaOption = common.option
+        for(let key in e) {
+          piniaOption[key] = e[key]
         }
-         
-
-        let newOption = {
-          [optionName]: axisOption,
-          series: e.series,
-        };
         
-        chartInstance.setOption(newOption);
+        // 修改图表配置
+        chartInstance.setOption(e);
         // 修改pinia数据
         common.$patch((state: any) => {
-          state.option.series = e.series;
-          state.option[optionName] = axisOption;
+          state.option = piniaOption
         });
       });
 

@@ -1,4 +1,5 @@
 import { markRaw } from "vue";
+import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarText from "@/views/ChartPanel/components/paramsBarText.vue";
@@ -14,7 +15,6 @@ import waterMark from "@/chartConfig/commonParams/waterMark";
 
 grid.defaultOption.grid.top = 80
 grid.defaultOption.grid.bottom = 30
-console.log(grid);
 
 const common: any = useCommonStore()
 
@@ -184,10 +184,11 @@ export const createExcelData = (config: any) => {
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let series = common.option.series
-
+  let series = lodash.cloneDeep(common.option.series)
+  let yAxis = lodash.cloneDeep(common.option.yAxis)
+  let data = []
   let dataObj: any = {
-    categoryData: [],
+    yAxis,
     series: []
   }
   // 遍历数据项
@@ -210,7 +211,7 @@ export const conveyExcelData = (rows: any) => {
   for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
 
-    dataObj.categoryData.push(rows[i].cells[0].text)
+    data.push(rows[i].cells[0] ? rows[i].cells[0].text : '')
     // 将对应数据放入series当中
     for (let j = 1; j < rowsItemLength; j++) {
       if (dataObj.series[j - 1].data[i - 1]) {
@@ -226,6 +227,7 @@ export const conveyExcelData = (rows: any) => {
 
     }
   }
+  dataObj.yAxis[0].data = data
   console.log(dataObj, '-=====');
 
   return dataObj

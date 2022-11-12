@@ -1,4 +1,5 @@
 import { markRaw } from "vue";
+import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarColor from "@/views/ChartPanel/components/paramsBarColor.vue";
@@ -156,7 +157,7 @@ export const createExcelData = (config: any) => {
     }
     for (let j = 0; j < series.length; j++) {
       excelData[i + 1].cells[j + 1] = {
-        text: series[j].data[i].value
+        text: series[j].data[i] ? series[j].data[i].value : ''
       }
     }
   }
@@ -165,11 +166,13 @@ export const createExcelData = (config: any) => {
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let series = common.option.series
+  let series = lodash.cloneDeep(common.option.series)
+  let xAxis = lodash.cloneDeep(common.option.xAxis)
+  let data = []
   console.log(common.option.series, '---');
   
   let dataObj: any = {
-    categoryData: [],
+    xAxis,
     series: []
   }
   // 遍历数据项
@@ -178,7 +181,7 @@ export const conveyExcelData = (rows: any) => {
   for (let i = 1; i <= rowsTLength; i++) {
     dataObj.series.push({  // 创建series
       name: rows[0].cells[i].text,
-      data: series[i - 1].data,
+      data: series[i - 1] ? series[i - 1].data : [],
       type: 'bar',
     })
     
@@ -187,9 +190,18 @@ export const conveyExcelData = (rows: any) => {
   for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
     
-    dataObj.categoryData.push(rows[i].cells[0].text)
+    // dataObj.categoryData.push(rows[i].cells[0].text)
+    data.push(rows[i].cells[0].text)
+
     // 将对应数据放入series当中
     for (let j = 1; j < rowsItemLength; j++) {
+      if (!dataObj.series[j - 1]) {
+        dataObj.series[j - 1] = {  // 创建series
+          name: rows[0].cells[i] ? rows[0].cells[i].text : '',
+          data: [],
+          type: 'bar',
+        }
+      }
       if (dataObj.series[j - 1].data[i - 1]) {
         dataObj.series[j - 1].data[i - 1].value = rows[i].cells[j].text
       } else {
@@ -199,9 +211,9 @@ export const conveyExcelData = (rows: any) => {
           }
         }
       }
-      
     }
   }
+  dataObj.xAxis[0].data = data
   
   return dataObj
 }

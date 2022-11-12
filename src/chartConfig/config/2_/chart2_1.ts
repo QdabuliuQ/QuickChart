@@ -1,4 +1,5 @@
 import { markRaw } from "vue";
+import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBar from "@/views/ChartPanel/components/paramsBar.vue";
@@ -103,9 +104,10 @@ export const createExcelData = create
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
   let series = common.option.series
-
+  let xAxis = lodash.cloneDeep(common.option.xAxis)
+  let data = []
   let dataObj: any = {
-    categoryData: [],
+    xAxis,
     series: []
   }
   // 遍历数据项
@@ -128,11 +130,13 @@ export const conveyExcelData = (rows: any) => {
   let rowsALength = Object.keys(rows).length - 1;
   for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
-    dataObj.categoryData.push(rows[i].cells[0].text)
+    data.push(rows[i].cells[0].text)
     // 将对应数据放入series当中
     for (let j = 1; j < rowsItemLength; j++) {
       dataObj.series[j - 1].data.push(rows[i].cells[j].text)
     }
   }
+  dataObj.xAxis[0].data = data
+
   return dataObj
 }

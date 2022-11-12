@@ -1,4 +1,5 @@
 import { markRaw } from "vue";
+import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarPolar from "@/views/ChartPanel/components/paramsBarPolar.vue";
@@ -111,34 +112,26 @@ export const createExcelData = (config: any) => {
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let series = common.option.series
-  console.log(common.option.series, '---');
+  // 进行深拷贝
+  let angleAxis = lodash.cloneDeep(common.option.angleAxis)
+  let series = lodash.cloneDeep(common.option.series)
+  let data = [], seriesData = []
 
   let dataObj: any = {
-    categoryData: [],
-    series: {
-      type: 'bar',
-      data: [],
-      coordinateSystem: 'polar',
-      label: {
-        show: true,
-        position: 'middle',
-        formatter: '{b}: {c}'
-      }
-    },
-    opName: 'angleAxis'
+    angleAxis,
+    series,
   }
 
   for (let key in rows) {
     if (rows[key].cells) {
-      dataObj.categoryData.push(rows[key].cells[0]?.text)
-      dataObj.series.data.push(rows[key].cells[1]?.text)
+      data.push(rows[key].cells[0]?.text)
+      seriesData.push(rows[key].cells[1]?.text)
+      // dataObj.series.data.push(rows[key].cells[1]?.text)
     }
-
-
   }
+  
+  dataObj.series.data = seriesData
+  angleAxis.data = data
   console.log(dataObj);
-
-
   return dataObj
 }

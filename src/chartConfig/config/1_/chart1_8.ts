@@ -1,15 +1,11 @@
-import { create } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import grid from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
-import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 
 export default [
   title,
@@ -114,7 +110,6 @@ export const createExcelData = (config: any) => {
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
   let dataObj: any = {
-    categoryData: [],
     series: []
   }
   dataObj.series[0] = {

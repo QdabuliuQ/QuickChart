@@ -1,4 +1,5 @@
-import { create } from "@/chartConfig/conveyUtils/lineConvey";
+import useCommonStore from "@/store/common";
+import { create, convey } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -10,6 +11,8 @@ import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+
+const common: any = useCommonStore()
 
 export default [
   title,
@@ -84,29 +87,18 @@ export default [
 export const createExcelData = create
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let dataObj: any = {
-    categoryData: [],
-    series: []
-  }
-  // 遍历数据项
-  let rowsTLength = Object.keys(rows[0].cells).length;
+  let xAxis = common.option.xAxis
 
-  for (let i = 1; i <= rowsTLength; i++) {
-    dataObj.series.push({  // 创建series
-      name: rows[0].cells[i].text,
-      data: [],
-      type: 'line',
-      smooth: true
-    })
+  let res = convey(rows, {
+    type: 'line',
+    smooth: true
+  })
+  
+  xAxis[0].data = res.category
+  let dataObj: any = {
+    xAxis,
+    series: res.series
   }
-  let rowsALength = Object.keys(rows).length - 1;
-  for (let i = 1; i < rowsALength; i++) {
-    let rowsItemLength = Object.keys(rows[i].cells).length;
-    dataObj.categoryData.push(rows[i].cells[0].text)
-    // 将对应数据放入series当中
-    for (let j = 1; j < rowsItemLength; j++) {
-      dataObj.series[j - 1].data.push(rows[i].cells[j].text)
-    }
-  }
+  
   return dataObj
 }
