@@ -3,7 +3,7 @@ import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarPolar from "@/views/ChartPanel/components/paramsBarPolar.vue";
-import paramsBarAxis from "@/views/ChartPanel/components/paramsBarAxis.vue";
+import paramsBarAxis_2 from "@/views/ChartPanel/components/paramsBarAxis_2.vue";
 import paramsBarAngle from "@/views/ChartPanel/components/paramsBarAngle.vue";
 
 import title from "@/chartConfig/commonParams/title";
@@ -37,13 +37,13 @@ export default [
     name: '圈内层次',
     opName: 'radiusAxis',
     chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
+    menuOption: false,
+    uniqueOption: false,
     icon: 'i_radiusAxis',
-    component: markRaw(paramsBarAxis),
     defaultOption: {
       radiusAxis: {
-        max: 5
+        type: 'category',
+        data: ['a', 'b', 'c', 'd'],
       },
     },
     allOption: {},
@@ -55,12 +55,11 @@ export default [
     menuOption: true,
     uniqueOption: true,
     icon: 'i_angle',
-    component: markRaw(paramsBarAngle),
+    component: markRaw(paramsBarAxis_2),
     defaultOption: {
       angleAxis: {
-        type: 'category',
-        data: ['a', 'b', 'c', 'd'],
-        startAngle: 60
+        max: 4,
+        startAngle: 75
       },
     },
     allOption: {},
@@ -89,17 +88,17 @@ export const createExcelData = (config: any) => {
   let excelData: any = {}
 
   let series = config.series
-  let angleAxis = config.angleAxis.data
-  let length = series.length > angleAxis.length ? series.length : angleAxis.length
+  let radiusAxis = config.radiusAxis.data
+  let length = series.length > radiusAxis.length ? series.length : radiusAxis.length
   for (let i = 0; i < length; i++) {
     excelData[i] = {
       cells: {}
     }
   }
 
-  for (let i = 0; i < angleAxis.length; i++) {
+  for (let i = 0; i < radiusAxis.length; i++) {
     excelData[i].cells[0] = {
-      text: angleAxis[i]
+      text: radiusAxis[i]
     }
   }
   for (let i = 0; i < series.data.length; i++) {
@@ -113,12 +112,12 @@ export const createExcelData = (config: any) => {
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
   // 进行深拷贝
-  let angleAxis = lodash.cloneDeep(common.option.angleAxis)
+  let radiusAxis = lodash.cloneDeep(common.option.radiusAxis)
   let series = lodash.cloneDeep(common.option.series)
   let data = [], seriesData = []
 
   let dataObj: any = {
-    angleAxis,
+    radiusAxis,
     series,
   }
 
@@ -128,8 +127,8 @@ export const conveyExcelData = (rows: any) => {
       seriesData.push(rows[key].cells[1]?.text)
     }
   }
-  
+
   dataObj.series.data = seriesData
-  angleAxis.data = data
+  radiusAxis.data = data
   return dataObj
 }

@@ -88,19 +88,19 @@ const list: ListInt[] = [
         id: '2_5',
       },
       {
-        cover: require('@/assets/image/1_2.webp'),
-        name: '折线图',
-        id: '1_6',
+        cover: require('@/assets/image/2_6.webp'),
+        name: '极坐标柱状图标签2',
+        id: '2_6',
       },
       {
-        cover: require('@/assets/image/1_2.webp'),
-        name: '折线图',
-        id: '1_7',
+        cover: require('@/assets/image/2_7.webp'),
+        name: '横向条形图',
+        id: '2_7',
       },
       {
-        cover: require('@/assets/image/1_2.webp'),
-        name: '折线图',
-        id: '1_8',
+        cover: require('@/assets/image/2_8.webp'),
+        name: '堆叠条形图',
+        id: '2_8',
       },
     ]
   },

@@ -240,18 +240,10 @@ export default defineComponent({
   background-color: @curColor;
   .chartCover {
     width: 90%;
-    height: 130px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 8px;
     margin: 10px auto;
     img {
       width: 100%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      user-select: none;
+      border-radius: 8px;
     }
   }
   .btnList {

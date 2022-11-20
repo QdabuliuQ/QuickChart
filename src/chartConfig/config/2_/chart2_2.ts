@@ -1,6 +1,6 @@
 import lodash from 'lodash'
 import useCommonStore from "@/store/common";
-import { create } from "@/chartConfig/conveyUtils/lineConvey";
+import { create, convey } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -85,40 +85,16 @@ export default [
 export const createExcelData = create
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let xAxis = lodash.cloneDeep(common.option.xAxis)
-  let data = []
+  let xAxis = common.option.xAxis
+  let res = convey(rows, {
+    type: 'bar',
+  })
+
+  xAxis[0].data = res.category
   let dataObj: any = {
     xAxis,
-    series: []
+    series: res.series
   }
-  // 遍历数据项
-  let rowsTLength = Object.keys(rows[0].cells).length;
-
-  for (let i = 1; i <= rowsTLength; i++) {
-    dataObj.series.push({  // 创建series
-      name: rows[0].cells[i].text,
-      data: [],
-      type: 'bar',
-    })
-  }
-  let rowsALength = Object.keys(rows).length - 1;
-  for (let i = 1; i < rowsALength; i++) {
-    let rowsItemLength = Object.keys(rows[i].cells).length;
-    data.push(rows[i].cells[0].text)
-    // 将对应数据放入series当中
-    for (let j = 1; j < rowsItemLength; j++) {
-      if (!dataObj.series[j - 1]) {
-        dataObj.series[j - 1] = {  // 创建series
-          name: '',
-          data: [],
-          type: 'bar',
-        }
-      }
-      dataObj.series[j - 1].data.push(rows[i].cells[j].text)
-      
-    }
-  }
-  dataObj.xAxis[0].data = data
 
   return dataObj
 }

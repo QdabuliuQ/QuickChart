@@ -2,7 +2,6 @@ import lodash from 'lodash'
 
 export const create = (config: any) => {
   let excelData: any = {}
-  console.log(config);
   
   let series = config.series
   let xAxis = config.xAxis[0].data

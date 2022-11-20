@@ -13,6 +13,7 @@ import grid from "@/chartConfig/commonParams/grid";
 import legend from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 
+
 grid.defaultOption.grid.top = 80
 grid.defaultOption.grid.bottom = 30
 
@@ -228,7 +229,6 @@ export const conveyExcelData = (rows: any) => {
     }
   }
   dataObj.yAxis[0].data = data
-  console.log(dataObj, '-=====');
 
   return dataObj
 }

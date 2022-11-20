@@ -125,7 +125,6 @@ export const conveyExcelData = (rows: any) => {
       }
     })
   }
-  console.log(dataObj, '数据');
   
   let rowsALength = Object.keys(rows).length - 1;
   for (let i = 1; i < rowsALength; i++) {
