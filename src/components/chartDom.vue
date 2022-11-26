@@ -3,6 +3,7 @@
     :style="{
       width: width + 'px',
       height: height + 'px',
+      marginTop: '15vh'
     }"
     ref="chartDomRef"
     id="chartDom"
@@ -100,6 +101,7 @@ export default defineComponent({
       data.code = common.option;
       getCode();
 
+
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
         let k: string = Object.keys(e)[0];
@@ -166,7 +168,6 @@ export default defineComponent({
       // 重置数据
       _this.proxy.$Bus.on("resetChartData", () => {
         let p = common.option.series
-        console.log(p);
 
         common.$patch((state: any) => {
           state.option.series = state.defaultOption.series;
@@ -188,10 +189,8 @@ export default defineComponent({
 
 <style lang='less'>
 #chartDom {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  margin: 0 auto;
 }
 .hljs {
   overflow-y: scroll;

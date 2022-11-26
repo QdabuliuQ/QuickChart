@@ -4,7 +4,6 @@ import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarPolar from "@/views/ChartPanel/components/paramsBarPolar.vue";
 import paramsBarAxis_2 from "@/views/ChartPanel/components/paramsBarAxis_2.vue";
-import paramsBarAngle from "@/views/ChartPanel/components/paramsBarAngle.vue";
 
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";

@@ -6,3 +6,4 @@ declare module '*.vue' {
 }
 declare module 'vue-highlightjs'
 declare module 'x-data-spreadsheet/src/locale/zh-cn'
+declare module 'recordrtc';

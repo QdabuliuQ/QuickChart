@@ -6,9 +6,17 @@
       element-loading-background="rgba(0, 0, 0, 1)"
       class="chartContent"
     >
-      <el-scrollbar :height="height">
-        <chartDom :key='key1' />
-      </el-scrollbar>
+      <div class="scrollContainer">
+        <chartDom :key="key1" />
+      </div>
+      <!-- 
+        :style="{ width: chartBoxWidth + 'px' }" -->
+      <!-- <el-scrollbar
+        class="chartScrollContainer"
+        :height="height"
+      >
+        <chartDom :key="key1" />
+      </el-scrollbar> -->
     </div>
 
     <div
@@ -16,7 +24,7 @@
       element-loading-background="#292929"
       class="paramsPanelContainer"
     >
-      <paramsPanel :key='key2' />
+      <paramsPanel ref="paramsPanelRef" :key="key2" />
     </div>
   </div>
 </template>
@@ -31,6 +39,7 @@ import {
   watch,
   getCurrentInstance,
   defineAsyncComponent,
+  ref,
 } from "vue";
 import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
@@ -71,8 +80,10 @@ interface comInitData {
   height: string;
   loadParams: boolean;
   loadChart: boolean;
-  key1: number
-  key2: number
+  key1: number;
+  key2: number;
+  paramsPanelWidth: number;
+  chartBoxWidth: number;
 }
 
 export default defineComponent({
@@ -83,6 +94,7 @@ export default defineComponent({
     loading,
   },
   setup() {
+    const paramsPanelRef = ref();
     const common: any = useCommonStore();
     const _this: any = getCurrentInstance();
     const router = useRouter();
@@ -92,44 +104,50 @@ export default defineComponent({
       loadParams: true,
       loadChart: true,
       key1: 0,
-      key2: 0
+      key2: 0,
+      paramsPanelWidth: 0,
+      chartBoxWidth: 0,
     });
 
-    const getChartOption = (cb?:()=>void) => {
-      let res: any = router.currentRoute.value.query.id?.toString().split('_')
-      import(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`).then(
-        (res: any) => {
-          let tmpOption: any = {}; // 临时配置
-          let defaultOption: any = {}; // 默认配置
-          let chartConfig: any[] = [];
-          for (let item of res.default) {
-            if (item.chartOption) {
-              tmpOption[item.opName] = item.defaultOption[item.opName];
-              defaultOption[item.opName] = item.defaultOption[item.opName];
-            }
-            if (item.allOption) {
-              chartConfig.push(item);
-            }
+    const getChartOption = (cb?: () => void) => {
+      let res: any = router.currentRoute.value.query.id?.toString().split("_");
+      import(
+        `@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`
+      ).then((res: any) => {
+        let tmpOption: any = {}; // 临时配置
+        let defaultOption: any = {}; // 默认配置
+        let chartConfig: any[] = [];
+        for (let item of res.default) {
+          if (item.chartOption) {
+            tmpOption[item.opName] = item.defaultOption[item.opName];
+            defaultOption[item.opName] = item.defaultOption[item.opName];
           }
-          tmpOption.backgroundColor = "#fff";
-          // 保存数据到pinia
-          common.$patch((state: any) => {
-            state.option = tmpOption;
-            state.chartConfig = chartConfig;
-            state.defaultOption = defaultOption;
-          });
-          if(cb) cb()  // 执行回调函数
+          if (item.allOption) {
+            chartConfig.push(item);
+          }
         }
-      );
+        tmpOption.backgroundColor = "#fff";
+        // 保存数据到pinia
+        common.$patch((state: any) => {
+          state.option = tmpOption;
+          state.chartConfig = chartConfig;
+          state.defaultOption = defaultOption;
+        });
+        if (cb) cb(); // 执行回调函数
+      });
     };
 
     getChartOption();
 
     onMounted(() => {
+      data.chartBoxWidth =
+        (document.getElementById("ChartPanel")?.clientWidth as number) - 210;
       data.id = router.currentRoute.value.query.id as string;
 
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e + "px";
+        data.chartBoxWidth =
+          (document.getElementById("ChartPanel")?.clientWidth as number) - 210;
       });
 
       data.loadChart = false;
@@ -145,20 +163,20 @@ export default defineComponent({
         data.loadParams = true;
         data.loadChart = true;
         getChartOption(() => {
-          data.key1 ++
-          data.key2 ++
+          data.key1++;
+          data.key2++;
           setTimeout(() => {
             data.loadParams = false;
             data.loadChart = false;
           }, 1000);
-        })
-        
-        
+        });
+
         // _this.proxy.$Bus.emit("idChange", data.id);
       }
     );
 
     return {
+      paramsPanelRef,
       ...toRefs(data),
     };
   },
@@ -169,10 +187,44 @@ export default defineComponent({
 #ChartPanel {
   display: flex;
   height: 100%;
+  justify-content: space-between;
+  .scrollContainer {
+    width: calc(100vw - 60px - 250px - 210px);
+    height: 100vh;
+    overflow: auto;
+    /* 滚动条整体 */
+    &::-webkit-scrollbar {
+      height: 10px;
+      width: 10px;
+    }
+    /* 两个滚动条交接处 -- x轴和y轴 */
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+
+    /* 滚动条滑块 */
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      background: #535353;
+    }
+
+    /* 滚动条轨道 */
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      background: transparent;
+    }
+  }
   .chartContent {
-    flex: 1;
-    .el-scrollbar {
-      position: relative;
+    .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
+      white-space: nowrap;
+      display: inline-block;
+    }
+    .el-scrollbar__wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .paramsPanelContainer {
