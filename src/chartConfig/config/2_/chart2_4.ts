@@ -2,7 +2,7 @@ import { markRaw } from "vue";
 import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
-import paramsBarText from "@/views/ChartPanel/components/paramsBarText.vue";
+import paramsBarText from "@/views/ChartPanel/components/paramsBar/paramsBarText.vue";
 
 import {
   asisOpNameList

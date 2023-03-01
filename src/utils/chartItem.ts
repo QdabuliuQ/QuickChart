@@ -114,6 +114,28 @@ const list: ListInt[] = [
       },
     ]
   },
+  {
+    type: '饼图',
+    id: 3,
+    show: false,
+    charts: [
+      {
+        cover: require('@/assets/image/3_1.webp'),
+        name: '基础饼图',
+        id: '3_1',
+      },
+      {
+        cover: require('@/assets/image/3_2.webp'),
+        name: '圆角环形图',
+        id: '3_2',
+      },
+      {
+        cover: require('@/assets/image/3_3.webp'),
+        name: '南丁格尔玫瑰图',
+        id: '3_3',
+      },
+    ]
+  },
 ]
 
 export default list

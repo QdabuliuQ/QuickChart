@@ -9,40 +9,40 @@
       <div>{{ opNameList ? opNameList[key] : "" }}</div>
       <div class="optionOperation">
         <el-switch
-          v-if="key == 'show'"
+          v-if="(key as any)  == 'show'"
           size="small"
           v-model="defaultOption.grid[key]"
         />
         <el-input-number
           v-else-if="
-            key == 'left' || key == 'right' || key == 'top' || key == 'bottom'
+            (key as any)  == 'left' || (key as any)  == 'right' || (key as any)  == 'top' || (key as any)  == 'bottom'
           "
           size="small"
           v-model="defaultOption.grid[key]"
         />
         <el-input-number
           :min="0"
-          v-else-if="key == 'width'"
+          v-else-if="(key as any) == 'width'"
           size="small"
           v-model="width"
         />
         <el-input-number
           :min="0"
-          v-else-if="key == 'height'"
+          v-else-if="(key as any) == 'height'"
           size="small"
           v-model="height"
         />
-        <el-color-picker v-else-if="key == 'backgroundColor'" v-model="bgc" />
+        <el-color-picker v-else-if="(key as any) == 'backgroundColor'" v-model="bgc" />
         <el-color-picker
-          v-else-if="key == 'borderColor' || key == 'shadowColor'"
+          v-else-if="(key as any) == 'borderColor' || (key as any)  == 'shadowColor'"
           v-model="defaultOption.grid[key]"
         />
         <el-input-number
           v-else-if="
-            key == 'borderWidth' ||
-            key == 'shadowBlur' ||
-            key == 'shadowOffsetX' ||
-            key == 'shadowOffsetY'
+            (key as any) == 'borderWidth' ||
+            (key as any) == 'shadowBlur' ||
+            (key as any) == 'shadowOffsetX' ||
+            (key as any) == 'shadowOffsetY'
           "
           :max="100"
           size="small"

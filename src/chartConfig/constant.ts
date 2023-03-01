@@ -1,4 +1,4 @@
-interface ListInt {
+export interface ListInt {
   value: string | number
   label: string | number
 }
@@ -28,6 +28,20 @@ export const fontWeight: ListInt[] = [
   {
     value: 'bolder',
     label: 400,
+  },
+]
+export const fontPosition: ListInt[] = [
+  {
+    value: 'outside',
+    label: '外侧'
+  },
+  {
+    value: 'inside',
+    label: '内部'
+  },
+  {
+    value: 'center',
+    label: '中间'
   },
 ]
 export const fontFamily: ListInt[] = [

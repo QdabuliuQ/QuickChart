@@ -9,14 +9,14 @@
       <div>{{ opNameList ? opNameList[key] : "" }}</div>
       <div class="optionOperation">
         <el-input-number
-          v-if="key == 'width' || key == 'height'"
+          v-if="(key as unknown) == 'width' || (key as unknown) == 'height'"
           size="small"
           :max="900"
           :min="400"
           v-model="defaultOption[key]"
         />
         <el-color-picker
-          v-else-if="key == 'bgc'"
+          v-else-if="(key as unknown) == 'bgc'"
           v-model="defaultOption[key]"
         />
       </div>
@@ -28,7 +28,6 @@
 import {
   defineComponent,
   reactive,
-  onMounted,
   toRefs,
   getCurrentInstance,
   watch,
@@ -50,7 +49,6 @@ export default defineComponent({
       }, 500);
     }, {deep: true})
 
-    onMounted(() => {});
     return {
       ...toRefs(data),
     };

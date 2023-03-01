@@ -88,6 +88,7 @@ interface comInitData {
 
 export default defineComponent({
   name: "ChartPanel",
+  props: ['key'],
   components: {
     paramsPanel,
     chartDom,
@@ -117,6 +118,8 @@ export default defineComponent({
         let tmpOption: any = {}; // 临时配置
         let defaultOption: any = {}; // 默认配置
         let chartConfig: any[] = [];
+        console.log(res.default);
+        
         for (let item of res.default) {
           if (item.chartOption) {
             tmpOption[item.opName] = item.defaultOption[item.opName];

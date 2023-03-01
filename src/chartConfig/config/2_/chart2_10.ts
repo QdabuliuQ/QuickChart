@@ -2,7 +2,7 @@ import { markRaw } from "vue";
 import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
-import paramsBarRank from "@/views/ChartPanel/components/paramsBarRank.vue";
+import paramsBarRank from "@/views/ChartPanel/components/paramsBar/paramsBarRank.vue";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -70,8 +70,8 @@ export default [
         type: 'category',
         data: ['A', 'B', 'C', 'D', 'E'],
         inverse: true,
-        animationDuration: 1100,
-        animationDurationUpdate: 1100,
+        animationDuration: 300,
+        animationDurationUpdate: 300,
         max: 4
       }],
     },
@@ -107,7 +107,7 @@ export default [
   {
     name: '所有数据',
     opName: 'allData',
-    chartOption: false,
+    chartOption: true,
     menuOption: true,
     uniqueOption: true,
     icon: 'i_params',
@@ -126,58 +126,61 @@ export const createExcelData = (config: any) => {
     }
   }
   
-  let source = config.dataset[0].source
-  let dimensions = config.dataset[0].dimensions
-  for(let i = 0; i < dimensions.length; i ++) {
+  
+  let yAxis = config.yAxis[0].data
+  let allData = config.allData
+  for(let i = 0; i < yAxis.length; i ++) {
     excelData[0].cells[i] = {
-      text: dimensions[i]
+      text: yAxis[i]
     }
   }
-  for(let i = 0; i < source.length; i ++) {
-    excelData[i+1] = {
-      cells: {
-      }
-    }
-    for(let j = 0; j < source[i].length; j ++) {
-      excelData[i+1].cells[j] = {
-        text: source[i][j]
+
+  for(let i = 0; i < allData.length; i ++) {
+    for(let j = 0; j < allData[i].length; j ++) {
+      if (!excelData[i+1]) {
+        excelData[i+1] = {
+          cells: {
+            [j]: {
+              text: allData[i][j]
+            }
+          }
+        }
+      } else  {
+        excelData[i+1].cells[j] = {
+          text: allData[i][j]
+        }
       }
     }
   }
+  
   return excelData
 }
 
 export const conveyExcelData = (rows: any) => {
-  let dataset = lodash.cloneDeep(common.option.dataset)
-  let dimensionsList: any[] = []
-  let sourceList: any[] = []
-  let dataObj: any = {}
-  let i = 0
-  let rowsTLength = Object.keys(rows[0].cells).length;
-  while(i < rowsTLength) {
-    dimensionsList.push(rows[0].cells[i].text)
-    i ++
+  console.log(rows);
+  
+  let yAxis = lodash.cloneDeep(common.option.yAxis)
+  let r1Length = Object.keys(rows[0].cells).length;
+  let r2Length = Object.keys(rows).length
+  console.log(r2Length);
+  
+  let yData = [], aData = []
+  for(let i = 0; i < r1Length; i ++) {
+    yData.push(rows[0].cells[i] ? rows[0].cells[i].text : '')
   }
-  i = 1
-  
-  let sourceLength = Object.keys(rows).length;
-  
-  while(i < sourceLength - 1) {
-    let j = 0
-    sourceList[i-1] = []
-    let itemLength = Object.keys(rows[i].cells).length;
-    while(j < itemLength) {
-      sourceList[i-1].push(rows[i].cells[j].text) 
-      j ++
+  yAxis[0].data = yData
+  for(let i = 1; i < r2Length - 1; i ++) {
+    let l = Object.keys(rows[i].cells).length
+    let arr = []
+    for(let j = 0; j < l; j ++) {
+      arr.push(rows[i].cells[j] ? parseInt(rows[i].cells[j].text) : '')
     }
-    i ++
+    aData.push(arr)
   }
-  dataset[0].dimensions = dimensionsList
-  dataset[0].source = sourceList
-  dataObj = {
-    dataset
+
+  let dataObj = {
+    allData: aData,
+    yAxis
   }
-  console.log(dataObj);
-  
   return dataObj
 }

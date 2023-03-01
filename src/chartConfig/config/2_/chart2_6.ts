@@ -2,8 +2,8 @@ import { markRaw } from "vue";
 import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
-import paramsBarPolar from "@/views/ChartPanel/components/paramsBarPolar.vue";
-import paramsBarAxis_2 from "@/views/ChartPanel/components/paramsBarAxis_2.vue";
+import paramsBarPolar from "@/views/ChartPanel/components/paramsBar/paramsBarPolar.vue";
+import paramsBarAxis_2 from "@/views/ChartPanel/components/paramsBar/paramsBarAxis_2.vue";
 
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";

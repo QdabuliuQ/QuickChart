@@ -213,6 +213,9 @@ export default defineComponent({
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - 54.8 + "px";
       });
+
+      console.log(data.options);
+      
     });
 
     watch(
@@ -221,6 +224,8 @@ export default defineComponent({
         if (n) {
           data.options = common.chartConfig;
           _this.proxy.$Bus.emit("updateData", common.option);
+        } else {
+          _this.proxy.$Bus.emit("editData");
         }
       }
     );
@@ -297,8 +302,8 @@ export default defineComponent({
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 8px 10px 11px 12px;
-        font-size: 13.5px;
+        padding: 10px 10px 12px 12px;
+        font-size: 13px;
         transition: 0.1s all linear;
         border-bottom: 1px solid #565656;
         &:hover {

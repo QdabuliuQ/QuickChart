@@ -54,6 +54,9 @@ body {
     font-size: 12px;
   }
 }
+img {
+  user-select: none;
+}
 .el-button {
   span {
     font-size: 13px !important;

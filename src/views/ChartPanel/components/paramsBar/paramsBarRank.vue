@@ -66,6 +66,7 @@ import {
   onBeforeUnmount,
   ref,
 } from "vue";
+import { ElLoading } from 'element-plus'
 import useCommonStore from "@/store/common";
 declare var MediaRecorder: any;
 
@@ -89,7 +90,7 @@ export default defineComponent({
     const data: comInitData = reactive({
       allData: [],
       index: 0,
-      gap: 1000,
+      gap: 1500,
       timer: null,
       count: 0,
       inverse: true,
@@ -120,7 +121,8 @@ export default defineComponent({
     };
 
     // 更新数据
-    const renewData = () => {
+    const renewData = (start: number = 0) => {
+      data.index = start;
       data.timer = setInterval(() => {
         if (data.index == data.allData.length) {
           data.index = 0;
@@ -140,12 +142,19 @@ export default defineComponent({
             },
           ],
         });
-        data.index++;
+        setTimeout(() => {
+          data.index++;
+        }, 50);
       }, data.gap);
     };
 
     // 生成video
     const createVideo = () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: '正在生成文件，请稍后',
+        background: 'rgba(0, 0, 0, 0.7)',
+      })
       _this.proxy.$Bus.emit("optionChange", {
         series: [
           {
@@ -159,12 +168,14 @@ export default defineComponent({
             data: data.allData[0],
           },
         ],
-      })
-      _this.proxy.$notice({
-        message: "正在生成文件，请稍后",
-        type: "info",
-        position: "top-left",
-      })
+      });
+      clearInterval(data.timer)
+      renewData(1)
+      // _this.proxy.$notice({
+      //   message: "正在生成文件，请稍后",
+      //   type: "info",
+      //   position: "top-left",
+      // })
 
       data.isLoad = true
       // 获取图表dom
@@ -189,6 +200,7 @@ export default defineComponent({
         element.click();
         document.body.removeChild(element);
         data.isLoad = false
+        loading.close()
         _this.proxy.$notice({
           message: "生成成功",
           type: "success",
@@ -200,6 +212,7 @@ export default defineComponent({
       setTimeout(() => {
         recorder.start();
       }, 300);
+      console.log(data.allData.length * data.gap);
       
       setTimeout(() => {
         recorder.stop();
@@ -208,6 +221,33 @@ export default defineComponent({
 
     onMounted(() => {
       renewData();
+
+      _this.proxy.$Bus.on("updateData", (e: any) => {
+        data.index = 0;
+        data.allData = e.allData
+        clearInterval(data.timer)
+        renewData()
+      });
+
+      _this.proxy.$Bus.on("editData", () => {
+        data.index = 0
+        
+        _this.proxy.$Bus.emit("optionChange", {
+          series: [
+            {
+              type: "bar",
+              realtimeSort: true,
+              label: {
+                show: true,
+                position: "right",
+                valueAnimation: true,
+              },
+              data: data.allData[data.index],
+            },
+          ],
+        });
+        clearInterval(data.timer)
+      });
     });
     onBeforeUnmount(() => {
       clearInterval(data.timer);
