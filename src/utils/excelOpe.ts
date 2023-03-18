@@ -72,11 +72,6 @@ export const stox = (wb: any) => {
     })
     // 设置合并单元格
     ws['!merges']?.forEach((merge: any) => {
-      /** merge = {
-       *  s: {c: 0, r: 15}
-       *  e: {c: 15, r: 15}
-       * }
-       */
       // 修改 cell 中 merge [合并行数,合并列数]
       let cell = o.rows[merge.s.r].cells[merge.s.c]
 
