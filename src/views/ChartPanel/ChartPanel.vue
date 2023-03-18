@@ -1,29 +1,12 @@
 <template>
   <div id="ChartPanel">
-    <div
-      v-loading="loadChart"
-      text="正在加载图表..."
-      element-loading-background="rgba(0, 0, 0, 1)"
-      class="chartContent"
-    >
+    <div v-loading="loadChart" text="正在加载图表..." element-loading-background="rgba(0, 0, 0, 1)" class="chartContent">
       <div class="scrollContainer">
         <chartDom :key="key1" />
       </div>
-      <!-- 
-        :style="{ width: chartBoxWidth + 'px' }" -->
-      <!-- <el-scrollbar
-        class="chartScrollContainer"
-        :height="height"
-      >
-        <chartDom :key="key1" />
-      </el-scrollbar> -->
     </div>
 
-    <div
-      v-loading="loadParams"
-      element-loading-background="#292929"
-      class="paramsPanelContainer"
-    >
+    <div v-loading="loadParams" element-loading-background="#292929" class="paramsPanelContainer">
       <paramsPanel ref="paramsPanelRef" :key="key2" />
     </div>
   </div>
@@ -45,13 +28,14 @@ import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
 import loading from "@/components/loading.vue";
 
+
 // 定义异步组件，这里这样写是为了查看效果
-const paramsPanel = defineAsyncComponent(() => {
+const paramsPanel: any = defineAsyncComponent(() => {
   return new Promise((resolve, reject) => {
     (async function () {
       try {
         await asynImport(700);
-        const res: any = await import(
+        const res: any = import(
           "@/components/paramsPanel/paramsPanel.vue"
         );
         resolve(res);
@@ -61,7 +45,7 @@ const paramsPanel = defineAsyncComponent(() => {
     })();
   });
 });
-const chartDom = defineAsyncComponent(() => {
+const chartDom: any = defineAsyncComponent(() => {
   return new Promise((resolve, reject) => {
     (async function () {
       try {
@@ -88,7 +72,6 @@ interface comInitData {
 
 export default defineComponent({
   name: "ChartPanel",
-  props: ['key'],
   components: {
     paramsPanel,
     chartDom,
@@ -115,12 +98,13 @@ export default defineComponent({
       import(
         `@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`
       ).then((res: any) => {
+        // 如果返回是函数 则执行 不是则直接使用配置对象
+        let option = typeof res.default == 'function' ? res.default() : res.default
         let tmpOption: any = {}; // 临时配置
         let defaultOption: any = {}; // 默认配置
         let chartConfig: any[] = [];
-        console.log(res.default);
-        
-        for (let item of res.default) {
+
+        for (let item of option) {
           if (item.chartOption) {
             tmpOption[item.opName] = item.defaultOption[item.opName];
             defaultOption[item.opName] = item.defaultOption[item.opName];
@@ -191,15 +175,18 @@ export default defineComponent({
   display: flex;
   height: 100%;
   justify-content: space-between;
+
   .scrollContainer {
     width: calc(100vw - 60px - 250px - 210px);
     height: 100vh;
     overflow: auto;
+
     /* 滚动条整体 */
     &::-webkit-scrollbar {
       height: 10px;
       width: 10px;
     }
+
     /* 两个滚动条交接处 -- x轴和y轴 */
     &::-webkit-scrollbar-corner {
       background-color: transparent;
@@ -219,17 +206,20 @@ export default defineComponent({
       background: transparent;
     }
   }
+
   .chartContent {
     .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
       white-space: nowrap;
       display: inline-block;
     }
+
     .el-scrollbar__wrap {
       display: flex;
       align-items: center;
       justify-content: center;
     }
   }
+
   .paramsPanelContainer {
     width: 210px;
     height: 100%;

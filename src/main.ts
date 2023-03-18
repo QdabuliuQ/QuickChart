@@ -19,11 +19,9 @@ import * as echarts from 'echarts'
 import 'highlight.js/styles/atom-one-dark.css'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
-
 // animate动画
 import 'animate.css/animate.min.css' 
-
-// 字体图表
+// 字体图标
 import "@/assets/icon/icon.css"
 
 //挂载事务总线

@@ -213,8 +213,6 @@ export default defineComponent({
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - 54.8 + "px";
       });
-
-      console.log(data.options);
       
     });
 

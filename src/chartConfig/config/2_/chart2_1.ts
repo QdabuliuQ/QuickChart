@@ -17,7 +17,6 @@ import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 
 const common: any = useCommonStore()
 
-
 export default [
   title,
   canvas,

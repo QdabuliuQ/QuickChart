@@ -12,39 +12,25 @@ import canvas from "@/chartConfig/commonParams/canvas";
 import grid from "@/chartConfig/commonParams/grid";
 import legend from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
-
-
-grid.defaultOption.grid.top = 80
-grid.defaultOption.grid.bottom = 30
-
 const common: any = useCommonStore()
 
-export default [
-  title,
-  canvas,
-  grid,
-  legend,
-  waterMark,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: false,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [{
-        type: 'value',
-        position: 'top',
-        splitLine: {
-          lineStyle: {
-            type: 'dashed'
-          }
-        }
-      }],
-    },
-    allOption: {
-      xAxis: [
-        {
+const getOption = () => {
+  grid.defaultOption.grid.top = 80
+  grid.defaultOption.grid.bottom = 30
+  return [
+    title,
+    canvas,
+    grid,
+    legend,
+    waterMark,
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: false,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [{
           type: 'value',
           position: 'top',
           splitLine: {
@@ -52,41 +38,31 @@ export default [
               type: 'dashed'
             }
           }
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: false,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [{
-        type: 'category',
-        axisLine: { show: false },
-        axisLabel: { show: false },
-        axisTick: { show: false },
-        splitLine: { show: false },
-        data: [
-          'ten',
-          'nine',
-          'eight',
-          'seven',
-          'six',
-          'five',
-          'four',
-          'three',
-          'two',
-          'one'
+        }],
+      },
+      allOption: {
+        xAxis: [
+          {
+            type: 'value',
+            position: 'top',
+            splitLine: {
+              lineStyle: {
+                type: 'dashed'
+              }
+            }
+          }
         ]
-      }],
+      },
+      opNameList: asisOpNameList
     },
-    allOption: {
-      yAxis: [
-        {
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: false,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [{
           type: 'category',
           axisLine: { show: false },
           axisLabel: { show: false },
@@ -104,53 +80,78 @@ export default [
             'two',
             'one'
           ]
-        }
-      ]
+        }],
+      },
+      allOption: {
+        yAxis: [
+          {
+            type: 'category',
+            axisLine: { show: false },
+            axisLabel: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+            data: [
+              'ten',
+              'nine',
+              'eight',
+              'seven',
+              'six',
+              'five',
+              'four',
+              'three',
+              'two',
+              'one'
+            ]
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: [
-        {
-          name: '系列一',
-          type: 'bar',
-          stack: 'Total',
-          label: {
-            show: true,
-            formatter: '{b}'
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: [
+          {
+            name: '系列一',
+            type: 'bar',
+            stack: 'Total',
+            label: {
+              show: true,
+              formatter: '{b}'
+            },
+            data: [
+              { value: -0.07, label: { position: 'right' } },
+              { value: -0.09, label: { position: 'right' } },
+              { value: 0.2, label: { position: 'right' } },
+              { value: 0.44, label: { position: 'right' } },
+              { value: -0.23, label: { position: 'right' } },
+              { value: 0.08, label: { position: 'right' } },
+              { value: -0.17, label: { position: 'right' } },
+              { value: 0.47, label: { position: 'right' } },
+              { value: -0.36, label: { position: 'right' } },
+              { value: 0.18, label: { position: 'right' } },
+            ]
           },
-          data: [
-            { value: -0.07, label: {position: 'right'} },
-            { value: -0.09, label: {position: 'right'} },
-            { value: 0.2, label: {position: 'right'} },
-            { value: 0.44, label: {position: 'right'} },
-            { value: -0.23, label: {position: 'right'} },
-            { value: 0.08, label: {position: 'right'} },
-            { value: -0.17, label: {position: 'right'} },
-            { value: 0.47, label: {position: 'right'} },
-            { value: -0.36, label: {position: 'right'} },
-            { value: 0.18, label: {position: 'right'} },
-          ]
-        },
-      ]
+        ]
+      }
+    },
+    {
+      name: '字体位置',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_bar',
+      component: markRaw(paramsBarText),
+      allOption: {}
     }
-  },
-  {
-    name: '字体位置',
-    opName: 'textStyle',
-    chartOption: false,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_bar',
-    component: markRaw(paramsBarText),
-    allOption: {}
-  }
-]
+  ]
+}
+
+export default getOption
 
 export const createExcelData = (config: any) => {
   let excelData: any = {}

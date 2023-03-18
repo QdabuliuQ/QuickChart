@@ -1,9 +1,9 @@
 import lodash from 'lodash'
 
-export const create = (config: any) => {
+export const create = (config: any, middleWare?: Function) => {
+  
   let excelData: any = {}
-  let series = config.series[0].data
-
+  let series = middleWare ? middleWare(config.series[0].data) : config.series[0].data
   // 初始化
   for (let i = 0; i < series.length; i++) {
     excelData[i] = {
@@ -15,11 +15,13 @@ export const create = (config: any) => {
     excelData[i].cells[0].text = series[i].name
     excelData[i].cells[1].text = series[i].value
   }
+  
+
   return excelData
 }
 
 
-export const convey = (rows: any, seriesOption: any): {
+export const convey = (rows: any, seriesOption: any, middleWare?: Function): {
   category: any,
   series: any
 } => {
@@ -38,5 +40,5 @@ export const convey = (rows: any, seriesOption: any): {
     })
   }
 
-  return dataObj
+  return middleWare ? middleWare(dataObj) : dataObj
 }

@@ -141,9 +141,7 @@ export default defineComponent({
 
       // 监听图表画布配置变化
       _this.proxy.$Bus.on("canvasChange", (e: any) => {
-        let { width, height, bgc } = e;
-        data.width = width;
-        data.height = height;
+        let { bgc } = e;
         data.option.backgroundColor = bgc;
         getCode();
         chartInstance.setOption({

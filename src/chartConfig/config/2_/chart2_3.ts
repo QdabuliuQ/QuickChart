@@ -17,121 +17,125 @@ import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 
 const common: any = useCommonStore()
 
-export default [
-  title,
-  canvas,
-  grid,
-  legend,
-  waterMark,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [{
-        ...xAxis,
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      }],
-    },
-    allOption: {
-      xAxis: [
-        {
-          ...xAxisOption,
+const getOption = () => {
+  return [
+    title,
+    canvas,
+    grid,
+    legend,
+    waterMark,
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [{
+          ...xAxis,
           type: 'category',
-        }
-      ]
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        }],
+      },
+      allOption: {
+        xAxis: [
+          {
+            ...xAxisOption,
+            type: 'category',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [{
-        ...yAxis,
-        type: 'value',
-      }],
-    },
-    allOption: {
-      yAxis: [
-        {
-          ...yAxisOption,
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [{
+          ...yAxis,
           type: 'value',
-        }
-      ]
+        }],
+      },
+      allOption: {
+        yAxis: [
+          {
+            ...yAxisOption,
+            type: 'value',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: [
-        {
-          name: '系列一',
-          data: [
-            {
-              value: 100,
-              itemStyle: {
-              }
-            },
-            {
-              value: 200,
-              itemStyle: {
-                color: '#a90000'
-              }
-            },
-            {
-              value: 150,
-              itemStyle: {
-              }
-            },
-            {
-              value: 80,
-              itemStyle: {
-              }
-            },
-            {
-              value: 70,
-              itemStyle: {
-              }
-            },
-            {
-              value: 110,
-              itemStyle: {
-              }
-            },
-            {
-              value:130,
-              itemStyle: {
-              }
-            },
-            
-          ],
-          type: 'bar',
-        }
-      ]
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: [
+          {
+            name: '系列一',
+            data: [
+              {
+                value: 100,
+                itemStyle: {
+                }
+              },
+              {
+                value: 200,
+                itemStyle: {
+                  color: '#a90000'
+                }
+              },
+              {
+                value: 150,
+                itemStyle: {
+                }
+              },
+              {
+                value: 80,
+                itemStyle: {
+                }
+              },
+              {
+                value: 70,
+                itemStyle: {
+                }
+              },
+              {
+                value: 110,
+                itemStyle: {
+                }
+              },
+              {
+                value: 130,
+                itemStyle: {
+                }
+              },
+
+            ],
+            type: 'bar',
+          }
+        ]
+      }
+    },
+    {
+      name: '柱体样式',
+      opName: 'barStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_bar',
+      component: markRaw(paramsBarColor),
+      allOption: {}
     }
-  },
-  {
-    name: '柱体样式',
-    opName: 'barStyle',
-    chartOption: false,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_bar',
-    component: markRaw(paramsBarColor),
-    allOption: {}
-  }
-]
+  ]
+}
+
+export default getOption
 
 export const createExcelData = (config: any) => {
   let excelData: any = {}
@@ -170,7 +174,7 @@ export const conveyExcelData = (rows: any) => {
   let xAxis = lodash.cloneDeep(common.option.xAxis)
   let data = []
   console.log(common.option.series, '---');
-  
+
   let dataObj: any = {
     xAxis,
     series: []
@@ -184,12 +188,12 @@ export const conveyExcelData = (rows: any) => {
       data: series[i - 1] ? series[i - 1].data : [],
       type: 'bar',
     })
-    
+
   }
   let rowsALength = Object.keys(rows).length - 1;
   for (let i = 1; i < rowsALength; i++) {
     let rowsItemLength = Object.keys(rows[i].cells).length;
-    
+
     // dataObj.categoryData.push(rows[i].cells[0].text)
     data.push(rows[i].cells[0].text)
 
@@ -214,6 +218,6 @@ export const conveyExcelData = (rows: any) => {
     }
   }
   dataObj.xAxis[0].data = data
-  
+
   return dataObj
 }

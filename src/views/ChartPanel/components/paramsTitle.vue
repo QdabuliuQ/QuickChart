@@ -4,43 +4,43 @@
       v-for="(value, key, index) in allOption.title"
       :key="index"
       class="optionItem"
-      :style="{ padding: opNameList[key] ? '6px 0' : '0' }"
+      :style="{ padding: opNameList[(key as any)] ? '6px 0' : '0' }"
     >
-      <div>{{ opNameList ? opNameList[key] : "" }}</div>
+      <div>{{ opNameList ? opNameList[(key as any)] : "" }}</div>
       <div class="optionOperation">
         <el-input
-          v-if="key == 'text'"
+          v-if="(key as any) == 'text'"
           size="small"
-          v-model="defaultOption.title[key]"
+          v-model="defaultOption.title[(key as any)]"
         />
         <el-switch
-          v-else-if="key == 'show'"
+          v-else-if="(key as any) == 'show'"
           size="small"
-          v-model="defaultOption.title[key]"
+          v-model="defaultOption.title[(key as any)]"
         />
         <el-input-number
           v-else-if="
-            key == 'left' || key == 'right' || key == 'top' || key == 'bottom'
+            (key as any) == 'left' || (key as any) == 'right' || (key as any) == 'top' || (key as any) == 'bottom'
           "
           size="small"
-          v-model="defaultOption.title[key]"
+          v-model="defaultOption.title[(key as any)]"
         />
         <el-select
-          v-else-if="key == 'textAlign'"
+          v-else-if="(key as any) == 'textAlign'"
           popper-class="paramsSelectPopperClass"
-          v-model="defaultOption.title[key]"
+          v-model="defaultOption.title[(key as any)]"
           size="small"
         >
           <el-option
-            v-for="item in allOption.title[key]"
+            v-for="item in allOption.title[(key as any)]"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
         </el-select>
         <el-color-picker
-          v-else-if="key == 'backgroundColor'"
-          v-model="defaultOption.title[key]"
+          v-else-if="(key as any) == 'backgroundColor'"
+          v-model="defaultOption.title[(key as any)]"
         />
       </div>
     </div>
@@ -49,31 +49,31 @@
       :key="index"
       class="optionItem"
     >
-      <div>{{ opNameList ? opNameList[key] : "" }}</div>
+      <div>{{ opNameList ? opNameList[(key as any)] : "" }}</div>
       <div class="optionOperation">
         <el-color-picker
-          v-if="key == 'color'"
-          v-model="defaultOption.title.textStyle[key]"
+          v-if="(key as any) == 'color'"
+          v-model="defaultOption.title.textStyle[(key as any)]"
         />
         <el-select
-          v-else-if="key == 'fontWeight'"
+          v-else-if="(key as any) == 'fontWeight'"
           popper-class="paramsSelectPopperClass"
-          v-model="defaultOption.title.textStyle[key]"
+          v-model="defaultOption.title.textStyle[(key as any)]"
           size="small"
         >
           <el-option
-            v-for="item in allOption.title.textStyle[key]"
+            v-for="item in allOption.title.textStyle[(key as any)]"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
         </el-select>
         <el-input-number
-          v-else-if="key == 'fontSize'"
+          v-else-if="(key as any) == 'fontSize'"
           size="small"
           :max="40"
           :min="10"
-          v-model="defaultOption.title.textStyle[key]"
+          v-model="defaultOption.title.textStyle[(key as any)]"
         />
       </div>
     </div>

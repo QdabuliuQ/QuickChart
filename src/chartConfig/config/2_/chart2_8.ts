@@ -16,140 +16,144 @@ import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 
 const common: any = useCommonStore()
 
-// grid.defaultOption.grid.containLabel = true
-// grid.allOption.grid.containLabel = true
-// grid.defaultOption.grid.left = grid.allOption.grid.left = 30
-// grid.defaultOption.grid.top = grid.allOption.grid.top = 30
-// grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
-// grid.defaultOption.grid.right = grid.allOption.grid.right = 60
+const getOption = () => {
+  title.defaultOption.title.show = false
+  grid.defaultOption.grid.containLabel = true
+  grid.allOption.grid.containLabel = true
+  grid.defaultOption.grid.left = grid.allOption.grid.left = 30
+  grid.defaultOption.grid.top = grid.allOption.grid.top = 30
+  grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
+  grid.defaultOption.grid.right = grid.allOption.grid.right = 60
 
-
-export default [
-  title,
-  canvas,
-  grid,
-  legend,
-  waterMark,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [{
-        ...xAxis,
-        type: 'value',
-      }],
-    },
-    allOption: {
-      xAxis: [
-        {
-          ...xAxisOption,
+  return [
+    title,
+    canvas,
+    grid,
+    legend,
+    waterMark,
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [{
+          ...xAxis,
           type: 'value',
-        }
-      ]
+        }],
+      },
+      allOption: {
+        xAxis: [
+          {
+            ...xAxisOption,
+            type: 'value',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [{
-        ...yAxis,
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      }],
-    },
-    allOption: {
-      yAxis: [
-        {
-          ...yAxisOption,
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [{
+          ...yAxis,
           type: 'category',
-        }
-      ]
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        }],
+      },
+      allOption: {
+        yAxis: [
+          {
+            ...yAxisOption,
+            type: 'category',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: [
-        {
-          name: 'Direct',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: [
+          {
+            name: 'Direct',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [320, 302, 301, 334, 390, 330, 320]
           },
-          emphasis: {
-            focus: 'series'
+          {
+            name: 'Mail Ad',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [120, 132, 101, 134, 90, 230, 210]
           },
-          data: [320, 302, 301, 334, 390, 330, 320]
-        },
-        {
-          name: 'Mail Ad',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
+          {
+            name: 'Affiliate Ad',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [220, 182, 191, 234, 290, 330, 310]
           },
-          emphasis: {
-            focus: 'series'
+          {
+            name: 'Video Ad',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [150, 212, 201, 154, 190, 330, 410]
           },
-          data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-          name: 'Affiliate Ad',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-          name: 'Video Ad',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [150, 212, 201, 154, 190, 330, 410]
-        },
-        {
-          name: 'Search Engine',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [820, 832, 901, 934, 1290, 1330, 1320]
-        }
-      ]
-    }
-  },
-]
+          {
+            name: 'Search Engine',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [820, 832, 901, 934, 1290, 1330, 1320]
+          }
+        ]
+      }
+    },
+  ]
+}
+
+export default getOption
 
 export const createExcelData = (config: any) => {
   let excelData: any = {}
-  
+
   let series = config.series
   let yAxis = config.yAxis[0].data
 
@@ -178,7 +182,7 @@ export const createExcelData = (config: any) => {
   return excelData
 }
 
-export const conveyExcelData = (rows: any) => { 
+export const conveyExcelData = (rows: any) => {
   let yAxis = lodash.cloneDeep(common.option.yAxis)
 
   let res = convey(rows, {
@@ -191,12 +195,12 @@ export const conveyExcelData = (rows: any) => {
       focus: 'series'
     },
   })
-  
+
   yAxis[0].data = res.category
   let dataObj: any = {
     yAxis,
     series: res.series
   }
-  
+
   return dataObj
 }

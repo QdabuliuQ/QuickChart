@@ -16,13 +16,6 @@ import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 
 const common: any = useCommonStore()
 
-grid.defaultOption.grid.containLabel = true
-grid.allOption.grid.containLabel = true
-grid.defaultOption.grid.left = grid.allOption.grid.left = 30
-grid.defaultOption.grid.top = grid.allOption.grid.top = 60
-grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
-grid.defaultOption.grid.right = grid.allOption.grid.right = 60
-
 const allData = [
   [141, 138, 129, 109, 68],
   [161, 158, 149, 119, 88],
@@ -30,94 +23,104 @@ const allData = [
   [210, 238, 180, 149, 138],
 ]
 
-export default [
-  title,
-  canvas,
-  grid,
-  legend,
-  waterMark,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [{
-        ...xAxis,
-        max: 'dataMax'
-      }],
-    },
-    allOption: {
-      xAxis: [
-        {
-          ...xAxisOption,
+const getOption = () => {
+  grid.defaultOption.grid.containLabel = true
+  grid.allOption.grid.containLabel = true
+  grid.defaultOption.grid.left = grid.allOption.grid.left = 30
+  grid.defaultOption.grid.top = grid.allOption.grid.top = 60
+  grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
+  grid.defaultOption.grid.right = grid.allOption.grid.right = 60
+  return [
+    title,
+    canvas,
+    grid,
+    legend,
+    waterMark,
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [{
+          ...xAxis,
           max: 'dataMax'
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [{
-        ...yAxis,
-        type: 'category',
-        data: ['A', 'B', 'C', 'D', 'E'],
-        inverse: true,
-        animationDuration: 300,
-        animationDurationUpdate: 300,
-        max: 4
-      }],
-    },
-    allOption: {
-      yAxis: [
-        {
-          ...yAxisOption,
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: [
-        {
-          realtimeSort: true,
-          type: 'bar',
-          data: allData[0],
-          label: {
-            show: true,
-            position: 'right',
-            valueAnimation: true
+        }],
+      },
+      allOption: {
+        xAxis: [
+          {
+            ...xAxisOption,
+            max: 'dataMax'
           }
-        }
-      ]
-    }
-  },
-  {
-    name: '所有数据',
-    opName: 'allData',
-    chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_params',
-    component: markRaw(paramsBarRank),
-    defaultOption: {
-      allData,
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    allOption:{}
-  }
-]
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [{
+          ...yAxis,
+          type: 'category',
+          data: ['A', 'B', 'C', 'D', 'E'],
+          inverse: true,
+          animationDuration: 300,
+          animationDurationUpdate: 300,
+          max: 4
+        }],
+      },
+      allOption: {
+        yAxis: [
+          {
+            ...yAxisOption,
+          }
+        ]
+      },
+      opNameList: asisOpNameList
+    },
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: [
+          {
+            realtimeSort: true,
+            type: 'bar',
+            data: allData[0],
+            label: {
+              show: true,
+              position: 'right',
+              valueAnimation: true
+            }
+          }
+        ]
+      }
+    },
+    {
+      name: '所有数据',
+      opName: 'allData',
+      chartOption: true,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_params',
+      component: markRaw(paramsBarRank),
+      defaultOption: {
+        allData,
+      },
+      allOption: {}
+    }
+  ]
+}
+
+export default getOption
 
 export const createExcelData = (config: any) => {
   let excelData: any = {}
@@ -125,54 +128,54 @@ export const createExcelData = (config: any) => {
     cells: {
     }
   }
-  
-  
+
+
   let yAxis = config.yAxis[0].data
   let allData = config.allData
-  for(let i = 0; i < yAxis.length; i ++) {
+  for (let i = 0; i < yAxis.length; i++) {
     excelData[0].cells[i] = {
       text: yAxis[i]
     }
   }
 
-  for(let i = 0; i < allData.length; i ++) {
-    for(let j = 0; j < allData[i].length; j ++) {
-      if (!excelData[i+1]) {
-        excelData[i+1] = {
+  for (let i = 0; i < allData.length; i++) {
+    for (let j = 0; j < allData[i].length; j++) {
+      if (!excelData[i + 1]) {
+        excelData[i + 1] = {
           cells: {
             [j]: {
               text: allData[i][j]
             }
           }
         }
-      } else  {
-        excelData[i+1].cells[j] = {
+      } else {
+        excelData[i + 1].cells[j] = {
           text: allData[i][j]
         }
       }
     }
   }
-  
+
   return excelData
 }
 
 export const conveyExcelData = (rows: any) => {
   console.log(rows);
-  
+
   let yAxis = lodash.cloneDeep(common.option.yAxis)
   let r1Length = Object.keys(rows[0].cells).length;
   let r2Length = Object.keys(rows).length
   console.log(r2Length);
-  
+
   let yData = [], aData = []
-  for(let i = 0; i < r1Length; i ++) {
+  for (let i = 0; i < r1Length; i++) {
     yData.push(rows[0].cells[i] ? rows[0].cells[i].text : '')
   }
   yAxis[0].data = yData
-  for(let i = 1; i < r2Length - 1; i ++) {
+  for (let i = 1; i < r2Length - 1; i++) {
     let l = Object.keys(rows[i].cells).length
     let arr = []
-    for(let j = 0; j < l; j ++) {
+    for (let j = 0; j < l; j++) {
       arr.push(rows[i].cells[j] ? parseInt(rows[i].cells[j].text) : '')
     }
     aData.push(arr)

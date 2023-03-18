@@ -18,19 +18,15 @@ let canvas: Common & CanvasInterface = {
   menuOption: true,
   icon: 'i_canvas',
   defaultOption: {
-    width: 700,
-    height: 500,
     bgc: '#fff',
+    repeat: 'repeat'
   },
   allOption: {
-    width: 0,
-    height: 0,
     bgc: '',
+    repeat: 'repeat'
   },
   opNameList: {
-    width: '画布宽度',
-    height: '画布高度',
-    bgc: '画布颜色'
+    bgc: '画布颜色',
   }
 }
 

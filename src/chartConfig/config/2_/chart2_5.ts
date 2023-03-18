@@ -5,7 +5,6 @@ import useCommonStore from "@/store/common";
 import paramsBarPolar from "@/views/ChartPanel/components/paramsBar/paramsBarPolar.vue";
 import paramsBarAxis from "@/views/ChartPanel/components/paramsBar/paramsBarAxis.vue";
 import paramsBarAngle from "@/views/ChartPanel/components/paramsBar/paramsBarAngle.vue";
-
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import grid from "@/chartConfig/commonParams/grid";
@@ -13,77 +12,81 @@ import waterMark from "@/chartConfig/commonParams/waterMark";
 
 const common: any = useCommonStore()
 
-export default [
-  title,
-  canvas,
-  grid,
-  waterMark,
-  {
-    name: '内外圈大小',
-    opName: 'polar',
-    chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_circle',
-    component: markRaw(paramsBarPolar),
-    defaultOption: {
-      polar: {
-        radius: [30, '80%']
+const getOption = () => {
+  return [
+    title,
+    canvas,
+    grid,
+    waterMark,
+    {
+      name: '内外圈大小',
+      opName: 'polar',
+      chartOption: true,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_circle',
+      component: markRaw(paramsBarPolar),
+      defaultOption: {
+        polar: {
+          radius: [30, '80%']
+        },
       },
+      allOption: {},
     },
-    allOption: {},
-  },
-  {
-    name: '圈内层次',
-    opName: 'radiusAxis',
-    chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_radiusAxis',
-    component: markRaw(paramsBarAxis),
-    defaultOption: {
-      radiusAxis: {
-        max: 5
+    {
+      name: '圈内层次',
+      opName: 'radiusAxis',
+      chartOption: true,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_radiusAxis',
+      component: markRaw(paramsBarAxis),
+      defaultOption: {
+        radiusAxis: {
+          max: 5
+        },
       },
+      allOption: {},
     },
-    allOption: {},
-  },
-  {
-    name: '内圈角度',
-    opName: 'angleAxis',
-    chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_angle',
-    component: markRaw(paramsBarAngle),
-    defaultOption: {
-      angleAxis: {
-        type: 'category',
-        data: ['a', 'b', 'c', 'd'],
-        startAngle: 60
+    {
+      name: '内圈角度',
+      opName: 'angleAxis',
+      chartOption: true,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_angle',
+      component: markRaw(paramsBarAngle),
+      defaultOption: {
+        angleAxis: {
+          type: 'category',
+          data: ['a', 'b', 'c', 'd'],
+          startAngle: 60
+        },
       },
+      allOption: {},
     },
-    allOption: {},
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: {
-        type: 'bar',
-        data: [2, 1.2, 2.4, 3.6],
-        coordinateSystem: 'polar',
-        label: {
-          show: true,
-          position: 'middle',
-          formatter: '{b}: {c}'
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: {
+          type: 'bar',
+          data: [2, 1.2, 2.4, 3.6],
+          coordinateSystem: 'polar',
+          label: {
+            show: true,
+            position: 'middle',
+            formatter: '{b}: {c}'
+          }
         }
       }
-    }
-  },
-]
+    },
+  ]
+}
+
+export default getOption
 
 export const createExcelData = (config: any) => {
   let excelData: any = {}

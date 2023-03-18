@@ -1,40 +1,40 @@
 <template>
   <div id="paramsWaterMark">
     <div
-      v-for="(value, key, index) in allOption.waterMark"
+      v-for="(value, key , index) in allOption.waterMark"
       :key="index"
       class="optionItem"
-      :style="{ padding: opNameList[key] ? '6px 0' : '0' }"
+      :style="{ padding: opNameList[(key as any)] ? '6px 0' : '0' }"
     >
-      <div>{{ opNameList ? opNameList[key] : "" }}</div>
+      <div>{{ opNameList ? opNameList[(key as any)] : "" }}</div>
       <div class="optionOperation">
         <el-switch
-          v-if="key == 'show'"
+          v-if="((key as any) as any) == 'show'"
           size="small"
-          v-model="defaultOption.waterMark[key]"
+          v-model="defaultOption.waterMark[(key as any)]"
         />
         <el-input
-          v-else-if="key == 'text'"
+          v-else-if="(key as any) == 'text'"
           size="small"
-          v-model="defaultOption.waterMark[key]"
+          v-model="defaultOption.waterMark[(key as any)]"
         />
         <el-input-number
-          v-else-if="key == 'opacity'"
+          v-else-if="(key as any) == 'opacity'"
           size="small"
           :step="0.1"
           :max="1"
           :min="0"
-          v-model="defaultOption.waterMark[key]"
+          v-model="defaultOption.waterMark[(key as any)]"
         />
         <el-color-picker
-          v-if="key == 'color'"
-          v-model="defaultOption.waterMark[key]"
+          v-if="(key as any) == 'color'"
+          v-model="defaultOption.waterMark[(key as any)]"
         />
         <el-input-number
-          v-else-if="key == 'size' || key == 'rotate'"
+          v-else-if="(key as any) == 'size' || (key as any) == 'rotate'"
           size="small"
           :min="0"
-          v-model="defaultOption.waterMark[key]"
+          v-model="defaultOption.waterMark[(key as any)]"
         />
       </div>
     </div>

@@ -14,10 +14,10 @@ import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
 
 const common: any = useCommonStore()
 
-
 const getOption = () => {
-  legend.defaultOption.legend.left = 'left'
-  legend.defaultOption.legend.orient = 'vertical'
+  legend.defaultOption.legend.top = '5%'
+  legend.defaultOption.legend.left = 'center'
+  legend.defaultOption.legend.orient = 'horizontal'
   title.defaultOption.title.show = false
   return [
     title,
@@ -36,28 +36,33 @@ const getOption = () => {
             name: 'Access From',
             type: 'pie',
             radius: ['40%', '70%'],
-            center: ['50%', '50%'],
-            itemStyle: {
-              borderRadius: 10,
-              borderColor: '#fff',
-              borderWidth: 2
-            },
+            center: ['50%', '70%'],
+            startAngle: 180,
             label: {
-              ...pie_label,
-              show: false,
-              position: 'center',
+              ...pie_label
             },
             labelLine: {
-              ...pie_labelLine,
-              show: false,
+              ...pie_labelLine
             },
             data: [
               { value: 1048, name: 'Search Engine' },
               { value: 735, name: 'Direct' },
               { value: 580, name: 'Email' },
               { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' }
-            ],
+              { value: 300, name: 'Video Ads' },
+              {
+                value: 1048 + 735 + 580 + 484 + 300,
+                itemStyle: {
+                  color: 'none',
+                  decal: {
+                    symbol: 'none'
+                  }
+                },
+                label: {
+                  show: false
+                }
+              }
+            ]
           }
         ]
       }
@@ -93,12 +98,38 @@ const getOption = () => {
       allOption: {},
     },
   ]
-} 
+}
 
 export default getOption
 
-export const createExcelData = create
+export const createExcelData = (config: any) => {
+  return create(config, (series: any) => {
+    let data = JSON.parse(JSON.stringify(series))
+    data.splice(Object.keys(series).length - 1, 1)
+    return data
+  })
+}
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  return convey(rows, common.option.series)
+  return convey(rows, common.option.series, (dataObj: any) => {
+    let dataOption = {
+      value: 0,
+      itemStyle: {
+        color: 'none',
+        decal: {
+          symbol: 'none'
+        }
+      },
+      label: {
+        show: false
+      }
+    }
+    let sum: number = 0
+    for(let { value } of dataObj.series[0].data) {
+      sum += parseInt(value)
+    }
+    dataOption.value = sum
+    dataObj.series[0].data.push(dataOption)
+    return dataObj
+  })
 }

@@ -12,76 +12,80 @@ import waterMark from "@/chartConfig/commonParams/waterMark";
 
 const common: any = useCommonStore()
 
-export default [
-  title,
-  canvas,
-  grid,
-  waterMark,
-  {
-    name: '内外圈大小',
-    opName: 'polar',
-    chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_circle',
-    component: markRaw(paramsBarPolar),
-    defaultOption: {
-      polar: {
-        radius: [30, '80%']
+const getOption = () => {
+  return [
+    title,
+    canvas,
+    grid,
+    waterMark,
+    {
+      name: '内外圈大小',
+      opName: 'polar',
+      chartOption: true,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_circle',
+      component: markRaw(paramsBarPolar),
+      defaultOption: {
+        polar: {
+          radius: [30, '80%']
+        },
       },
+      allOption: {},
     },
-    allOption: {},
-  },
-  {
-    name: '圈内层次',
-    opName: 'radiusAxis',
-    chartOption: true,
-    menuOption: false,
-    uniqueOption: false,
-    icon: 'i_radiusAxis',
-    defaultOption: {
-      radiusAxis: {
-        type: 'category',
-        data: ['a', 'b', 'c', 'd'],
+    {
+      name: '圈内层次',
+      opName: 'radiusAxis',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      icon: 'i_radiusAxis',
+      defaultOption: {
+        radiusAxis: {
+          type: 'category',
+          data: ['a', 'b', 'c', 'd'],
+        },
       },
+      allOption: {},
     },
-    allOption: {},
-  },
-  {
-    name: '内圈角度',
-    opName: 'angleAxis',
-    chartOption: true,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_angle',
-    component: markRaw(paramsBarAxis_2),
-    defaultOption: {
-      angleAxis: {
-        max: 4,
-        startAngle: 75
+    {
+      name: '内圈角度',
+      opName: 'angleAxis',
+      chartOption: true,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_angle',
+      component: markRaw(paramsBarAxis_2),
+      defaultOption: {
+        angleAxis: {
+          max: 4,
+          startAngle: 75
+        },
       },
+      allOption: {},
     },
-    allOption: {},
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: {
-        type: 'bar',
-        data: [2, 1.2, 2.4, 3.6],
-        coordinateSystem: 'polar',
-        label: {
-          show: true,
-          position: 'middle',
-          formatter: '{b}: {c}'
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: {
+          type: 'bar',
+          data: [2, 1.2, 2.4, 3.6],
+          coordinateSystem: 'polar',
+          label: {
+            show: true,
+            position: 'middle',
+            formatter: '{b}: {c}'
+          }
         }
       }
-    }
-  },
-]
+    },
+  ]
+}
+
+export default getOption
 
 export const createExcelData = (config: any) => {
   let excelData: any = {}
