@@ -41,7 +41,6 @@
           v-model="config.yOffset"
         />
       </seriesItem>
-      
     </div>
   </div>
 </template>

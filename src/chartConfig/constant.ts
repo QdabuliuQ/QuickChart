@@ -12,6 +12,36 @@ export const shadowX: string = '阴影偏移X'
 export const shadowY: string = '阴影偏移Y'
 export const shadowColor: string = '阴影颜色'
 export const shadowBlur: string = '阴影模糊'
+export const symbol: ListInt[] = [
+  {
+    value: 'circle',
+    label: '圆形',
+  },
+  {
+    value: 'rect',
+    label: '矩形',
+  },
+  {
+    value: 'roundRect',
+    label: '圆角矩形',
+  },
+  {
+    value: 'triangle',
+    label: '三角形',
+  },
+  {
+    value: 'diamond',
+    label: '菱形',
+  },
+  {
+    value: 'pin',
+    label: '坐标',
+  },
+  {
+    value: 'arrow',
+    label: '箭头',
+  },
+]
 export const fontWeight: ListInt[] = [
   {
     value: 'lighter',

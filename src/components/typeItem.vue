@@ -9,10 +9,11 @@
         <div class="itemList">
           <div class="itemBox" v-for="item in list" :key="item.id">
             <div @click="item.show = !item.show" class="typeCard">
-              <i
-                :class="['iconfont', item.show ? 'rotateIcon' : '', 'i_hide']"
-              ></i>
+              <i style="margin-right: 8px;" :class="['iconfont', item.icon]"></i>
               {{ item.type }}
+              <i
+                :class="['iconfont more', item.show ? 'rotateIcon' : '', 'i_hide']"
+              ></i>
             </div>
             <div v-show="item.show" class="listContainer">
               <chartItem
@@ -107,7 +108,7 @@ export default defineComponent({
       padding-bottom: 15px;
       .itemBox {
         .typeCard {
-          padding: 10px;
+          padding: 10px 15px;
           margin-bottom: 5px;
           cursor: pointer;
           font-size: 13px;
@@ -115,8 +116,15 @@ export default defineComponent({
           font-weight: bold;
           display: flex;
           align-items: center;
+          position: relative;
+          .more {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
           .rotateIcon {
-            transform: rotateZ(90deg) !important;
+            transform: translateY(-50%) rotateZ(90deg) !important;
           }
           i {
             margin-right: 5px;

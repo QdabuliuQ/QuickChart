@@ -15,6 +15,7 @@ import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
 const common: any = useCommonStore()
 
 const getOption = () => {
+  // 初始化公共配置
   legend.defaultOption.legend.top = '5%'
   legend.defaultOption.legend.left = 'center'
   legend.defaultOption.legend.orient = 'horizontal'

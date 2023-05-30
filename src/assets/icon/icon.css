@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_50m2j6cpfm4.woff2?t=1677659939079') format('woff2'),
-       url('//at.alicdn.com/t/c/font_3670180_50m2j6cpfm4.woff?t=1677659939079') format('woff'),
-       url('//at.alicdn.com/t/c/font_3670180_50m2j6cpfm4.ttf?t=1677659939079') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_ojnxsmcm1h8.woff2?t=1685459340549') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3670180_ojnxsmcm1h8.woff?t=1685459340549') format('woff'),
+       url('//at.alicdn.com/t/c/font_3670180_ojnxsmcm1h8.ttf?t=1685459340549') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_point:before {
+  content: "\e605";
+}
+
+.i_point_chart:before {
+  content: "\e622";
+}
+
+.i_pie_chart:before {
+  content: "\e602";
+}
+
+.i_bar_chart:before {
+  content: "\e929";
+}
+
+.i_line_chart:before {
+  content: "\e70f";
 }
 
 .i_line:before {

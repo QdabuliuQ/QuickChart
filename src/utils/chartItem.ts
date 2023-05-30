@@ -1,6 +1,7 @@
 export interface ListInt {
   type: string
   id: number
+  icon: string
   show: boolean
   charts: {
     cover: string
@@ -12,6 +13,7 @@ export interface ListInt {
 const list: ListInt[] = [
   {
     type: '线形图',
+    icon: 'i_line_chart',
     id: 1,
     show: false,
     charts: [
@@ -60,6 +62,7 @@ const list: ListInt[] = [
   {
     type: '柱状图',
     id: 2,
+    icon: 'i_bar_chart',
     show: false,
     charts: [
       {
@@ -107,16 +110,12 @@ const list: ListInt[] = [
         name: '柱状图排序',
         id: '2_9',
       },
-      {
-        cover: require('@/assets/image/2_10.webp'),
-        name: '动态排序柱状图',
-        id: '2_10',
-      },
     ]
   },
   {
     type: '饼图',
     id: 3,
+    icon: 'i_pie_chart',
     show: false,
     charts: [
       {
@@ -141,6 +140,19 @@ const list: ListInt[] = [
       },
     ]
   },
+  {
+    type: '散点图',
+    id: 4,
+    icon: 'i_point_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/4_1.webp"),
+        name: '基础散点图',
+        id: '4_1'
+      }
+    ]
+  }
 ]
 
 export default list

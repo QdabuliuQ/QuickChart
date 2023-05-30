@@ -34,5 +34,4 @@ const Mit = mitt();
 app.config.globalProperties.$Bus = Mit;
 app.config.globalProperties.$echarts = echarts // 全局挂载echarts
 
-// app.use(ElementPlus).use(hljsVuePlugin).use(store).use(router).mount('#app')
 app.use(ElementPlus).use(hljsVuePlugin).use(createPinia()).use(router).mount('#app')

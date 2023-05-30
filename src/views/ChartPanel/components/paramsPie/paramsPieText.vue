@@ -83,9 +83,6 @@ export default defineComponent({
       }
     })
 
-    let timer: any = null
-
-
     onMounted(() => {
       let {
         show,
