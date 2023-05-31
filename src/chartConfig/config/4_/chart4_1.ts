@@ -4,12 +4,13 @@ import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import grid from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
+import { asisOpNameList } from "@/chartConfig/constant";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPointStyle.vue";
+import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
+import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
+import { convey, create } from '@/chartConfig/conveyUtils/pointConvey';
 
 const common: any = useCommonStore()
 
@@ -83,7 +84,22 @@ const getOption = () => {
               fontWeight: 'normal' ,
               fontFamily: 'sans-serif' ,
               fontSize: 12,
+              color: '#fff',
+              offset: [0, 0],
               align: '',
+              textBorderColor: '#000',
+              textBorderWidth: 0,
+              textBorderType: 'solid'
+            },
+            labelLine: {
+              show: false,
+              length: 0,
+              length2: 0,
+              lineStyle: {
+                color: '#000',
+                type: 'solid',
+                width: 1,
+              }
             },
             type: 'scatter',
             data: [
@@ -116,12 +132,32 @@ const getOption = () => {
     },
     {
       name: '散点样式',
-      opName: 'pieStyle',
+      opName: 'pointStyle',
       chartOption: false,
       menuOption: true,
       uniqueOption: true,
       icon: 'i_point',
       component: markRaw(paramsPointStyle),
+      allOption: {},
+    },
+    {
+      name: '文本样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      component: markRaw(paramsPointText),
+      allOption: {},
+    },
+    {
+      name: '引导线样式',
+      opName: 'lineStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_line',
+      component: markRaw(paramsPointLine),
       allOption: {},
     },
   ]
@@ -130,33 +166,9 @@ const getOption = () => {
 export default getOption
 
 export const createExcelData = (config: any) => {
-  // return create(config, (series: any) => {
-  //   let data = JSON.parse(JSON.stringify(series))
-  //   data.splice(Object.keys(series).length - 1, 1)
-  //   return data
-  // })
+  return create(config)
 }
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  // return convey(rows, common.option.series, (dataObj: any) => {
-  //   let dataOption = {
-  //     value: 0,
-  //     itemStyle: {
-  //       color: 'none',
-  //       decal: {
-  //         symbol: 'none'
-  //       }
-  //     },
-  //     label: {
-  //       show: false
-  //     }
-  //   }
-  //   let sum: number = 0
-  //   for(let { value } of dataObj.series[0].data) {
-  //     sum += parseInt(value)
-  //   }
-  //   dataOption.value = sum
-  //   dataObj.series[0].data.push(dataOption)
-  //   return dataObj
-  // })
+  return convey(rows, common.option.series)
 }

@@ -9,7 +9,7 @@
       <seriesItem title="散点颜色">
         <el-color-picker show-alpha v-model="config.color" />
       </seriesItem>
-      <seriesItem title="散点大小">
+      <seriesItem v-if="typeof config.symbolSize == 'number'" title="散点大小">
         <el-input-number
           size="small"
           :max="100"
@@ -132,7 +132,6 @@ export default defineComponent({
           series: s,
         });
       })
-
     })
     return {
       borderType,

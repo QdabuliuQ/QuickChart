@@ -56,8 +56,6 @@ export default defineComponent({
       //   // opName: chartOption.opName
       // });
       _this.proxy.$Bus.emit("dataChange", chartOption);
-      console.log(chartOption);
-      
     };
 
     // 初始化图表
@@ -78,11 +76,11 @@ export default defineComponent({
             width: () => w,
           },
           row: {
-            len: 100,
+            len: 200,
             height: 25,
           },
           col: {
-            len: 30,
+            len: 100,
             width: 100,
             indexWidth: 60,
             minWidth: 60,

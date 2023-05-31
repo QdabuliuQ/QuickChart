@@ -150,7 +150,12 @@ const list: ListInt[] = [
         cover: require("@/assets/image/4_1.webp"),
         name: '基础散点图',
         id: '4_1'
-      }
+      },
+      {
+        cover: require("@/assets/image/4_2.webp"),
+        name: '打卡气泡图',
+        id: '4_2'
+      },
     ]
   }
 ]

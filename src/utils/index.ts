@@ -1,4 +1,4 @@
-export const debounce = (func: Function, time: number = 100, immediate = false) => {
+export const debounce = (func: Function, time: number = 200, immediate = false) => {
   let timer: number | null = null;
   return (...args: any) => {
     if (timer) clearInterval(timer)
@@ -13,6 +13,23 @@ export const debounce = (func: Function, time: number = 100, immediate = false) 
       }, time)
     }
   }
+}
+
+export const deepCopy = (object: any) => {
+  if(!object || typeof object != 'object') return
+  // 判断是数组还是对象
+  let newObject: any = Array.isArray(object) ? [] : {} 
+  // 遍历对象上每一个属性
+  for(let key in object) {
+    // 必须是对象上的 而不是原型上的
+    if(object.hasOwnProperty(key)) {
+      // 判断object[key]的类型
+      // 如果还是对象类型，则进行递归拷贝
+      // 如果是值类型则直接放入
+      newObject[key] = typeof object[key] == 'object' ? deepCopy(object[key]) : object[key]
+    }
+  }
+  return newObject
 }
 
 export const fileType = (fileName: string) => {  // 判断文件类型

@@ -60,6 +60,20 @@ export const fontWeight: ListInt[] = [
     label: 400,
   },
 ]
+export const align: ListInt[] = [
+  {
+    value: 'left',
+    label: '左侧'
+  },
+  {
+    value: 'center',
+    label: '中间'
+  },
+  {
+    value: 'right',
+    label: '右侧'
+  },
+]
 export const fontPosition: ListInt[] = [
   {
     value: 'outside',
