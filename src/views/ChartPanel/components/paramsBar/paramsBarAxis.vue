@@ -27,6 +27,7 @@ interface comInitData {
 export default defineComponent({
   name: 'paramsBarAxis',
   setup() {
+    let timer: any = null
     const _this: any = getCurrentInstance();
     const common: any = useCommonStore();
     const data: comInitData = reactive({
@@ -36,11 +37,14 @@ export default defineComponent({
     data.max = common.option.radiusAxis.max
 
     const handleChange = () => {
-      _this.proxy.$Bus.emit('optionChange', {
-        radiusAxis: {
-          max: data.max
-        },
-      })
+      if(timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        _this.proxy.$Bus.emit('optionChange', {
+          radiusAxis: {
+            max: data.max
+          },
+        })
+      }, 500);
     }
 
     return {

@@ -156,6 +156,11 @@ const list: ListInt[] = [
         name: '打卡气泡图',
         id: '4_2'
       },
+      {
+        cover: require("@/assets/image/4_3.webp"),
+        name: '打卡气泡图(极坐标)',
+        id: '4_3'
+      },
     ]
   }
 ]

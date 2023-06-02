@@ -46,6 +46,7 @@ interface comInitData {
 export default defineComponent({
   name: "paramsBarPolar",
   setup() {
+    let timer: any = null
     const _this: any = getCurrentInstance();
     const common: any = useCommonStore();
     const data: comInitData = reactive({
@@ -57,11 +58,15 @@ export default defineComponent({
     data.outerSize = parseInt(common.option.polar.radius[1]);
 
     const handleChange = () => {
-      _this.proxy.$Bus.emit('optionChange', {
-        polar: {
-          radius: [data.innerSize, data.outerSize + '%']
-        },
-      })
+      if(timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        _this.proxy.$Bus.emit('optionChange', {
+          polar: {
+            radius: [data.innerSize, data.outerSize + '%']
+          },
+        })
+      }, 500);
+      
     }
 
     return {

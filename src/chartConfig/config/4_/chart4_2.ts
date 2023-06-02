@@ -189,8 +189,5 @@ export const conveyExcelData = (rows: any) => {
     let val3 = rows[i] && rows[i].cells && rows[i].cells[2] ? parseInt(rows[i].cells[2].text) : ''
     dataObj.series[0].data[i-2] = [val1, val2, val3]
   }
-  console.log(dataObj);
-  
   return dataObj
-  // return convey(rows, common.option.series)
 }

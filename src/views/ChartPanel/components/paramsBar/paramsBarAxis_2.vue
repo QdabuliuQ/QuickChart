@@ -39,6 +39,7 @@ interface comInitData {
 export default defineComponent({
   name: 'paramsBarAxis_2',
   setup() {
+    let timer: any = null
     const _this: any = getCurrentInstance();
     const common: any = useCommonStore();
     const data: comInitData = reactive({
@@ -50,12 +51,15 @@ export default defineComponent({
     data.startAngle = common.option.angleAxis.startAngle
 
     const handleChange = () => {
-      _this.proxy.$Bus.emit('optionChange', {
-        angleAxis: {
-          max: data.max,
-          startAngle: data.startAngle
-        },
-      })
+      if(timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        _this.proxy.$Bus.emit('optionChange', {
+          angleAxis: {
+            max: data.max,
+            startAngle: data.startAngle
+          },
+        })
+      }, 500);
     }
 
     return {
