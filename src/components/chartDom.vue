@@ -1,24 +1,11 @@
 <template>
-  <div
-    :style="{
-      width: width + 'px',
-      height: height + 'px',
-      marginTop: '15vh'
-    }"
-    ref="chartDomRef"
-    id="chartDom"
-  ></div>
-  <el-dialog
-    class="codeDialogClass"
-    v-model="codeDialog"
-    title="Echarts配置"
-    width="40%"
-  >
-    <highlightjs
-      class="language-javascript"
-      language="javascript"
-      :code="code"
-    />
+  <div :style="{
+    width: width + 'px',
+    height: height + 'px',
+    marginTop: '15vh'
+  }" ref="chartDomRef" id="chartDom"></div>
+  <el-dialog class="codeDialogClass" v-model="codeDialog" title="Echarts配置" width="40%">
+    <highlightjs class="language-javascript" language="javascript" :code="code" />
   </el-dialog>
 </template>
 
@@ -30,9 +17,11 @@ import {
   toRefs,
   ref,
   getCurrentInstance,
+  onUnmounted,
 } from "vue";
 
 import useCommonStore from "@/store/common";
+import { useRouter } from "vue-router";
 
 interface comInitData {
   options: any;
@@ -47,6 +36,8 @@ interface comInitData {
 export default defineComponent({
   name: "chartDom",
   setup() {
+    let chart_i: any = null
+    const router = useRouter();
     const common: any = useCommonStore();
     const _this: any = getCurrentInstance();
     const chartDomRef = ref();
@@ -93,18 +84,19 @@ export default defineComponent({
       let jdata: any = JSON.stringify(data.option, null, 4);
       data.code = jdata.replace(/"(\w+)":/g, "$1:");
     };
-
-    onMounted(() => {
-      let chartInstance: any = _this.proxy.$echarts.init(chartDomRef.value);
+    const initChart = () => {
+      let chartInstance = _this.proxy.$echarts.init(chartDomRef.value);
+      chart_i = chartInstance
       chartInstance.setOption(common.option);
+
       data.option = common.option;
       data.code = common.option;
       getCode();
 
-
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
         let k: string = Object.keys(e)[0];
+
         if (k != "series") {
           chartInstance.setOption(e);
         }
@@ -114,6 +106,7 @@ export default defineComponent({
             break;
           }
         }
+
         if (k == "series") {
           chartInstance.setOption(data.option, true);
         }
@@ -127,10 +120,10 @@ export default defineComponent({
       _this.proxy.$Bus.on("dataChange", (e: any) => {
 
         let piniaOption = common.option
-        for(let key in e) {
+        for (let key in e) {
           piniaOption[key] = e[key]
         }
-        
+
         // 修改图表配置
         chartInstance.setOption(e);
         // 修改pinia数据
@@ -165,8 +158,6 @@ export default defineComponent({
 
       // 重置数据
       _this.proxy.$Bus.on("resetChartData", () => {
-        let p = common.option.series
-
         common.$patch((state: any) => {
           state.option.series = state.defaultOption.series;
           state.option.xAxis = state.defaultOption.xAxis;
@@ -176,7 +167,26 @@ export default defineComponent({
           chartInstance.setOption(common.option, true);
         }, 0);
       });
+    }
+
+    onMounted(() => {
+      initChart()
     });
+
+    onUnmounted(() => {
+      // 清空图表实例
+      chart_i.clear()
+      chart_i.dispose()
+      chart_i = null
+      // 事件监听销毁
+      _this.proxy.$Bus.off('optionChange')
+      _this.proxy.$Bus.off('dataChange')
+      _this.proxy.$Bus.off('canvasChange')
+      _this.proxy.$Bus.off('createCode')
+      _this.proxy.$Bus.off('downloadChart')
+      _this.proxy.$Bus.off('resetChartData')
+    })
+
     return {
       chartDomRef,
       ...toRefs(data),
@@ -190,11 +200,13 @@ export default defineComponent({
   position: relative;
   margin: 0 auto;
 }
+
 .hljs {
   overflow-y: scroll;
   max-height: 420px;
   font-size: 18px;
 }
+
 .codeDialogClass {
   .el-dialog__body {
     padding: 0 15px 15px;

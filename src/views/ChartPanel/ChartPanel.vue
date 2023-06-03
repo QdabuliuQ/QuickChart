@@ -94,9 +94,9 @@ export default defineComponent({
     });
 
     const getChartOption = (cb?: () => void) => {
-      let res: any = router.currentRoute.value.query.id?.toString().split("_");
+      let res: any = router.currentRoute.value.params.id?.toString().split("_");
       import(
-        `@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`
+        `@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`
       ).then((res: any) => {
         // 如果返回是函数 则执行 不是则直接使用配置对象
         let option = typeof res.default == 'function' ? res.default() : res.default
@@ -129,7 +129,7 @@ export default defineComponent({
     onMounted(() => {
       data.chartBoxWidth =
         (document.getElementById("ChartPanel")?.clientWidth as number) - 210;
-      data.id = router.currentRoute.value.query.id as string;
+      data.id = router.currentRoute.value.params.id as string;
 
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e + "px";
@@ -144,7 +144,7 @@ export default defineComponent({
     });
 
     watch(
-      () => router.currentRoute.value.query.id,
+      () => router.currentRoute.value.params.id,
       (n, o) => {
         data.id = n as string;
         data.loadParams = true;
@@ -158,7 +158,6 @@ export default defineComponent({
           }, 1000);
         });
 
-        // _this.proxy.$Bus.emit("idChange", data.id);
       }
     );
 

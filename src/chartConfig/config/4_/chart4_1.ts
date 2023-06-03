@@ -11,6 +11,7 @@ import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPo
 import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
 import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
 import { convey, create } from '@/chartConfig/conveyUtils/pointConvey';
+import { point_series_itemStyle, point_series_label, point_series_labelLine } from '@/chartConfig/option';
 
 const common: any = useCommonStore()
 
@@ -69,38 +70,9 @@ const getOption = () => {
             symbol: 'circle',
             color: '',
             symbolSize: 20,
-            itemStyle: {
-              borderColor: '#000',
-              borderWidth: 0,
-              borderType: 'solid',
-              shadowBlur: 0 ,
-              shadowColor: '' ,
-              shadowOffsetX: 0 ,
-              shadowOffsetY: 0 ,
-            },
-            label: {
-              show: false,
-              fontStyle: 'normal' ,
-              fontWeight: 'normal' ,
-              fontFamily: 'sans-serif' ,
-              fontSize: 12,
-              color: '#fff',
-              offset: [0, 0],
-              align: '',
-              textBorderColor: '#000',
-              textBorderWidth: 0,
-              textBorderType: 'solid'
-            },
-            labelLine: {
-              show: false,
-              length: 0,
-              length2: 0,
-              lineStyle: {
-                color: '#000',
-                type: 'solid',
-                width: 1,
-              }
-            },
+            itemStyle: point_series_itemStyle(),
+            label: point_series_label(),
+            labelLine: point_series_labelLine(),
             type: 'scatter',
             data: [
               [10.0, 8.04],

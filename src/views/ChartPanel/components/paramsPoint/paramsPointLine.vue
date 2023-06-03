@@ -4,7 +4,7 @@
       <seriesItem title="显示引导线">
         <el-switch size="small" v-model="config.show" />
       </seriesItem>
-      <seriesItem title="线段1长度">
+      <seriesItem v-if="config.length != null" title="线段1长度">
         <el-input-number size="small" :max="300" :min="0" v-model="config.length" />
       </seriesItem>
       <seriesItem title="线段2长度">
@@ -27,8 +27,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs, watch, getCurrentInstance, ComponentInternalInstance } from 'vue'
-import seriesItem from "@/components/seriesItem.vue";
 import useCommonStore from "@/store/common";
+import seriesItem from "@/components/seriesItem.vue";
 import { borderType } from "@/chartConfig/constant";
 import { debounce, deepCopy } from '@/utils';
 

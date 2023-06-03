@@ -54,8 +54,8 @@ const routes: Array<RouteRecordRaw> = [
         component: ChartPage,
         children: [
           {
-            path: '/Chart',
-            name: 'Chart',
+            path: '/chart/:id',
+            name: 'chart',
             component: ChartPanel
           }
         ]

@@ -44,18 +44,22 @@ export default defineComponent({
     });
 
     const toggleChart = () => {
-
-      let curId = router.currentRoute.value.query.id;
-      if (curId != props.id && router.currentRoute.value.path == "/Chart") {
+      let curId = router.currentRoute.value.params.id;
+      console.log(curId, props.id);
+      if (curId != props.id && router.currentRoute.value.name == "chart") {
         ElMessageBox.confirm("单图中插入新图表将会替换原图表及数据", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         }).then(() => {
-          router.push("/Chart?id=" + props.id);
+          router.push({
+            path: "/chart/" + props.id
+          });
         });
-      } else if( curId != props.id){
-        router.push("/Chart?id=" + props.id);
+      } else if(curId != props.id){
+        router.push({
+          path: "/chart/" + props.id
+        });
       }
     };
 
@@ -81,6 +85,8 @@ export default defineComponent({
     position: relative;
     border-radius: 5px;
     overflow: hidden;
+    background-color: #fff;
+    aspect-ratio: 2/1.6;
     &:hover .mask {
       opacity: 1;
     }
@@ -104,6 +110,8 @@ export default defineComponent({
   }
   img {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
     cursor: pointer;
     user-select: none;
   }

@@ -20,15 +20,15 @@
       <seriesItem title="字体颜色">
         <el-color-picker v-model="config.color" show-alpha />
       </seriesItem>
-      <seriesItem title="字体位置">
+      <seriesItem v-if="config.align" title="字体位置">
         <el-select popper-class="paramsSelectPopperClass" v-model="config.align" placeholder="请选择" size="small">
           <el-option v-for="item in align" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </seriesItem>
-      <seriesItem title="字体偏移X">
+      <seriesItem v-if="offsetX" title="字体偏移X">
         <el-input-number size="small" :max="200" :min="-200" v-model="offsetX" />
       </seriesItem>
-      <seriesItem title="字体偏移Y">
+      <seriesItem v-if="offsetY" title="字体偏移Y">
         <el-input-number size="small" :max="200" :min="-200" v-model="offsetY" />
       </seriesItem>
       <seriesItem title="字体边框颜色">
@@ -119,7 +119,7 @@ export default defineComponent({
     onMounted(() => {
       cbEvent = debounce(() => {
         let s = common.option.series
-        s[0].label = deepCopy(data.config)
+        s[0].label = Object.assign(s[0].label, deepCopy(data.config)) 
         s[0].label.offset = [data.offsetX, data.offsetY]
         proxy.$Bus.emit("optionChange", {
           series: s,

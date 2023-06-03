@@ -148,7 +148,7 @@ const list: ListInt[] = [
     charts: [
       {
         cover: require("@/assets/image/4_1.webp"),
-        name: '基础散点图',
+        name: '基础散点图1',
         id: '4_1'
       },
       {
@@ -160,6 +160,11 @@ const list: ListInt[] = [
         cover: require("@/assets/image/4_3.webp"),
         name: '打卡气泡图(极坐标)',
         id: '4_3'
+      },
+      {
+        cover: require("@/assets/image/4_4.webp"),
+        name: '基础散点图2',
+        id: '4_4'
       },
     ]
   }

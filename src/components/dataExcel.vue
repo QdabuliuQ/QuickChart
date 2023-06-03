@@ -121,7 +121,7 @@ export default defineComponent({
           clearTimeout(timer);
           timer = setTimeout(() => {
             setExcelData()
-          }, 500);
+          }, 1000);
         });
 
         setExcelData()
@@ -133,9 +133,9 @@ export default defineComponent({
 
     onMounted(() => {
       data.sheetObj = null;
-      let res: any = router.currentRoute.value.query.id?.toString().split('_')
-      data.createInitiativeData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`).createExcelData;
-      data.conveyData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.query.id}`).conveyExcelData;
+      let res: any = router.currentRoute.value.params.id?.toString().split('_')
+      data.createInitiativeData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`).createExcelData;
+      data.conveyData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`).conveyExcelData;
 
       data.excelData = data.createInitiativeData(common.option);
       data.initativeData = data.createInitiativeData(common.option);

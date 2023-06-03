@@ -46,3 +46,19 @@ export const fileType = (fileName: string) => {  // 判断文件类型
   result = imgList.find(item => item === suffix);
   if (result) return 'image';
 }
+
+export const initCopyConfig = (origin: any, data: any, excludeProp?: Set<string>) => {
+  for(let key in origin) {
+    if(origin.hasOwnProperty(key)) {
+      if(excludeProp && excludeProp.has(key)) continue
+      if(Array.isArray(origin[key])) {
+        data[key] = [...origin[key]]
+      } else if(origin[key] && origin[key] instanceof Object) {
+        data[key] = new Object()
+        initCopyConfig(origin[key], data[key], excludeProp)
+      } else {
+        data[key] = origin[key]
+      }
+    }
+  }
+}

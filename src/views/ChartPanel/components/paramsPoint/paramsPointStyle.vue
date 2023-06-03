@@ -49,7 +49,7 @@
           size="small"
           :max="100"
           :min="-100"
-          v-model="config.itemStyle.shadowOffsetY"
+          v-model="config.itemStyle.shadowOffsetX"
         />
       </seriesItem>
       <seriesItem title="阴影偏移Y">
@@ -57,7 +57,7 @@
           size="small"
           :max="100"
           :min="-100"
-          v-model="config.itemStyle.shadowOffsetX"
+          v-model="config.itemStyle.shadowOffsetY"
         />
       </seriesItem>
     </div>

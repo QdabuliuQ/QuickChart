@@ -196,7 +196,7 @@ export default defineComponent({
       _this.proxy.$Bus.emit("downloadChart");
     };
 
-    onMounted(() => {
+    const initParams = () => {
       data.options = common.chartConfig;
       
       for (let item of data.options) {
@@ -206,14 +206,20 @@ export default defineComponent({
       }
 
       data.image = require("@/assets/image/" +
-        router.currentRoute.value.query.id +
+        router.currentRoute.value.params.id +
         ".webp");
+    }
 
+    onMounted(() => {
+      initParams()
+      _this.proxy.$Bus.on('chartChange', ({cb}: {cb: Function}) => {
+        initParams()
+        cb()
+      })
       // 监听窗口大小变化
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - 54.8 + "px";
       });
-      
     });
 
     watch(
