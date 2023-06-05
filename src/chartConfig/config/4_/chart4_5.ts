@@ -5,17 +5,16 @@ import canvas from "@/chartConfig/commonParams/canvas";
 import grid from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import { point_series_label, point_series_labelLine } from '@/chartConfig/option';
+import { pointData_2 } from "@/chartConfig/constant";
 import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
 import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
-import { pointData_2 } from "@/chartConfig/constant";
 import lodash from 'lodash';
 
 const common: any = useCommonStore()
 const data = pointData_2;
 
 const getOption = () => {
-  grid.defaultOption.grid.left = 40
-  grid.defaultOption.grid.right = 130
+  title.defaultOption.title.show = false
   return [
     title,
     canvas,
@@ -28,9 +27,7 @@ const getOption = () => {
       menuOption: false,
       uniqueOption: false,
       defaultOption: {
-        xAxis: {
-          splitLine: { show: false }
-        },
+        xAxis: {},
       },
       allOption: {},
     },
@@ -42,7 +39,6 @@ const getOption = () => {
       uniqueOption: false,
       defaultOption: {
         yAxis: {
-          splitLine: { show: false },
           scale: true
         },
       },
@@ -62,43 +58,42 @@ const getOption = () => {
       allOption: {},
     },
     {
-      name: '数据',
+      name: 'series',
       opName: 'series',
       chartOption: true,
       menuOption: false,
+      uniqueOption: false,
       defaultOption: {
         series: [
           {
             type: 'scatter',
             symbolSize: function (data: any) {
-              return data[2]
+              return data[2];
             },
             emphasis: {
               focus: 'self'
             },
-            labelLayout: function () {
-              return {
-                x: (document.getElementById('chartDom')?.clientWidth) as number - 100,
-                moveOverlap: 'shiftY'
-              };
+            labelLayout: {
+              y: 20,
+              align: 'center',
+              hideOverlap: true,
+              moveOverlap: 'shiftX'
             },
             labelLine: point_series_labelLine({
               'show': true,
               'length': null,
-              'length2': 10,
+              'length2': 5,
               'lineStyle.color': '#bbb'
             }),
             label: {
               ...point_series_label({
                 'show': true,
-                'color': '#000',
-                'offset': [null, null],
-                'align': null
+                'color': '#000'
               }),
               formatter: function (param: any) {
                 return param.data[3];
               },
-              minMargin: 2
+              position: 'top'
             }
           }
         ]
@@ -129,7 +124,6 @@ const getOption = () => {
 }
 
 export default getOption
-
 let copyData: any[][] = []
 export const createExcelData = (config: any) => {
   let datas = lodash.cloneDeep(common.option.dataset.source)
@@ -165,5 +159,12 @@ export const conveyExcelData = (rows: any, cache: {
       }
     }
   }
+  
+  // if(val==undefined || i==undefined || j==undefined) return {}
+  // if(i > copyData.length) return {}
+  // if(!copyData[i]) copyData[i] = []
+  
+  // copyData[i][j] = isNaN(parseInt(val)) ? val : parseInt(val)
+  
   return {}
 }

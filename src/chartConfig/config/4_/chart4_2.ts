@@ -163,7 +163,6 @@ export const createExcelData = (config: any) => {
 }
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  
   let xAxis = lodash.cloneDeep(common.option.xAxis)
   let yAxis = lodash.cloneDeep(common.option.yAxis)
   let series = lodash.cloneDeep(common.option.series)

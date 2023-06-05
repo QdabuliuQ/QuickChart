@@ -16,8 +16,9 @@ const common: any = useCommonStore()
 
 
 const getOption = () => {
-  legend.defaultOption.legend.left = 'left'
-  legend.defaultOption.legend.orient = 'vertical'
+  legend.defaultOption.legend.left = 'center'
+  legend.defaultOption.legend.top = 30
+  legend.defaultOption.legend.orient = 'horizontal'
   title.defaultOption.title.show = false
   return [
     title,

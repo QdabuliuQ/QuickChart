@@ -14,8 +14,9 @@ import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
 const common: any = useCommonStore()
 
 const getOption = () => {
-    legend.defaultOption.legend.left = 'left'
+    legend.defaultOption.legend.left = 1
     legend.defaultOption.legend.orient = 'vertical'
+    legend.defaultOption.legend.icon = 'roundRect'
     title.defaultOption.title.show = false
     return [
         title,

@@ -39,6 +39,11 @@ export default defineComponent({
     const _this: any = getCurrentInstance();
     const router = useRouter();
     const willtableRef = ref();
+    let cacheData: {
+      val: any
+      i: number
+      j: number
+    }[] = []
     const data: comInitData = reactive({
       sheetObj: null,
       excelData: null,
@@ -48,14 +53,10 @@ export default defineComponent({
       conveyData: {},
     });
 
-    const setExcelData = () => {
-      let chartOption = data.conveyData(data.sheetObj.getData()[0].rows);
-      // _this.proxy.$Bus.emit("dataChange", {
-      //   data: chartOption.categoryData,
-      //   series: chartOption.series,
-      //   // opName: chartOption.opName
-      // });
+    const setExcelData = (cache?: any[]) => {
+      let chartOption = data.conveyData(data.sheetObj.getData()[0].rows, cache && cache.length ? [...cache] : null);
       _this.proxy.$Bus.emit("dataChange", chartOption);
+      cacheData.length = 0
     };
 
     // 初始化图表
@@ -116,11 +117,14 @@ export default defineComponent({
         data.sheetObj.sheet.data.setFreeze(1, 0);
 
         // 编辑单元格触发
-        data.sheetObj.on("cell-edited", () => {
+        data.sheetObj.on("cell-edited", (val: any, i: number, j: number) => {
           // 防抖
+          cacheData.push({
+            val, i, j
+          })
           clearTimeout(timer);
           timer = setTimeout(() => {
-            setExcelData()
+            setExcelData(cacheData)
           }, 1000);
         });
 
@@ -134,8 +138,12 @@ export default defineComponent({
     onMounted(() => {
       data.sheetObj = null;
       let res: any = router.currentRoute.value.params.id?.toString().split('_')
-      data.createInitiativeData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`).createExcelData;
-      data.conveyData = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`).conveyExcelData;
+      const {
+        createExcelData,
+        conveyExcelData
+      } = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`)
+      data.createInitiativeData = createExcelData;
+      data.conveyData = conveyExcelData;
 
       data.excelData = data.createInitiativeData(common.option);
       data.initativeData = data.createInitiativeData(common.option);
