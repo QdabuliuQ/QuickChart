@@ -12,6 +12,10 @@ import {
 import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPointStyle.vue";
 import paramsPointAngleAxis from "@/views/ChartPanel/components/paramsPoint/paramsPointAngleAxis.vue";
 import lodash from 'lodash';
+// import Worker from "worker-loader!@/worker/handle.worker.js";
+// // import Worker from '../../../worker/handle.yworker'
+// const worker = new Worker()
+
 
 const common: any = useCommonStore()
 const axisData = [
@@ -33,6 +37,19 @@ const getOption = () => {
     legend,
     waterMark,
     {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: pointData
+        },
+      },
+      allOption: {},
+    },
+    {
       name: '数据',
       opName: 'series',
       chartOption: true,
@@ -48,7 +65,7 @@ const getOption = () => {
             symbolSize: function (val: any) {
               return val[2] * 2;
             },
-            data: datas,
+            // data: datas,
           }
         ]
       }
@@ -138,7 +155,7 @@ export const createExcelData = (config: any) => {
   let excelData: any = {}
   let angleAxisData = config.angleAxis.data
   let radiusAxisData = config.radiusAxis.data
-  let data = config.series[0].data
+  let data = config.dataset.source
   excelData[0] = {
     cells: {
     }
@@ -168,34 +185,49 @@ export const createExcelData = (config: any) => {
   }
   return excelData
 }
-// 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
-  
-  let angleAxis = lodash.cloneDeep(common.option.angleAxis)
-  let radiusAxis = lodash.cloneDeep(common.option.radiusAxis)
-  let series = lodash.cloneDeep(common.option.series)
-  let xLength = Object.keys(rows[0].cells).length
-  let yLength = Object.keys(rows[1].cells).length
-  let dataObj = {
+
+export function combineOption(data: any) {
+  let angleAxis = common.option.angleAxis
+  let radiusAxis = common.option.radiusAxis
+  let dataset = common.option.dataset
+
+  angleAxis.data = data.angleAxisData
+  radiusAxis.data = data.radiusAxisData
+  dataset.source = data.datasetData
+  return {
     angleAxis,
     radiusAxis,
-    series
+    dataset
   }
-  dataObj.angleAxis.data = []
-  dataObj.radiusAxis.data = []
-  dataObj.series[0].data = []
-  for(let i = 0; i < xLength; i ++) {
-    dataObj.angleAxis.data[i] = rows[0] && rows[0].cells && rows[0].cells[i] ? rows[0].cells[i].text : ''
-  }
-  for(let i = 0; i < yLength; i ++) {
-    dataObj.radiusAxis.data[i] = rows[1] && rows[1].cells && rows[1].cells[i] ? rows[1].cells[i].text : ''
-  }
-  for(let i = 2; i < rows.len; i ++) {
-    let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseInt(rows[i].cells[0].text) : ''
-    let val2 = rows[i] && rows[i].cells && rows[i].cells[1] ? parseInt(rows[i].cells[1].text) : ''
-    let val3 = rows[i] && rows[i].cells && rows[i].cells[2] ? parseInt(rows[i].cells[2].text) : ''
-    dataObj.series[0].data[i-2] = [val1, val2, val3]
-  }
+}
+
+export function conveyExcelData (rows: any) {
   
-  return dataObj
+  if(!rows) return null
+  let datas = {
+    angleAxisData: <any>[],
+    radiusAxisData: <any>[],
+    datasetData: <any>[],
+  }
+  let length: number = Object.keys(rows).length-1
+  for(let i = 0; i < length; i ++) {
+    if(i == 0) {
+      let n: number = Object.keys(rows[i].cells).length
+      for(let j = 0; j < n; j ++) {
+        datas.angleAxisData.push(rows[i].cells[j].text)
+      }
+    } else if(i == 1) {
+      let n: number = Object.keys(rows[i].cells).length
+      for(let j = 0; j < n; j ++) {
+        datas.radiusAxisData.push(rows[i].cells[j].text)
+      }
+    } else {
+      let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseInt(rows[i].cells[0].text) : ''
+      let val2 = rows[i] &&rows[i].cells && rows[i].cells[1] ? parseInt(rows[i].cells[1].text) : ''
+      let val3 = rows[i] &&rows[i].cells && rows[i].cells[2] ? parseInt(rows[i].cells[2].text) : ''
+      if(val1 == '' && val2 == '' && val3 == '') break
+      datas.datasetData.push([val1, val2, val3])
+    }
+  }
+  return datas
 }

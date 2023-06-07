@@ -19,9 +19,9 @@ import {
   getCurrentInstance,
   onUnmounted,
 } from "vue";
-
 import useCommonStore from "@/store/common";
 import { useRouter } from "vue-router";
+import { deepCopy } from '@/utils/index'
 
 interface comInitData {
   options: any;
@@ -158,11 +158,10 @@ export default defineComponent({
 
       // 重置数据
       _this.proxy.$Bus.on("resetChartData", () => {
+        let option = deepCopy(common.defaultOption)
+        data.option = option
         common.$patch((state: any) => {
-          state.option.dataset = state.defaultOption.dataset;
-          state.option.series = state.defaultOption.series;
-          state.option.xAxis = state.defaultOption.xAxis;
-          state.option.yAxis = state.defaultOption.yAxis;
+          state.option = option
         });
         setTimeout(() => {
           chartInstance.setOption(common.option, true);

@@ -27,6 +27,7 @@ import {
 import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
 import loading from "@/components/loading.vue";
+import { deepCopy } from "@/utils";
 
 
 // 定义异步组件，这里这样写是为了查看效果
@@ -107,7 +108,7 @@ export default defineComponent({
         for (let item of option) {
           if (item.chartOption) {
             tmpOption[item.opName] = item.defaultOption[item.opName];
-            defaultOption[item.opName] = item.defaultOption[item.opName];
+            // defaultOption[item.opName] = item.defaultOption[item.opName];
           }
           if (item.allOption) {
             chartConfig.push(item);
@@ -118,8 +119,11 @@ export default defineComponent({
         common.$patch((state: any) => {
           state.option = tmpOption;
           state.chartConfig = chartConfig;
-          state.defaultOption = defaultOption;
+          state.defaultOption = deepCopy(tmpOption);
         });
+        console.log('执行', common.defaultOption);
+        
+        // sessionStorage.setItem('option', JSON.stringify(tmpOption))
         if (cb) cb(); // 执行回调函数
       });
     };

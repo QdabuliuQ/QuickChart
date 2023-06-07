@@ -18,7 +18,7 @@
           下载
         </el-button>
       </div>
-      <div class="collapseContainer">
+      <div :key="key" class="collapseContainer">
         <div v-for="item in options" :key="item.opName" class="collapseItem">
           <div
             v-if="item.menuOption"
@@ -103,7 +103,6 @@
               :opNameList="item.opNameList"
             />
             <component v-if="item.uniqueOption" :is="item.component"></component>
-
           </div>
         </div>
       </div>
@@ -152,6 +151,7 @@ interface comInitData {
   image: string;
   activeIndex: string;
   collapseList: any;
+  key: number
 }
 
 export default defineComponent({
@@ -176,6 +176,7 @@ export default defineComponent({
       options: [],
       image: "",
       activeIndex: "",
+      key: 0,
       collapseList: {},
     });
 
@@ -220,6 +221,11 @@ export default defineComponent({
       _this.proxy.$Bus.on("resize", (e: number) => {
         data.height = e - 54.8 + "px";
       });
+
+      _this.proxy.$Bus.on('resetChartData', () => {
+        data.key ++
+        initParams()
+      })
     });
 
     watch(

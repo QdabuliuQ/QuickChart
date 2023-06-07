@@ -42,6 +42,9 @@
           <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </seriesItem>
+      <seriesItem v-if="config.minMargin != null && config.minMargin != undefined" title="字体间距">
+        <el-input-number size="small" :max="50" :min="0" v-model="config.minMargin" />
+      </seriesItem>
     </div>
   </div>
 </template>
@@ -68,6 +71,7 @@ interface comInitData {
     textBorderColor: string
     textBorderWidth: number
     textBorderType: string
+    minMargin?: number
   }
 }
 
@@ -96,7 +100,8 @@ export default defineComponent({
         align:seriesData.align, 
         textBorderColor: seriesData.textBorderColor,
         textBorderWidth: seriesData.textBorderWidth,
-        textBorderType: seriesData.textBorderType
+        textBorderType: seriesData.textBorderType,
+        minMargin: seriesData.minMargin
       }
     })
 
@@ -119,6 +124,8 @@ export default defineComponent({
     onMounted(() => {
       cbEvent = debounce(() => {
         let s = common.option.series
+        console.log(common.option);
+        
         s[0].label = Object.assign(s[0].label, deepCopy(data.config)) 
         s[0].label.offset = [data.offsetX, data.offsetY]
         proxy.$Bus.emit("optionChange", {

@@ -76,16 +76,16 @@ const getOption = () => {
             emphasis: {
               focus: 'self'
             },
-            labelLayout: function () {
-              return {
-                x: (document.getElementById('chartDom')?.clientWidth) as number - 100,
-                moveOverlap: 'shiftY'
-              };
+            labelLayout: {
+              y: '10%',
+              x: '85%',
+              hideOverlap: true,
+              moveOverlap: 'shiftY'
             },
             labelLine: point_series_labelLine({
               'show': true,
               'length': null,
-              'length2': 10,
+              'length2': 5,
               'lineStyle.color': '#bbb'
             }),
             label: {
@@ -98,7 +98,7 @@ const getOption = () => {
               formatter: function (param: any) {
                 return param.data[3];
               },
-              minMargin: 2
+              minMargin: 4
             }
           }
         ]
@@ -130,10 +130,8 @@ const getOption = () => {
 
 export default getOption
 
-let copyData: any[][] = []
 export const createExcelData = (config: any) => {
-  let datas = lodash.cloneDeep(common.option.dataset.source)
-  copyData = datas
+  let datas = config.dataset.source
   let excelData: any = {}
   for(let i = 0; i < datas.length; i ++) {
     excelData[i] = {
@@ -148,22 +146,31 @@ export const createExcelData = (config: any) => {
   return excelData
 }
 
-export const conveyExcelData = (rows: any, cache: {
-  val: any
-  i: number
-  j: number
-}[] | null) => {
-  if(cache && cache.length) {
-    for(let {val, i, j} of cache) {
-      if(i > copyData.length) continue
-      if(!copyData[i]) copyData[i] = []
-      copyData[i][j] = isNaN(parseInt(val)) ? val : parseInt(val)
-    }
-    return {
-      dataset: {
-        source: copyData
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  dataset.source = data.datasetData
+  return {
+    dataset
+  }
+}
+
+export const conveyExcelData = (rows: any) => {
+  if(!rows) return null
+  let datas  = {
+    datasetData: <any>[]
+  }
+  let length: number = Object.keys(rows).length-1
+  for(let i = 0; i < length; i ++) {
+    let row = []
+    for(let j = 0; j < 4; j ++) {
+      if(rows[i] && rows[i].cells && rows[i] && rows[i].cells[j]) {
+        row.push(isNaN(parseInt(rows[i].cells[j].text)) ? rows[i].cells[j].text : parseInt(rows[i].cells[j].text))
+      } else {
+        row.push('')
       }
     }
+    datas.datasetData.push(row)
   }
-  return {}
+  
+  return datas
 }

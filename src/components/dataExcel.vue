@@ -11,9 +11,11 @@ import {
   toRefs,
   ref,
   getCurrentInstance,
+onUnmounted,
 } from "vue";
 import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
+import Worker from "worker-loader!@/workers/worker";
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
 Spreadsheet.locale("zh-cn", zhCN);
@@ -24,7 +26,6 @@ interface comInitData {
   excelData: any;
   initativeData: any; // 初始数据
   option: any;
-  createInitiativeData: any;
   conveyData: any;
 }
 
@@ -35,28 +36,27 @@ export default defineComponent({
     loading,
   },
   setup() {
+    let combineData: any = null, createInitiativeData: any = null
+    let excelData: any = null, conveyData: any = null
+    const worker = new Worker()
     const common: any = useCommonStore();
     const _this: any = getCurrentInstance();
     const router = useRouter();
     const willtableRef = ref();
-    let cacheData: {
-      val: any
-      i: number
-      j: number
-    }[] = []
     const data: comInitData = reactive({
       sheetObj: null,
       excelData: null,
       initativeData: null,
       option: null,
-      createInitiativeData: {},
       conveyData: {},
     });
 
-    const setExcelData = (cache?: any[]) => {
-      let chartOption = data.conveyData(data.sheetObj.getData()[0].rows, cache && cache.length ? [...cache] : null);
-      _this.proxy.$Bus.emit("dataChange", chartOption);
-      cacheData.length = 0
+    const setExcelData = () => {
+      worker.postMessage({
+        data: JSON.stringify(data.sheetObj.getData()[0].rows),
+        handle: conveyData.toString(),
+        type: 'edit'
+      })
     };
 
     // 初始化图表
@@ -105,52 +105,66 @@ export default defineComponent({
 
         const data1 = {
           name: "sheet11",
-          rows: data.excelData,
+          rows: excelData,
         };
         data.sheetObj = new Spreadsheet("#dataExcel", data.option)
           .loadData(data1) // load data
-          .change((res) => {
-            // 导出数据
+          .change((res) => {  // 图表数据修改
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              worker.postMessage({
+                data: JSON.stringify(res.rows),
+                handle: conveyData.toString(),
+                type: 'edit'
+              })
+            }, 1000);
           });
 
         // 设置冻结
         data.sheetObj.sheet.data.setFreeze(1, 0);
 
-        // 编辑单元格触发
-        data.sheetObj.on("cell-edited", (val: any, i: number, j: number) => {
-          // 防抖
-          cacheData.push({
-            val, i, j
-          })
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            setExcelData(cacheData)
-          }, 1000);
-        });
-
-        setExcelData()
-
-        // data validation
         data.sheetObj.validate();
       }, 200);
     };
+
+    // worker响应函数
+    worker.onmessage = (e: {data: any}) => {
+      if (e.data.type == 'edit') {
+        // 获取计算过后的data 合并成为option
+        _this.proxy.$Bus.emit("dataChange", combineData(e.data.res));
+      } else if (e.data.type == 'init') {
+        excelData = e.data.res
+      }
+    }
+    
 
     onMounted(() => {
       data.sheetObj = null;
       let res: any = router.currentRoute.value.params.id?.toString().split('_')
       const {
         createExcelData,
-        conveyExcelData
+        conveyExcelData,
+        combineOption
       } = require(`@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`)
-      data.createInitiativeData = createExcelData;
-      data.conveyData = conveyExcelData;
+      createInitiativeData = createExcelData;
+      conveyData = conveyExcelData;
+      combineData = combineOption
 
-      data.excelData = data.createInitiativeData(common.option);
-      data.initativeData = data.createInitiativeData(common.option);
+      worker.postMessage({
+        data: JSON.stringify(common.option),
+        handle: createInitiativeData.toString(),
+        type: 'init'
+      })
+
+      // data.excelData = createInitiativeData(common.option);
 
       initData();
       
     });
+
+    onUnmounted(() => {
+      worker.terminate()
+    })
 
     return {
       willtableRef,

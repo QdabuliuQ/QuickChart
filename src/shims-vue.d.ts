@@ -13,3 +13,5 @@ declare module '*.vue' {
 declare module 'vue-highlightjs'
 declare module 'x-data-spreadsheet/src/locale/zh-cn'
 declare module 'recordrtc';
+declare module 'worker-loader!@/workers/worker.ts'
+declare module 'worker-loader!@/workers/worker'
