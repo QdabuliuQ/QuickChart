@@ -2,19 +2,14 @@ import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
+import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
-import legend from "@/chartConfig/commonParams/legend";
 import { pointData } from "@/chartConfig/constant";
 import { 
   point_series_itemStyle
 } from "@/chartConfig/option";
 import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPointStyle.vue";
 import paramsPointAngleAxis from "@/views/ChartPanel/components/paramsPoint/paramsPointAngleAxis.vue";
-import lodash from 'lodash';
-// import Worker from "worker-loader!@/worker/handle.worker.js";
-// // import Worker from '../../../worker/handle.yworker'
-// const worker = new Worker()
 
 
 const common: any = useCommonStore()
@@ -27,14 +22,12 @@ const axisData = [
 const rAxisData = [
   'Saturday', 'Friday', 'Thursday','Wednesday', 'Tuesday', 'Monday', 'Sunday'
 ]
-const datas = pointData
 
 const getOption = () => {
   return [
     title,
     canvas,
-    grid,
-    legend,
+    gridOption(),
     waterMark,
     {
       name: 'dataset',
@@ -57,6 +50,7 @@ const getOption = () => {
       defaultOption: {
         series: [
           {
+            name: 'dataName',
             type: 'scatter',
             coordinateSystem: 'polar',
             symbol: 'circle',
@@ -65,7 +59,6 @@ const getOption = () => {
             symbolSize: function (val: any) {
               return val[2] * 2;
             },
-            // data: datas,
           }
         ]
       }
@@ -222,10 +215,10 @@ export function conveyExcelData (rows: any) {
         datas.radiusAxisData.push(rows[i].cells[j].text)
       }
     } else {
-      let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseInt(rows[i].cells[0].text) : ''
-      let val2 = rows[i] &&rows[i].cells && rows[i].cells[1] ? parseInt(rows[i].cells[1].text) : ''
-      let val3 = rows[i] &&rows[i].cells && rows[i].cells[2] ? parseInt(rows[i].cells[2].text) : ''
-      if(val1 == '' && val2 == '' && val3 == '') break
+      let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : ''
+      let val2 = rows[i] &&rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : ''
+      let val3 = rows[i] &&rows[i].cells && rows[i].cells[2] ? parseFloat(rows[i].cells[2].text) : ''
+      if(!val1 && !val2 && !val3) break
       datas.datasetData.push([val1, val2, val3])
     }
   }

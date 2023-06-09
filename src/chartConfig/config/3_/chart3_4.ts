@@ -6,8 +6,8 @@ import paramsPieText from "@/views/ChartPanel/components/paramsPie/paramsPieText
 import paramsPieLine from "@/views/ChartPanel/components/paramsPie/paramsPieLine.vue";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import gridOption from "@/chartConfig/commonParams/grid";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import pie_label from "@/chartConfig/commonParams/pie_label";
 import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
@@ -16,14 +16,16 @@ const common: any = useCommonStore()
 
 const getOption = () => {
   // 初始化公共配置
-  legend.defaultOption.legend.top = '5%'
-  legend.defaultOption.legend.left = 'center'
-  legend.defaultOption.legend.orient = 'horizontal'
+  let legend = legendOption()
+  legend.defaultOption.legend!.icon = 'roundRect'
+  legend.defaultOption.legend!.top = '5%'
+  legend.defaultOption.legend!.left = 'center'
+  legend.defaultOption.legend!.orient = 'horizontal'
   title.defaultOption.title.show = false
   return [
     title,
     canvas,
-    grid,
+    gridOption(),
     legend,
     waterMark,
     {
@@ -103,34 +105,88 @@ const getOption = () => {
 
 export default getOption
 
-export const createExcelData = (config: any) => {
-  return create(config, (series: any) => {
-    let data = JSON.parse(JSON.stringify(series))
-    data.splice(Object.keys(series).length - 1, 1)
-    return data
-  })
+export function combineOption(data: any) {
+  let series = common.option.series
+  series[0].data = data.seriesData
+  return {
+    series
+  }
 }
-// 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
-  return convey(rows, common.option.series, (dataObj: any) => {
-    let dataOption = {
-      value: 0,
-      itemStyle: {
-        color: 'none',
-        decal: {
-          symbol: 'none'
-        }
-      },
-      label: {
-        show: false
+
+
+export const createExcelData = (config: any) => {
+  let excelData: any = {}
+  let series = JSON.parse(JSON.stringify(config.series[0].data))
+  series.splice(series.length-1, 1)
+  // 初始化
+  for (let i = 0; i < series.length; i++) {
+    excelData[i] = {
+      cells: {
+        0: {},
+        1: {}
       }
     }
-    let sum: number = 0
-    for(let { value } of dataObj.series[0].data) {
-      sum += parseInt(value)
+    excelData[i].cells[0].text = series[i].name
+    excelData[i].cells[1].text = series[i].value
+  }
+  return excelData
+}
+
+// 收集数据并进行转换
+export const conveyExcelData = (rows: any) => {
+  if(!rows) return null
+  let datas: any = {
+    seriesData: <any>[]
+  }
+  // 遍历数据项
+  let rowsTLength = Object.keys(rows).length;
+  for (let i = 0; i < rowsTLength; i++) {
+    let val1 = rows[i] && rows[i].cells[0] ? rows[i].cells[0].text : ''
+    let val2 = rows[i] && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : ''
+    if(!val1 || !val2) break
+    datas.seriesData.push({  // 创建series
+      name: val1,
+      value: val2
+    })
+  }
+  let dataOption = {
+    value: 0,
+    itemStyle: {
+      color: 'none',
+      decal: {
+        symbol: 'none'
+      }
+    },
+    label: {
+      show: false
     }
-    dataOption.value = sum
-    dataObj.series[0].data.push(dataOption)
-    return dataObj
-  })
+  }
+  for(let item of datas.seriesData) {
+    dataOption.value += item.value
+  }
+  datas.seriesData.push(dataOption)
+  return datas
+  
+  
+  // return convey(rows, common.option.series, (dataObj: any) => {
+  //   let dataOption = {
+  //     value: 0,
+  //     itemStyle: {
+  //       color: 'none',
+  //       decal: {
+  //         symbol: 'none'
+  //       }
+  //     },
+  //     label: {
+  //       show: false
+  //     }
+  //   }
+  //   let sum: number = 0
+  //   for(let { value } of dataObj.series[0].data) {
+  //     sum += parseInt(value)
+  //   }
+  //   dataOption.value = sum
+  //   dataObj.series[0].data.push(dataOption)
+  //   return dataObj
+  // })
 }

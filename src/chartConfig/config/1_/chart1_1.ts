@@ -5,7 +5,7 @@ import {
 } from "@/chartConfig/constant";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
+import gridOption from "@/chartConfig/commonParams/grid";
 import legend from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
@@ -17,7 +17,7 @@ const common: any = useCommonStore()
 const config = [
   title,
   canvas,
-  grid,
+  gridOption(),
   legend,
   waterMark,
   color,

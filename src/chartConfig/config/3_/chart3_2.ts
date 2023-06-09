@@ -6,8 +6,8 @@ import paramsPieText from "@/views/ChartPanel/components/paramsPie/paramsPieText
 import paramsPieLine from "@/views/ChartPanel/components/paramsPie/paramsPieLine.vue";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import gridOption from "@/chartConfig/commonParams/grid";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import pie_label from "@/chartConfig/commonParams/pie_label";
 import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
@@ -16,14 +16,16 @@ const common: any = useCommonStore()
 
 
 const getOption = () => {
-  legend.defaultOption.legend.left = 'center'
-  legend.defaultOption.legend.top = 30
-  legend.defaultOption.legend.orient = 'horizontal'
+  let legend = legendOption()
+  legend.defaultOption.legend!.icon = 'roundRect'
+  legend.defaultOption.legend!.left = 'center'
+  legend.defaultOption.legend!.top = 30
+  legend.defaultOption.legend!.orient = 'horizontal'
   title.defaultOption.title.show = false
   return [
     title,
     canvas,
-    grid,
+    gridOption(),
     legend,
     waterMark,
     {

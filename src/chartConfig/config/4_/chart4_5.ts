@@ -2,13 +2,12 @@ import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
+import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import { point_series_label, point_series_labelLine } from '@/chartConfig/option';
 import { pointData_2 } from "@/chartConfig/constant";
 import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
 import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
-import lodash from 'lodash';
 
 const common: any = useCommonStore()
 const data = pointData_2;
@@ -18,7 +17,7 @@ const getOption = () => {
   return [
     title,
     canvas,
-    grid,
+    gridOption(),
     waterMark,
     {
       name: 'xAxis',

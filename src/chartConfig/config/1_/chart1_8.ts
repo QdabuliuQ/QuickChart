@@ -3,14 +3,14 @@ import {
 } from "@/chartConfig/constant";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
+import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
 
 export default [
   title,
   canvas,
-  grid,
+  gridOption(),
   color,
   waterMark,
   {

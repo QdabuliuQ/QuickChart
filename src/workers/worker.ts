@@ -1,4 +1,3 @@
-
 addEventListener('message', e => {
   
   const {data, type, handle}: any = e.data

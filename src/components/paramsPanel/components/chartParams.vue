@@ -7,13 +7,13 @@
       <div class="btnList">
         <el-button @click="createCode" type="success">
           <template #icon>
-            <i class="iconfont i_code"></i>
+            <i style="margin-right: 4px;" class="iconfont i_code"></i>
           </template>
           配置
         </el-button>
         <el-button @click="downloadChart" color="#626aef">
           <template #icon>
-            <i class="iconfont i_download"></i>
+            <i style="margin-right: 4px;" class="iconfont i_download"></i>
           </template>
           下载
         </el-button>
@@ -273,7 +273,7 @@ export default defineComponent({
       padding: 6px 20px !important;
       span {
         position: relative;
-        top: -1px;
+        top: -.5px;
       }
     }
   }

@@ -3,25 +3,25 @@ import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarText from "@/views/ChartPanel/components/paramsBar/paramsBarText.vue";
-
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import gridOption from "@/chartConfig/commonParams/grid";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 const common: any = useCommonStore()
 
 const getOption = () => {
+  let grid = gridOption()
   grid.defaultOption.grid.top = 80
   grid.defaultOption.grid.bottom = 30
   return [
     title,
     canvas,
     grid,
-    legend,
+    legendOption(),
     waterMark,
     {
       name: 'X轴样式',

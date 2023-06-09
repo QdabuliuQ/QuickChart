@@ -8,8 +8,8 @@ import {
 } from "@/chartConfig/constant";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import gridOption from "@/chartConfig/commonParams/grid";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
@@ -17,6 +17,7 @@ import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 const common: any = useCommonStore()
 
 const getOption = () => {
+  let grid = gridOption()
   grid.defaultOption.grid.containLabel = true
   grid.allOption.grid.containLabel = true
   grid.defaultOption.grid.left = grid.allOption.grid.left = 30
@@ -27,7 +28,7 @@ const getOption = () => {
     title,
     canvas,
     grid,
-    legend,
+    legendOption(),
     waterMark,
     {
       name: 'X轴样式',

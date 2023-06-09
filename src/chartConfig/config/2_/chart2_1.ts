@@ -9,8 +9,8 @@ import {
 } from "@/chartConfig/constant";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import gridOption from "@/chartConfig/commonParams/grid";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
@@ -20,8 +20,8 @@ const common: any = useCommonStore()
 export default [
   title,
   canvas,
-  grid,
-  legend,
+  gridOption(),
+  legendOption(),
   waterMark,
   {
     name: 'X轴样式',

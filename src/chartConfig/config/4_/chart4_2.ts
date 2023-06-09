@@ -2,13 +2,12 @@ import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
-import grid from "@/chartConfig/commonParams/grid";
+import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import { asisOpNameList } from "@/chartConfig/constant";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPointStyle.vue";
-import lodash from 'lodash';
 const common: any = useCommonStore()
 const xData = [
   '12a', '1a', '2a', '3a', '4a', '5a', '6a',
@@ -25,6 +24,7 @@ const data = [[0, 0, 5],[1, 0, 1],[2, 0, 0],[3, 0, 0],[4, 0, 0],[5, 0, 0],[6, 0,
 const getOption = () => {
   xAxis.axisLine.show = false
   yAxis.axisLine.show = false
+  let grid = gridOption()
   grid.defaultOption.grid.left = 2
   grid.defaultOption.grid.bottom = 10
   grid.defaultOption.grid.right = 20
@@ -34,6 +34,19 @@ const getOption = () => {
     canvas,
     grid,
     waterMark,
+    {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: data
+        },
+      },
+      allOption: {},
+    },
     {
       name: 'X轴样式',
       opName: 'xAxis',
@@ -92,7 +105,6 @@ const getOption = () => {
       defaultOption: {
         series: [
           {
-            data,
             type: 'scatter',
             symbol: 'circle',
             color: '',
@@ -131,7 +143,7 @@ export const createExcelData = (config: any) => {
   let excelData: any = {}
   let xData = config.xAxis[0].data
   let yData = config.yAxis[0].data
-  let data = config.series[0].data
+  let data = config.dataset.source
   excelData[0] = {
     cells: {
     }
@@ -161,32 +173,45 @@ export const createExcelData = (config: any) => {
   }
   return excelData
 }
-// 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
-  let xAxis = lodash.cloneDeep(common.option.xAxis)
-  let yAxis = lodash.cloneDeep(common.option.yAxis)
-  let series = lodash.cloneDeep(common.option.series)
-  let xLength = Object.keys(rows[0].cells).length
-  let yLength = Object.keys(rows[1].cells).length
-  let dataObj = {
+
+export function combineOption(data: any) {
+  let xAxis = common.option.xAxis
+  let yAxis = common.option.yAxis
+  let series = common.option.series
+
+  xAxis[0].data = data.xAxisData
+  yAxis[0].data = data.yAxisData
+  series[0].data = data.datasetData
+  return {
     xAxis,
     yAxis,
     series
   }
-  dataObj.xAxis[0].data = []
-  dataObj.yAxis[0].data = []
-  dataObj.series[0].data = []
+}
+
+// 收集数据并进行转换
+export const conveyExcelData = (rows: any) => {
+  if(!rows) return null
+  let datas = {
+    xAxisData: <any>[],
+    yAxisData: <any>[],
+    datasetData: <any>[],
+  }
+  let xLength = Object.keys(rows[0].cells).length
+  let yLength = Object.keys(rows[1].cells).length
+  
   for(let i = 0; i < xLength; i ++) {
-    dataObj.xAxis[0].data[i] = rows[0] && rows[0].cells && rows[0].cells[i] ? rows[0].cells[i].text : ''
+    datas.xAxisData[i] = rows[0] && rows[0].cells && rows[0].cells[i] ? rows[0].cells[i].text : ''
   }
   for(let i = 0; i < yLength; i ++) {
-    dataObj.yAxis[0].data[i] = rows[1] && rows[1].cells && rows[1].cells[i] ? rows[1].cells[i].text : ''
+    datas.yAxisData[i] = rows[1] && rows[1].cells && rows[1].cells[i] ? rows[1].cells[i].text : ''
   }
   for(let i = 2; i < rows.len; i ++) {
     let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseInt(rows[i].cells[0].text) : ''
     let val2 = rows[i] && rows[i].cells && rows[i].cells[1] ? parseInt(rows[i].cells[1].text) : ''
     let val3 = rows[i] && rows[i].cells && rows[i].cells[2] ? parseInt(rows[i].cells[2].text) : ''
-    dataObj.series[0].data[i-2] = [val1, val2, val3]
+    if(!val1 || !val2 || !val3) break
+    datas.datasetData[i-2] = [val1, val2, val3]
   }
-  return dataObj
+  return datas
 }
