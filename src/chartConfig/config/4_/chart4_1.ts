@@ -11,6 +11,7 @@ import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPo
 import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
 import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
 import { point_series_itemStyle, point_series_label, point_series_labelLine } from '@/chartConfig/option';
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 const common: any = useCommonStore()
 
@@ -157,20 +158,13 @@ export function combineOption(data: any) {
 }
 
 export const createExcelData = (config: any) => {
-  let excelData: any = {}
-  let dataset = config.dataset.source
-  // 初始化
-  for (let i = 0; i < dataset.length; i++) {
-    excelData[i] = {
-      cells: {
-        0: {},
-        1: {}
-      }
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 0
     }
-    excelData[i].cells[0].text = dataset[i][0]
-    excelData[i].cells[1].text = dataset[i][1]
-  }
-  return excelData
+  ])
 }
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
@@ -180,9 +174,9 @@ export const conveyExcelData = (rows: any) => {
   }
   let length: number = Object.keys(rows).length
   for (let i = 0; i < length; i++) {
-    let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : ''
-    let val2 = rows[i] && rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : ''
-    if (!val1 || !val2) break
+    let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : NaN
+    let val2 = rows[i] && rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
+    if (isNaN(val1) || isNaN(val2)) break
     datas.datasetData.push([val1, val2])
   }
   return datas

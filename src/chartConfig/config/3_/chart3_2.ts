@@ -11,6 +11,7 @@ import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import pie_label from "@/chartConfig/commonParams/pie_label";
 import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 const common: any = useCommonStore()
 
@@ -55,11 +56,11 @@ const getOption = () => {
               show: false,
             },
             data: [
-              { value: 1048, name: 'Search Engine' },
-              { value: 735, name: 'Direct' },
-              { value: 580, name: 'Email' },
-              { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' }
+              { name: 'Search Engine', value: 1048 },
+              { name: 'Direct', value: 735 },
+              { name: 'Email', value: 580 },
+              { name: 'Union Ads', value: 484 },
+              { name: 'Video Ads', value: 300 }
             ],
           }
         ]
@@ -100,8 +101,39 @@ const getOption = () => {
 
 export default getOption
 
-export const createExcelData = create
+export const createExcelData = (config: any) => {
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.series[0].data
+    }
+  ])
+}
+
+export function combineOption(data: any) {
+  let series = common.option.series
+  series[0].data = data.seriesData
+  return {
+    series
+  }
+}
+
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  return convey(rows, common.option.series)
+  if(!rows) return null
+  let datas: any = {
+    seriesData: <any>[]
+  }
+  // 遍历数据项
+  let rowsTLength = Object.keys(rows).length;
+  for (let i = 0; i < rowsTLength; i++) {
+    let val1 = rows[i] && rows[i].cells[0] ? rows[i].cells[0].text : ''
+    let val2 = rows[i] && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
+    if(val1 == '' || isNaN(val2)) break
+    datas.seriesData.push({  // 创建series
+      name: val1,
+      value: val2
+    })
+  }
+  return datas
 }

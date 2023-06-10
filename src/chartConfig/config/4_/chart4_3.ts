@@ -10,6 +10,7 @@ import {
 } from "@/chartConfig/option";
 import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPointStyle.vue";
 import paramsPointAngleAxis from "@/views/ChartPanel/components/paramsPoint/paramsPointAngleAxis.vue";
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 
 const common: any = useCommonStore()
@@ -145,38 +146,23 @@ const getOption = () => {
 export default getOption
 
 export const createExcelData = (config: any) => {
-  let excelData: any = {}
-  let angleAxisData = config.angleAxis.data
-  let radiusAxisData = config.radiusAxis.data
-  let data = config.dataset.source
-  excelData[0] = {
-    cells: {
-    }
-  }
-  excelData[1] = {
-    cells: {
-    }
-  }
-  for(let i = 0; i < angleAxisData.length; i ++) {
-    excelData[0].cells[i] = {
-      text: angleAxisData[i]
-    }
-  }
-  for(let i = 0; i < radiusAxisData.length; i ++) {
-    excelData[1].cells[i] = {
-      text: radiusAxisData[i]
-    }
-  }
-  for(let i = 0; i < data.length; i ++) {
-    excelData[2+i] = {
-      cells: {
-        0: {text: data[i] ? data[i][0].toString() : ''},
-        1: {text: data[i] ? data[i][1].toString() : ''},
-        2: {text: data[i] ? data[i][2].toString() : ''},
-      }
-    }
-  }
-  return excelData
+  return conveyToExcel([
+    {
+      direction: 'row',
+      data: config.angleAxis.data,
+      startRow: 0
+    },
+    {
+      direction: 'row',
+      data: config.radiusAxis.data,
+      startRow: 1
+    },
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 2
+    },
+  ])
 }
 
 export function combineOption(data: any) {
@@ -195,7 +181,6 @@ export function combineOption(data: any) {
 }
 
 export function conveyExcelData (rows: any) {
-  
   if(!rows) return null
   let datas = {
     angleAxisData: <any>[],
@@ -215,10 +200,10 @@ export function conveyExcelData (rows: any) {
         datas.radiusAxisData.push(rows[i].cells[j].text)
       }
     } else {
-      let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : ''
-      let val2 = rows[i] &&rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : ''
-      let val3 = rows[i] &&rows[i].cells && rows[i].cells[2] ? parseFloat(rows[i].cells[2].text) : ''
-      if(!val1 && !val2 && !val3) break
+      let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : NaN
+      let val2 = rows[i] &&rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
+      let val3 = rows[i] &&rows[i].cells && rows[i].cells[2] ? parseFloat(rows[i].cells[2].text) : NaN
+      if(isNaN(val1) || isNaN(val2) || isNaN(val3)) break
       datas.datasetData.push([val1, val2, val3])
     }
   }

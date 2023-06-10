@@ -105,7 +105,7 @@ export default defineComponent({
 
         const data1 = {
           name: "sheet11",
-          rows: excelData,
+          rows: data.excelData,
         };
         data.sheetObj = new Spreadsheet("#dataExcel", data.option)
           .loadData(data1) // load data
@@ -122,7 +122,6 @@ export default defineComponent({
 
         // 设置冻结
         data.sheetObj.sheet.data.setFreeze(1, 0);
-
         data.sheetObj.validate();
       }, 200);
     };
@@ -132,9 +131,10 @@ export default defineComponent({
       if (e.data.type == 'edit') {
         // 获取计算过后的data 合并成为option
         _this.proxy.$Bus.emit("dataChange", combineData(e.data.res));
-      } else if (e.data.type == 'init') {
-        excelData = e.data.res
       }
+      //  else if (e.data.type == 'init') {
+      //   excelData = e.data.res
+      // }
     }
     
 
@@ -149,15 +149,15 @@ export default defineComponent({
       createInitiativeData = createExcelData;
       conveyData = conveyExcelData;
       combineData = combineOption
+      // worker.postMessage({
+      //   data: JSON.stringify(common.option),
+      //   handle: createInitiativeData.toString(),
+      //   type: 'init'
+      // })
 
-      worker.postMessage({
-        data: JSON.stringify(common.option),
-        handle: createInitiativeData.toString(),
-        type: 'init'
-      })
-
-      // data.excelData = createInitiativeData(common.option);
-
+      data.excelData = createInitiativeData(common.option);
+        console.log(data.excelData);
+        
       initData();
       
     });

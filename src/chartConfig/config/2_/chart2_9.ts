@@ -13,6 +13,7 @@ import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
@@ -127,65 +128,59 @@ const getOption = () => {
 
 export default getOption
 
-export const createExcelData = (config: any) => {
-  let excelData: any = {}
-  excelData[0] = {
-    cells: {
-    }
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  if(!data) return {}
+  dataset[0].source = data.sourceData
+  dataset[0].dimensions = data.dimenstionsData
+  return {
+    dataset
   }
+}
 
-  let source = config.dataset[0].source
-  let dimensions = config.dataset[0].dimensions
-  for (let i = 0; i < dimensions.length; i++) {
-    excelData[0].cells[i] = {
-      text: dimensions[i]
-    }
-  }
-  for (let i = 0; i < source.length; i++) {
-    excelData[i + 1] = {
-      cells: {
-      }
-    }
-    for (let j = 0; j < source[i].length; j++) {
-      excelData[i + 1].cells[j] = {
-        text: source[i][j]
-      }
-    }
-  }
-  return excelData
+export const createExcelData = (config: any) => {
+  return conveyToExcel([
+    {
+      direction: 'row',
+      data: config.dataset[0].dimensions,
+      startRow: 0
+    },
+    {
+      direction: 'col',
+      data: config.dataset[0].source,
+      startRow: 1
+    },
+  ])
 }
 
 export const conveyExcelData = (rows: any) => {
-  let dataset = lodash.cloneDeep(common.option.dataset)
-  let dimensionsList: any[] = []
-  let sourceList: any[] = []
-  let dataObj: any = {}
-  let i = 0
-  let rowsTLength = Object.keys(rows[0].cells).length;
-  while (i < rowsTLength) {
-    dimensionsList.push(rows[0].cells[i].text)
-    i++
+  if(!rows) return null
+  let datas: any = {
+    sourceData: <any>[],
+    dimenstionsData: <any>[]
   }
-  i = 1
-
-  let sourceLength = Object.keys(rows).length;
-
-  while (i < sourceLength - 1) {
-    let j = 0
-    sourceList[i - 1] = []
-    let itemLength = Object.keys(rows[i].cells).length;
-    while (j < itemLength) {
-      sourceList[i - 1].push(rows[i].cells[j].text)
-      j++
+  if(rows[0]) {
+    let row1Length: number = Object.keys(rows[0].cells).length
+    for(let i = 0; i < row1Length; i ++) {
+      if(rows[0] && rows[0].cells && rows[0].cells[i] && rows[0].cells[i].text) {
+        datas.dimenstionsData.push(rows[0].cells[i].text)
+      } else break
     }
-    i++
   }
-  dataset[0].dimensions = dimensionsList
-  dataset[0].source = sourceList
-  dataObj = {
-    dataset
+  
+  let length: number = Object.keys(rows).length
+  outer: for(let i = 1; i < length; i ++) {
+    if (!rows[i]) break
+    for(let j = 0; j < Object.keys(rows[i].cells).length; j ++) {
+      if(rows[i].cells && rows[i].cells[j] && rows[i].cells[j].text) {
+        if(!datas.sourceData[i-1]) datas.sourceData[i-1] = []
+        if (isNaN(rows[i].cells[j].text)) {
+          datas.sourceData[datas.sourceData.length-1].push(rows[i].cells[j].text)
+        } else {
+          datas.sourceData[datas.sourceData.length-1].push(parseFloat(rows[i].cells[j].text))
+        }
+      } else break outer
+    }
   }
-  console.log(dataObj);
-
-  return dataObj
+  return datas
 }

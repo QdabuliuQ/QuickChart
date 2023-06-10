@@ -11,6 +11,7 @@ import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import pie_label from "@/chartConfig/commonParams/pie_label";
 import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 const common: any = useCommonStore()
 
@@ -48,11 +49,11 @@ const getOption = () => {
               ...pie_labelLine
             },
             data: [
-              { value: 1048, name: 'Search Engine' },
-              { value: 735, name: 'Direct' },
-              { value: 580, name: 'Email' },
-              { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' },
+              { name: 'Search Engine', value: 1048 },
+              { name: 'Direct', value: 735 },
+              { name: 'Email', value: 580 },
+              { name: 'Union Ads', value: 484 },
+              { name: 'Video Ads', value: 300 },
               {
                 value: 1048 + 735 + 580 + 484 + 300,
                 itemStyle: {
@@ -113,23 +114,15 @@ export function combineOption(data: any) {
   }
 }
 
-
 export const createExcelData = (config: any) => {
-  let excelData: any = {}
   let series = JSON.parse(JSON.stringify(config.series[0].data))
   series.splice(series.length-1, 1)
-  // 初始化
-  for (let i = 0; i < series.length; i++) {
-    excelData[i] = {
-      cells: {
-        0: {},
-        1: {}
-      }
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: series,
     }
-    excelData[i].cells[0].text = series[i].name
-    excelData[i].cells[1].text = series[i].value
-  }
-  return excelData
+  ])
 }
 
 // 收集数据并进行转换
@@ -142,11 +135,11 @@ export const conveyExcelData = (rows: any) => {
   let rowsTLength = Object.keys(rows).length;
   for (let i = 0; i < rowsTLength; i++) {
     let val1 = rows[i] && rows[i].cells[0] ? rows[i].cells[0].text : ''
-    let val2 = rows[i] && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : ''
-    if(!val1 || !val2) break
+    let val2 = rows[i] && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
+    if(isNaN(val2) || val1 == '') break
     datas.seriesData.push({  // 创建series
-      name: val1,
-      value: val2
+      value: val2,
+      name: val1
     })
   }
   let dataOption = {
@@ -166,27 +159,4 @@ export const conveyExcelData = (rows: any) => {
   }
   datas.seriesData.push(dataOption)
   return datas
-  
-  
-  // return convey(rows, common.option.series, (dataObj: any) => {
-  //   let dataOption = {
-  //     value: 0,
-  //     itemStyle: {
-  //       color: 'none',
-  //       decal: {
-  //         symbol: 'none'
-  //       }
-  //     },
-  //     label: {
-  //       show: false
-  //     }
-  //   }
-  //   let sum: number = 0
-  //   for(let { value } of dataObj.series[0].data) {
-  //     sum += parseInt(value)
-  //   }
-  //   dataOption.value = sum
-  //   dataObj.series[0].data.push(dataOption)
-  //   return dataObj
-  // })
 }

@@ -8,6 +8,7 @@ import { point_series_label, point_series_labelLine } from '@/chartConfig/option
 import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
 import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
 import { pointData_2 } from "@/chartConfig/constant";
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 const common: any = useCommonStore()
 const data = pointData_2;
@@ -131,19 +132,13 @@ const getOption = () => {
 export default getOption
 
 export const createExcelData = (config: any) => {
-  let datas = config.dataset.source
-  let excelData: any = {}
-  for(let i = 0; i < datas.length; i ++) {
-    excelData[i] = {
-      cells: {}
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 0,
     }
-    for(let j = 0; j < datas[i].length; j ++) {
-      excelData[i].cells[j] = {
-        text: datas[i][j]
-      }
-    }
-  }
-  return excelData
+  ])
 }
 
 export function combineOption(data: any) {
@@ -161,16 +156,12 @@ export const conveyExcelData = (rows: any) => {
   }
   let length: number = Object.keys(rows).length-1
   for(let i = 0; i < length; i ++) {
-    let row = []
-    for(let j = 0; j < 4; j ++) {
-      if(rows[i] && rows[i].cells && rows[i] && rows[i].cells[j]) {
-        row.push(isNaN(parseInt(rows[i].cells[j].text)) ? rows[i].cells[j].text : parseInt(rows[i].cells[j].text))
-      } else {
-        row.push('')
-      }
-    }
-    datas.datasetData.push(row)
+    let val1 = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : NaN
+    let val2 = rows[i] && rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
+    let val3 = rows[i] && rows[i].cells && rows[i].cells[2] ? parseFloat(rows[i].cells[2].text) : NaN
+    let val4 = rows[i] && rows[i].cells && rows[i].cells[3] ? rows[i].cells[3].text : ''
+    if (isNaN(val1) || isNaN(val2) || isNaN(val3) || val4 == '') break
+    datas.datasetData.push([val1,val2,val3,val4])
   }
-  
   return datas
 }
