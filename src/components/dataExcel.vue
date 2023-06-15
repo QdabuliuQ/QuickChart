@@ -149,15 +149,8 @@ export default defineComponent({
       createInitiativeData = createExcelData;
       conveyData = conveyExcelData;
       combineData = combineOption
-      // worker.postMessage({
-      //   data: JSON.stringify(common.option),
-      //   handle: createInitiativeData.toString(),
-      //   type: 'init'
-      // })
 
       data.excelData = createInitiativeData(common.option);
-        console.log(data.excelData);
-        
       initData();
       
     });

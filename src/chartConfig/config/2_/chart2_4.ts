@@ -1,8 +1,8 @@
 import { markRaw } from "vue";
-import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
 import paramsBarText from "@/views/ChartPanel/components/paramsBar/paramsBarText.vue";
+import paramsBarBgStyle from "@/views/ChartPanel/components/paramsBar/paramsBarBgStyle.vue";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -11,6 +11,7 @@ import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
+import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 const common: any = useCommonStore()
 
 const getOption = () => {
@@ -23,6 +24,30 @@ const getOption = () => {
     grid,
     legendOption(),
     waterMark,
+    {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: [
+            ['ten', -0.07],
+            ['nine', -0.09],
+            ['eight', 0.2],
+            ['seven', 0.44],
+            ['six', -0.23],
+            ['five', 0.08],
+            ['four', -0.17],
+            ['three', 0.47],
+            ['two', -0.36],
+            ['one', 0.18],
+          ]
+        },
+      },
+      allOption: {},
+    },
     {
       name: 'X轴样式',
       opName: 'xAxis',
@@ -68,18 +93,6 @@ const getOption = () => {
           axisLabel: { show: false },
           axisTick: { show: false },
           splitLine: { show: false },
-          data: [
-            'ten',
-            'nine',
-            'eight',
-            'seven',
-            'six',
-            'five',
-            'four',
-            'three',
-            'two',
-            'one'
-          ]
         }],
       },
       allOption: {
@@ -90,18 +103,6 @@ const getOption = () => {
             axisLabel: { show: false },
             axisTick: { show: false },
             splitLine: { show: false },
-            data: [
-              'ten',
-              'nine',
-              'eight',
-              'seven',
-              'six',
-              'five',
-              'four',
-              'three',
-              'two',
-              'one'
-            ]
           }
         ]
       },
@@ -115,121 +116,99 @@ const getOption = () => {
       defaultOption: {
         series: [
           {
-            name: '系列一',
             type: 'bar',
             stack: 'Total',
             label: {
               show: true,
+              rotate: 0,
+              color: '#fff',
+              fontStyle: 'normal',
+              fontWeight: 'normal',
+              fontFamily: 'sans-serif',
+              fontSize: 12,
+              borderColor: '',
+              borderWidth: 0,
+              borderType: 'solid',
+              shadowColor: '',
+              shadowBlur: 0,
+              shadowOffsetX: 0,
+              shadowOffsetY: 0,
+              position: 'inside',
               formatter: '{b}'
             },
-            data: [
-              { value: -0.07, label: { position: 'right' } },
-              { value: -0.09, label: { position: 'right' } },
-              { value: 0.2, label: { position: 'right' } },
-              { value: 0.44, label: { position: 'right' } },
-              { value: -0.23, label: { position: 'right' } },
-              { value: 0.08, label: { position: 'right' } },
-              { value: -0.17, label: { position: 'right' } },
-              { value: 0.47, label: { position: 'right' } },
-              { value: -0.36, label: { position: 'right' } },
-              { value: 0.18, label: { position: 'right' } },
-            ]
+            showBackground: false,
+            backgroundStyle: {
+              color: '',
+              borderColor: '',
+              borderWidth: 0,
+              borderType: 'solid',
+              borderRadius: 0,
+              shadowBlur: 0,
+              shadowColor: '',
+              shadowOffsetX: 0,
+              shadowOffsetY: 0,
+              opacity: 1,
+            }
           },
         ]
       }
     },
     {
-      name: '字体位置',
+      name: '文本样式',
       opName: 'textStyle',
       chartOption: false,
       menuOption: true,
       uniqueOption: true,
-      icon: 'i_bar',
+      icon: 'i_text',
       component: markRaw(paramsBarText),
-      allOption: {}
-    }
+      allOption: {},
+    },
+    {
+      name: '背景样式',
+      opName: 'bgStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_bg',
+      component: markRaw(paramsBarBgStyle),
+      allOption: {},
+    },
   ]
 }
 
 export default getOption
 
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  dataset.source = data.datasetData
+  return {
+    dataset
+  }
+}
+
 export const createExcelData = (config: any) => {
-  let excelData: any = {}
-
-  let series = config.series
-  let yAxis = config.yAxis[0].data
-
-  // 初始化
-  for (let i = 0; i < yAxis.length + 1; i++) {
-    excelData[i] = {
-      cells: {}
-    }
-  }
-  for (let i = 0; i < series.length; i++) {
-    excelData[0].cells[i + 1] = {
-      text: series[i].name
-    }
-  }
-
-  for (let i = 0; i < yAxis.length; i++) {
-    excelData[i + 1].cells[0] = {
-      text: yAxis[i]
-    }
-    for (let j = 0; j < series.length; j++) {
-      excelData[i + 1].cells[j + 1] = {
-        text: series[j].data[i]?.value
-      }
-    }
-  }
-  return excelData
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 0,
+      startCol: 0,
+    },
+  ])
 }
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let series = lodash.cloneDeep(common.option.series)
-  let yAxis = lodash.cloneDeep(common.option.yAxis)
-  let data = []
-  let dataObj: any = {
-    yAxis,
-    series: []
+  if (!rows) return null
+  let datas = {
+    datasetData: <any>[]
   }
-  // 遍历数据项
-  let rowsTLength = Object.keys(rows[0].cells).length;
-
-  for (let i = 1; i <= rowsTLength; i++) {
-    dataObj.series.push({  // 创建series
-      name: rows[0].cells[i].text,
-      data: series[i - 1] ? series[i - 1].data : [],
-      type: 'bar',
-      stack: 'Total',
-      label: {
-        show: true,
-        formatter: '{b}'
-      },
-    })
-
+  let length: number = Object.keys(rows).length
+  for (let i = 0; i < length; i++) {
+    if (JSON.stringify(rows[i].cells) == '{}') break
+    datas.datasetData[i] = []
+    datas.datasetData[i][0] = rows[i].cells[0].text
+    datas.datasetData[i][1] = parseFloat(rows[i].cells[1].text)
   }
-  let rowsALength = Object.keys(rows).length - 1;
-  for (let i = 1; i < rowsALength; i++) {
-    let rowsItemLength = Object.keys(rows[i].cells).length;
-
-    data.push(rows[i].cells[0] ? rows[i].cells[0].text : '')
-    // 将对应数据放入series当中
-    for (let j = 1; j < rowsItemLength; j++) {
-      if (dataObj.series[j - 1].data[i - 1]) {
-        dataObj.series[j - 1].data[i - 1].value = rows[i].cells[j].text
-      } else {
-        dataObj.series[j - 1].data[i - 1] = {
-          value: rows[i].cells[j].text,
-          label: {
-            position: 'right'
-          }
-        }
-      }
-
-    }
-  }
-  dataObj.yAxis[0].data = data
-
-  return dataObj
+  return datas
 }

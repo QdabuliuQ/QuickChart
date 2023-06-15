@@ -123,9 +123,11 @@ export default defineComponent({
         for (let key in e) {
           piniaOption[key] = e[key]
         }
-
+        // console.log(e, 'datachange');
+        
         // 修改图表配置
-        chartInstance.setOption(e);
+        // chartInstance.setOption(e);
+        chartInstance.setOption(piniaOption, true);
         // 修改pinia数据
         common.$patch((state: any) => {
           state.option = piniaOption

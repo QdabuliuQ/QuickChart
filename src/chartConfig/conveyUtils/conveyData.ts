@@ -6,11 +6,6 @@ interface IntData {
   startCol?: number
 }
 
-let obj: IntData = {
-  direction: 'col',
-  data: []
-}
-
 export const conveyToExcel = (rules: IntData[]) => {
   const excelData: any = {}
   for(let {direction, data, startRow, startCol} of rules) {
@@ -27,8 +22,6 @@ export const conveyToExcel = (rules: IntData[]) => {
       // 嵌套数组 / 对象
       if (data.length && typeof data[0] == 'object') {
         let rIdx: number = startRow ? startRow : 0
-
-        console.log('----');
         if(Array.isArray(data[0])) {
           for(let i = 0; i < data.length; i ++) {
             for(let j = 0; j < data[i].length; j ++) {

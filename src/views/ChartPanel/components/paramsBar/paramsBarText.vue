@@ -1,99 +1,134 @@
 <template>
-  <div id="paramsBarText">
-    <div class="uniqueOptionContainer">
-      <div v-for="(item, index) in seriesData" :key="index">
-        <div class="seriesItemTitle">
-          {{ item.name }}
-        </div>
-        <div class="seriesItem" :key="i2" v-for="(series, i2) in item.data">
-          <div style="width: 100%">(文本)柱体{{ i2 + 1 }}</div>
-          <div class="optionOperation">
-            <el-select @change="optionChange" v-model="series.label.position" size="small">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div id="paramsBarText" class="uniqueOptionContainer">
+    <optionItems :config="config" />
   </div>
 </template>
 
-<script lang='ts'>
-import {
-  defineComponent,
-  reactive,
-  onMounted,
-  toRefs,
-  getCurrentInstance,
-} from "vue";
-import lodash from "lodash";
+<script setup lang='ts'>
+import { ComponentInternalInstance, getCurrentInstance, reactive, watch } from 'vue';
+import optionItems from '@/components/optionItems.vue'
 import useCommonStore from "@/store/common";
+import { fontFamily, fontWeight, fontStyle, borderType, position, ListInt } from "@/chartConfig/constant";
+import { ConfigInt } from '@/types/common';
+import { debounce } from '@/utils';
 
-interface comInitData {
-  seriesData: any[];
-  options: {label: string, value: string}[]
-}
-
-export default defineComponent({
-  name: "paramsBarText",
-  setup() {
-    const _this: any = getCurrentInstance();
-    const common: any = useCommonStore();
-    const data: comInitData = reactive({
-      seriesData: [],
-      options: [
-        {
-          label: '上方',
-          value: 'top',
-        },
-        {
-          label: '下方',
-          value: 'bottom',
-        },
-        {
-          label: '左侧',
-          value: 'left',
-        },
-        {
-          label: '右侧',
-          value: 'right',
-        },
-      ]
-    });
-
-    data.seriesData = lodash.cloneDeep(common.option.series);
-    
-    const optionChange = () => {
-      _this.proxy.$Bus.emit('optionChange', {
-        series: data.seriesData
-      })
-    }
-
-    onMounted(() => {
-      _this.proxy.$Bus.on("updateData", (e: any) => {
-        data.seriesData = e.series;
-      });
-    });
-    return {
-      optionChange,
-      ...toRefs(data),
-    };
+const { appContext } = getCurrentInstance() as ComponentInternalInstance;
+const proxy = appContext.config.globalProperties;
+const common: any = useCommonStore();
+const config = reactive<ConfigInt>({
+  show: {
+    type: 'switch',
+    title: '是否显示',
+    value: common.option.series[0].label.show
   },
-});
-</script>
+  rotate: {
+    type: 'input_number',
+    title: '旋转角度',
+    max: 360,
+    min: -360,
+    value: common.option.series[0].label.rotate
+  },
+  color: {
+    type: 'color_picker',
+    title: '字体颜色',
+    value: common.option.series[0].label.color
+  },
+  fontStyle: {
+    type: 'select',
+    title: '字体样式',
+    options: fontStyle as ListInt[],
+    value: common.option.series[0].label.fontStyle
+  },
+  fontWeight: {
+    type: 'select',
+    title: '字体粗细',
+    options: fontWeight as ListInt[],
+    value: common.option.series[0].label.fontWeight
+  },
+  fontFamily: {
+    type: 'select',
+    title: '字体类型',
+    options: fontFamily as ListInt[],
+    value: common.option.series[0].label.fontFamily
+  },
+  fontSize: {
+    type: 'input_number',
+    title: '字体大小',
+    max: 100,
+    value: common.option.series[0].label.fontSize
+  },
+  borderColor: {
+    type: 'color_picker',
+    title: '边框颜色',
+    value: common.option.series[0].label.borderColor
+  },
+  borderWidth: {
+    type: 'input_number',
+    title: '边框宽度',
+    max: 50,
+    value: common.option.series[0].label.borderWidth
+  },
+  borderType: {
+    type: 'select',
+    title: '边框类型',
+    options: borderType as ListInt[],
+    value: common.option.series[0].label.borderType
+  },
+  shadowColor: {
+    type: 'color_picker',
+    title: '阴影颜色',
+    value: common.option.series[0].label.shadowColor
+  },
+  shadowBlur: {
+    type: 'input_number',
+    title: '阴影模糊',
+    max: 50,
+    value: common.option.series[0].label.shadowBlur
+  },
+  shadowOffsetX: {
+    type: 'input_number',
+    title: '阴影偏移X',
+    max: 400,
+    min: -400,
+    value: common.option.series[0].label.shadowOffsetX
+  },
+  shadowOffsetY: {
+    type: 'input_number',
+    title: '阴影偏移Y',
+    max: 400,
+    min: -400,
+    value: common.option.series[0].label.shadowOffsetY
+  },
+  position: {
+    type: 'select',
+    title: '文本位置',
+    options: position as ListInt[],
+    value: common.option.series[0].label.position
+  },
+})
 
-<style lang='less'>
-#paramsBarText {
-  .seriesItemTitle {
-    font-weight: bold;
-    color: @theme;
-    font-size: 13px;
-    padding: 6px 0;
+const getData = () => {
+  let res: {
+    [propsName: string]: any
+  } = {}
+  for(let key in config) {
+    res[key] = config[key].value
   }
+  return res
 }
-</style>
+
+const cbEvent = debounce(() => {
+  let s = common.option.series
+  s[0].label = getData()
+  proxy.$Bus.emit("optionChange", {
+    series: s,
+  });
+})
+
+watch(() => config, () => {
+  cbEvent && cbEvent()
+}, {
+  deep: true
+})
+
+</script>

@@ -2,42 +2,42 @@
   <div id="paramsAsis">
     <div class="asisContainer">
       <div class="paramsList">
-        <div v-for="(value, key) in allOption[activeIndex]" :key="key">
+        <div v-for="(value, key, index) in allOption[activeIndex]" :key="key">
           <div
             v-if="
-              key != 'nameTextStyle' &&
-              key != 'axisLine' &&
-              key != 'axisTick' &&
-              key != 'axisLabel' &&
-              key != 'type'
+              (key as any) != 'nameTextStyle' &&
+              (key as any) != 'axisLine' &&
+              (key as any) != 'axisTick' &&
+              (key as any) != 'axisLabel' &&
+              (key as any) != 'type'
             "
             :class="[
-              key != 'nameTextStyle' &&
-              key != 'axisLine' &&
-              key != 'axisTick' &&
-              key != 'axisLabel' &&
-              key != 'type'
+              (key as any) != 'nameTextStyle' &&
+              (key as any) != 'axisLine' &&
+              (key as any) != 'axisTick' &&
+              (key as any) != 'axisLabel' &&
+              (key as any) != 'type'
                 ? 'optionItem'
                 : '',
             ]"
           >
             <div>
-              {{ opNameList ? opNameList[key] : "" }}
+              {{ opNameList ? opNameList[(key as any)] : "" }}
             </div>
             <div class="optionOperation">
               <el-switch
-                v-if="key == 'show' || key == 'inverse'"
+                v-if="(key as any) == 'show' || (key as any) == 'inverse'"
                 size="small"
-                v-model="defaultOption[activeIndex][key]"
+                v-model="defaultOption[activeIndex][(key as any)]"
               />
               <el-select
-                v-else-if="key == 'position' || key == 'nameLocation'"
+                v-else-if="(key as any) == 'position' || (key as any) == 'nameLocation'"
                 popper-class="paramsSelectPopperClass"
-                v-model="defaultOption[activeIndex][key]"
+                v-model="defaultOption[activeIndex][(key as any)]"
                 size="small"
               >
                 <el-option
-                  v-for="item in allOption[activeIndex][key]"
+                  v-for="item in allOption[activeIndex][(key as any)]"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -45,15 +45,15 @@
               </el-select>
               <el-input-number
                 v-else-if="
-                  key == 'offset' || key == 'nameGap' || key == 'nameRotate'
+                  (key as any) == 'offset' || (key as any) == 'nameGap' || (key as any) == 'nameRotate'
                 "
                 size="small"
-                v-model="defaultOption[activeIndex][key]"
+                v-model="defaultOption[activeIndex][(key as any)]"
               />
               <el-input
-                v-if="key == 'name'"
+                v-if="(key as any) == 'name'"
                 size="small"
-                v-model="defaultOption[activeIndex][key]"
+                v-model="defaultOption[activeIndex][(key as any)]"
               />
             </div>
           </div>
@@ -69,45 +69,45 @@
           v-for="(value, key) in allOption[activeIndex].nameTextStyle"
         >
           <div class="childOptionOperation">
-            <div class="chlidOptionTitle" :title="opNameList[key]">
-              {{ opNameList[key] }}
+            <div class="chlidOptionTitle" :title="opNameList[(key as any)]">
+              {{ opNameList[(key as any)] }}
             </div>
             <div class="childOptionItemOperation">
               <el-input-number
                 v-if="
-                  key == 'fontSize' ||
-                  key == 'borderWidth' ||
-                  key == 'borderRadius' ||
-                  key == 'padding' ||
-                  key == 'shadowBlur' ||
-                  key == 'shadowOffsetX' ||
-                  key == 'shadowOffsetY' ||
-                  key == 'textShadowBlur' ||
-                  key == 'textShadowOffsetX' ||
-                  key == 'textShadowOffsetY'
+                  (key as any) == 'fontSize' ||
+                  (key as any) == 'borderWidth' ||
+                  (key as any) == 'borderRadius' ||
+                  (key as any) == 'padding' ||
+                  (key as any) == 'shadowBlur' ||
+                  (key as any) == 'shadowOffsetX' ||
+                  (key as any) == 'shadowOffsetY' ||
+                  (key as any) == 'textShadowBlur' ||
+                  (key as any) == 'textShadowOffsetX' ||
+                  (key as any) == 'textShadowOffsetY'
                 "
                 size="small"
                 :min="0"
-                v-model="defaultOption[activeIndex].nameTextStyle[key]"
+                v-model="defaultOption[activeIndex].nameTextStyle[(key as any)]"
               />
               <el-color-picker
                 v-else-if="
-                  key == 'color' ||
-                  key == 'backgroundColor' ||
-                  key == 'borderColor' ||
-                  key == 'shadowColor' ||
-                  key == 'textShadowColor'
+                  (key as any) == 'color' ||
+                  (key as any) == 'backgroundColor' ||
+                  (key as any) == 'borderColor' ||
+                  (key as any) == 'shadowColor' ||
+                  (key as any) == 'textShadowColor'
                 "
-                v-model="defaultOption[activeIndex].nameTextStyle[key]"
+                v-model="defaultOption[activeIndex].nameTextStyle[(key as any)]"
               />
               <el-select
-                v-else-if="key == 'fontWeight' || key == 'fontFamily'"
+                v-else-if="(key as any) == 'fontWeight' || (key as any) == 'fontFamily'"
                 popper-class="paramsSelectPopperClass"
-                v-model="defaultOption[activeIndex].nameTextStyle[key]"
+                v-model="defaultOption[activeIndex].nameTextStyle[(key as any)]"
                 size="small"
               >
                 <el-option
-                  v-for="item in allOption[activeIndex].nameTextStyle[key]"
+                  v-for="item in allOption[activeIndex].nameTextStyle[(key as any)]"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -136,44 +136,44 @@
             class="childOptionOperation"
           >
             <div class="chlidOptionTitle">
-              {{ opNameList[key] }}
+              {{ opNameList[(key as any)] }}
             </div>
             <div class="childOptionItemOperation">
               <el-color-picker
-                v-if="key == 'color' || key == 'shadowColor'"
-                v-model="defaultOption[activeIndex].axisLine.lineStyle[key]"
+                v-if="(key as any) == 'color' || (key as any) == 'shadowColor'"
+                v-model="defaultOption[activeIndex].axisLine.lineStyle[(key as any)]"
               />
               <el-input-number
                 v-else-if="
-                  key == 'width' ||
-                  key == 'shadowBlur' ||
-                  key == 'shadowOffsetX' ||
-                  key == 'shadowOffsetY'
+                  (key as any) == 'width' ||
+                  (key as any) == 'shadowBlur' ||
+                  (key as any) == 'shadowOffsetX' ||
+                  (key as any) == 'shadowOffsetY'
                 "
                 :min="0"
                 size="small"
-                v-model="defaultOption[activeIndex].axisLine.lineStyle[key]"
+                v-model="defaultOption[activeIndex].axisLine.lineStyle[(key as any)]"
               />
               <el-select
-                v-else-if="key == 'type'"
+                v-else-if="(key as any) == 'type'"
                 popper-class="paramsSelectPopperClass"
-                v-model="defaultOption[activeIndex].axisLine.lineStyle[key]"
+                v-model="defaultOption[activeIndex].axisLine.lineStyle[(key as any)]"
                 size="small"
               >
                 <el-option
-                  v-for="item in allOption[activeIndex].axisLine.lineStyle[key]"
+                  v-for="item in allOption[activeIndex].axisLine.lineStyle[(key as any)]"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
                 />
               </el-select>
               <el-input-number
-                v-else-if="key == 'opacity'"
+                v-else-if="(key as any) == 'opacity'"
                 :min="0"
                 :max="1"
                 :step="0.1"
                 size="small"
-                v-model="defaultOption[activeIndex].axisLine.lineStyle[key]"
+                v-model="defaultOption[activeIndex].axisLine.lineStyle[(key as any)]"
               />
             </div>
           </div>
@@ -199,44 +199,44 @@
             class="childOptionOperation"
           >
             <div class="chlidOptionTitle">
-              {{ opNameList[key] }}
+              {{ opNameList[(key as any)] }}
             </div>
             <div class="childOptionItemOperation">
               <el-color-picker
-                v-if="key == 'color' || key == 'shadowColor'"
-                v-model="defaultOption[activeIndex].axisTick.lineStyle[key]"
+                v-if="(key as any) == 'color' || (key as any) == 'shadowColor'"
+                v-model="defaultOption[activeIndex].axisTick.lineStyle[(key as any)]"
               />
               <el-input-number
                 v-else-if="
-                  key == 'width' ||
-                  key == 'shadowBlur' ||
-                  key == 'shadowOffsetX' ||
-                  key == 'shadowOffsetY'
+                  (key as any) == 'width' ||
+                  (key as any) == 'shadowBlur' ||
+                  (key as any) == 'shadowOffsetX' ||
+                  (key as any) == 'shadowOffsetY'
                 "
                 :min="0"
                 size="small"
-                v-model="defaultOption[activeIndex].axisTick.lineStyle[key]"
+                v-model="defaultOption[activeIndex].axisTick.lineStyle[(key as any)]"
               />
               <el-select
-                v-else-if="key == 'type'"
+                v-else-if="(key as any) == 'type'"
                 popper-class="paramsSelectPopperClass"
-                v-model="defaultOption[activeIndex].axisTick.lineStyle[key]"
+                v-model="defaultOption[activeIndex].axisTick.lineStyle[(key as any)]"
                 size="small"
               >
                 <el-option
-                  v-for="item in allOption[activeIndex].axisTick.lineStyle[key]"
+                  v-for="item in allOption[activeIndex].axisTick.lineStyle[(key as any)]"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
                 />
               </el-select>
               <el-input-number
-                v-else-if="key == 'opacity'"
+                v-else-if="(key as any) == 'opacity'"
                 :min="0"
                 :max="1"
                 :step="0.1"
                 size="small"
-                v-model="defaultOption[activeIndex].axisLine.lineStyle[key]"
+                v-model="defaultOption[activeIndex].axisLine.lineStyle[(key as any)]"
               />
             </div>
           </div>
@@ -261,56 +261,56 @@
             v-for="(value, key, index) in allOption[activeIndex].axisLabel"
             :class="[index == 0 ? '' : 'childOptionOperation']"
           >
-            <div v-if="key != 'show'" class="chlidOptionTitle">
-              {{ opNameList[key] }}
+            <div v-if="(key as any) != 'show'" class="chlidOptionTitle">
+              {{ opNameList[(key as any)] }}
             </div>
             <div class="childOptionItemOperation">
               <el-color-picker
                 v-if="
-                  key == 'color' ||
-                  key == 'backgroundColor' ||
-                  key == 'borderColor' ||
-                  key == 'textBorderColor' ||
-                  key == 'shadowColor' ||
-                  key == 'textShadowColor'
+                  (key as any) == 'color' ||
+                  (key as any) == 'backgroundColor' ||
+                  (key as any) == 'borderColor' ||
+                  (key as any) == 'textBorderColor' ||
+                  (key as any) == 'shadowColor' ||
+                  (key as any) == 'textShadowColor'
                 "
-                v-model="defaultOption[activeIndex].axisLabel[key]"
+                v-model="defaultOption[activeIndex].axisLabel[(key as any)]"
               />
               <el-input-number
                 v-else-if="
-                  key == 'rotate' ||
-                  key == 'margin' ||
-                  key == 'fontSize' ||
-                  key == 'borderWidth' ||
-                  key == 'borderRadius' ||
-                  key == 'padding' ||
-                  key == 'shadowBlur' ||
-                  key == 'shadowOffsetX' ||
-                  key == 'shadowOffsetY' ||
-                  key == 'textBorderWidth' ||
-                  key == 'textShadowBlur' ||
-                  key == 'textShadowOffsetX' ||
-                  key == 'textShadowOffsetY'
+                  (key as any) == 'rotate' ||
+                  (key as any) == 'margin' ||
+                  (key as any) == 'fontSize' ||
+                  (key as any) == 'borderWidth' ||
+                  (key as any) == 'borderRadius' ||
+                  (key as any) == 'padding' ||
+                  (key as any) == 'shadowBlur' ||
+                  (key as any) == 'shadowOffsetX' ||
+                  (key as any) == 'shadowOffsetY' ||
+                  (key as any) == 'textBorderWidth' ||
+                  (key as any) == 'textShadowBlur' ||
+                  (key as any) == 'textShadowOffsetX' ||
+                  (key as any) == 'textShadowOffsetY'
                 "
                 :min="0"
                 size="small"
-                v-model="defaultOption[activeIndex].axisLabel[key]"
+                v-model="defaultOption[activeIndex].axisLabel[(key as any)]"
               />
               <el-select
                 v-else-if="
-                  key == 'type' ||
-                  key == 'fontStyle' ||
-                  key == 'fontWeight' ||
-                  key == 'fontFamily' ||
-                  key == 'borderType' ||
-                  key == 'textBorderType'
+                  (key as any) == 'type' ||
+                  (key as any) == 'fontStyle' ||
+                  (key as any) == 'fontWeight' ||
+                  (key as any) == 'fontFamily' ||
+                  (key as any) == 'borderType' ||
+                  (key as any) == 'textBorderType'
                 "
                 popper-class="paramsSelectPopperClass"
-                v-model="defaultOption[activeIndex].axisLabel[key]"
+                v-model="defaultOption[activeIndex].axisLabel[(key as any)]"
                 size="small"
               >
                 <el-option
-                  v-for="item in allOption[activeIndex].axisLabel[key]"
+                  v-for="item in allOption[activeIndex].axisLabel[(key as any)]"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"

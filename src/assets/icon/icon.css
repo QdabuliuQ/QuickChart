@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_q4nzoxecwln.woff2?t=1685780686732') format('woff2'),
-       url('//at.alicdn.com/t/c/font_3670180_q4nzoxecwln.woff?t=1685780686732') format('woff'),
-       url('//at.alicdn.com/t/c/font_3670180_q4nzoxecwln.ttf?t=1685780686732') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_lv7x5wwc9sm.woff2?t=1686804764294') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3670180_lv7x5wwc9sm.woff?t=1686804764294') format('woff'),
+       url('//at.alicdn.com/t/c/font_3670180_lv7x5wwc9sm.ttf?t=1686804764294') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_bg:before {
+  content: "\e8fa";
 }
 
 .i_angleAxis:before {

@@ -182,5 +182,7 @@ export const conveyExcelData = (rows: any) => {
       } else break outer
     }
   }
+  console.log(datas.sourceData);
+  
   return datas
 }

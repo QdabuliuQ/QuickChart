@@ -9,6 +9,7 @@ import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
+import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
@@ -88,51 +89,54 @@ const getOption = () => {
 
 export default getOption
 
+export function combineOption(data: any) {
+  let angleAxis = common.option.angleAxis
+  let series = common.option.series
+  series.data = data.seriesData
+  angleAxis.data = data.radiusAxisData
+  return {
+    series,
+    angleAxis
+  }
+}
+
 export const createExcelData = (config: any) => {
-  let excelData: any = {}
-
-  let series = config.series
-  let angleAxis = config.angleAxis.data
-  let length = series.length > angleAxis.length ? series.length : angleAxis.length
-  for (let i = 0; i < length; i++) {
-    excelData[i] = {
-      cells: {}
-    }
-  }
-
-  for (let i = 0; i < angleAxis.length; i++) {
-    excelData[i].cells[0] = {
-      text: angleAxis[i]
-    }
-  }
-  for (let i = 0; i < series.data.length; i++) {
-    excelData[i].cells[1] = {
-      text: series.data[i]
-    }
-  }
-  return excelData
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.angleAxis.data,
+      startCol: 0,
+      startRow: 0
+    },
+    {
+      direction: 'col',
+      data: config.series.data,
+      startCol: 1,
+      startRow: 0
+    },
+  ])
 }
 
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  // 进行深拷贝
-  let angleAxis = lodash.cloneDeep(common.option.angleAxis)
-  let series = lodash.cloneDeep(common.option.series)
-  let data = [], seriesData = []
-
-  let dataObj: any = {
-    angleAxis,
-    series,
+  if (!rows) return null
+  let datas = {
+    angleAxisData: <any>[],
+    seriesData: <any>[]
   }
-
   for (let key in rows) {
-    if (rows[key].cells) {
-      data.push(rows[key].cells[0]?.text)
-      seriesData.push(rows[key].cells[1]?.text)
-    }
+    if (JSON.stringify(rows[key].cells) != '{}') {
+      if (rows[key].cells[0].text == '') {
+        datas.angleAxisData.push('')
+      } else {
+        datas.angleAxisData.push(rows[key].cells[0].text)
+      }
+      if (rows[key].cells[1].text == '') {
+        datas.seriesData.push('')
+      } else {
+        datas.seriesData.push(parseFloat(rows[key].cells[1].text))
+      }
+    } else break
   }
-  
-  dataObj.series.data = seriesData
-  angleAxis.data = data
-  return dataObj
+  return datas
 }

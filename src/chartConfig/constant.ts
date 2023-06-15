@@ -152,6 +152,74 @@ export const locationType: ListInt[] = [
     label: '右侧'
   },
 ]
+export const position: ListInt[] = [
+  {
+    value: 'top',
+    label: '上方'
+  },
+  {
+    value: 'left',
+    label: '左侧'
+  },
+  {
+    value: 'right',
+    label: '右侧'
+  },
+  {
+    value: 'bottom',
+    label: '下方'
+  },
+  {
+    value: 'inside',
+    label: '内侧'
+  },
+  {
+    value: 'insideLeft',
+    label: '内侧左方'
+  },
+  {
+    value: 'insideRight',
+    label: '内侧右方'
+  },
+  {
+    value: 'insideTop',
+    label: '内侧上方'
+  },
+  {
+    value: 'insideBottom',
+    label: '内侧下方'
+  },
+  {
+    value: 'insideTopLeft',
+    label: '内侧左上方'
+  },
+  {
+    value: 'insideBottomLeft',
+    label: '内侧左下方'
+  },
+  {
+    value: 'insideTopRight',
+    label: '内侧右上方'
+  },
+  {
+    value: 'insideBottomRight',
+    label: '内侧右下方'
+  },
+]
+export const verticalAlign: ListInt[] = [
+  {
+    value: 'top',
+    label: '上方'
+  },
+  {
+    value: 'middle',
+    label: '中间'
+  },
+  {
+    value: 'bottom',
+    label: '下方'
+  },
+]
 export const asisOpNameList: any = {
   show: '显示',
   position: '位置',
