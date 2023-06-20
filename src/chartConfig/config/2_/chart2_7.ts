@@ -1,6 +1,4 @@
-import lodash from 'lodash'
 import useCommonStore from "@/store/common";
-import { convey } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";

@@ -20,7 +20,6 @@ import {
   onUnmounted,
 } from "vue";
 import useCommonStore from "@/store/common";
-import { useRouter } from "vue-router";
 import { deepCopy } from '@/utils/index'
 
 interface comInitData {
@@ -37,7 +36,6 @@ export default defineComponent({
   name: "chartDom",
   setup() {
     let chart_i: any = null
-    const router = useRouter();
     const common: any = useCommonStore();
     const _this: any = getCurrentInstance();
     const chartDomRef = ref();
@@ -88,7 +86,11 @@ export default defineComponent({
       let chartInstance = _this.proxy.$echarts.init(chartDomRef.value);
       chart_i = chartInstance
       chartInstance.setOption(common.option);
-
+      chartInstance.on('finished', () => {
+        setTimeout(() => {
+          _this.proxy.$Bus.emit('loadFinished')
+        }, 5000);
+      })
       data.option = common.option;
       data.code = common.option;
       getCode();
@@ -118,15 +120,10 @@ export default defineComponent({
 
       // 监听图表数据变化
       _this.proxy.$Bus.on("dataChange", (e: any) => {
-
         let piniaOption = common.option
         for (let key in e) {
           piniaOption[key] = e[key]
         }
-        // console.log(e, 'datachange');
-        
-        // 修改图表配置
-        // chartInstance.setOption(e);
         chartInstance.setOption(piniaOption, true);
         // 修改pinia数据
         common.$patch((state: any) => {

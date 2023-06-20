@@ -114,6 +114,7 @@ export default defineComponent({
             timer = setTimeout(() => {
               worker.postMessage({
                 data: JSON.stringify(res.rows),
+                options: JSON.stringify(common.option),
                 handle: conveyData.toString(),
                 type: 'edit'
               })

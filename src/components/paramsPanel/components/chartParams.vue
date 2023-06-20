@@ -102,7 +102,7 @@
               :allOption="item.allOption.yAxis"
               :opNameList="item.opNameList"
             />
-            <component v-if="item.uniqueOption" :is="item.component"></component>
+            <component v-else-if="item.uniqueOption" :is="item.component"></component>
           </div>
         </div>
       </div>

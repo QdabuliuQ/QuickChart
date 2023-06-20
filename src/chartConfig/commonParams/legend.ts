@@ -40,6 +40,10 @@ const allOption = {
     show: true,
     icon: [
       {
+        value: '',
+        label: '默认'
+      },
+      {
         value: 'circle',
         label: '圆形',
       },

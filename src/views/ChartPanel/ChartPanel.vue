@@ -102,13 +102,11 @@ export default defineComponent({
         // 如果返回是函数 则执行 不是则直接使用配置对象
         let option = typeof res.default == 'function' ? res.default() : res.default
         let tmpOption: any = {}; // 临时配置
-        let defaultOption: any = {}; // 默认配置
         let chartConfig: any[] = [];
 
         for (let item of option) {
           if (item.chartOption) {
             tmpOption[item.opName] = item.defaultOption[item.opName];
-            // defaultOption[item.opName] = item.defaultOption[item.opName];
           }
           if (item.allOption) {
             chartConfig.push(item);
@@ -121,9 +119,6 @@ export default defineComponent({
           state.chartConfig = chartConfig;
           state.defaultOption = deepCopy(tmpOption);
         });
-        console.log('执行', common.defaultOption);
-        
-        // sessionStorage.setItem('option', JSON.stringify(tmpOption))
         if (cb) cb(); // 执行回调函数
       });
     };
@@ -142,9 +137,12 @@ export default defineComponent({
       });
 
       data.loadChart = false;
-      setTimeout(() => {
-        data.loadParams = false;
-      }, 1000);
+      _this.proxy.$Bus.on('loadFinished', () => {
+        if(data.loadParams) data.loadParams = false;
+      })
+      // setTimeout(() => {
+      //   data.loadParams = false;
+      // }, 1000);
     });
 
     watch(

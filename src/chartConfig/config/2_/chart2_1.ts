@@ -1,9 +1,8 @@
 import { markRaw } from "vue";
-import lodash from 'lodash'
 import useCommonStore from "@/store/common";
 // 导入独立组件
-import paramsBar from "@/views/ChartPanel/components/paramsBar/paramsBar.vue";
-import { create } from "@/chartConfig/conveyUtils/lineConvey";
+import paramsBarText from "@/views/ChartPanel/components/paramsBar/paramsBarText.vue";
+import paramsBarBgStyle from "@/views/ChartPanel/components/paramsBar/paramsBarBgStyle.vue";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -14,127 +13,161 @@ import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+import { bar_series_backgroundStyle, bar_series_label } from "@/chartConfig/option"
+import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
-export default [
-  title,
-  canvas,
-  gridOption(),
-  legendOption(),
-  waterMark,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [{
-        ...xAxis,
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      }],
+const getOption = () => {
+  return [
+    title,
+    canvas,
+    gridOption(),
+    legendOption(),
+    waterMark,
+    {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: [
+            ['Mon', 120],
+            ['Tue', 200],
+            ['Wed', 150],
+            ['Thu', 80],
+            ['Fri', 70],
+            ['Sat', 110],
+            ['Sun', 130]
+          ]
+        },
+      },
+      allOption: {},
     },
-    allOption: {
-      xAxis: [
-        {
-          ...xAxisOption,
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [{
+          ...xAxis,
           type: 'category',
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [{
-        ...yAxis,
-        type: 'value',
-      }],
-    },
-    allOption: {
-      yAxis: [
-        {
-          ...yAxisOption,
-          type: 'value',
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: false,
-    defaultOption: {
-      series: [
-        {
-          name: '系列一',
-          data: [120, 200, 150, 80, 70, 110, 130],
-          type: 'bar',
-          showBackground: true,
-          backgroundStyle: {
-            color: 'rgba(180, 180, 180, 0.2)'
+        }],
+      },
+      allOption: {
+        xAxis: [
+          {
+            ...xAxisOption,
+            type: 'category',
           }
-        }
-      ]
-    }
-  },
-  {
-    name: '柱体样式',
-    opName: 'barStyle',
-    chartOption: false,
-    menuOption: true,
-    uniqueOption: true,
-    icon: 'i_bar',
-    component: markRaw(paramsBar),
-    allOption: {}
-  }
-]
+        ]
+      },
+      opNameList: asisOpNameList
+    },
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [{
+          ...yAxis,
+          type: 'value',
+        }],
+      },
+      allOption: {
+        yAxis: [
+          {
+            ...yAxisOption,
+            type: 'value',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
+    },
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: [
+          {
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: bar_series_backgroundStyle({
+              'color': 'rgba(180, 180, 180, 0.2)'
+            }),
+            label: bar_series_label({
+              'show': false
+            }),
+          }
+        ]
+      }
+    },
+    {
+      name: '文本样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      component: markRaw(paramsBarText),
+      allOption: {},
+    },
+    {
+      name: '背景样式',
+      opName: 'bgStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_bg',
+      component: markRaw(paramsBarBgStyle),
+      allOption: {},
+    },
+  ]
+}
 
-export const createExcelData = create
+export default getOption
+
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  dataset.source = data.datasetData
+  return {
+    dataset
+  }
+}
+
+export const createExcelData = (config: any) => {
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 0,
+      startCol: 0,
+    },
+  ])
+}
+
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let series = common.option.series
-  let xAxis = lodash.cloneDeep(common.option.xAxis)
-  let data = []
-  let dataObj: any = {
-    xAxis,
-    series: []
+  if (!rows) return null
+  let datas = {
+    datasetData: <any>[]
   }
-  // 遍历数据项
-  let rowsTLength = Object.keys(rows[0].cells).length;
+  let length: number = Object.keys(rows).length
 
-  for (let i = 1; i <= rowsTLength; i++) {
-    dataObj.series.push({  // 创建series
-      name: rows[0].cells[i].text,
-      data: [],
-      type: 'bar',
-      showBackground: series[i-1] ? series[i-1].showBackground : true,
-      backgroundStyle: {
-        color: series[i-1] ? series[i-1].backgroundStyle.color : 
-        "rgba(180, 180, 180, 0.2)"
-      }
-    })
+  for(let i = 0; i < length; i ++) {
+    if (JSON.stringify(rows[i].cells) == '{}') break
+    datas.datasetData[i] = []
+    let val1 = rows[i].cells[0].text
+    let val2 = parseFloat(rows[i].cells[1].text)
+    datas.datasetData[i] = [val1, val2]
   }
-  
-  let rowsALength = Object.keys(rows).length - 1;
-  for (let i = 1; i < rowsALength; i++) {
-    let rowsItemLength = Object.keys(rows[i].cells).length;
-    data.push(rows[i].cells[0].text)
-    // 将对应数据放入series当中
-    for (let j = 1; j < rowsItemLength; j++) {
-      dataObj.series[j - 1].data.push(rows[i].cells[j].text)
-    }
-  }
-  dataObj.xAxis[0].data = data
-
-  return dataObj
+  return datas
 }

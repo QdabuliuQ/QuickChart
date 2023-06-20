@@ -185,6 +185,7 @@ export const conveyExcelData = (rows: any) => {
   }
   let xLength = Object.keys(rows[0].cells).length
   let yLength = Object.keys(rows[1].cells).length
+  let length = Object.keys(rows).length
   
   for(let i = 0; i < xLength; i ++) {
     datas.xAxisData[i] = rows[0] && rows[0].cells && rows[0].cells[i] ? rows[0].cells[i].text : ''
@@ -192,13 +193,12 @@ export const conveyExcelData = (rows: any) => {
   for(let i = 0; i < yLength; i ++) {
     datas.yAxisData[i] = rows[1] && rows[1].cells && rows[1].cells[i] ? rows[1].cells[i].text : ''
   }
-  for(let i = 2; i < rows.len; i ++) {
+  for(let i = 2; i < length; i ++) {
     let val1: any = rows[i] && rows[i].cells && rows[i].cells[0] ? parseFloat(rows[i].cells[0].text) : ''
     let val2: any = rows[i] && rows[i].cells && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : ''
     let val3: any = rows[i] && rows[i].cells && rows[i].cells[2] ? parseFloat(rows[i].cells[2].text) : ''
     if(isNaN(val1) || val1 === '' || isNaN(val2) || val2 === '' || isNaN(val3) || val3 === '') break
     datas.datasetData[i-2] = [val1, val2, val3]
   }
-  
   return datas
 }

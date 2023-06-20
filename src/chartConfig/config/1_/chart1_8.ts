@@ -1,134 +1,164 @@
+import { markRaw } from "vue";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
+import useCommonStore from "@/store/common";
 import title from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
+import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import { line_series, line_series_label } from "@/chartConfig/option";
+import paramsLineStyle from "@/views/ChartPanel/components/paramsLine/paramsLineStyle.vue";
+import paramsLineText from "@/views/ChartPanel/components/paramsLine/paramsLineText.vue";
 
-export default [
-  title,
-  canvas,
-  gridOption(),
-  color,
-  waterMark,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: false,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [
-        {
-          type: 'value'
-        }
-      ],
-    },
-    allOption: {
-      xAxis: [
-        {
-          type: 'value'
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: false,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [
-        {
-          type: 'value'
-        }
-      ],
-    },
-    allOption: {
-      yAxis: [
-        {
-          type: 'value'
-        }
-      ]
-    },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: true,
-    defaultOption: {
-      series: [
-        {
-          name: '系列一',
-          data: [
+const common: any = useCommonStore()
+const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
+const getOption = () => {
+  return [
+    title,
+    canvas,
+    gridOption(),
+    color,
+    waterMark,
+    {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: [
             [10, 40],
             [50, 100],
             [40, 20]
-          ],
-          type: 'line'
+          ]
         },
-      ]
+      },
+      allOption: {},
     },
-  },
-]
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: false,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [
+          {}
+        ],
+      },
+      allOption: {
+        xAxis: [
+          {}
+        ]
+      },
+      opNameList: asisOpNameList
+    },
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: false,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [
+          {}
+        ],
+      },
+      allOption: {
+        yAxis: [
+          {}
+        ]
+      },
+      opNameList: asisOpNameList
+    },
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: false,
+      defaultOption: {
+        series: [
+          {
+            type: 'line',
+            ...lineSeriesOption,
+            label: {
+              ...lineSeriesLabelOption
+            }
+          },
+        ]
+      },
+    },
+    {
+      name: '线段样式',
+      opName: 'lineStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_line',
+      component: markRaw(paramsLineStyle),
+      allOption: {},
+    },
+    {
+      name: '字体样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      component: markRaw(paramsLineText),
+      allOption: {},
+    },
+  ]
+}
+
+export default getOption
+
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  let series = common.option.series
+  dataset.source = data.datasetData
+  series = data.seriesData
+  return {
+    dataset,
+    series
+  }
+}
 
 export const createExcelData = (config: any) => {
-  let excelData: any = {}
-
-  let series = config.series[0].data
-
-  // 初始化
-  for (let i = 0; i < series.length + 1; i++) {
-    excelData[i] = {
-      cells: {}
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 0
     }
-  }
-  excelData[0].cells[0] = {
-    text: 'X坐标',
-  }
-  excelData[0].cells[1] = {
-    text: 'Y坐标',
-  }
-
-  for (let i = 0; i < series.length; i++) {
-    excelData[i + 1].cells[0] = {
-      text: series[i][0],
-    }
-    excelData[i + 1].cells[1] = {
-      text: series[i][1],
-    }
-  }
-
-  return excelData
+  ])
 }
+
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  let dataObj: any = {
-    series: []
+  let length: number = Object.keys(rows).length
+  if (!rows || length <= 0) return null
+  const seriesOptionItem = common.option.series[0]
+  let datas = {
+    datasetData: <any>[],
+    seriesData: <any>[]
   }
-  dataObj.series[0] = {
-    name: '系列一',
-    data: [
-    ],
-    type: 'line'
+  for(let i = 0; i < length; i ++) {
+    if (JSON.stringify(rows[i].cells) == '{}') break
+    datas.datasetData[i] = []
+    let rowsLength: number = Object.keys(rows[i].cells).length
+    for(let j = 0; j < rowsLength; j ++) {
+      datas.datasetData[i].push(parseFloat(rows[i].cells[j].text))
+    }
   }
-  // 遍历数据项
-
-  let index = 1
-  while (rows[index]) {
-    dataObj.series[0].data.push([
-      rows[index].cells[0]?.text,
-      rows[index].cells[1]?.text,
-    ])
-    index++
+  if(datas.datasetData.length) {
+    for(let i = 0; i < Math.floor(datas.datasetData[0].length / 2); i ++) {
+      datas.seriesData.push(seriesOptionItem)
+    }
   }
-
-  console.log(dataObj);
-  return dataObj
+  return datas
 }

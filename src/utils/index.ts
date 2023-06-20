@@ -1,3 +1,5 @@
+import { ConfigInt } from "@/types/common";
+
 export const debounce = (func: Function, time: number = 200, immediate = false) => {
   let timer: number | null = null;
   return (...args: any) => {
@@ -61,4 +63,14 @@ export const initCopyConfig = (origin: any, data: any, excludeProp?: Set<string>
       }
     }
   }
+}
+
+export const getConfigValue = (config: ConfigInt) => {
+  let optionsRes: {
+    [propName: string]: any
+  } = {}
+  for(let key in config) {
+    optionsRes[key] = config[key].value
+  }
+  return optionsRes
 }

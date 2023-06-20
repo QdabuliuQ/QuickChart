@@ -97,7 +97,7 @@ const getOption = () => {
       chartOption: false,
       menuOption: true,
       uniqueOption: true,
-      icon: 'i_line',
+      icon: 'i_gline',
       component: markRaw(paramsPieLine),
       allOption: {},
     },
