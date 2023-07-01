@@ -1,10 +1,9 @@
 import { markRaw } from "vue";
 import useCommonStore from "@/store/common";
-import { create, convey } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -20,15 +19,17 @@ import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
 const getOption = () => {
-  const legend = legendOption()
-  legend.defaultOption.legend!.icon = ''
-  legend.defaultOption.legend!.left = 'center'
-  legend.defaultOption.legend!.top = 10
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
-    legend,
+    legendOption({
+      'icon': '',
+      'left': 'center',
+      'top': 10
+    }),
     waterMark,
     color,
     {

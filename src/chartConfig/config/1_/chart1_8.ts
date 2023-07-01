@@ -3,7 +3,7 @@ import {
   asisOpNameList
 } from "@/chartConfig/constant";
 import useCommonStore from "@/store/common";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
@@ -17,7 +17,9 @@ const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
 const getOption = () => {
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
     color,
@@ -119,12 +121,10 @@ export default getOption
 
 export function combineOption(data: any) {
   let dataset = common.option.dataset
-  let series = common.option.series
   dataset.source = data.datasetData
-  series = data.seriesData
   return {
     dataset,
-    series
+    series: data.seriesData
   }
 }
 
@@ -139,14 +139,14 @@ export const createExcelData = (config: any) => {
 }
 
 // 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
+export const conveyExcelData = (rows: any, options: any) => {
   let length: number = Object.keys(rows).length
   if (!rows || length <= 0) return null
-  const seriesOptionItem = common.option.series[0]
   let datas = {
     datasetData: <any>[],
     seriesData: <any>[]
   }
+  const seriesOptionItem = options.series[0] ?? null
   for(let i = 0; i < length; i ++) {
     if (JSON.stringify(rows[i].cells) == '{}') break
     datas.datasetData[i] = []
@@ -155,10 +155,8 @@ export const conveyExcelData = (rows: any) => {
       datas.datasetData[i].push(parseFloat(rows[i].cells[j].text))
     }
   }
-  if(datas.datasetData.length) {
-    for(let i = 0; i < Math.floor(datas.datasetData[0].length / 2); i ++) {
-      datas.seriesData.push(seriesOptionItem)
-    }
+  for(let i = 0; i < datas.datasetData.length; i ++) {
+    datas.seriesData.push(seriesOptionItem)
   }
   return datas
 }

@@ -1,6 +1,6 @@
 import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
@@ -14,9 +14,10 @@ const common: any = useCommonStore()
 const data = pointData_2;
 
 const getOption = () => {
-  title.defaultOption.title.show = false
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
     waterMark,

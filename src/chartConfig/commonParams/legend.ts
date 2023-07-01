@@ -6,6 +6,7 @@ import {
 } from "@/chartConfig/constant";
 
 import { Common } from "../interface";
+import { replaceOptionValue } from "../tools";
 interface LegendInterface {
   defaultOption: {
     legend: {
@@ -102,7 +103,7 @@ const legend: Common & LegendInterface = {
   opNameList,
 }
 
-const legendOption = (): Common & LegendInterface => {
+const legendOption = (options?: any): Common & LegendInterface => {
   const dOption = {
     show: true,
     icon: 'circle',
@@ -116,6 +117,7 @@ const legendOption = (): Common & LegendInterface => {
     itemWidth: 25,
     itemHeight: 14,
   }
+  replaceOptionValue(dOption, options)
   legend.defaultOption.legend = dOption
   return legend
 }

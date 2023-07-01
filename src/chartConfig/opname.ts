@@ -27,3 +27,14 @@ export const label = {
   textShadowOffsetX: '字体阴影偏移X',
   textShadowOffsetY: '字体阴影偏移Y'
 }
+
+export const candlestick_itemStyle = {
+  borderColor: '边框颜色',
+  borderColor0: '描边颜色',
+  borderWidth: '边框宽度',
+  shadowBlur: '阴影模糊',
+  shadowColor: '阴影颜色',
+  shadowOffsetX: '阴影偏移X',
+  shadowOffsetY: '阴影偏移Y',
+  opacity: '透明度',
+}

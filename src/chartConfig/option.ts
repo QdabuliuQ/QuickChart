@@ -1,4 +1,4 @@
-const replaceOptionValue = (origin: any, option: any) => {
+export const replaceOptionValue = (origin: any, option: any) => {
   for (let key in option) {
     if (key.indexOf('.') == -1) {
       if (Number.isNaN(option[key])) {
@@ -13,7 +13,7 @@ const replaceOptionValue = (origin: any, option: any) => {
       for (let i = 0; i < keys.length - 1; i++) {
         data = data[keys[i]]
       }
-      if(isNaN(option[key])) delete data[keys[keys.length - 1]]
+      if (isNaN(option[key])) delete data[keys[keys.length - 1]]
       else data[keys[keys.length - 1]] = option[key]
     }
   }
@@ -147,7 +147,7 @@ export const line_series = (option?: any) => {
   }
   replaceOptionValue(res, option)
   console.log(res);
-  
+
   return res
 }
 
@@ -159,7 +159,7 @@ export const line_series_label = (option?: any) => {
     offsetX: 0,
     offsetY: 0,
     color: '#000',
-    offset: [0,0],
+    offset: [0, 0],
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: 'sans-serif',
@@ -179,6 +179,21 @@ export const line_series_label = (option?: any) => {
     textShadowBlur: 0,
     textShadowOffsetX: 0,
     textShadowOffsetY: 0,
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const kline_series_itemstyle = (option?: any) => {
+  let res: any = {
+    borderColor: '',
+    borderColor0: '',
+    borderWidth: 1,
+    shadowBlur: 0,
+    shadowColor: '',
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    opacity: 1,
   }
   replaceOptionValue(res, option)
   return res

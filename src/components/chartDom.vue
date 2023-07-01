@@ -89,7 +89,7 @@ export default defineComponent({
       chartInstance.on('finished', () => {
         setTimeout(() => {
           _this.proxy.$Bus.emit('loadFinished')
-        }, 5000);
+        }, 1000);
       })
       data.option = common.option;
       data.code = common.option;

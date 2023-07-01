@@ -3,10 +3,10 @@ import useCommonStore from "@/store/common";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
@@ -20,10 +20,12 @@ const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
 const getOption = () => {
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
-    legend,
+    legendOption(),
     waterMark,
     color,
     {

@@ -2,7 +2,7 @@ import useCommonStore from "@/store/common";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -21,16 +21,18 @@ const getOption = () => {
   grid.defaultOption.grid.top = grid.allOption.grid.top = 50
   grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 20
   grid.defaultOption.grid.right = grid.allOption.grid.right = 60
-  let legend = legendOption()
-  legend.defaultOption.legend!.left = 'center'
-  legend.defaultOption.legend!.top = 5
-  legend.defaultOption.legend!.icon = 'roundRect'
 
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     grid,
-    legend,
+    legendOption({
+      'left': 'center',
+      'top': 5,
+      'icon': 'roundRect',
+    }),
     waterMark,
     {
       name: 'dataset',

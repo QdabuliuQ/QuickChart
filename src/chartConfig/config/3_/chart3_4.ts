@@ -1,10 +1,9 @@
 import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
-import { create, convey } from "@/chartConfig/conveyUtils/pieConvey";
 import paramsPieStyle from "@/views/ChartPanel/components/paramsPie/paramsPieStyle.vue";
 import paramsPieText from "@/views/ChartPanel/components/paramsPie/paramsPieText.vue";
 import paramsPieLine from "@/views/ChartPanel/components/paramsPie/paramsPieLine.vue";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -16,18 +15,18 @@ import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 const common: any = useCommonStore()
 
 const getOption = () => {
-  // 初始化公共配置
-  let legend = legendOption()
-  legend.defaultOption.legend!.icon = 'roundRect'
-  legend.defaultOption.legend!.top = '5%'
-  legend.defaultOption.legend!.left = 'center'
-  legend.defaultOption.legend!.orient = 'horizontal'
-  title.defaultOption.title.show = false
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
-    legend,
+    legendOption({
+      'icon': 'roundRect',
+      'top': 20,
+      'left': 'center',
+      'orient': 'horizontal',
+    }),
     waterMark,
     {
       name: '数据',

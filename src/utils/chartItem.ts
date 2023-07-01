@@ -77,7 +77,7 @@ const list: ListInt[] = [
       },
       {
         cover: require('@/assets/image/2_3.webp'),
-        name: '定义单个柱子颜色',
+        name: '正负条形图',
         id: '2_3',
       },
       {
@@ -172,7 +172,20 @@ const list: ListInt[] = [
         id: '4_5'
       },
     ]
-  }
+  },
+  {
+    type: 'K线图',
+    id: 5,
+    icon: 'i_kline_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/5_1.webp"),
+        name: '基础K线图',
+        id: '5_1'
+      },
+    ]
+  },
 ]
 
 export default list

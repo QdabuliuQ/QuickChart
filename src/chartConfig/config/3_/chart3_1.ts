@@ -1,10 +1,9 @@
 import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
-import { create, convey } from "@/chartConfig/conveyUtils/pieConvey";
 import paramsPieStyle from "@/views/ChartPanel/components/paramsPie/paramsPieStyle.vue";
 import paramsPieText from "@/views/ChartPanel/components/paramsPie/paramsPieText.vue";
 import paramsPieLine from "@/views/ChartPanel/components/paramsPie/paramsPieLine.vue";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -15,16 +14,17 @@ import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 const common: any = useCommonStore()
 
 const getOption = () => {
-    let legend = legendOption()
-    legend.defaultOption.legend!.left = 1
-    legend.defaultOption.legend!.orient = 'vertical'
-    legend.defaultOption.legend!.icon = 'roundRect'
-    title.defaultOption.title.show = false
     return [
-        title,
+        titleOption({
+            'show': false
+        }),
         canvas,
         gridOption(),
-        legend,
+        legendOption({
+            'left': 1,
+            'orient': 'vertical',
+            'icon': 'roundRect',
+        }),
         waterMark,
         {
             name: 'series',
@@ -46,7 +46,7 @@ const getOption = () => {
                         data: [
                             { name: 'Search Engine', value: 1048 },
                             { name: 'Direct', value: 735 },
-                            {  name: 'Email', value: 580 },
+                            { name: 'Email', value: 580 },
                             { name: 'Union Ads', value: 484 },
                             { name: 'Video Ads', value: 300, }
                         ],
@@ -119,7 +119,7 @@ export const conveyExcelData = (rows: any) => {
     }
     // 遍历数据项
     console.log(rows);
-    
+
     let rowsTLength = Object.keys(rows).length;
     for (let i = 0; i < rowsTLength; i++) {
         let val1 = rows[i] && rows[i].cells[0] ? rows[i].cells[0].text : ''
@@ -131,7 +131,7 @@ export const conveyExcelData = (rows: any) => {
         })
     }
     console.log(datas);
-    
+
     return datas
 }
 

@@ -6,7 +6,7 @@ import paramsBarBgStyle from "@/views/ChartPanel/components/paramsBar/paramsBarB
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -20,7 +20,9 @@ const common: any = useCommonStore()
 
 const getOption = () => {
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
     legendOption(),

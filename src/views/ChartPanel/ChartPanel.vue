@@ -103,7 +103,6 @@ export default defineComponent({
         let option = typeof res.default == 'function' ? res.default() : res.default
         let tmpOption: any = {}; // 临时配置
         let chartConfig: any[] = [];
-
         for (let item of option) {
           if (item.chartOption) {
             tmpOption[item.opName] = item.defaultOption[item.opName];
@@ -140,9 +139,6 @@ export default defineComponent({
       _this.proxy.$Bus.on('loadFinished', () => {
         if(data.loadParams) data.loadParams = false;
       })
-      // setTimeout(() => {
-      //   data.loadParams = false;
-      // }, 1000);
     });
 
     watch(

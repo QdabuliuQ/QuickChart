@@ -5,7 +5,7 @@ import useCommonStore from "@/store/common";
 import paramsBarPolar from "@/views/ChartPanel/components/paramsBar/paramsBarPolar.vue";
 import paramsBarAxis from "@/views/ChartPanel/components/paramsBar/paramsBarAxis.vue";
 import paramsBarAngle from "@/views/ChartPanel/components/paramsBar/paramsBarAngle.vue";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
@@ -15,7 +15,9 @@ const common: any = useCommonStore()
 
 const getOption = () => {
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
     waterMark,

@@ -3,7 +3,7 @@ import useCommonStore from "@/store/common";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -28,16 +28,18 @@ const lineSeriesOption = line_series({
 }), lineSeriesLabelOption = line_series_label()
 
 const getOption = () => {
-  let legend = legendOption()
-  legend.defaultOption.legend!.show = true
-  legend.defaultOption.legend!.top = 5
-  legend.defaultOption.legend!.left = 'center'
-  legend.defaultOption.legend!.icon = 'pin'
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
-    legend,
+    legendOption({
+      'show': true,
+      'top': 5,
+      'left': 'center',
+      'icon': 'pin',
+    }),
     waterMark,
     color,
     {
@@ -154,12 +156,10 @@ export default getOption
 
 export function combineOption(data: any) {
   let dataset = common.option.dataset
-  let series = common.option.series
   dataset.source = data.datasetData
-  series = data.seriesData
   return {
     dataset,
-    series
+    series: data.seriesData
   }
 }
 
@@ -174,13 +174,13 @@ export const createExcelData = (config: any) => {
 }
 
 // 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
+export const conveyExcelData = (rows: any, options: any) => {
   if (!rows) return null
-  const seriesOptionItem = common.option.series[0]
   let datas = {
     datasetData: <any>[],
     seriesData: <any>[]
   }
+  const seriesOptionItem = options.series[0] ?? null
   let length: number = Object.keys(rows).length
   for(let i = 0; i < length; i ++) {
     if (JSON.stringify(rows[i].cells) == '{}') break
@@ -190,7 +190,8 @@ export const conveyExcelData = (rows: any) => {
       datas.datasetData[i].push(isNaN(rows[i].cells[j].text) ? rows[i].cells[j].text : parseFloat(rows[i].cells[j].text))
     }
   }
-  if(datas.datasetData.length) {
+  
+  if (datas.datasetData.length) {
     for(let i = 0; i < datas.datasetData[0].length-1; i ++) {
       datas.seriesData.push(seriesOptionItem)
     }

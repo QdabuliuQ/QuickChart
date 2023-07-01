@@ -3,7 +3,7 @@ import useCommonStore from "@/store/common";
 import paramsPieStyle from "@/views/ChartPanel/components/paramsPie/paramsPieStyle.vue";
 import paramsPieText from "@/views/ChartPanel/components/paramsPie/paramsPieText.vue";
 import paramsPieLine from "@/views/ChartPanel/components/paramsPie/paramsPieLine.vue";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -15,17 +15,18 @@ import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 const common: any = useCommonStore()
 
 const getOption = () => {
-  let legend = legendOption()
-  legend.defaultOption.legend!.icon = 'roundRect'
-  legend.defaultOption.legend!.top = 'bottom'
-  legend.defaultOption.legend!.left = 'center'
-  legend.defaultOption.legend!.orient = 'horizontal'
-  title.defaultOption.title.show = false
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     gridOption(),
-    legend,
+    legendOption({
+      'icon': 'roundRect',
+      'top': 'bottom',
+      'left': 'center',
+      'orient': 'horizontal',
+    }),
     waterMark,
     {
       name: '数据',

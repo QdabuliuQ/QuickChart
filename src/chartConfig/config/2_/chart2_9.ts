@@ -6,7 +6,7 @@ import paramsBarSort from "@/views/ChartPanel/components/paramsBar/paramsBarSort
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
@@ -26,7 +26,9 @@ const getOption = () => {
   grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
   grid.defaultOption.grid.right = grid.allOption.grid.right = 60
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     grid,
     legendOption(),

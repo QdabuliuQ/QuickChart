@@ -1,27 +1,24 @@
+import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
-import { create, convey } from "@/chartConfig/conveyUtils/lineConvey";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
-import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
-import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
-
+import xAxis, { xAxisOption } from '@/chartConfig/commonParams/xAxis';
+import { asisOpNameList } from '@/chartConfig/constant';
+import yAxis, { yAxisOption } from '@/chartConfig/commonParams/yAxis';
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
+import { kline_series_itemstyle } from '@/chartConfig/option';
+import paramsKLineStyle from '@/views/ChartPanel/components/paramsKLine/paramsKLineStyle.vue'
 const common: any = useCommonStore()
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
     }),
-    canvas,
     gridOption(),
-    legendOption(),
+    canvas,
     waterMark,
     {
       name: 'dataset',
@@ -32,13 +29,10 @@ const getOption = () => {
       defaultOption: {
         dataset: {
           source: [
-            ['Mon', 120],
-            ['Tue', 200],
-            ['Wed', 150],
-            ['Thu', 80],
-            ['Fri', 70],
-            ['Sat', 110],
-            ['Sun', 130]
+            ['2017-10-24', 20, 34, 10, 38],
+            ['2017-10-25', 40, 35, 30, 50],
+            ['2017-10-26', 31, 38, 33, 44],
+            ['2017-10-27', 38, 15, 5, 42]
           ]
         },
       },
@@ -75,14 +69,12 @@ const getOption = () => {
       defaultOption: {
         yAxis: [{
           ...yAxis,
-          type: 'value',
         }],
       },
       allOption: {
         yAxis: [
           {
             ...yAxisOption,
-            type: 'value',
           }
         ]
       },
@@ -96,64 +88,50 @@ const getOption = () => {
       defaultOption: {
         series: [
           {
-            type: 'bar',
+            type: 'candlestick',
+            itemStyle: kline_series_itemstyle()
           }
         ]
       }
     },
+    {
+      name: 'K线样式',
+      opName: 'kLineStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_kline_chart',
+      component: markRaw(paramsKLineStyle),
+      allOption: {},
+    },
   ]
-}
-
-export default getOption
-
-export function combineOption(data: any) {
-  let series = common.option.series
-  let dataset = common.option.dataset
-  series = data.seriesData
-  dataset.source = data.datasetData
-  return {
-    series,
-    dataset
-  }
 }
 
 export const createExcelData = (config: any) => {
   return conveyToExcel([
     {
       direction: 'col',
-      data: config.dataset.source,
-      startRow: 0,
-      startCol: 0
+      data: config.dataset.source
     }
   ])
 }
+
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any) => {
-  if(!rows) return
-  const seriesOptionItem = {
-    type: 'bar',
-  }
-  let datas = {
-    datasetData: <any>[],
+  if(!rows) return null
+  let datas: any = {
     seriesData: <any>[]
   }
-  let length: number = Object.keys(rows).length
-  for(let i = 0; i < length; i ++) {
-    if(JSON.stringify(rows[i].cells) == '{}') break
-    datas.datasetData[i] = []
-    let rowsLength: number = Object.keys(rows[i].cells).length
-    for(let j = 0; j < rowsLength; j ++) {
-      if (rows[i].cells[j].text == '') {
-        datas.datasetData[i].push('')
-      } else {
-        datas.datasetData[i].push(isNaN(rows[i].cells[j].text) ? rows[i].cells[j].text : parseFloat(rows[i].cells[j].text))
-      }
-    }
-  } 
-  if(datas.datasetData.length) {
-    for(let i = 0; i < datas.datasetData[0].length-1; i ++) {
-      datas.seriesData.push(seriesOptionItem)
-    }
+  // 遍历数据项
+  let rowsTLength = Object.keys(rows).length;
+  for (let i = 0; i < rowsTLength; i++) {
+    let val1 = rows[i] && rows[i].cells[0] ? rows[i].cells[0].text : ''
+    let val2 = rows[i] && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
+    if(val1 == '' || isNaN(val2)) break
+    datas.seriesData.push({  // 创建series
+      name: val1,
+      value: val2
+    })
   }
   return datas
 }

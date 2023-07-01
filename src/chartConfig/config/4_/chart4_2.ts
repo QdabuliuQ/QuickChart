@@ -1,6 +1,6 @@
 import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import waterMark from "@/chartConfig/commonParams/waterMark";
@@ -31,7 +31,9 @@ const getOption = () => {
   grid.defaultOption.grid.right = 20
   grid.defaultOption.grid.containLabel = true
   return [
-    title,
+    titleOption({
+      'show': false
+    }),
     canvas,
     grid,
     waterMark,

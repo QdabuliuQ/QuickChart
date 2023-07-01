@@ -1,106 +1,187 @@
+import { markRaw } from "vue";
 import useCommonStore from "@/store/common";
-import { create, convey } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-import title from "@/chartConfig/commonParams/title";
+import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import legend from "@/chartConfig/commonParams/legend";
+import legendOption from "@/chartConfig/commonParams/legend";
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
 import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+import { line_series, line_series_label } from "@/chartConfig/option";
+import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import paramsLineStyle from "@/views/ChartPanel/components/paramsLine/paramsLineStyle.vue";
+import paramsLineText from "@/views/ChartPanel/components/paramsLine/paramsLineText.vue";
 
 const common: any = useCommonStore()
+const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
 
-const config = [
-  title,
-  canvas,
-  gridOption(),
-  legend,
-  waterMark,
-  color,
-  {
-    name: 'X轴样式',
-    opName: 'xAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_X',
-    defaultOption: {
-      xAxis: [{
-        ...xAxis,
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      }],
+const getOption = () => {
+  return [
+    titleOption({
+      'show': false
+    }),
+    canvas,
+    gridOption(),
+    legendOption({
+      'show': false
+    }),
+    waterMark,
+    color,
+    {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: [
+            ['items', '系列一'],
+            ['Mon', 820],
+            ['Tue', 932],
+            ['Wed', 901],
+            ['Thu', 934],
+            ['Fri', 1290],
+            ['Sat', 1330],
+            ['Sun', 1320],
+          ]
+        },
+      },
+      allOption: {},
     },
-    allOption: {
-      xAxis: [
-        {
-          ...xAxisOption,
+    {
+      name: 'X轴样式',
+      opName: 'xAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_X',
+      defaultOption: {
+        xAxis: [{
+          ...xAxis,
           type: 'category',
-        }
-      ]
+        }],
+      },
+      allOption: {
+        xAxis: [
+          {
+            ...xAxisOption,
+            type: 'category',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: 'Y轴样式',
-    opName: 'yAxis',
-    chartOption: true,
-    menuOption: true,
-    icon: 'i_Y',
-    defaultOption: {
-      yAxis: [{
-        ...yAxis,
-        type: 'value',
-      }],
-    },
-    allOption: {
-      yAxis: [
-        {
-          ...yAxisOption,
+    {
+      name: 'Y轴样式',
+      opName: 'yAxis',
+      chartOption: true,
+      menuOption: true,
+      icon: 'i_Y',
+      defaultOption: {
+        yAxis: [{
+          ...yAxis,
           type: 'value',
-        }
-      ]
+        }],
+      },
+      allOption: {
+        yAxis: [
+          {
+            ...yAxisOption,
+            type: 'value',
+          }
+        ]
+      },
+      opNameList: asisOpNameList
     },
-    opNameList: asisOpNameList
-  },
-  {
-    name: '数据',
-    opName: 'series',
-    chartOption: true,
-    menuOption: true,
-    defaultOption: {
-      series: [
-        {
-          name: '系列一',
-          data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line',
-        }
-      ]
+    {
+      name: '数据',
+      opName: 'series',
+      chartOption: true,
+      menuOption: true,
+      defaultOption: {
+        series: [
+          {
+            type: 'line',
+            smooth: true,
+            ...lineSeriesOption,
+            label: {
+              ...lineSeriesLabelOption
+            }
+          }
+        ]
+      },
     },
-  },
-]
+    {
+      name: '线段样式',
+      opName: 'lineStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_line',
+      component: markRaw(paramsLineStyle),
+      allOption: {},
+    },
+    {
+      name: '字体样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      component: markRaw(paramsLineText),
+      allOption: {},
+    },
+  ]
+} 
 
-// 创建初始数据
-export const createExcelData = create
+export default getOption
 
-// 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
-  let xAxis = common.option.xAxis
-
-  let res = convey(rows, {
-    type: 'line'
-  })
-
-  xAxis[0].data = res.category
-  let dataObj: any = {
-    xAxis,
-    series: res.series
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  let series = common.option.series
+  dataset.source = data.datasetData
+  series = data.seriesData
+  return {
+    dataset,
+    series
   }
-  
-  return dataObj
 }
 
-export default config
+export const createExcelData = (config: any) => {
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.dataset.source,
+      startRow: 0
+    }
+  ])
+}
+
+// 收集数据并进行转换
+export const conveyExcelData = (rows: any, options: any) => {
+  if (!rows) return null
+  const seriesOptionItem = options.series[0]
+  let datas = {
+    datasetData: <any>[],
+    seriesData: <any>[]
+  }
+  let length: number = Object.keys(rows).length
+  for(let i = 0; i < length; i ++) {
+    if (JSON.stringify(rows[i].cells) == '{}') break
+    datas.datasetData[i] = []
+    let rowsLength: number = Object.keys(rows[i].cells).length
+    for(let j = 0; j < rowsLength; j ++) {
+      datas.datasetData[i].push(isNaN(rows[i].cells[j].text) ? rows[i].cells[j].text : parseFloat(rows[i].cells[j].text))
+    }
+  }
+  if(datas.datasetData.length) {
+    for(let i = 0; i < datas.datasetData[0].length-1; i ++) {
+      datas.seriesData.push(seriesOptionItem)
+    }
+  }
+  return datas
+}
