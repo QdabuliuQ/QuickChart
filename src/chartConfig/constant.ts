@@ -220,6 +220,16 @@ export const verticalAlign: ListInt[] = [
     label: '下方'
   },
 ]
+export const shape: ListInt[] = [
+  {
+    value: 'polygon',
+    label: '多边形',
+  },
+  {
+    value: 'circle',
+    label: '圆形'
+  }
+]
 export const asisOpNameList: any = {
   show: '显示',
   position: '位置',

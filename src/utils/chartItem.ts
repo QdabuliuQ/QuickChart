@@ -186,6 +186,19 @@ const list: ListInt[] = [
       },
     ]
   },
+  {
+    type: '雷达图',
+    id: 6,
+    icon: 'i_radar_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/6_1.webp"),
+        name: '基础雷达图',
+        id: '6_1'
+      },
+    ]
+  },
 ]
 
 export default list

@@ -112,6 +112,8 @@ export default defineComponent({
           }
         }
         tmpOption.backgroundColor = "#fff";
+        console.log(tmpOption);
+        
         // 保存数据到pinia
         common.$patch((state: any) => {
           state.option = tmpOption;

@@ -23,7 +23,7 @@ const getOption = () => {
       'show': false
     }),
     canvas,
-    grid,
+    gridOption(),
     legendOption(),
     waterMark,
     {

@@ -203,7 +203,7 @@ export const createExcelData = (config: any) => {
 // 收集数据并进行转换
 export const conveyExcelData = (rows: any, options: any) => {
   if (!rows) return null
-  const seriesOptionItem = options.series[0]
+  const seriesOptionItem = options.series.length ? options.series[0] : null
   let datas = {
     datasetData: <any>[],
     seriesData: <any>[]

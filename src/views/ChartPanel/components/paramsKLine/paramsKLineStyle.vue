@@ -16,6 +16,16 @@ import { debounce, getConfigValue } from '@/utils';
 const proxy = useProxy()
 const common: any = useCommonStore()
 const config = reactive<ConfigInt>({
+  color: {
+    type: 'color_picker',
+    title: candlestick_itemStyle.color,
+    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.color
+  },
+  color0: {
+    type: 'color_picker',
+    title: candlestick_itemStyle.color0,
+    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.color0
+  },
   borderColor: {
     type: 'color_picker',
     title: candlestick_itemStyle.borderColor,

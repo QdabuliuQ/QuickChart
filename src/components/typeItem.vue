@@ -108,15 +108,16 @@ export default defineComponent({
       padding-bottom: 15px;
       .itemBox {
         .typeCard {
-          padding: 10px 15px;
-          margin-bottom: 5px;
+          padding: 12px 15px;
           cursor: pointer;
           font-size: 13px;
-          color: #fff;
+          color: #e0e0e0;
           font-weight: bold;
           display: flex;
           align-items: center;
           position: relative;
+          box-sizing: border-box;
+          border-bottom: 1px solid #555;
           .more {
             position: absolute;
             right: 5px;
@@ -132,13 +133,16 @@ export default defineComponent({
           }
           &:hover {
             background: @theme;
+            color: #fff;
           }
         }
         .listContainer {
-          padding: 0 10px 20px;
+          padding: 15px;
           display: grid;
           grid-template-columns: 1fr 1fr;
           grid-gap: 8px;
+          box-sizing: border-box;
+          border-bottom: 1px solid #555;
         }
       }
     }

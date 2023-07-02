@@ -1,3 +1,15 @@
+export const common = {
+  color: '颜色',
+  width: '宽度',
+  type: '类型',
+  show: '显示/隐藏',
+  shadowBlur: '阴影模糊',
+  shadowColor: '阴影颜色',
+  shadowOffsetX: '阴影偏移X',
+  shadowOffsetY: '阴影偏移Y',
+  opacity: '透明度'
+}
+
 export const label = {
   show: '是否显示',
   rotate: '旋转角度',
@@ -29,6 +41,8 @@ export const label = {
 }
 
 export const candlestick_itemStyle = {
+  color: '阳线颜色',
+  color0: '阴线颜色',
   borderColor: '边框颜色',
   borderColor0: '描边颜色',
   borderWidth: '边框宽度',
@@ -37,4 +51,14 @@ export const candlestick_itemStyle = {
   shadowOffsetX: '阴影偏移X',
   shadowOffsetY: '阴影偏移Y',
   opacity: '透明度',
+}
+
+export const radar = {
+  shape: '雷达形状',
+  nameGap: '名称距离',
+  splitNumber: '指示器段数',
+  centerX: 'X偏移(%)',
+  centerY: 'Y偏移(%)',
+  radius: '雷达大小(%)',
+  startAngle: '旋转角度',
 }

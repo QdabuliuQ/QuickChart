@@ -107,6 +107,17 @@ export default () => {
   ]
 }
 
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  let series = common.option.series
+  dataset.source = data.datasetData
+  series = data.seriesData
+  return {
+    dataset,
+    series
+  }
+}
+
 export const createExcelData = (config: any) => {
   return conveyToExcel([
     {
@@ -117,9 +128,10 @@ export const createExcelData = (config: any) => {
 }
 
 // 收集数据并进行转换
-export const conveyExcelData = (rows: any) => {
-  if(!rows) return null
+export const conveyExcelData = (rows: any, options: any) => {
+  if (!rows) return null
   let datas: any = {
+    datasetData: <any>[],
     seriesData: <any>[]
   }
   // 遍历数据项
@@ -127,11 +139,16 @@ export const conveyExcelData = (rows: any) => {
   for (let i = 0; i < rowsTLength; i++) {
     let val1 = rows[i] && rows[i].cells[0] ? rows[i].cells[0].text : ''
     let val2 = rows[i] && rows[i].cells[1] ? parseFloat(rows[i].cells[1].text) : NaN
-    if(val1 == '' || isNaN(val2)) break
-    datas.seriesData.push({  // 创建series
-      name: val1,
-      value: val2
-    })
+    let val3 = rows[i] && rows[i].cells[2] ? parseFloat(rows[i].cells[2].text) : NaN
+    let val4 = rows[i] && rows[i].cells[3] ? parseFloat(rows[i].cells[3].text) : NaN
+    let val5 = rows[i] && rows[i].cells[4] ? parseFloat(rows[i].cells[4].text) : NaN
+    if (val1 == '' || isNaN(val2) || isNaN(val3) || isNaN(val4) || isNaN(val5)) break
+    datas.datasetData.push([
+      val1, val2, val3, val4, val5
+    ])
+  }
+  if(datas.datasetData.length && options.series.length) {
+    datas.seriesData.push(options.series[0])
   }
   return datas
 }

@@ -186,6 +186,8 @@ export const line_series_label = (option?: any) => {
 
 export const kline_series_itemstyle = (option?: any) => {
   let res: any = {
+    color: '#eb5455',
+    color0: '#48b263',
     borderColor: '',
     borderColor0: '',
     borderWidth: 1,
