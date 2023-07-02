@@ -9,6 +9,8 @@ import paramsRadarStyle from '@/views/ChartPanel/components/paramsRadar/paramsRa
 import paramsRadarAxisName from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisName.vue'
 import paramsRadarAxisLine from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisLine.vue'
 import paramsRadarAxisTick from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisTick.vue'
+import paramsRadarAxisLabel from "@/views/ChartPanel/components/paramsRadar/paramsRadarAxisLabel.vue";
+import paramsRadarSplitLine from "@/views/ChartPanel/components/paramsRadar/paramsRadarSplitLine.vue";
 const common: any = useCommonStore()
 
 export default () => {
@@ -53,8 +55,21 @@ export default () => {
           center: ['50%', '50%'],
           radius: '75%',
           startAngle: 90,
-          axisLabel: {
+          splitLine: {
             show: true,
+            lineStyle: {
+              color: '#ccc',
+              width: 1 ,
+              type: 'solid',
+              shadowBlur: 0 ,
+              shadowColor: null,
+              shadowOffsetX: 0 ,
+              shadowOffsetY: 0 ,
+              opacity: 1 ,
+            }
+          },
+          axisLabel: {
+            show: false,
             rotate: 0,
             margin: 8,
             color: '',
@@ -62,9 +77,6 @@ export default () => {
             fontWeight: 'normal',
             fontFamily: 'sans-serif',
             fontSize: 12,
-            verticalAlign: '',
-            lineHeight: '',
-            backgroundColor: '',
             borderColor: '',
             borderWidth: 0,
             borderType: 'solid',
@@ -172,12 +184,32 @@ export default () => {
     },
     {
       name: '轴刻度样式',
-      opName: 'axisLineStyle',
+      opName: 'axisTickStyle',
       chartOption: false,
       menuOption: true,
       uniqueOption: true,
       icon: 'i_tick',
       component: markRaw(paramsRadarAxisTick),
+      allOption: {},
+    },
+    {
+      name: '轴刻尺样式',
+      opName: 'axisLabelStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_num',
+      component: markRaw(paramsRadarAxisLabel),
+      allOption: {},
+    },
+    {
+      name: '分割线样式',
+      opName: 'splitLineStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_gsline',
+      component: markRaw(paramsRadarSplitLine),
       allOption: {},
     },
   ]

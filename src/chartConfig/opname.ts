@@ -7,7 +7,7 @@ export const common = {
   shadowColor: '阴影颜色',
   shadowOffsetX: '阴影偏移X',
   shadowOffsetY: '阴影偏移Y',
-  opacity: '透明度'
+  opacity: '透明度',
 }
 
 export const label = {
@@ -15,6 +15,7 @@ export const label = {
   rotate: '旋转角度',
   offsetX: '字体偏移X',
   offsetY: '字体偏移Y',
+  margin: '外边距',
   color: '字体颜色',
   fontStyle: '字体风格',
   fontSize: '字体大小',
