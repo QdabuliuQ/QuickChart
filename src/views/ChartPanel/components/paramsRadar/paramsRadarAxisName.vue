@@ -101,8 +101,7 @@ const config = reactive<ConfigInt>({
 
 const getData = () => {
   let radar = common.option.radar
-  const option = getConfigValue(config)
-  radar.axisName = option
+  radar.axisName = getConfigValue(config)
   return radar
 }
 
@@ -113,7 +112,6 @@ watch(() => config, debounce(() => {
 }, 500), {
   deep: true
 })
-
 </script>
 
 <style lang='less'>

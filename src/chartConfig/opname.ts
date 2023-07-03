@@ -8,6 +8,16 @@ export const common = {
   shadowOffsetX: '阴影偏移X',
   shadowOffsetY: '阴影偏移Y',
   opacity: '透明度',
+  symbol: '标记图形',
+  symbolSize: '图形大小',
+  symbolRotate: '图形旋转',
+  left: '左边距',
+  top: '上边距',
+  bottom: '下边距',
+  right: '右边距',
+  backgroundColor: '背景颜色',
+  borderColor: '边框颜色',
+  borderWidth: '边框宽度'
 }
 
 export const label = {

@@ -35,17 +35,17 @@ const gridOption = (): Common & GridInterface => {
     defaultOption: {
       grid: {
         show: false,
-        left: 60,
-        top: 60,
-        bottom: 60,
-        right: 60,
+        left: 10,
+        top: 10,
+        bottom: 10,
+        right: 10,
         width: 'auto',
         height: 'auto',
-        backgroundColor: 'transparent',
+        backgroundColor: null,
         borderColor: '#ccc',
         borderWidth: 1,
         shadowBlur: 10,
-        shadowColor: '',
+        shadowColor: null,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
       }

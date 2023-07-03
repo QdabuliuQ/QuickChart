@@ -2,8 +2,8 @@
   <div :style="{
     width: width + 'px',
     height: height + 'px',
-    marginTop: '15vh'
-  }" ref="chartDomRef" id="chartDom"></div>
+    marginTop: '15vh',
+  }" ref="chartDomRef" class="transparentBg" id="chartDom"></div>
   <el-dialog class="codeDialogClass" v-model="codeDialog" title="Echarts配置" width="40%">
     <highlightjs class="language-javascript" language="javascript" :code="code" />
   </el-dialog>
@@ -133,12 +133,19 @@ export default defineComponent({
 
       // 监听图表画布配置变化
       _this.proxy.$Bus.on("canvasChange", (e: any) => {
-        let { bgc } = e;
-        data.option.backgroundColor = bgc;
-        getCode();
-        chartInstance.setOption({
-          backgroundColor: bgc,
-        });
+        if(e.hasOwnProperty('backgroundColor')) {
+          const { backgroundColor } = e;
+          data.option.backgroundColor = backgroundColor;
+          getCode();
+          chartInstance.setOption({
+            backgroundColor,
+          });
+        } else {
+          getCode();
+          chartInstance.setOption({
+            backgroundColor: e,
+          });
+        }
       });
 
       // 生成代码
@@ -198,6 +205,11 @@ export default defineComponent({
 #chartDom {
   position: relative;
   margin: 0 auto;
+}
+.transparentBg {
+  background-image: url("../assets/image/bg.jpg");
+  background-size: cover;
+  background-repeat: repeat;
 }
 
 .hljs {

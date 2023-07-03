@@ -1,131 +1,125 @@
 <template>
-  <div id="paramsTitle" v-if="opNameList">
-    <div
-      v-for="(value, key, index) in allOption.title"
-      :key="index"
-      class="optionItem"
-      :style="{ padding: opNameList[(key as any)] ? '6px 0' : '0' }"
-    >
-      <div>{{ opNameList ? opNameList[(key as any)] : "" }}</div>
-      <div class="optionOperation">
-        <el-input
-          v-if="(key as any) == 'text'"
-          size="small"
-          v-model="defaultOption.title[(key as any)]"
-        />
-        <el-switch
-          v-else-if="(key as any) == 'show'"
-          size="small"
-          v-model="defaultOption.title[(key as any)]"
-        />
-        <el-input-number
-          v-else-if="
-            (key as any) == 'left' || (key as any) == 'right' || (key as any) == 'top' || (key as any) == 'bottom'
-          "
-          size="small"
-          v-model="defaultOption.title[(key as any)]"
-        />
-        <el-select
-          v-else-if="(key as any) == 'textAlign'"
-          popper-class="paramsSelectPopperClass"
-          v-model="defaultOption.title[(key as any)]"
-          size="small"
-        >
-          <el-option
-            v-for="item in allOption.title[(key as any)]"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-color-picker
-          v-else-if="(key as any) == 'backgroundColor'"
-          v-model="defaultOption.title[(key as any)]"
-        />
-      </div>
-    </div>
-    <div
-      v-for="(value, key, index) in allOption.title.textStyle"
-      :key="index"
-      class="optionItem"
-    >
-      <div>{{ opNameList ? opNameList[(key as any)] : "" }}</div>
-      <div class="optionOperation">
-        <el-color-picker
-          v-if="(key as any) == 'color'"
-          v-model="defaultOption.title.textStyle[(key as any)]"
-        />
-        <el-select
-          v-else-if="(key as any) == 'fontWeight'"
-          popper-class="paramsSelectPopperClass"
-          v-model="defaultOption.title.textStyle[(key as any)]"
-          size="small"
-        >
-          <el-option
-            v-for="item in allOption.title.textStyle[(key as any)]"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-input-number
-          v-else-if="(key as any) == 'fontSize'"
-          size="small"
-          :max="40"
-          :min="10"
-          v-model="defaultOption.title.textStyle[(key as any)]"
-        />
-      </div>
-    </div>
+  <div class="paramsTitle">
+    <optionItems :config="config" />
+    <optionItems :config="textStyleConfig" />
   </div>
 </template>
 
-<script lang='ts'>
+<script setup lang='ts'>
 import {
-  defineComponent,
-  reactive,
-  onMounted,
-  toRefs,
-  getCurrentInstance,
-  watch
+  watch,
+  defineProps, reactive
 } from "vue";
-let timer: any
+import useProxy from "@/hooks/useProxy";
+import {ConfigInt} from "@/types/common";
+import { common, label } from '@/chartConfig/opname';
+import useCommonStore from "@/store/common";
+import {fontWeight, textAlign} from "@/chartConfig/constant";
+import optionItems from '@/components/optionItems.vue'
+import {debounce, getConfigValue} from "@/utils";
 
-export default defineComponent({
-  name: "paramsTitle",
-  props: ["defaultOption", "allOption", "opNameList"],
-  setup(props) {
-    const _this: any = getCurrentInstance()
-    const data = reactive({});
-
-    watch(() => props.defaultOption, (e: any) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        let data: any = {...e.title}
-        for(let key in data) {
-          if(key == 'left' || key == 'right' || key == 'top' || key == 'bottom') {
-            if(data[key] == 0) data[key] = 'auto'
-          }
-        }
-        
-        _this.proxy.$Bus.emit('optionChange', {
-          title: data
-        })
-      }, 500);
-    }, {
-      deep: true
-    })
-
-    onMounted(() => {});
-    return {
-      ...toRefs(data),
-    };
+const props = defineProps<{
+  defaultOption: any
+  allOption: any
+  opNameList: any
+}>()
+const _common: any = useCommonStore()
+const config = reactive<ConfigInt>({
+  text: {
+    type: 'input_text',
+    title: '文本标题',
+    value: _common.option.title.text,
   },
-});
-</script>
+  show: {
+    type: 'switch',
+    title: common.show,
+    value: _common.option.title.show
+  },
+  textAlign: {
+    type: 'select',
+    title: '对齐方式',
+    options: textAlign,
+    value: _common.option.title.textAlign
+  },
+  left: {
+    type: 'input_number',
+    title: common.left + '(%)',
+    max: 100,
+    value: _common.option.title.left
+  },
+  right: {
+    type: 'input_number',
+    title: common.right + '(%)',
+    max: 100,
+    value: _common.option.title.right
+  },
+  top: {
+    type: 'input_number',
+    title: common.top + '(%)',
+    max: 100,
+    value: _common.option.title.top
+  },
+  bottom: {
+    type: 'input_number',
+    title: common.bottom + '(%)',
+    max: 100,
+    value: _common.option.title.bottom
+  },
+  backgroundColor: {
+    type: 'color_picker',
+    title: common.backgroundColor,
+    value: _common.option.title.backgroudColor
+  },
+})
+const textStyleConfig = reactive<ConfigInt>({
+  color: {
+    type: 'color_picker',
+    title: label.color,
+    value: _common.option.title.textStyle.color
+  },
+  fontWeight: {
+    type: 'select',
+    title: label.fontWeight,
+    options: fontWeight,
+    value: _common.option.title.textStyle.fontWeight
+  },
+  fontSize: {
+    type: 'input_number',
+    title: label.fontSize,
+    max: 100,
+    value: _common.option.title.textStyle.fontSize
+  },
+})
+const proxy = useProxy()
 
-<style lang='less'>
-#paramsTitle {
-  
+const getData = (type: string) => {
+  let title = _common.option.title
+  if(type == 'title') {
+    const option = getConfigValue(config)
+    for(let key in option) {
+      if(key == 'left' || key == 'right' || key == 'top' || key == 'bottom') {
+        title[key] = option[key] + '%'
+      } else {
+        title[key] = option[key]
+      }
+    }
+  } else if(type == 'textStyle'){
+    title.textStyle = getConfigValue(textStyleConfig)
+  }
+  return title
 }
-</style>
+watch(() => config, debounce(() => {
+  proxy.$Bus.emit("optionChange", {
+    title: getData('title'),
+  });
+}, 500), {
+  deep: true
+})
+watch(() => textStyleConfig, debounce(() => {
+  proxy.$Bus.emit("optionChange", {
+    title: getData('textStyle'),
+  });
+}, 500), {
+  deep: true
+})
+</script>

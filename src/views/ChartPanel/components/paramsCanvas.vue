@@ -1,51 +1,61 @@
 <template>
-  <div id="paramsCanvas">
-    <div v-for="(value, key, index) in allOption" :key="index" class="optionItem"
-      :style="{ padding: opNameList[key] ? '6px 0' : '0' }">
-      <div>{{ opNameList ? opNameList[key] : "" }}</div>
-      <div class="optionOperation">
-        <el-color-picker v-if="(key as any) == 'bgc'" v-model="defaultOption[key]" />
-      </div>
-    </div>
+  <div class="paramsCanvas">
+    <option-items :config="config" />
   </div>
 </template>
 
-<script lang='ts'>
+<script setup lang='ts'>
 import {
-  defineComponent,
-  reactive,
-  toRefs,
-  getCurrentInstance,
   watch,
-  ref,
+  defineProps, reactive
 } from "vue";
-let timer: any
-
-export default defineComponent({
-  name: "paramsCanvas",
-  props: ["defaultOption", "allOption", "opNameList"],
-  setup(props) {
-    const _this: any = getCurrentInstance();
-    const imageUploadInputRef = ref()
-    const data = reactive({});
-
-    watch(() => props.defaultOption, (e: any) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        _this.proxy.$Bus.emit('canvasChange', e)
-      }, 500);
-    }, { deep: true })
-
-    return {
-      imageUploadInputRef,
-      ...toRefs(data),
-    };
+import useProxy from "@/hooks/useProxy";
+import {ConfigInt} from "@/types/common";
+import { common, label } from '@/chartConfig/opname';
+import useCommonStore from "@/store/common";
+import optionItems from '@/components/optionItems.vue'
+import {debounce, getConfigValue} from "@/utils";
+const props = defineProps<{
+  defaultOption: any
+  allOption: any
+  opNameList: any
+}>()
+const _common: any = useCommonStore()
+const proxy = useProxy()
+const config = reactive<ConfigInt>({
+  backgroundColor: {
+    type: 'color_picker',
+    title: common.backgroundColor,
+    value: _common.option.backgroundColor
   },
-});
+  bgImage: {
+    type: 'imgload',
+    title: '背景图片',
+    value: ''
+  }
+})
+
+const getData = () => {
+  const option = getConfigValue(config)
+  if(option.bgImage) {
+    console.log(option.bgImage)
+    return {
+      image: option.bgImage,
+    }
+  } else {
+    delete option.bgImage
+    return option
+  }
+}
+watch(() => config, debounce(() => {
+  proxy.$Bus.emit("canvasChange", getData());
+}, 500), {
+  deep: true
+})
 </script>
 
 <style lang='less'>
-#paramsCanvas {
+.paramsCanvas {
   .el-button--small {
     span {
       zoom: .95;

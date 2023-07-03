@@ -11,6 +11,8 @@ import paramsRadarAxisLine from '@/views/ChartPanel/components/paramsRadar/param
 import paramsRadarAxisTick from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisTick.vue'
 import paramsRadarAxisLabel from "@/views/ChartPanel/components/paramsRadar/paramsRadarAxisLabel.vue";
 import paramsRadarSplitLine from "@/views/ChartPanel/components/paramsRadar/paramsRadarSplitLine.vue";
+import paramsRadarSplitArea from "@/views/ChartPanel/components/paramsRadar/paramsRadarSplitArea.vue";
+import paramsRadarLineStyle from "@/views/ChartPanel/components/paramsRadar/paramsRadarLineStyle.vue";
 const common: any = useCommonStore()
 
 export default () => {
@@ -55,6 +57,17 @@ export default () => {
           center: ['50%', '50%'],
           radius: '75%',
           startAngle: 90,
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['rgba(250,250,250,0.3)','rgba(200,200,200,0.3)'],
+              shadowBlur: 0 ,
+              shadowColor: '' ,
+              shadowOffsetX: 0 ,
+              shadowOffsetY: 0 ,
+              opacity: 1 ,
+            }
+          },
           splitLine: {
             show: true,
             lineStyle: {
@@ -148,6 +161,24 @@ export default () => {
         series: [
           {
             type: 'radar',
+            symbol: 'circle' ,
+            symbolSize: 4 ,
+            symbolRotate: 0,
+            lineStyle: {
+              width: 1 ,
+              type: 'solid' ,
+              opacity: 1 ,
+            },
+            label: {
+              show: false,
+              fontSize: 12,
+              rotate: 0,
+              position: 'top',
+              fontStyle: 'normal' ,
+              fontWeight: 'normal' ,
+              fontFamily: 'sans-serif',
+              color: '#000'
+            }
           },
         ]
       }
@@ -210,6 +241,26 @@ export default () => {
       uniqueOption: true,
       icon: 'i_gsline',
       component: markRaw(paramsRadarSplitLine),
+      allOption: {},
+    },
+    {
+      name: '分割域样式',
+      opName: 'splitAreaStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_sarea',
+      component: markRaw(paramsRadarSplitArea),
+      allOption: {},
+    },
+    {
+      name: '线段样式',
+      opName: 'lineStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_radar_line',
+      component: markRaw(paramsRadarLineStyle),
       allOption: {},
     },
   ]

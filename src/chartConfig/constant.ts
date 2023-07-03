@@ -12,7 +12,25 @@ export const shadowX: string = '阴影偏移X'
 export const shadowY: string = '阴影偏移Y'
 export const shadowColor: string = '阴影颜色'
 export const shadowBlur: string = '阴影模糊'
+export const textAlign: ListInt[] = [
+  {
+    value: 'left',
+    label: '左对齐',
+  },
+  {
+    value: 'center',
+    label: '居中',
+  },
+  {
+    value: 'right',
+    label: '右对齐',
+  },
+]
 export const symbol: ListInt[] = [
+  {
+    value: 'none',
+    label: '无符号',
+  },
   {
     value: 'circle',
     label: '圆形',
