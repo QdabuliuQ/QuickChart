@@ -1,6 +1,7 @@
 export const common = {
   color: '颜色',
   width: '宽度',
+  height: '高度',
   type: '类型',
   show: '显示/隐藏',
   shadowBlur: '阴影模糊',

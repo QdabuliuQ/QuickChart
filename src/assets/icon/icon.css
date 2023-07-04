@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_v0wu3nxyb6.woff2?t=1688374247038') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3670180_v0wu3nxyb6.woff?t=1688374247038') format('woff'),
-  url('//at.alicdn.com/t/c/font_3670180_v0wu3nxyb6.ttf?t=1688374247038') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_mmi5hh3962e.woff2?t=1688478842316') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3670180_mmi5hh3962e.woff?t=1688478842316') format('woff'),
+  url('//at.alicdn.com/t/c/font_3670180_mmi5hh3962e.ttf?t=1688478842316') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_object:before {
+  content: "\e663";
+}
+
+.i_js:before {
+  content: "\e60f";
+}
+
+.i_component:before {
+  content: "\e652";
+}
+
+.i_close:before {
+  content: "\e66f";
+}
+
+.i_jia:before {
+  content: "\e606";
+}
+
+.i_manage:before {
+  content: "\e641";
 }
 
 .i_radar_line:before {

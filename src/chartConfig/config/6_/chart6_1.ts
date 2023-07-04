@@ -3,6 +3,7 @@ import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
+import graphicOption from "@/chartConfig/commonParams/graphic"
 import waterMark from "@/chartConfig/commonParams/waterMark";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import paramsRadarStyle from '@/views/ChartPanel/components/paramsRadar/paramsRadarStyle.vue'
@@ -22,6 +23,7 @@ export default () => {
     }),
     gridOption(),
     canvas,
+    graphicOption(),
     waterMark,
     {
       name: 'dataset',

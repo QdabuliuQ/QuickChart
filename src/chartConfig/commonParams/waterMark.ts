@@ -25,7 +25,7 @@ let waterMark: Common & WaterMarkInterface = {
     waterMark: {
       show: false,
       text: '',
-      opacity: 0.5,
+      opacity: 1,
       color: '#ccc',
       size: 20,
       rotate: 4

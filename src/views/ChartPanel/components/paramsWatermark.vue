@@ -67,7 +67,7 @@ export default defineComponent({
           if (e.show) {
             let waterMarkCanvas = document.createElement("canvas");
             let watermarkCanvasCtx: any = waterMarkCanvas.getContext("2d");
-            waterMarkCanvas.width = waterMarkCanvas.height = 100;
+            waterMarkCanvas.width = waterMarkCanvas.height = 200;
             watermarkCanvasCtx.textAlign = "center";
             watermarkCanvasCtx.textBaseline = "middle";
             watermarkCanvasCtx.globalAlpha = e.opacity;

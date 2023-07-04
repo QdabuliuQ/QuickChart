@@ -5,15 +5,24 @@
         <img :src="image" alt="" />
       </div>
       <div class="btnList">
-        <el-button @click="createCode" type="success">
-          <template #icon>
-            <i style="margin-right: 4px;" class="iconfont i_code"></i>
+        <el-dropdown trigger="click">
+<!--          @click="createCode"-->
+          <el-button type="success">
+            <template #icon>
+              <i style="margin-right: 4px; font-size: 15px" class="iconfont i_code"></i>
+            </template>
+            配置
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu class="configDropDownClass">
+              <el-dropdown-item><i class="iconfont i_object"></i> Echarts配置</el-dropdown-item>
+              <el-dropdown-item><i class="iconfont i_js"></i> JS完整配置</el-dropdown-item>
+            </el-dropdown-menu>
           </template>
-          配置
-        </el-button>
-        <el-button @click="downloadChart" color="#626aef">
+        </el-dropdown>
+        <el-button class="downloadBtn" @click="downloadChart" color="#626aef">
           <template #icon>
-            <i style="margin-right: 4px;" class="iconfont i_download"></i>
+            <i style="margin-right: 4px; font-size: 14px" class="iconfont i_download"></i>
           </template>
           下载
         </el-button>
@@ -102,6 +111,9 @@
               :allOption="item.allOption.yAxis"
               :opNameList="item.opNameList"
             />
+            <params-graphic
+                v-else-if="collapseList[item.opName] && item.opName == 'graphic'"
+            />
             <component v-else-if="item.uniqueOption" :is="item.component"></component>
           </div>
         </div>
@@ -122,6 +134,7 @@ import {
 } from "vue";
 import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
+import ParamsGraphic from "@/views/ChartPanel/components/paramsGraphic.vue";
 const paramsTitle = defineAsyncComponent(
   () => import("@/views/ChartPanel/components/paramsTitle.vue")
 );
@@ -158,6 +171,7 @@ export default defineComponent({
   name: "chartParams",
   props: ["type"],
   components: {
+    ParamsGraphic,
     paramsTitle,
     paramsCanvas,
     paramsGrid,
@@ -250,6 +264,11 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
+.configDropDownClass {
+  .el-dropdown-menu__item {
+    font-size: 12px;
+  }
+}
 #chartParams {
   height: 100%;
   background-color: @curColor;
@@ -275,6 +294,10 @@ export default defineComponent({
         position: relative;
         top: -.5px;
       }
+    }
+    .downloadBtn:hover {
+      background-color: #454bb0;
+      border-color: #454bb0;
     }
   }
   .optionItem {

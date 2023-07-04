@@ -25,7 +25,4 @@ interface PropsInt {
   config: ConfigInt
 }
 const { config } = defineProps<PropsInt>()
-
 </script>
-
-<style lang='less'></style>
