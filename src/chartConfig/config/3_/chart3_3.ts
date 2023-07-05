@@ -23,8 +23,8 @@ const getOption = () => {
     gridOption(),
     legendOption({
       'icon': 'roundRect',
-      'top': 'bottom',
-      'left': 'center',
+      'top': '95%',
+      'left': '7%',
       'orient': 'horizontal',
     }),
     waterMark,

@@ -29,8 +29,6 @@ const opNameList: { [propName: string]: any } = {
   textAlign: '对齐方式',
   left: leftText,
   right: rightText,
-  top: topText,
-  bottom: bottomText,
   backgroundColor: '背景色',
   color: '文本颜色',
   fontWeight: '文本加粗',
@@ -83,13 +81,11 @@ const title: Common & TitleInterface = {
 
 const titleOption = (options?: any): Common & TitleInterface => {
   const dOption = {
-    text: '图表标题',
+    text: '',
     show: true,
     textAlign: 'left',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    left: '2%',
+    top: '2%',
     backgroundColor: 'rgba(0,0,0,0)',
     textStyle: {
       color: '#333',

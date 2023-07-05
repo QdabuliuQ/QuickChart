@@ -36,8 +36,8 @@ const getOption = () => {
     gridOption(),
     legendOption({
       'show': true,
-      'top': 5,
-      'left': 'center',
+      'top': '2%',
+      'left': '16%',
       'icon': 'pin',
     }),
     waterMark,

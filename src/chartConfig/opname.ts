@@ -18,7 +18,10 @@ export const common = {
   right: '右边距',
   backgroundColor: '背景颜色',
   borderColor: '边框颜色',
-  borderWidth: '边框宽度'
+  borderWidth: '边框宽度',
+  orient: '排列方向',
+  position: '位置',
+  offset: '偏移'
 }
 
 export const label = {

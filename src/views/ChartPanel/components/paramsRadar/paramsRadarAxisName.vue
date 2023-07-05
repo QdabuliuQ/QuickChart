@@ -18,7 +18,7 @@ const common: any = useCommonStore()
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
-    title: label.show,
+    title: common.show,
     value: common.option.radar.axisName.show
   },
   color: {

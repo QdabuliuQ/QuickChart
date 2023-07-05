@@ -13,21 +13,20 @@ import {
 const common: any = useCommonStore()
 
 const getOption = () => {
-  let grid = gridOption()
-  grid.defaultOption.grid.containLabel = true
-  grid.defaultOption.grid.top = 40
-  grid.defaultOption.grid.left = 20
-  grid.defaultOption.grid.right = 20
-  grid.defaultOption.grid.bottom = 20
   return [
     titleOption({
       'show': false
     }),
     canvas,
-    grid,
+    gridOption({
+      'containLabel': true,
+      'left': '5%',
+      'bottom': '5%',
+      'right': '7%'
+    }),
     legendOption({
-      'left': 'center',
-      'top': 5,
+      'left': '33%',
+      'top': '2%',
       'icon': 'roundRect'
     }),
     waterMark,

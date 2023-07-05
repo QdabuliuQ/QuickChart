@@ -78,11 +78,11 @@ const allOption = {
     orient: [
       {
         value: 'horizontal',
-        label: '水平',
+        label: '水平排列',
       },
       {
         value: 'vertical',
-        label: '竖直',
+        label: '竖直排列',
       },
     ],
     itemWidth: 25,
@@ -107,15 +107,12 @@ const legendOption = (options?: any): Common & LegendInterface => {
   const dOption = {
     show: true,
     icon: 'circle',
-    left: 'auto',
-    top: 'auto',
-    right: 'auto',
-    bottom: 'auto',
-    width: 'auto',
-    height: 'auto',
+    left: '3%',
+    top: '3%',
     orient: 'horizontal',
     itemWidth: 25,
     itemHeight: 14,
+    itemGap: 10,
   }
   replaceOptionValue(dOption, options)
   legend.defaultOption.legend = dOption

@@ -32,25 +32,25 @@ const config = reactive<ConfigInt>({
     type: 'input_number',
     title: common.left + '(%)',
     max: 100,
-    value: _common.option.grid.left
+    value: parseInt(_common.option.grid.left)
   },
   top: {
     type: 'input_number',
     title: common.top + '(%)',
     max: 100,
-    value: _common.option.grid.top
+    value: parseInt(_common.option.grid.top)
   },
   right: {
     type: 'input_number',
     title: common.right + '(%)',
     max: 100,
-    value: _common.option.grid.right
+    value: parseInt(_common.option.grid.right)
   },
   bottom: {
     type: 'input_number',
     title: common.bottom + '(%)',
     max: 100,
-    value: _common.option.grid.bottom
+    value: parseInt(_common.option.grid.bottom)
   },
   backgroundColor: {
     type: 'color_picker',
@@ -96,8 +96,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  let grid = _common.option.grid
-  grid = getConfigValue(config)
+  let grid = getConfigValue(config)
   grid.left = grid.left + '%'
   grid.right = grid.right + '%'
   grid.top = grid.top + '%'
@@ -111,61 +110,6 @@ watch(() => config, debounce(() => {
 }, 500), {
   deep: true
 })
-
-// import { defineComponent, reactive, toRefs, watch, getCurrentInstance } from "vue";
-//
-// interface comInitData {
-//   width: string | number;
-//   height: string | number;
-//   bgc: string;
-// }
-// let timer: any
-// export default defineComponent({
-//   name: "paramsGrid",
-//   props: ["defaultOption", "allOption", "opNameList"],
-//   setup(props) {
-//     const _this: any = getCurrentInstance()
-//     const data: comInitData = reactive({
-//       width: 0,
-//       height: 0,
-//       bgc: "",
-//     });
-//
-//     // 监听整个属性变化
-//     watch(
-//       () => props.defaultOption.grid,
-//       (e) => {
-//         clearTimeout(timer)
-//         timer = setTimeout(() => {
-//           data.width = e.width == "auto" ? 0 : e.width;
-//           data.height = e.height == "auto" ? 0 : e.height;
-//           data.bgc = e.backgroundColor == "transparent" ? "" : e.backgroundColor;
-//
-//           _this.proxy.$Bus.emit('optionChange', props.defaultOption)
-//
-//         }, 500);
-//       },
-//       {
-//         immediate: true,
-//         deep: true
-//       }
-//     );
-//
-//     watch(() => data.width, (e) => {
-//       props.defaultOption.grid.width = e == 0 ? 'auto' : e
-//     })
-//     watch(() => data.height, (e) => {
-//       props.defaultOption.grid.height = e == 0 ? 'auto' : e
-//     })
-//     watch(() => data.bgc, (e) => {
-//       props.defaultOption.grid.backgroundColor = e == 'transparent' ? '' : e
-//     })
-//
-//     return {
-//       ...toRefs(data),
-//     };
-//   },
-// });
 </script>
 
 <style lang='less'>

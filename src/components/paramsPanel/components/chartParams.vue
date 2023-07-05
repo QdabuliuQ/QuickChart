@@ -95,14 +95,17 @@
               :defaultOption="item.defaultOption"
               :allOption="item.allOption"
             />
-            <paramsAxis
-              class="paramsPanel"
+            <paramsXAxis class="paramsPanel"
               v-else-if="collapseList[item.opName] && item.opName == 'xAxis'"
-              :asis="'xAxis'"
-              :defaultOption="item.defaultOption.xAxis"
-              :allOption="item.allOption.xAxis"
-              :opNameList="item.opNameList"
             />
+<!--            <paramsAxis-->
+<!--              class="paramsPanel"-->
+<!--              v-else-if="collapseList[item.opName] && item.opName == 'xAxis'"-->
+<!--              :asis="'xAxis'"-->
+<!--              :defaultOption="item.defaultOption.xAxis"-->
+<!--              :allOption="item.allOption.xAxis"-->
+<!--              :opNameList="item.opNameList"-->
+<!--            />-->
             <paramsAxis
               class="paramsPanel"
               v-else-if="collapseList[item.opName] && item.opName == 'yAxis'"
@@ -156,6 +159,9 @@ const paramsColor = defineAsyncComponent(
 const paramsAxis = defineAsyncComponent(
   () => import("@/views/ChartPanel/components/paramsAxis.vue")
 );
+const paramsXAxis = defineAsyncComponent(
+    () => import("@/views/ChartPanel/components/paramsXAxis.vue")
+);
 
 interface comInitData {
   height: string;
@@ -179,6 +185,7 @@ export default defineComponent({
     paramsWatermark,
     paramsColor,
     paramsAxis,
+    paramsXAxis,
   },
   setup(props) {
     const common: any = useCommonStore();

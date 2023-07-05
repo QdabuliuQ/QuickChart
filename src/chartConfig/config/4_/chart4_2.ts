@@ -25,17 +25,17 @@ const data = [[0, 0, 5],[1, 0, 1],[2, 0, 0],[3, 0, 0],[4, 0, 0],[5, 0, 0],[6, 0,
 const getOption = () => {
   xAxis.axisLine.show = false
   yAxis.axisLine.show = false
-  let grid = gridOption()
-  grid.defaultOption.grid.left = 2
-  grid.defaultOption.grid.bottom = 10
-  grid.defaultOption.grid.right = 20
-  grid.defaultOption.grid.containLabel = true
   return [
     titleOption({
       'show': false
     }),
     canvas,
-    grid,
+    gridOption({
+      'left': '11%',
+      'bottom': '8%',
+      'right': '5%',
+      'top': '5%'
+    }),
     waterMark,
     {
       name: 'dataset',

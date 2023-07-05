@@ -45,25 +45,13 @@ const config = reactive<ConfigInt>({
     type: 'input_number',
     title: common.left + '(%)',
     max: 100,
-    value: _common.option.title.left
-  },
-  right: {
-    type: 'input_number',
-    title: common.right + '(%)',
-    max: 100,
-    value: _common.option.title.right
+    value: parseInt(_common.option.title.left)
   },
   top: {
     type: 'input_number',
     title: common.top + '(%)',
     max: 100,
-    value: _common.option.title.top
-  },
-  bottom: {
-    type: 'input_number',
-    title: common.bottom + '(%)',
-    max: 100,
-    value: _common.option.title.bottom
+    value: parseInt(_common.option.title.top)
   },
   backgroundColor: {
     type: 'color_picker',
@@ -97,7 +85,7 @@ const getData = (type: string) => {
   if(type == 'title') {
     const option = getConfigValue(config)
     for(let key in option) {
-      if(key == 'left' || key == 'right' || key == 'top' || key == 'bottom') {
+      if(key == 'left' || key == 'top') {
         title[key] = option[key] + '%'
       } else {
         title[key] = option[key]

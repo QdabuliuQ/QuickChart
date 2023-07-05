@@ -15,20 +15,22 @@ import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 const common: any = useCommonStore()
 
 const getOption = () => {
-  let grid = gridOption()
-  grid.defaultOption.grid.containLabel = true
-  grid.allOption.grid.containLabel = true
-  grid.defaultOption.grid.left = grid.allOption.grid.left = 30
-  grid.defaultOption.grid.top = grid.allOption.grid.top = 30
-  grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
-  grid.defaultOption.grid.right = grid.allOption.grid.right = 60
+  // let grid = gridOption()
+  // grid.defaultOption.grid.containLabel = true
+  // grid.allOption.grid.containLabel = true
+  // grid.defaultOption.grid.left = grid.allOption.grid.left = 30
+  // grid.defaultOption.grid.top = grid.allOption.grid.top = 30
+  // grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
+  // grid.defaultOption.grid.right = grid.allOption.grid.right = 60
 
   return [
     titleOption({
       'show': false
     }),
     canvas,
-    grid,
+    gridOption({
+      'containLabel': true
+    }),
     legendOption({
       'left': 'center',
       'top': 5,

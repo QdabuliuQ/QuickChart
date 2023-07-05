@@ -17,7 +17,10 @@ export default () => {
     titleOption({
       'show': false
     }),
-    gridOption(),
+    gridOption({
+      'right': '5%',
+      'left': '8%'
+    }),
     canvas,
     waterMark,
     {

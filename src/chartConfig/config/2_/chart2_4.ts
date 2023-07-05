@@ -15,15 +15,14 @@ import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 const common: any = useCommonStore()
 
 const getOption = () => {
-  let grid = gridOption()
-  grid.defaultOption.grid.top = 80
-  grid.defaultOption.grid.bottom = 30
   return [
     titleOption({
       'show': false
     }),
     canvas,
-    gridOption(),
+    gridOption({
+      'bottom': '5%'
+    }),
     legendOption(),
     waterMark,
     {

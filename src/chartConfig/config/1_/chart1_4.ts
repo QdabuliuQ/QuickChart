@@ -24,8 +24,13 @@ const getOption = () => {
       'show': false
     }),
     canvas,
-    gridOption(),
-    legendOption(),
+    gridOption({
+      'right': '5%'
+    }),
+    legendOption({
+      'left': '2%',
+      'top': '2%'
+    }),
     waterMark,
     color,
     {

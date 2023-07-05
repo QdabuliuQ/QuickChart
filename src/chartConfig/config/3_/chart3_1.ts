@@ -21,7 +21,7 @@ const getOption = () => {
         canvas,
         gridOption(),
         legendOption({
-            'left': 1,
+            'left': '2%',
             'orient': 'vertical',
             'icon': 'roundRect',
         }),

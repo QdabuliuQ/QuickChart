@@ -14,15 +14,12 @@ const common: any = useCommonStore()
 const data = pointData_2;
 
 const getOption = () => {
-  let grid = gridOption()
-  grid.defaultOption.grid.left = 40
-  grid.defaultOption.grid.right = 130
   return [
     titleOption({
       'show': false
     }),
     canvas,
-    grid,
+    gridOption(),
     waterMark,
     {
       name: 'xAxis',
