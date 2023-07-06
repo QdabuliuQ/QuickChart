@@ -1,15 +1,11 @@
-import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import { pointData } from "@/chartConfig/constant";
 import { 
   point_series_itemStyle
 } from "@/chartConfig/option";
-import paramsPointStyle from "@/views/ChartPanel/components/paramsPoint/paramsPointStyle.vue";
-import paramsPointAngleAxis from "@/views/ChartPanel/components/paramsPoint/paramsPointAngleAxis.vue";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 
@@ -24,14 +20,13 @@ const rAxisData = [
   'Saturday', 'Friday', 'Thursday','Wednesday', 'Tuesday', 'Monday', 'Sunday'
 ]
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
     }),
     canvas,
     gridOption(),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -73,8 +68,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_point',
-      component: markRaw(paramsPointStyle),
-      allOption: {},
+      componentPath: "paramsPoint/paramsPointStyle.vue",
     },
     {
       name: '内外圈大小',
@@ -82,11 +76,9 @@ const getOption = () => {
       chartOption: true,
       menuOption: false,
       uniqueOption: false,
-      icon: '',
       defaultOption: {
         polar: {},
       },
-      allOption: {},
     },
     {
       name: '极坐标角度轴',
@@ -95,7 +87,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angleAxis',
-      component: markRaw(paramsPointAngleAxis),
+      componentPath: "paramsPoint/paramsPointAngleAxis.vue",
       defaultOption: {
         angleAxis: {
           type: 'category',
@@ -119,7 +111,6 @@ const getOption = () => {
           }
         },
       },
-      allOption: {},
     },
     {
       name: 'radiusAxis',
@@ -144,8 +135,6 @@ const getOption = () => {
     },
   ]
 }
-
-export default getOption
 
 export const createExcelData = (config: any) => {
   return conveyToExcel([

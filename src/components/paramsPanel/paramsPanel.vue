@@ -54,7 +54,7 @@ export default defineComponent({
 
 <style lang='less'>
 #paramsPanel {
-  width: 210px;
+  width: 100%;
   height: 100%;
   background-color: #303030;
   .panelBtnList {

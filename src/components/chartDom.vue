@@ -4,7 +4,7 @@
     height: height + 'px',
     marginTop: '15vh',
   }" ref="chartDomRef" class="transparentBg" id="chartDom"></div>
-  <el-dialog class="codeDialogClass" v-model="codeDialog" title="Echarts配置" width="40%">
+  <el-dialog class="codeDialogClass" v-model="codeDialog" title="代码配置" width="40%">
     <highlightjs class="language-javascript" language="javascript" :code="code" />
   </el-dialog>
 </template>
@@ -77,10 +77,15 @@ export default defineComponent({
       }
       return new Blob([uInt8Array], { type: contentType });
     };
-    const getCode = () => {
+    const getCode = (type: string) => {
       Reflect.deleteProperty(data.option, "waterMark");
       let jdata: any = JSON.stringify(data.option, null, 4);
-      data.code = jdata.replace(/"(\w+)":/g, "$1:");
+      const optionCode = jdata.replace(/"(\w+)":/g, "$1:");
+      if(type == 'js') {
+        data.code = `const chart = echarts.init(document.getElementById('chart'));\nconst option = ${optionCode};\nchart.setOption(option);  //设置option`
+      } else {
+        data.code = optionCode
+      }
     };
     const initChart = () => {
       let chartInstance = _this.proxy.$echarts.init(chartDomRef.value);
@@ -93,7 +98,6 @@ export default defineComponent({
       })
       data.option = common.option;
       data.code = common.option;
-      // getCode();
 
       // 监听图表配置变化
       _this.proxy.$Bus.on("optionChange", (e: any) => {
@@ -108,7 +112,6 @@ export default defineComponent({
         common.$patch((state: any) => {
           state.option = data.option;
         });
-        // getCode();
       });
 
       // 监听图表数据变化
@@ -129,12 +132,10 @@ export default defineComponent({
         if(e.hasOwnProperty('backgroundColor')) {
           const { backgroundColor } = e;
           data.option.backgroundColor = backgroundColor;
-          // getCode();
           chartInstance.setOption({
             backgroundColor,
           });
         } else {
-          // getCode();
           chartInstance.setOption({
             backgroundColor: e,
           });
@@ -142,8 +143,8 @@ export default defineComponent({
       });
 
       // 生成代码
-      _this.proxy.$Bus.on("createCode", () => {
-        getCode();
+      _this.proxy.$Bus.on("createCode", (e: string) => {
+        getCode(e);
         data.codeDialog = true;
       });
 

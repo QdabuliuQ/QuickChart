@@ -1,26 +1,22 @@
-import { markRaw } from "vue";
-import lodash from 'lodash'
 import useCommonStore from "@/store/common";
-// 导入独立组件
-import paramsBarPolar from "@/views/ChartPanel/components/paramsBar/paramsBarPolar.vue";
-import paramsBarAxis from "@/views/ChartPanel/components/paramsBar/paramsBarAxis.vue";
-import paramsBarAngle from "@/views/ChartPanel/components/paramsBar/paramsBarAngle.vue";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import {bar_series_label} from "@/chartConfig/option";
 
 const common: any = useCommonStore()
-
-const getOption = () => {
+const series_label = bar_series_label({
+  'position': 'middle',
+  'formatter': '{b}: {c}'
+})
+export default () => {
   return [
     titleOption({
       'show': false
     }),
     canvas,
     gridOption(),
-    waterMark,
     {
       name: '内外圈大小',
       opName: 'polar',
@@ -28,13 +24,12 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_circle',
-      component: markRaw(paramsBarPolar),
+      componentPath: 'paramsBar/paramsBarPolar.vue',
       defaultOption: {
         polar: {
           radius: [30, '80%']
         },
       },
-      allOption: {},
     },
     {
       name: '圈内层次',
@@ -43,13 +38,12 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radiusAxis',
-      component: markRaw(paramsBarAxis),
+      componentPath: 'paramsBar/paramsBarAxis.vue',
       defaultOption: {
         radiusAxis: {
           max: 5
         },
       },
-      allOption: {},
     },
     {
       name: '内圈角度',
@@ -58,7 +52,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angle',
-      component: markRaw(paramsBarAngle),
+      componentPath: 'paramsBar/paramsBarAngle.vue',
       defaultOption: {
         angleAxis: {
           type: 'category',
@@ -66,7 +60,6 @@ const getOption = () => {
           startAngle: 60
         },
       },
-      allOption: {},
     },
     {
       name: '数据',
@@ -74,28 +67,33 @@ const getOption = () => {
       chartOption: true,
       menuOption: false,
       defaultOption: {
-        series: {
-          type: 'bar',
-          data: [2, 1.2, 2.4, 3.6],
-          coordinateSystem: 'polar',
-          label: {
-            show: true,
-            position: 'middle',
-            formatter: '{b}: {c}'
+        series: [
+          {
+            type: 'bar',
+            data: [2, 1.2, 2.4, 3.6],
+            coordinateSystem: 'polar',
+            label: series_label
           }
-        }
+        ]
       }
+    },
+    {
+      name: '文本样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      componentPath: 'paramsBar/paramsBarText.vue'
     },
   ]
 }
 
-export default getOption
-
 export function combineOption(data: any) {
   let angleAxis = common.option.angleAxis
   let series = common.option.series
-  series.data = data.seriesData
-  angleAxis.data = data.radiusAxisData
+  series[0].data = data.seriesData
+  angleAxis.data = data.angleAxisData
   return {
     series,
     angleAxis
@@ -112,7 +110,7 @@ export const createExcelData = (config: any) => {
     },
     {
       direction: 'col',
-      data: config.series.data,
+      data: config.series[0].data,
       startCol: 1,
       startRow: 0
     },

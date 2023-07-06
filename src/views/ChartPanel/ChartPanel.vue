@@ -1,12 +1,12 @@
 <template>
   <div id="ChartPanel">
-    <div v-loading="loadChart" text="正在加载图表..." element-loading-background="rgba(0, 0, 0, 1)" class="chartContent">
+    <div v-loading="loadChart" element-loading-text="正在加载图表..." element-loading-background="#282828" class="chartContent">
       <div class="scrollContainer">
         <chartDom :key="key1" />
       </div>
     </div>
 
-    <div v-loading="loadParams" element-loading-background="#292929" class="paramsPanelContainer">
+    <div v-loading="loadParams" element-loading-background="#303030" class="paramsPanelContainer">
       <paramsPanel ref="paramsPanelRef" :key="key2" />
     </div>
   </div>
@@ -107,12 +107,12 @@ export default defineComponent({
           if (item.chartOption) {
             tmpOption[item.opName] = item.defaultOption[item.opName];
           }
-          if (item.allOption) {
+          if (item.menuOption) {
             chartConfig.push(item);
           }
         }
+        console.log(tmpOption, '=====')
         tmpOption.backgroundColor = "#fff";
-        console.log(tmpOption);
         
         // 保存数据到pinia
         common.$patch((state: any) => {
@@ -220,7 +220,7 @@ export default defineComponent({
   }
 
   .paramsPanelContainer {
-    width: 210px;
+    width: 220px;
     height: 100%;
   }
 }

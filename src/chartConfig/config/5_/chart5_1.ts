@@ -1,15 +1,12 @@
-import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from '@/chartConfig/commonParams/xAxis';
+import xAxisOption from '@/chartConfig/commonParams/xAxis';
 import { asisOpNameList } from '@/chartConfig/constant';
 import yAxis, { yAxisOption } from '@/chartConfig/commonParams/yAxis';
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import { kline_series_itemstyle } from '@/chartConfig/option';
-import paramsKLineStyle from '@/views/ChartPanel/components/paramsKLine/paramsKLineStyle.vue'
 const common: any = useCommonStore()
 
 export default () => {
@@ -22,7 +19,6 @@ export default () => {
       'left': '8%'
     }),
     canvas,
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -47,21 +43,13 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
+      componentPath: 'paramsXAxis.vue',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           type: 'category',
         }],
       },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
     },
     {
       name: 'Y轴样式',
@@ -104,17 +92,15 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_kline_chart',
-      component: markRaw(paramsKLineStyle),
-      allOption: {},
+      componentPath: "paramsKLine/paramsKLineStyle.vue",
     },
   ]
 }
 
 export function combineOption(data: any) {
   let dataset = common.option.dataset
-  let series = common.option.series
+  let series = data.seriesData
   dataset.source = data.datasetData
-  series = data.seriesData
   return {
     dataset,
     series

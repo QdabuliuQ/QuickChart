@@ -5,19 +5,6 @@ export interface Common {
   chartOption: boolean
   menuOption: boolean
   icon: string
+  componentPath: string
+  [propName: string]: any
 }
-
-
-// export interface IntPointSeriesLabel {
-//   show: boolean,
-//   fontStyle: string ,
-//   fontWeight: string ,
-//   fontFamily: string ,
-//   fontSize: number,
-//   color: string,
-//   offset: number[],
-//   align: string,
-//   textBorderColor: string,
-//   textBorderWidth: number,
-//   textBorderType: string
-// }

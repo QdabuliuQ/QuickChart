@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarAxisTick uniqueOptionContainer">
+  <div class="paramsRadarAxisTick">
     <optionItems :config="config" />
   </div>
 </template>

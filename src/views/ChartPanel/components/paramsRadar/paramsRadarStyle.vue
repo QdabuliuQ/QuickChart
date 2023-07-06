@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarStyle uniqueOptionContainer">
+  <div class="paramsRadarStyle">
     <optionItems :config="config" />
   </div>
 </template>

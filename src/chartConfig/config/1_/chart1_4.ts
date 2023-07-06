@@ -1,4 +1,3 @@
-import { markRaw } from "vue";
 import useCommonStore from "@/store/common";
 import {
   asisOpNameList
@@ -7,14 +6,11 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import color from "@/chartConfig/commonParams/color";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
+import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import { line_series, line_series_label } from "@/chartConfig/option";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
-import paramsLineStyle from "@/views/ChartPanel/components/paramsLine/paramsLineStyle.vue";
-import paramsLineText from "@/views/ChartPanel/components/paramsLine/paramsLineText.vue";
 
 const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
@@ -31,7 +27,6 @@ const getOption = () => {
       'left': '2%',
       'top': '2%'
     }),
-    waterMark,
     color,
     {
       name: 'dataset',
@@ -63,20 +58,11 @@ const getOption = () => {
       icon: 'i_X',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           boundaryGap: false,
           type: 'category',
         }],
       },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
     },
     {
       name: 'Y轴样式',
@@ -104,7 +90,7 @@ const getOption = () => {
       name: '数据',
       opName: 'series',
       chartOption: true,
-      menuOption: true,
+      menuOption: false,
       defaultOption: {
         series: [
           {
@@ -157,8 +143,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_line',
-      component: markRaw(paramsLineStyle),
-      allOption: {},
+      componentPath: 'paramsLine/paramsLineStyle.vue'
     },
     {
       name: '字体样式',
@@ -167,8 +152,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      component: markRaw(paramsLineText),
-      allOption: {},
+      componentPath: 'paramsLine/paramsLineText.vue'
     },
   ]
 }

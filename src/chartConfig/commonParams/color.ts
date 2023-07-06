@@ -2,26 +2,17 @@ import {
   colors,
 } from "@/chartConfig/constant";
 import { Common } from "../interface";
-interface ColorInterface {
-  defaultOption: {
-    color: any[]
-  }
-  allOption: {
-    color: any[]
-  }
-}
 
-let color: Common & ColorInterface = {
+
+let color: Common = {
   name: '系列颜色',
   opName: 'color',
   chartOption: true,
   menuOption: true,
   icon: 'i_color',
+  componentPath: 'paramsColor.vue',
   defaultOption: {
     color: colors
-  },
-  allOption: {
-    color: <any>[]
   },
 }
 

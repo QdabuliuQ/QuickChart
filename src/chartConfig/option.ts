@@ -146,8 +146,6 @@ export const line_series = (option?: any) => {
     }
   }
   replaceOptionValue(res, option)
-  console.log(res);
-
   return res
 }
 

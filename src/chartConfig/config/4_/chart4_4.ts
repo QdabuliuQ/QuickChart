@@ -1,26 +1,21 @@
-import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import { point_series_label, point_series_labelLine } from '@/chartConfig/option';
-import paramsPointLine from "@/views/ChartPanel/components/paramsPoint/paramsPointLine.vue";
-import paramsPointText from "@/views/ChartPanel/components/paramsPoint/paramsPointText.vue";
 import { pointData_2 } from "@/chartConfig/constant";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 const common: any = useCommonStore()
 const data = pointData_2;
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
     }),
     canvas,
     gridOption(),
-    waterMark,
     {
       name: 'xAxis',
       opName: 'xAxis',
@@ -112,8 +107,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      component: markRaw(paramsPointText),
-      allOption: {},
+      componentPath: "paramsPoint/paramsPointText.vue",
     },
     {
       name: '引导线样式',
@@ -122,13 +116,10 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gline',
-      component: markRaw(paramsPointLine),
-      allOption: {},
+      componentPath: "paramsPoint/paramsPointLine.vue",
     },
   ]
 }
-
-export default getOption
 
 export const createExcelData = (config: any) => {
   return conveyToExcel([

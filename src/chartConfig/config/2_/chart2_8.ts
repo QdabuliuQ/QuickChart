@@ -1,5 +1,4 @@
 import useCommonStore from "@/store/common";
-// 导入独立组件
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -7,21 +6,13 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
+import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
 const getOption = () => {
-  // let grid = gridOption()
-  // grid.defaultOption.grid.containLabel = true
-  // grid.allOption.grid.containLabel = true
-  // grid.defaultOption.grid.left = grid.allOption.grid.left = 30
-  // grid.defaultOption.grid.top = grid.allOption.grid.top = 30
-  // grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
-  // grid.defaultOption.grid.right = grid.allOption.grid.right = 60
 
   return [
     titleOption({
@@ -36,7 +27,6 @@ const getOption = () => {
       'top': 5,
       'icon': 'roundRect',
     }),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -65,21 +55,13 @@ const getOption = () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
+      componentPath: 'paramsXAxis.vue',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           type: 'value',
         }],
       },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'value',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
     },
     {
       name: 'Y轴样式',

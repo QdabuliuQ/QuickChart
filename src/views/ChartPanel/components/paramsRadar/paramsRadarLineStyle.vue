@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarLineStyle uniqueOptionContainer">
+  <div class="paramsRadarLineStyle">
     <optionItems :config="config" />
     <optionItems :config="lineStyleConfig" />
     <optionItems :config="labelConfig" />

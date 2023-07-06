@@ -1,8 +1,4 @@
-import { markRaw } from "vue";
 import useCommonStore from "@/store/common";
-// 导入独立组件
-import paramsBarText from "@/views/ChartPanel/components/paramsBar/paramsBarText.vue";
-import paramsBarBgStyle from "@/views/ChartPanel/components/paramsBar/paramsBarBgStyle.vue";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -10,15 +6,14 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
+import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import { bar_series_backgroundStyle, bar_series_label } from "@/chartConfig/option"
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
-const getOption = () => {
+export default  () => {
   return [
     titleOption({
       'show': false
@@ -26,7 +21,6 @@ const getOption = () => {
     canvas,
     gridOption(),
     legendOption(),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -54,21 +48,13 @@ const getOption = () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
+      componentPath: 'paramsXAxis.vue',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           type: 'category',
         }],
       },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
     },
     {
       name: 'Y轴样式',
@@ -119,8 +105,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      component: markRaw(paramsBarText),
-      allOption: {},
+      componentPath: 'paramsBar/paramsBarText.vue'
     },
     {
       name: '背景样式',
@@ -129,13 +114,10 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_bg',
-      component: markRaw(paramsBarBgStyle),
-      allOption: {},
+      componentPath: 'paramsBar/paramsBarBgStyle.vue'
     },
   ]
 }
-
-export default getOption
 
 export function combineOption(data: any) {
   let dataset = common.option.dataset

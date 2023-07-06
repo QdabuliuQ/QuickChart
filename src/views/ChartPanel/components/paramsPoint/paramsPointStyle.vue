@@ -1,66 +1,64 @@
 <template>
   <div id="paramsPointStyle">
-    <div class="uniqueOptionContainer">
-      <seriesItem title="散点图形">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.symbol" placeholder="请选择" size="small">
-          <el-option v-for="item in symbol" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem title="散点颜色">
-        <el-color-picker show-alpha v-model="config.color" />
-      </seriesItem>
-      <seriesItem v-if="typeof config.symbolSize == 'number'" title="散点大小">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="0"
-          v-model="config.symbolSize"
-        />
-      </seriesItem>
-      <seriesItem title="边框颜色">
-        <el-color-picker show-alpha v-model="config.itemStyle.borderColor" />
-      </seriesItem>
-      <seriesItem title="边框宽度">
-        <el-input-number
-          size="small"
-          :max="20"
-          :min="0"
-          v-model="config.itemStyle.borderWidth"
-        />
-      </seriesItem>
-      <seriesItem title="边框宽度">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.itemStyle.borderType" placeholder="请选择" size="small">
-          <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem title="阴影模糊">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="0"
-          v-model="config.itemStyle.shadowBlur"
-        />
-      </seriesItem>
-      <seriesItem title="阴影颜色">
-        <el-color-picker v-model="config.itemStyle.shadowColor" show-alpha />
-      </seriesItem>
-      <seriesItem title="阴影偏移X">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="-100"
-          v-model="config.itemStyle.shadowOffsetX"
-        />
-      </seriesItem>
-      <seriesItem title="阴影偏移Y">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="-100"
-          v-model="config.itemStyle.shadowOffsetY"
-        />
-      </seriesItem>
-    </div>
+    <seriesItem title="散点图形">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.symbol" placeholder="请选择" size="small">
+        <el-option v-for="item in symbol" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem title="散点颜色">
+      <el-color-picker show-alpha v-model="config.color" />
+    </seriesItem>
+    <seriesItem v-if="typeof config.symbolSize == 'number'" title="散点大小">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="0"
+        v-model="config.symbolSize"
+      />
+    </seriesItem>
+    <seriesItem title="边框颜色">
+      <el-color-picker show-alpha v-model="config.itemStyle.borderColor" />
+    </seriesItem>
+    <seriesItem title="边框宽度">
+      <el-input-number
+        size="small"
+        :max="20"
+        :min="0"
+        v-model="config.itemStyle.borderWidth"
+      />
+    </seriesItem>
+    <seriesItem title="边框宽度">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.itemStyle.borderType" placeholder="请选择" size="small">
+        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem title="阴影模糊">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="0"
+        v-model="config.itemStyle.shadowBlur"
+      />
+    </seriesItem>
+    <seriesItem title="阴影颜色">
+      <el-color-picker v-model="config.itemStyle.shadowColor" show-alpha />
+    </seriesItem>
+    <seriesItem title="阴影偏移X">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="-100"
+        v-model="config.itemStyle.shadowOffsetX"
+      />
+    </seriesItem>
+    <seriesItem title="阴影偏移Y">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="-100"
+        v-model="config.itemStyle.shadowOffsetY"
+      />
+    </seriesItem>
   </div>
 </template>
 

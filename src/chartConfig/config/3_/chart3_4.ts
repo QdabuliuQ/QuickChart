@@ -1,20 +1,15 @@
-import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
-import paramsPieStyle from "@/views/ChartPanel/components/paramsPie/paramsPieStyle.vue";
-import paramsPieText from "@/views/ChartPanel/components/paramsPie/paramsPieText.vue";
-import paramsPieLine from "@/views/ChartPanel/components/paramsPie/paramsPieLine.vue";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import pie_label from "@/chartConfig/commonParams/pie_label";
 import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 
 const common: any = useCommonStore()
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
@@ -27,7 +22,6 @@ const getOption = () => {
       'left': '18%',
       'orient': 'horizontal',
     }),
-    waterMark,
     {
       name: '数据',
       opName: 'series',
@@ -77,8 +71,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_pie',
-      component: markRaw(paramsPieStyle),
-      allOption: {},
+      componentPath: "paramsPie/paramsPieStyle.vue",
     },
     {
       name: '文本样式',
@@ -87,8 +80,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      component: markRaw(paramsPieText),
-      allOption: {},
+      componentPath: "paramsPie/paramsPieText.vue",
     },
     {
       name: '引导线样式',
@@ -97,13 +89,10 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gline',
-      component: markRaw(paramsPieLine),
-      allOption: {},
+      componentPath: "paramsPie/paramsPieLine.vue",
     },
   ]
 }
-
-export default getOption
 
 export function combineOption(data: any) {
   let series = common.option.series

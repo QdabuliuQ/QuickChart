@@ -37,10 +37,16 @@ const config = reactive<ConfigInt>({
 
 const getData = () => {
   const option = getConfigValue(config)
+
   if(option.bgImage) {
-    console.log(option.bgImage)
+    const image = new Image()
+    image.src = option.bgImage
+    image.onload = () => {
+      console.log('加载完毕')
+    }
     return {
-      image: option.bgImage,
+      repeat: 'repeat',
+      image
     }
   } else {
     delete option.bgImage

@@ -1,5 +1,4 @@
 import useCommonStore from "@/store/common";
-import { create, convey } from "@/chartConfig/conveyUtils/lineConvey";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -7,14 +6,14 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
+import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import {bar_series_label} from "@/chartConfig/option";
 
 const common: any = useCommonStore()
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
@@ -22,7 +21,6 @@ const getOption = () => {
     canvas,
     gridOption(),
     legendOption(),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -50,21 +48,13 @@ const getOption = () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
+      componentPath: 'paramsXAxis.vue',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           type: 'category',
         }],
-      },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+      }
     },
     {
       name: 'Y轴样式',
@@ -97,14 +87,24 @@ const getOption = () => {
         series: [
           {
             type: 'bar',
+            label: bar_series_label({
+              'show': false
+            }),
           }
         ]
       }
     },
+    {
+      name: '文本样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      componentPath: 'paramsBar/paramsBarText.vue'
+    },
   ]
 }
-
-export default getOption
 
 export function combineOption(data: any) {
   let series = common.option.series

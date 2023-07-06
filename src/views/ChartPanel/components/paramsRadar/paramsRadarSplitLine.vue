@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarSplitLine uniqueOptionContainer">
+  <div class="paramsRadarSplitLine">
     <optionItems :config="config" />
   </div>
 </template>

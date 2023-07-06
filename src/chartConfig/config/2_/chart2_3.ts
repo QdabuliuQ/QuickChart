@@ -3,16 +3,21 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
-import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
-import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import xAxisOption from "@/chartConfig/commonParams/xAxis";
+import yAxis, {yAxisOption} from "@/chartConfig/commonParams/yAxis";
+import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
-const common: any = useCommonStore()
+import {bar_series_label} from "@/chartConfig/option";
 
-const getOption = () => {
+const common: any = useCommonStore()
+const series_label = bar_series_label({
+  'show': true,
+  'position': 'inside',
+  'formatter': null
+})
+export default () => {
   return [
     titleOption({
       'show': false
@@ -29,7 +34,6 @@ const getOption = () => {
       'top': '2%',
       'icon': 'roundRect'
     }),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -56,23 +60,15 @@ const getOption = () => {
       name: 'X轴样式',
       opName: 'xAxis',
       chartOption: true,
-      menuOption: false,
+      menuOption: true,
       icon: 'i_X',
+      componentPath: 'paramsXAxis.vue',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           type: 'value',
-        }],
-      },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'value',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+        }]
+      }
     },
     {
       name: 'Y轴样式',
@@ -100,43 +96,42 @@ const getOption = () => {
       name: '数据',
       opName: 'series',
       chartOption: true,
-      menuOption: true,
+      menuOption: false,
       defaultOption: {
         series: [
           {
             type: 'bar',
-            label: {
-              show: true,
-              position: 'inside'
-            },
+            label: series_label
           },
           {
             type: 'bar',
-            label: {
-              show: true,
-              position: 'inside'
-            },
+            label: series_label
           },
           {
             type: 'bar',
-            label: {
-              show: true,
-              position: 'inside'
-            },
+            label: series_label
           },
         ]
       },
     },
+    {
+      name: '文本样式',
+      opName: 'textStyle',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_text',
+      componentPath: 'paramsBar/paramsBarText.vue'
+    },
   ]
 }
 
-export default getOption
 
 export function combineOption(data: any) {
-  let series = common.option.series
+  let series = data.seriesData
   let dataset = common.option.dataset
-  series = data.seriesData
   dataset.source = data.datasetData
+  console.log(series, 'ppppp')
   return {
     series,
     dataset
@@ -154,15 +149,8 @@ export const createExcelData = (config: any) => {
   ])
 }
 
-export const conveyExcelData = (rows: any) => {
-  if(!rows) return null
-  const seriesOptionItem = {
-    type: 'bar',
-    label: {
-      show: true,
-      position: 'inside'
-    },
-  }
+export const conveyExcelData = (rows: any, options: any) => {
+  if (!rows) return null
   let datas = {
     datasetData: <any>[],
     seriesData: <any>[]
@@ -172,7 +160,7 @@ export const conveyExcelData = (rows: any) => {
     if (JSON.stringify(rows[i].cells) == '{}') break
     datas.datasetData[i] = []
     let rowsLength: number = Object.keys(rows[i].cells).length
-    for(let j = 0; j < rowsLength; j ++) {
+    for (let j = 0; j < rowsLength; j++) {
       if (i == 0) {
         datas.datasetData[i].push(rows[i].cells[j].text)
       } else {
@@ -184,10 +172,11 @@ export const conveyExcelData = (rows: any) => {
       }
     }
   }
-  if(datas.datasetData.length) {
-    for(let i = 0; i < datas.datasetData[0].length-1; i ++) {
-      datas.seriesData.push(seriesOptionItem)
+  if (datas.datasetData.length) {
+    for (let i = 0; i < datas.datasetData[0].length - 1; i++) {
+      datas.seriesData.push(options.series[0])
     }
   }
+    console.log(datas.seriesData)
   return datas
 }

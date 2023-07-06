@@ -1,20 +1,13 @@
-import { markRaw } from "vue";
 import useCommonStore from "@/store/common";
-// 导入独立组件
-import paramsBarText from "@/views/ChartPanel/components/paramsBar/paramsBarText.vue";
-import paramsBarBgStyle from "@/views/ChartPanel/components/paramsBar/paramsBarBgStyle.vue";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import {bar_series_label} from "@/chartConfig/option";
 const common: any = useCommonStore()
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
@@ -24,7 +17,6 @@ const getOption = () => {
       'bottom': '5%'
     }),
     legendOption(),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -65,21 +57,7 @@ const getOption = () => {
             }
           }
         }],
-      },
-      allOption: {
-        xAxis: [
-          {
-            type: 'value',
-            position: 'top',
-            splitLine: {
-              lineStyle: {
-                type: 'dashed'
-              }
-            }
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+      }
     },
     {
       name: 'Y轴样式',
@@ -95,19 +73,7 @@ const getOption = () => {
           axisTick: { show: false },
           splitLine: { show: false },
         }],
-      },
-      allOption: {
-        yAxis: [
-          {
-            type: 'category',
-            axisLine: { show: false },
-            axisLabel: { show: false },
-            axisTick: { show: false },
-            splitLine: { show: false },
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+      }
     },
     {
       name: '数据',
@@ -119,24 +85,7 @@ const getOption = () => {
           {
             type: 'bar',
             stack: 'Total',
-            label: {
-              show: true,
-              rotate: 0,
-              color: '#fff',
-              fontStyle: 'normal',
-              fontWeight: 'normal',
-              fontFamily: 'sans-serif',
-              fontSize: 12,
-              borderColor: '',
-              borderWidth: 0,
-              borderType: 'solid',
-              shadowColor: '',
-              shadowBlur: 0,
-              shadowOffsetX: 0,
-              shadowOffsetY: 0,
-              position: 'inside',
-              formatter: '{b}'
-            },
+            label: bar_series_label(),
             showBackground: false,
             backgroundStyle: {
               color: '',
@@ -161,8 +110,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      component: markRaw(paramsBarText),
-      allOption: {},
+      componentPath: 'paramsBar/paramsBarText.vue'
     },
     {
       name: '背景样式',
@@ -171,13 +119,11 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_bg',
-      component: markRaw(paramsBarBgStyle),
-      allOption: {},
+      componentPath: 'paramsBar/paramsBarBgStyle.vue'
     },
   ]
 }
 
-export default getOption
 
 export function combineOption(data: any) {
   let dataset = common.option.dataset

@@ -1,36 +1,34 @@
 <template>
   <div id="paramsPointAngleAxis">
-    <div class="uniqueOptionContainer">
-      <seriesItem title="显示分隔线">
-        <el-switch size="small" v-model="config.show" />
-      </seriesItem>
-      <seriesItem title="分隔线颜色">
-        <el-color-picker v-model="config.lineStyle.color" show-alpha />
-      </seriesItem>
-      <seriesItem title="分隔线线宽">
-        <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.width" />
-      </seriesItem>
-      <seriesItem title="分隔线类型">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.lineStyle.type" placeholder="请选择" size="small">
-          <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem title="阴影模糊">
-        <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.shadowBlur" />
-      </seriesItem>
-      <seriesItem title="阴影颜色">
-        <el-color-picker v-model="config.lineStyle.shadowColor" show-alpha />
-      </seriesItem>
-      <seriesItem title="阴影偏移X">
-        <el-input-number size="small" :max="100" :min="-100" v-model="config.lineStyle.shadowOffsetX" />
-      </seriesItem>
-      <seriesItem title="阴影偏移Y">
-        <el-input-number size="small" :max="100" :min="-100" v-model="config.lineStyle.shadowOffsetY" />
-      </seriesItem>
-      <seriesItem title="透明度">
-        <el-input-number size="small" :step="0.1" :max="1" :min="0" v-model="config.lineStyle.opacity" />
-      </seriesItem>
-    </div>
+    <seriesItem title="显示分隔线">
+      <el-switch size="small" v-model="config.show" />
+    </seriesItem>
+    <seriesItem title="分隔线颜色">
+      <el-color-picker v-model="config.lineStyle.color" show-alpha />
+    </seriesItem>
+    <seriesItem title="分隔线线宽">
+      <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.width" />
+    </seriesItem>
+    <seriesItem title="分隔线类型">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.lineStyle.type" placeholder="请选择" size="small">
+        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem title="阴影模糊">
+      <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.shadowBlur" />
+    </seriesItem>
+    <seriesItem title="阴影颜色">
+      <el-color-picker v-model="config.lineStyle.shadowColor" show-alpha />
+    </seriesItem>
+    <seriesItem title="阴影偏移X">
+      <el-input-number size="small" :max="100" :min="-100" v-model="config.lineStyle.shadowOffsetX" />
+    </seriesItem>
+    <seriesItem title="阴影偏移Y">
+      <el-input-number size="small" :max="100" :min="-100" v-model="config.lineStyle.shadowOffsetY" />
+    </seriesItem>
+    <seriesItem title="透明度">
+      <el-input-number size="small" :step="0.1" :max="1" :min="0" v-model="config.lineStyle.opacity" />
+    </seriesItem>
   </div>
 </template>
 

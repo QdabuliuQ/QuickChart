@@ -1,27 +1,25 @@
 <template>
   <div id="paramsPointLine">
-    <div class="uniqueOptionContainer">
-      <seriesItem title="显示引导线">
-        <el-switch size="small" v-model="config.show" />
-      </seriesItem>
-      <seriesItem v-if="config.length != null" title="线段1长度">
-        <el-input-number size="small" :max="300" :min="0" v-model="config.length" />
-      </seriesItem>
-      <seriesItem title="线段2长度">
-        <el-input-number size="small" :max="300" :min="0" v-model="config.length2" />
-      </seriesItem>
-      <seriesItem title="线段颜色">
-        <el-color-picker v-model="config.lineStyle.color" show-alpha />
-      </seriesItem>
-      <seriesItem title="线段类型">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.lineStyle.type" placeholder="请选择" size="small">
-          <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem title="线段宽度">
-        <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.width" />
-      </seriesItem>
-    </div>
+    <seriesItem title="显示引导线">
+      <el-switch size="small" v-model="config.show" />
+    </seriesItem>
+    <seriesItem v-if="config.length != null" title="线段1长度">
+      <el-input-number size="small" :max="300" :min="0" v-model="config.length" />
+    </seriesItem>
+    <seriesItem title="线段2长度">
+      <el-input-number size="small" :max="300" :min="0" v-model="config.length2" />
+    </seriesItem>
+    <seriesItem title="线段颜色">
+      <el-color-picker v-model="config.lineStyle.color" show-alpha />
+    </seriesItem>
+    <seriesItem title="线段类型">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.lineStyle.type" placeholder="请选择" size="small">
+        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem title="线段宽度">
+      <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.width" />
+    </seriesItem>
   </div>
 </template>
 

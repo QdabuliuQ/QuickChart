@@ -1,8 +1,4 @@
-import { markRaw } from "vue";
-import lodash from 'lodash'
 import useCommonStore from "@/store/common";
-// 导入独立组件
-import paramsBarSort from "@/views/ChartPanel/components/paramsBar/paramsBarSort.vue";
 import {
   asisOpNameList
 } from "@/chartConfig/constant";
@@ -10,21 +6,13 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import waterMark from "@/chartConfig/commonParams/waterMark";
-import xAxis, { xAxisOption } from "@/chartConfig/commonParams/xAxis";
+import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
 const getOption = () => {
-  let grid = gridOption()
-  // grid.defaultOption.grid.containLabel = true
-  // grid.allOption.grid.containLabel = true
-  // grid.defaultOption.grid.left = grid.allOption.grid.left = 30
-  // grid.defaultOption.grid.top = grid.allOption.grid.top = 60
-  // grid.defaultOption.grid.bottom = grid.allOption.grid.bottom = 30
-  // grid.defaultOption.grid.right = grid.allOption.grid.right = 60
   return [
     titleOption({
       'show': false
@@ -34,29 +22,20 @@ const getOption = () => {
       'containLabel': true
     }),
     legendOption(),
-    waterMark,
     {
       name: 'X轴样式',
       opName: 'xAxis',
       chartOption: true,
       menuOption: true,
+      componentPath: 'paramsXAxis.vue',
       icon: 'i_X',
       defaultOption: {
         xAxis: [{
-          ...xAxis,
+          ...xAxisOption(),
           type: 'category',
           axisLabel: { interval: 0, rotate: 30 }
         }],
       },
-      allOption: {
-        xAxis: [
-          {
-            ...xAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
     },
     {
       name: 'Y轴样式',
@@ -100,8 +79,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_bar',
-      component: markRaw(paramsBarSort),
-      allOption: {},
+      componentPath: 'paramsBar/paramsBarSort.vue',
       defaultOption: {
         dataset: [
           {

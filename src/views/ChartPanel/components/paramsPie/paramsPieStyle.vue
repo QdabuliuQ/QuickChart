@@ -1,47 +1,45 @@
 <template>
   <div id="paramsPieStyle">
-    <div class="uniqueOptionContainer">
-      <seriesItem v-if="config.size != -1" title="饼图大小">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="10"
-          v-model="config.size"
-        />
-      </seriesItem>
-      <seriesItem v-if="config.innerSize != -1" title="内圈大小">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="10"
-          v-model="config.innerSize"
-        />
-      </seriesItem>
-      <seriesItem v-if="config.outerSize != -1" title="外圈大小">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="10"
-          v-model="config.outerSize"
-        />
-      </seriesItem>
-      <seriesItem title="X轴偏移">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="0"
-          v-model="config.xOffset"
-        />
-      </seriesItem>
-      <seriesItem title="Y轴偏移">
-        <el-input-number
-          size="small"
-          :max="100"
-          :min="0"
-          v-model="config.yOffset"
-        />
-      </seriesItem>
-    </div>
+    <seriesItem v-if="config.size != -1" title="饼图大小">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="10"
+        v-model="config.size"
+      />
+    </seriesItem>
+    <seriesItem v-if="config.innerSize != -1" title="内圈大小">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="10"
+        v-model="config.innerSize"
+      />
+    </seriesItem>
+    <seriesItem v-if="config.outerSize != -1" title="外圈大小">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="10"
+        v-model="config.outerSize"
+      />
+    </seriesItem>
+    <seriesItem title="X轴偏移">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="0"
+        v-model="config.xOffset"
+      />
+    </seriesItem>
+    <seriesItem title="Y轴偏移">
+      <el-input-number
+        size="small"
+        :max="100"
+        :min="0"
+        v-model="config.yOffset"
+      />
+    </seriesItem>
   </div>
 </template>
 

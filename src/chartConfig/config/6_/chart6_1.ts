@@ -4,7 +4,6 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic"
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import paramsRadarStyle from '@/views/ChartPanel/components/paramsRadar/paramsRadarStyle.vue'
 import paramsRadarAxisName from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisName.vue'
@@ -24,7 +23,6 @@ export default () => {
     gridOption(),
     canvas,
     graphicOption(),
-    waterMark,
     {
       name: 'dataset',
       opName: 'dataset',
@@ -192,8 +190,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radar_chart',
-      component: markRaw(paramsRadarStyle),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarStyle.vue",
     },
     {
       name: '文本样式',
@@ -202,8 +199,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      component: markRaw(paramsRadarAxisName),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarAxisName.vue",
     },
     {
       name: '坐标轴样式',
@@ -212,8 +208,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_sline',
-      component: markRaw(paramsRadarAxisLine),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarAxisLine.vue",
     },
     {
       name: '轴刻度样式',
@@ -222,8 +217,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_tick',
-      component: markRaw(paramsRadarAxisTick),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarAxisTick.vue",
     },
     {
       name: '轴刻尺样式',
@@ -232,8 +226,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_num',
-      component: markRaw(paramsRadarAxisLabel),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarAxisLabel.vue",
     },
     {
       name: '分割线样式',
@@ -242,8 +235,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gsline',
-      component: markRaw(paramsRadarSplitLine),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarSplitLine.vue",
     },
     {
       name: '分割域样式',
@@ -252,8 +244,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_sarea',
-      component: markRaw(paramsRadarSplitArea),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarSplitArea.vue",
     },
     {
       name: '线段样式',
@@ -262,8 +253,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radar_line',
-      component: markRaw(paramsRadarLineStyle),
-      allOption: {},
+      componentPath: "paramsRadar/paramsRadarLineStyle.vue",
     },
   ]
 }

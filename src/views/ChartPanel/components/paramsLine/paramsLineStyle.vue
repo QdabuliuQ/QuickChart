@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsLineStyle uniqueOptionContainer">
+  <div class="paramsLineStyle">
     <optionItems :config="config" />
     <optionItems :config="lineConfig" />
   </div>

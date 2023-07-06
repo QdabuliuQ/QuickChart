@@ -1,51 +1,49 @@
 <template>
   <div id="paramsPointText">
-    <div class="uniqueOptionContainer">
-      <seriesItem title="显示文本">
-        <el-switch size="small" v-model="config.show" />
-      </seriesItem>
-      <seriesItem title="字体风格">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.fontStyle" placeholder="请选择" size="small">
-          <el-option v-for="item in fontStyle" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem title="字体粗细">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.fontWeight" placeholder="请选择" size="small">
-          <el-option v-for="item in fontWeight" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem title="字体大小">
-        <el-input-number size="small" :max="100" :min="1" v-model="config.fontSize" />
-      </seriesItem>
-      <seriesItem title="字体颜色">
-        <el-color-picker v-model="config.color" show-alpha />
-      </seriesItem>
-      <seriesItem v-if="config.align" title="字体位置">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.align" placeholder="请选择" size="small">
-          <el-option v-for="item in align" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem v-if="offsetX" title="字体偏移X">
-        <el-input-number size="small" :max="200" :min="-200" v-model="offsetX" />
-      </seriesItem>
-      <seriesItem v-if="offsetY" title="字体偏移Y">
-        <el-input-number size="small" :max="200" :min="-200" v-model="offsetY" />
-      </seriesItem>
-      <seriesItem title="字体边框颜色">
-        <el-color-picker v-model="config.textBorderColor" show-alpha />
-      </seriesItem>
-      <seriesItem title="字体边框宽度">
-        <el-input-number size="small" :max="50" :min="0" v-model="config.textBorderWidth" />
-      </seriesItem>
-      <seriesItem title="字体边框类型">
-        <el-select popper-class="paramsSelectPopperClass" v-model="config.textBorderType" placeholder="请选择" size="small">
-          <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </seriesItem>
-      <seriesItem v-if="config.minMargin != null && config.minMargin != undefined" title="字体间距">
-        <el-input-number size="small" :max="50" :min="0" v-model="config.minMargin" />
-      </seriesItem>
-    </div>
+    <seriesItem title="显示文本">
+      <el-switch size="small" v-model="config.show" />
+    </seriesItem>
+    <seriesItem title="字体风格">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.fontStyle" placeholder="请选择" size="small">
+        <el-option v-for="item in fontStyle" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem title="字体粗细">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.fontWeight" placeholder="请选择" size="small">
+        <el-option v-for="item in fontWeight" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem title="字体大小">
+      <el-input-number size="small" :max="100" :min="1" v-model="config.fontSize" />
+    </seriesItem>
+    <seriesItem title="字体颜色">
+      <el-color-picker v-model="config.color" show-alpha />
+    </seriesItem>
+    <seriesItem v-if="config.align" title="字体位置">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.align" placeholder="请选择" size="small">
+        <el-option v-for="item in align" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem v-if="offsetX" title="字体偏移X">
+      <el-input-number size="small" :max="200" :min="-200" v-model="offsetX" />
+    </seriesItem>
+    <seriesItem v-if="offsetY" title="字体偏移Y">
+      <el-input-number size="small" :max="200" :min="-200" v-model="offsetY" />
+    </seriesItem>
+    <seriesItem title="字体边框颜色">
+      <el-color-picker v-model="config.textBorderColor" show-alpha />
+    </seriesItem>
+    <seriesItem title="字体边框宽度">
+      <el-input-number size="small" :max="50" :min="0" v-model="config.textBorderWidth" />
+    </seriesItem>
+    <seriesItem title="字体边框类型">
+      <el-select popper-class="paramsSelectPopperClass" v-model="config.textBorderType" placeholder="请选择" size="small">
+        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </seriesItem>
+    <seriesItem v-if="config.minMargin != null && config.minMargin != undefined" title="字体间距">
+      <el-input-number size="small" :max="50" :min="0" v-model="config.minMargin" />
+    </seriesItem>
   </div>
 </template>
 

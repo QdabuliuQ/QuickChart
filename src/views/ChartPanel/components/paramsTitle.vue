@@ -8,7 +8,7 @@
 <script setup lang='ts'>
 import {
   watch,
-  defineProps, reactive
+  reactive
 } from "vue";
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
@@ -18,11 +18,7 @@ import {fontWeight, textAlign} from "@/chartConfig/constant";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 
-const props = defineProps<{
-  defaultOption: any
-  allOption: any
-  opNameList: any
-}>()
+console.log('title文件加載')
 const _common: any = useCommonStore()
 const config = reactive<ConfigInt>({
   text: {

@@ -119,7 +119,11 @@ const getData = () => {
 
 const cbEvent = debounce(() => {
   let s = common.option.series
-  s[0].label = getData()
+  console.log(s)
+  for(let item of s) {
+    item.label = getData()
+  }
+  // console.log(s)
   proxy.$Bus.emit("optionChange", {
     series: s,
   });

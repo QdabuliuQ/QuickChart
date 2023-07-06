@@ -1,25 +1,18 @@
-import { markRaw } from "vue";
-import lodash from 'lodash'
 import useCommonStore from "@/store/common";
-// 导入独立组件
-import paramsBarPolar from "@/views/ChartPanel/components/paramsBar/paramsBarPolar.vue";
-import paramsBarAxis_2 from "@/views/ChartPanel/components/paramsBar/paramsBarAxis_2.vue";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import waterMark from "@/chartConfig/commonParams/waterMark";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
-const getOption = () => {
+export default () => {
   return [
     titleOption({
       'show': false
     }),
     canvas,
     gridOption(),
-    waterMark,
     {
       name: '内外圈大小',
       opName: 'polar',
@@ -27,13 +20,12 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_circle',
-      component: markRaw(paramsBarPolar),
+      componentPath: 'paramsBar/paramsBarPolar.vue',
       defaultOption: {
         polar: {
           radius: [30, '80%']
         },
       },
-      allOption: {},
     },
     {
       name: '圈内层次',
@@ -57,14 +49,13 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angle',
-      component: markRaw(paramsBarAxis_2),
+      componentPath: 'paramsBar/paramsBarAxis_2.vue',
       defaultOption: {
         angleAxis: {
           max: 4,
           startAngle: 75
         },
       },
-      allOption: {},
     },
     {
       name: '数据',
@@ -86,8 +77,6 @@ const getOption = () => {
     },
   ]
 }
-
-export default getOption
 
 export function combineOption(data: any) {
   let radiusAxis = common.option.radiusAxis
