@@ -8,7 +8,7 @@ import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
 import color from "@/chartConfig/commonParams/color";
 import xAxisOption from "@/chartConfig/commonParams/xAxis";
-import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import { line_series, line_series_label } from "@/chartConfig/option";
 
@@ -80,23 +80,15 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
+      componentPath: 'paramsYAxis.vue',
       defaultOption: {
         yAxis: [{
-          ...yAxis,
+          ...yAxisOption(),
           type: 'category',
           axisLine: { onZero: false },
           boundaryGap: false,
         }],
-      },
-      allOption: {
-        yAxis: [
-          {
-            ...yAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+      }
     },
     {
       name: '数据',

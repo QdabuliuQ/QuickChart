@@ -29,11 +29,7 @@ export const point_series_itemStyle = (option?: any) => {
     shadowOffsetX: 0,
     shadowOffsetY: 0,
   }
-  for (let key in option) {
-    if (res.hasOwnProperty(key)) {
-      res[key] = option[key]
-    }
-  }
+  replaceOptionValue(res, option)
   return res
 }
 
@@ -46,16 +42,9 @@ export const point_series_label = (option?: any) => {
     fontSize: 12,
     color: '#fff',
     offset: [0, 0],
-    align: '',
-    textBorderColor: '#000',
-    textBorderWidth: 0,
-    textBorderType: 'solid'
+    align: 'center',
   }
-  for (let key in option) {
-    if (res.hasOwnProperty(key)) {
-      res[key] = option[key] as any
-    }
-  }
+  replaceOptionValue(res, option)
   return res
 }
 
@@ -70,20 +59,7 @@ export const point_series_labelLine = (option?: any) => {
       width: 1,
     }
   }
-  for (let key in option) {
-    if (key.indexOf('.') == -1) {
-      if (res.hasOwnProperty(key)) {
-        res[key] = option[key] as any
-      }
-    } else {
-      let keys = key.split('.')
-      let data = res
-      for (let i = 0; i < keys.length - 1; i++) {
-        data = data[keys[i]]
-      }
-      data[keys[keys.length - 1]] = option[key]
-    }
-  }
+  replaceOptionValue(res, option)
   return res
 }
 

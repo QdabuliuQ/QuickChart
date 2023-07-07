@@ -5,7 +5,6 @@ interface PieLabelInterface {
   fontWeight: string,
   fontFamily: string,
   fontSize: number,
-  textShadowColor: string,
   position: string,
 }
 
@@ -16,7 +15,6 @@ let pie_label: PieLabelInterface = {
   fontWeight: 'normal',
   fontFamily: 'sans-serif',
   fontSize: 12,
-  textShadowColor: 'transparent',
   position: 'outside',
 }
 

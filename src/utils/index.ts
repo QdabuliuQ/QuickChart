@@ -70,7 +70,18 @@ export const getConfigValue = (config: ConfigInt) => {
     [propName: string]: any
   } = {}
   for(let key in config) {
-    optionsRes[key] = config[key].value
+    if(!config[key].prefixs) {
+      optionsRes[key] = config[key].value
+    } else {
+      let _prop = optionsRes
+      for(let prefix of config[key].prefixs as string[]) {
+        if(!_prop.hasOwnProperty(prefix)) {
+          _prop[prefix] = {}
+        }
+        _prop = _prop[prefix]
+      }
+      _prop[key] = config[key].value
+    }
   }
   return optionsRes
 }

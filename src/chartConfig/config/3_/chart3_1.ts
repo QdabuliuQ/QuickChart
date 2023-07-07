@@ -108,8 +108,6 @@ export const conveyExcelData = (rows: any) => {
   let datas: any = {
     seriesData: <any>[]
   }
-  // 遍历数据项
-  console.log(rows);
 
   let rowsTLength = Object.keys(rows).length;
   for (let i = 0; i < rowsTLength; i++) {
@@ -121,8 +119,6 @@ export const conveyExcelData = (rows: any) => {
       value: val2
     })
   }
-  console.log(datas);
-
   return datas
 }
 

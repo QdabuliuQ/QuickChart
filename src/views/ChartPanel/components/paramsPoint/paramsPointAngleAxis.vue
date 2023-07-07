@@ -1,109 +1,100 @@
 <template>
-  <div id="paramsPointAngleAxis">
-    <seriesItem title="显示分隔线">
-      <el-switch size="small" v-model="config.show" />
-    </seriesItem>
-    <seriesItem title="分隔线颜色">
-      <el-color-picker v-model="config.lineStyle.color" show-alpha />
-    </seriesItem>
-    <seriesItem title="分隔线线宽">
-      <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.width" />
-    </seriesItem>
-    <seriesItem title="分隔线类型">
-      <el-select popper-class="paramsSelectPopperClass" v-model="config.lineStyle.type" placeholder="请选择" size="small">
-        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-    </seriesItem>
-    <seriesItem title="阴影模糊">
-      <el-input-number size="small" :max="100" :min="0" v-model="config.lineStyle.shadowBlur" />
-    </seriesItem>
-    <seriesItem title="阴影颜色">
-      <el-color-picker v-model="config.lineStyle.shadowColor" show-alpha />
-    </seriesItem>
-    <seriesItem title="阴影偏移X">
-      <el-input-number size="small" :max="100" :min="-100" v-model="config.lineStyle.shadowOffsetX" />
-    </seriesItem>
-    <seriesItem title="阴影偏移Y">
-      <el-input-number size="small" :max="100" :min="-100" v-model="config.lineStyle.shadowOffsetY" />
-    </seriesItem>
-    <seriesItem title="透明度">
-      <el-input-number size="small" :step="0.1" :max="1" :min="0" v-model="config.lineStyle.opacity" />
-    </seriesItem>
+  <div class="paramsPointAngleAxis">
+    <option-items :config="config" />
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, getCurrentInstance, ComponentInternalInstance, watch } from 'vue'
+<script setup lang='ts'>
+import {
+  watch,
+  reactive
+} from "vue";
+import useProxy from "@/hooks/useProxy";
+import {ConfigInt} from "@/types/common";
+import {common} from '@/chartConfig/opname';
 import useCommonStore from "@/store/common";
-import seriesItem from "@/components/seriesItem.vue";
-import { debounce, deepCopy, initCopyConfig } from "@/utils/index";
-import { borderType } from "@/chartConfig/constant";
+import optionItems from '@/components/optionItems.vue'
+import {debounce, getConfigValue} from "@/utils";
+import {borderType} from "@/chartConfig/constant";
+const proxy = useProxy()
+const _common: any = useCommonStore()
 
-interface comInitData {
-  config: {
-    show: boolean
-    lineStyle: {
-      color: string
-      width: number
-      type: string
-      shadowBlur: number
-      shadowColor: string
-      shadowOffsetX: number
-      shadowOffsetY: number
-      opacity: number
-    }
-  }
+const config = reactive<ConfigInt>({
+  show: {
+    type: 'switch',
+    title: common.show,
+    value: _common.option.angleAxis.splitLine.show
+  },
+  color: {
+    type: 'color_picker',
+    title: common.color,
+    prefixs: ['lineStyle'],
+    value: _common.option.angleAxis.splitLine.lineStyle.color
+  },
+  width: {
+    type: 'input_number',
+    title: common.width,
+    max: 50,
+    prefixs: ['lineStyle'],
+    value: _common.option.angleAxis.splitLine.lineStyle.width
+  },
+  type: {
+    type: 'select',
+    title: '线段' + common.type,
+    prefixs: ['lineStyle'],
+    options: borderType,
+    value: _common.option.angleAxis.splitLine.lineStyle.type
+  },
+  shadowBlur: {
+    type: 'input_number',
+    title: common.shadowBlur,
+    max: 50,
+    prefixs: ['lineStyle'],
+    value: _common.option.angleAxis.splitLine.lineStyle.shadowBlur
+  },
+  shadowColor: {
+    type: 'color_picker',
+    title: common.shadowColor,
+    prefixs: ['lineStyle'],
+    value: _common.option.angleAxis.splitLine.lineStyle.shadowColor
+  },
+  shadowOffsetX: {
+    type: 'input_number',
+    title: common.shadowOffsetX,
+    prefixs: ['lineStyle'],
+    max: 500,
+    min: -500,
+    value: _common.option.angleAxis.splitLine.lineStyle.shadowOffsetX
+  },
+  shadowOffsetY: {
+    type: 'input_number',
+    title: common.shadowOffsetY,
+    prefixs: ['lineStyle'],
+    max: 500,
+    min: -500,
+    value: _common.option.angleAxis.splitLine.lineStyle.shadowOffsetY
+  },
+  opacity: {
+    type: 'input_number',
+    title: common.opacity,
+    prefixs: ['lineStyle'],
+    max: 1,
+    step: .1,
+    value: _common.option.angleAxis.splitLine.lineStyle.opacity
+  },
+})
+
+const getData = () => {
+  let angleAxis = _common.option.angleAxis
+  angleAxis.splitLine = getConfigValue(config)
+  return angleAxis
 }
 
-export default defineComponent({
-  name: 'paramsPointAngleAxis',
-  components: {
-    seriesItem
-  },
-  setup() {
-    const { appContext } = getCurrentInstance() as ComponentInternalInstance;
-    const proxy = appContext.config.globalProperties;
-    let cbEvent: Function | null = null
-    const common: any = useCommonStore();
-    const data: comInitData = reactive({
-      config: {
-        show: false,
-        lineStyle: {
-          color: '',
-          width: 0,
-          type: '',
-          shadowBlur: 0,
-          shadowColor: '',
-          shadowOffsetX: 0,
-          shadowOffsetY: 0,
-          opacity: 0,
-        }
-      }
-    })
-    initCopyConfig(common.option.angleAxis.splitLine, data.config)
-    
-    watch(() => data.config, () => {
-      cbEvent && cbEvent()
-    }, {
-      deep: true
-    })
-
-    onMounted(() => {
-      cbEvent = debounce(() => {
-        let angleAxis = common.option.angleAxis
-        angleAxis.splitLine = deepCopy(data.config)
-        proxy.$Bus.emit("optionChange", {
-          angleAxis
-        });
-      })
-    })
-    return {
-      borderType,
-      ...toRefs(data),
-    }
-  }
+watch(() => config, debounce(() => {
+  proxy.$Bus.emit("optionChange", {
+    angleAxis: getData(),
+  });
+}, 500), {
+  deep: true
 })
 </script>
-
-<style lang='less'>
-</style>

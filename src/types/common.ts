@@ -11,5 +11,6 @@ export interface ConfigInt {
     min?: number
     step?: number
     attr?: string
+    prefixs?: string[]
   }
 }

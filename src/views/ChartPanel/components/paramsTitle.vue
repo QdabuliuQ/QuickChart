@@ -18,7 +18,6 @@ import {fontWeight, textAlign} from "@/chartConfig/constant";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 
-console.log('title文件加載')
 const _common: any = useCommonStore()
 const config = reactive<ConfigInt>({
   text: {

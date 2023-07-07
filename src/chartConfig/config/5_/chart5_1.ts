@@ -3,8 +3,7 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import xAxisOption from '@/chartConfig/commonParams/xAxis';
-import { asisOpNameList } from '@/chartConfig/constant';
-import yAxis, { yAxisOption } from '@/chartConfig/commonParams/yAxis';
+import yAxisOption from '@/chartConfig/commonParams/yAxis';
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import { kline_series_itemstyle } from '@/chartConfig/option';
 const common: any = useCommonStore()
@@ -57,19 +56,12 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
+      componentPath: 'paramsYAxis.vue',
       defaultOption: {
         yAxis: [{
-          ...yAxis,
+          ...yAxisOption(),
         }],
-      },
-      allOption: {
-        yAxis: [
-          {
-            ...yAxisOption,
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+      }
     },
     {
       name: '数据',

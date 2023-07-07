@@ -49,6 +49,31 @@ export default defineComponent({
       option: null,
     });
 
+    const getHTML = (jsCode: string) => {
+      return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js" integrity="sha512-VdqgeoWrVJcsDXFlQEKqE5MyhaIgB9yXUVaiUa8DR2J4Lr1uWcFm+ZH/YnzV5WqgKf4GPyHQ64vVLgzqGIchyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></scrip` + `t>
+    <style>
+      #chart {
+        width: ${data.width}px;
+        height: ${data.height}px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      ${jsCode}
+    </scrip` + `t>
+  </body>
+</html>
+`;
+    }
+
     //下载
     const downloadFile = (fileName: string, content: string) => {
       let aLink = document.createElement("a");
@@ -79,22 +104,25 @@ export default defineComponent({
     };
     const getCode = (type: string) => {
       Reflect.deleteProperty(data.option, "waterMark");
+      console.log(data.option)
       let jdata: any = JSON.stringify(data.option, null, 4);
       const optionCode = jdata.replace(/"(\w+)":/g, "$1:");
       if(type == 'js') {
-        data.code = `const chart = echarts.init(document.getElementById('chart'));\nconst option = ${optionCode};\nchart.setOption(option);  //设置option`
+        data.code = `
+const chart = echarts.init(document.getElementById('chart'));
+const option = ${optionCode};
+chart.setOption(option);  //设置option`
       } else {
         data.code = optionCode
       }
+      return data.code
     };
     const initChart = () => {
       let chartInstance = _this.proxy.$echarts.init(chartDomRef.value);
       chart_i = chartInstance
       chartInstance.setOption(common.option);
       chartInstance.on('finished', () => {
-        setTimeout(() => {
-          _this.proxy.$Bus.emit('loadFinished')
-        }, 1000);
+        _this.proxy.$Bus.emit('loadFinished')
       })
       data.option = common.option;
       data.code = common.option;
@@ -136,10 +164,16 @@ export default defineComponent({
             backgroundColor,
           });
         } else {
+          data.option.backgroundColor = e
+          console.log(e, '图片')
           chartInstance.setOption({
             backgroundColor: e,
           });
         }
+        // 修改pinia数据
+        common.$patch((state: any) => {
+          state.option = data.option
+        });
       });
 
       // 生成代码
@@ -149,11 +183,28 @@ export default defineComponent({
       });
 
       // 下载图表
-      _this.proxy.$Bus.on("downloadChart", () => {
-        let res = chartInstance.getDataURL({
-          pixelRatio: 2,
-        });
-        downloadFile("chart.png", res);
+      _this.proxy.$Bus.on("downloadChart", (type: string) => {
+        if(type == 'png') {
+          let res = chartInstance.getDataURL({
+            pixelRatio: 2,
+          });
+          downloadFile("chart.png", res);
+        } else {
+          // 生成html字符串
+          const html = getHTML(getCode('js'));
+          // 创建一个a标签
+          let a = document.createElement("a");
+          // 创建一个包含blob对象的url
+          let url = window.URL.createObjectURL(
+            new Blob([html], {
+              type: "",
+            })
+          );
+          a.href = url;
+          a.download = "chart.html";
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }
       });
 
       // 重置数据

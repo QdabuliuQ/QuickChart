@@ -1,5 +1,4 @@
 import { Common } from "../interface";
-
 const graphicOption = (): Common => {
     return {
         name: '图形组件',

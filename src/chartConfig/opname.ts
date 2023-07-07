@@ -4,6 +4,8 @@ export const common = {
   height: '高度',
   type: '类型',
   show: '显示/隐藏',
+  offsetX: '偏移X',
+  offsetY: '偏移Y',
   shadowBlur: '阴影模糊',
   shadowColor: '阴影颜色',
   shadowOffsetX: '阴影偏移X',
@@ -19,6 +21,7 @@ export const common = {
   backgroundColor: '背景颜色',
   borderColor: '边框颜色',
   borderWidth: '边框宽度',
+  borderType: '边框类型',
   orient: '排列方向',
   position: '位置',
   offset: '偏移'

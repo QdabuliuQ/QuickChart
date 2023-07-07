@@ -5,7 +5,7 @@
         编辑数据
       </div>
       <div @click="btnClick(1)" :class="[type == 1 ? 'active' : '', 'btnItem']">
-        编辑表格
+        编辑图表
       </div>
     </div>
     <div class="paramsContainer">
@@ -62,7 +62,6 @@ export default defineComponent({
     display: flex;
     align-items: center;
     font-size: 12.5px;
-    font-weight: bold;
     .btnItem {
       flex: 1;
       text-align: center;
@@ -70,6 +69,8 @@ export default defineComponent({
       color: rgb(150, 150, 150);
       transition: 0.2s all linear;
       cursor: pointer;
+      letter-spacing: 1px;
+      text-indent: 1px;
     }
     .active {
       background-color: @curColor;

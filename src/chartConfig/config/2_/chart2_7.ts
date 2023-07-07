@@ -1,13 +1,10 @@
 import useCommonStore from "@/store/common";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
 import xAxisOption from "@/chartConfig/commonParams/xAxis";
-import yAxis, { yAxisOption } from "@/chartConfig/commonParams/yAxis";
+import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import {bar_series_label} from "@/chartConfig/option";
 
@@ -74,21 +71,13 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
+      componentPath: 'paramsYAxis.vue',
       defaultOption: {
         yAxis: [{
-          ...yAxis,
+          ...yAxisOption(),
           type: 'category',
         }],
-      },
-      allOption: {
-        yAxis: [
-          {
-            ...yAxisOption,
-            type: 'category',
-          }
-        ]
-      },
-      opNameList: asisOpNameList
+      }
     },
     {
       name: '数据',

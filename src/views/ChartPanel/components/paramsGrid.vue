@@ -7,7 +7,7 @@
 <script setup lang='ts'>
 import {
   watch,
-  defineProps, reactive
+  reactive
 } from "vue";
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
@@ -15,11 +15,6 @@ import { common } from '@/chartConfig/opname';
 import useCommonStore from "@/store/common";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
-const props = defineProps<{
-  defaultOption: any
-  allOption: any
-  opNameList: any
-}>()
 const proxy = useProxy()
 const _common: any = useCommonStore()
 const config = reactive<ConfigInt>({

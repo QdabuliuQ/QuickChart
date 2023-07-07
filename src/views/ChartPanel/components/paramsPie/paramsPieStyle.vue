@@ -1,118 +1,79 @@
 <template>
-  <div id="paramsPieStyle">
-    <seriesItem v-if="config.size != -1" title="饼图大小">
-      <el-input-number
-        size="small"
-        :max="100"
-        :min="10"
-        v-model="config.size"
-      />
-    </seriesItem>
-    <seriesItem v-if="config.innerSize != -1" title="内圈大小">
-      <el-input-number
-        size="small"
-        :max="100"
-        :min="10"
-        v-model="config.innerSize"
-      />
-    </seriesItem>
-    <seriesItem v-if="config.outerSize != -1" title="外圈大小">
-      <el-input-number
-        size="small"
-        :max="100"
-        :min="10"
-        v-model="config.outerSize"
-      />
-    </seriesItem>
-    <seriesItem title="X轴偏移">
-      <el-input-number
-        size="small"
-        :max="100"
-        :min="0"
-        v-model="config.xOffset"
-      />
-    </seriesItem>
-    <seriesItem title="Y轴偏移">
-      <el-input-number
-        size="small"
-        :max="100"
-        :min="0"
-        v-model="config.yOffset"
-      />
-    </seriesItem>
+  <div class="paramsPieStyle">
+    <option-items :config="config" />
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, getCurrentInstance, ComponentInternalInstance, watch } from 'vue'
-import seriesItem from "@/components/seriesItem.vue";
+<script setup lang='ts'>
+import {
+  watch,
+  reactive
+} from "vue";
+import useProxy from "@/hooks/useProxy";
+import {ConfigInt} from "@/types/common";
+import {common} from '@/chartConfig/opname';
 import useCommonStore from "@/store/common";
-import { debounce } from "@/utils/index";
+import optionItems from '@/components/optionItems.vue'
+import {debounce, getConfigValue} from "@/utils";
 
-interface comInitData {
-  config: {
-    size: number | string[]
-    innerSize: number
-    outerSize: number
-    xOffset: number
-    yOffset: number
+const proxy = useProxy()
+const _common: any = useCommonStore()
+
+const config = reactive<ConfigInt>({
+  offsetX: {
+    type: 'input_number',
+    title: common.offsetX + '(%)',
+    max: 100,
+    value: parseInt(_common.option.series[0].center[0])
+  },
+  offsetY: {
+    type: 'input_number',
+    title: common.offsetY + '(%)',
+    max: 100,
+    value: parseInt(_common.option.series[0].center[1])
+  }
+})
+if(Array.isArray(_common.option.series[0].radius)) {
+  config.innerSize = {
+    type: 'input_number',
+    title: '内圈大小(%)',
+    max: 100,
+    value: parseInt(_common.option.series[0].radius[0])
+  }
+  config.outerSize = {
+    type: 'input_number',
+    title: '外圈大小(%)',
+    max: 100,
+    value: parseInt(_common.option.series[0].radius[1])
+  }
+} else {
+  config.size = {
+    type: 'input_number',
+    title: '圈大小(%)',
+    max: 100,
+    value: parseInt(_common.option.series[0].radius)
   }
 }
 
-export default defineComponent({
-  name: 'paramsPieStyle',
-  components: {
-    seriesItem
-  },
-  setup() {
-    const { appContext } = getCurrentInstance() as ComponentInternalInstance;
-    const proxy = appContext.config.globalProperties;
-    let cbEvent: Function | null = null
-    const common: any = useCommonStore();
-    const data: comInitData = reactive({
-      config: {
-        size: 60,
-        innerSize: 30,
-        outerSize: 70,
-        xOffset: 50,
-        yOffset: 50,
-      }
-    })
-
-
-    onMounted(() => {
-      let {
-        radius,
-        center,
-      } = common.option.series[0]
-      data.config.size = !Array.isArray(radius) ? parseInt(radius) : -1
-      data.config.innerSize = Array.isArray(radius) ? parseInt(radius[0]) : -1
-      data.config.outerSize = Array.isArray(radius) ? parseInt(radius[1]) : -1
-      data.config.xOffset = parseInt(center[0]) 
-      data.config.yOffset = parseInt(center[1]) 
-
-      cbEvent = debounce(() => {
-        let s = common.option.series
-        s[0].radius = data.config.size == -1 ? [data.config.innerSize+'%', data.config.outerSize+'%'] : data.config.size+'%'
-        s[0].center = [data.config.xOffset+'%', data.config.yOffset+'%']
-        proxy.$Bus.emit("optionChange", {
-          series: s,
-        });
-      })
-    })
-
-    watch(() => data.config, () => {
-      cbEvent && cbEvent()
-    }, {
-      deep: true
-    })
-
-    return {
-      ...toRefs(data),
+const getData = () => {
+  let series = _common.option.series
+  const option = getConfigValue(config)
+  for(let item of series) {
+    if(option.innerSize) {
+      item.radius = [option.innerSize+'%', option.outerSize+'%']
+    } else {
+      item.radius = option.size+'%'
     }
+    item.center = [option.offsetX+'%', option.offsetY+'%']
   }
+  return series
+}
+
+watch(() => config, debounce(() => {
+  proxy.$Bus.emit("optionChange", {
+    series: getData(),
+  });
+}, 500), {
+  deep: true
 })
 </script>
-
-<style lang='less'>
-</style>

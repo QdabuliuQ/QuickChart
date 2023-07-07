@@ -7,7 +7,7 @@
 <script setup lang='ts'>
 import {
   watch,
-  defineProps, reactive
+  reactive
 } from "vue";
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
@@ -15,11 +15,6 @@ import { common, label } from '@/chartConfig/opname';
 import useCommonStore from "@/store/common";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
-const props = defineProps<{
-  defaultOption: any
-  allOption: any
-  opNameList: any
-}>()
 const _common: any = useCommonStore()
 const proxy = useProxy()
 const config = reactive<ConfigInt>({
@@ -39,14 +34,9 @@ const getData = () => {
   const option = getConfigValue(config)
 
   if(option.bgImage) {
-    const image = new Image()
-    image.src = option.bgImage
-    image.onload = () => {
-      console.log('加载完毕')
-    }
     return {
       repeat: 'repeat',
-      image
+      image: option.bgImage
     }
   } else {
     delete option.bgImage

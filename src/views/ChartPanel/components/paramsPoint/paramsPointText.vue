@@ -1,147 +1,96 @@
 <template>
-  <div id="paramsPointText">
-    <seriesItem title="显示文本">
-      <el-switch size="small" v-model="config.show" />
-    </seriesItem>
-    <seriesItem title="字体风格">
-      <el-select popper-class="paramsSelectPopperClass" v-model="config.fontStyle" placeholder="请选择" size="small">
-        <el-option v-for="item in fontStyle" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-    </seriesItem>
-    <seriesItem title="字体粗细">
-      <el-select popper-class="paramsSelectPopperClass" v-model="config.fontWeight" placeholder="请选择" size="small">
-        <el-option v-for="item in fontWeight" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-    </seriesItem>
-    <seriesItem title="字体大小">
-      <el-input-number size="small" :max="100" :min="1" v-model="config.fontSize" />
-    </seriesItem>
-    <seriesItem title="字体颜色">
-      <el-color-picker v-model="config.color" show-alpha />
-    </seriesItem>
-    <seriesItem v-if="config.align" title="字体位置">
-      <el-select popper-class="paramsSelectPopperClass" v-model="config.align" placeholder="请选择" size="small">
-        <el-option v-for="item in align" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-    </seriesItem>
-    <seriesItem v-if="offsetX" title="字体偏移X">
-      <el-input-number size="small" :max="200" :min="-200" v-model="offsetX" />
-    </seriesItem>
-    <seriesItem v-if="offsetY" title="字体偏移Y">
-      <el-input-number size="small" :max="200" :min="-200" v-model="offsetY" />
-    </seriesItem>
-    <seriesItem title="字体边框颜色">
-      <el-color-picker v-model="config.textBorderColor" show-alpha />
-    </seriesItem>
-    <seriesItem title="字体边框宽度">
-      <el-input-number size="small" :max="50" :min="0" v-model="config.textBorderWidth" />
-    </seriesItem>
-    <seriesItem title="字体边框类型">
-      <el-select popper-class="paramsSelectPopperClass" v-model="config.textBorderType" placeholder="请选择" size="small">
-        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-    </seriesItem>
-    <seriesItem v-if="config.minMargin != null && config.minMargin != undefined" title="字体间距">
-      <el-input-number size="small" :max="50" :min="0" v-model="config.minMargin" />
-    </seriesItem>
+  <div class="paramsPointText">
+    <option-items :config="config" />
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, getCurrentInstance, ComponentInternalInstance, watch } from 'vue'
-import seriesItem from "@/components/seriesItem.vue";
+<script setup lang='ts'>
+import {
+  watch,
+  reactive
+} from "vue";
+import useProxy from "@/hooks/useProxy";
+import {ConfigInt} from "@/types/common";
+import {common, label} from '@/chartConfig/opname';
 import useCommonStore from "@/store/common";
-import { align, fontFamily, fontWeight, fontStyle, borderType, symbol } from "@/chartConfig/constant";
-import { debounce, deepCopy } from '@/utils';
+import optionItems from '@/components/optionItems.vue'
+import {debounce, getConfigValue} from "@/utils";
+import {align, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
+const proxy = useProxy()
+const _common: any = useCommonStore()
 
-interface comInitData {
-  offsetX: number
-  offsetY: number
-  config: {
-    show: boolean
-    fontStyle: string
-    fontWeight: string
-    fontFamily: string
-    fontSize: number
-    color: string
-    align: string
-    offset: number[]
-    textBorderColor: string
-    textBorderWidth: number
-    textBorderType: string
-    minMargin?: number
-  }
-}
-
-export default defineComponent({
-  name: 'paramsPointText',
-  components: {
-    seriesItem
+const config = reactive<ConfigInt>({
+  show: {
+    type: 'switch',
+    title: common.show,
+    value: _common.option.series[0].label.show
   },
-  setup() {
-    const { appContext } = getCurrentInstance() as ComponentInternalInstance;
-    const proxy = appContext.config.globalProperties;
-    const common: any = useCommonStore();
-    let seriesData: any = common.option.series[0].label
-    let cbEvent: Function | null = null
-    const data: comInitData = reactive({
-      offsetX: seriesData.offset[0],
-      offsetY: seriesData.offset[1],
-      config: {
-        show: seriesData.show, 
-        fontStyle:seriesData.fontStyle, 
-        fontWeight:seriesData.fontWeight, 
-        fontFamily:seriesData.fontFamily, 
-        fontSize:seriesData.fontSize,
-        color:seriesData.color,
-        offset:seriesData.offset,
-        align:seriesData.align, 
-        textBorderColor: seriesData.textBorderColor,
-        textBorderWidth: seriesData.textBorderWidth,
-        textBorderType: seriesData.textBorderType,
-        minMargin: seriesData.minMargin
-      }
-    })
-
-    watch(() => data.config, () => {
-      cbEvent && cbEvent()
-    }, {
-      deep: true
-    })
-    watch(() => data.offsetX, () => {
-      cbEvent && cbEvent()
-    }, {
-      deep: true
-    })
-    watch(() => data.offsetY, () => {
-      cbEvent && cbEvent()
-    }, {
-      deep: true
-    })
-
-    onMounted(() => {
-      cbEvent = debounce(() => {
-        let s = common.option.series
-        console.log(common.option);
-        
-        s[0].label = Object.assign(s[0].label, deepCopy(data.config)) 
-        s[0].label.offset = [data.offsetX, data.offsetY]
-        proxy.$Bus.emit("optionChange", {
-          series: s,
-        });
-      })
-    })
-    return {
-      borderType,
-      align,
-      fontFamily,
-      fontWeight,
-      fontStyle,
-      ...toRefs(data),
-    }
+  fontStyle: {
+    type: 'select',
+    title: label.fontStyle,
+    options: fontStyle,
+    value: _common.option.series[0].label.fontStyle
+  },
+  fontWeight: {
+    type: 'select',
+    title: label.fontWeight,
+    options: fontWeight,
+    value: _common.option.series[0].label.fontWeight
+  },
+  fontFamily: {
+    type: 'select',
+    title: label.fontFamily,
+    options: fontFamily,
+    value: _common.option.series[0].label.fontFamily
+  },
+  fontSize: {
+    type: 'input_number',
+    title: label.fontSize,
+    max: 100,
+    value: _common.option.series[0].label.fontSize
+  },
+  color: {
+    type: 'color_picker',
+    title: label.color,
+    value: _common.option.series[0].label.color
+  },
+  offsetX: {
+    type: 'input_number',
+    title: label.offsetX,
+    max: 500,
+    min: -500,
+    value: _common.option.series[0].label.offset[0]
+  },
+  offsetY: {
+    type: 'input_number',
+    title: label.offsetY,
+    max: 500,
+    min: -500,
+    value: _common.option.series[0].label.offset[0]
+  },
+  align: {
+    type: 'select',
+    title: label.align,
+    options: align,
+    value: _common.option.series[0].label.align
   }
 })
+const getData = () => {
+  let series = _common.option.series
+  const option = getConfigValue(config)
+  option.offset = [option.offsetX, option.offsetY]
+  delete option.offsetX
+  delete option.offsetY
+  for(let item of series) {
+    item.label = option
+  }
+  return series
+}
+watch(() => config, debounce(() => {
+  proxy.$Bus.emit("optionChange", {
+    series: getData(),
+  });
+}, 500), {
+  deep: true
+})
 </script>
-
-<style lang='less'>
-</style>
