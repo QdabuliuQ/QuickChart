@@ -105,11 +105,6 @@ const list: ListInt[] = [
         name: '堆叠条形图',
         id: '2_8',
       },
-      {
-        cover: require('@/assets/image/2_9.webp'),
-        name: '柱状图排序',
-        id: '2_9',
-      },
     ]
   },
   {

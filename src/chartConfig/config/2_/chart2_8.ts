@@ -1,7 +1,4 @@
 import useCommonStore from "@/store/common";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
@@ -9,6 +6,8 @@ import legendOption from "@/chartConfig/commonParams/legend";
 import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 
@@ -27,6 +26,8 @@ const getOption = () => {
       'top': 5,
       'icon': 'roundRect',
     }),
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

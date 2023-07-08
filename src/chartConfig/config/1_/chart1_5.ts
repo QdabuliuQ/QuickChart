@@ -6,11 +6,12 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import color from "@/chartConfig/commonParams/color";
+import colorOption from "@/chartConfig/commonParams/color";
 import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { line_series, line_series_label } from "@/chartConfig/option";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
@@ -20,13 +21,16 @@ export default () => {
       'show': false
     }),
     canvas,
-    gridOption(),
+    gridOption({
+      'right': '6%'
+    }),
     legendOption({
       'icon': '',
       'left': '17%',
-      'top': '3%'
+      'top': '3%',
     }),
-    color,
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

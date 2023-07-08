@@ -2,13 +2,14 @@ import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
-import {bar_series_label} from "@/chartConfig/option";
+import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
+import {bar_angleAxis_axis, bar_series_label} from "@/chartConfig/option";
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 const series_label = bar_series_label({
   'position': 'middle',
-  'formatter': '{b}: {c}'
 })
 export default () => {
   return [
@@ -17,47 +18,86 @@ export default () => {
     }),
     canvas,
     gridOption(),
+    graphicOption(),
+    colorOption(),
+    {
+      name: 'dataset',
+      opName: 'dataset',
+      chartOption: true,
+      menuOption: false,
+      uniqueOption: false,
+      defaultOption: {
+        dataset: {
+          source: [
+            ['a', 2],
+            ['b', 1.2],
+            ['c', 2.4],
+            ['d', 3.6],
+          ]
+        },
+      },
+    },
     {
       name: '内外圈大小',
       opName: 'polar',
       chartOption: true,
       menuOption: true,
       uniqueOption: true,
-      icon: 'i_circle',
+      icon: 'i_angleAxis',
       componentPath: 'paramsBar/paramsBarPolar.vue',
       defaultOption: {
         polar: {
-          radius: [30, '80%']
+          radius: ['15%', '80%']
         },
       },
     },
     {
-      name: '圈内层次',
+      name: '径向轴样式',
       opName: 'radiusAxis',
       chartOption: true,
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radiusAxis',
-      componentPath: 'paramsBar/paramsBarAxis.vue',
+      componentPath: 'paramsBar/paramsBarRadiusAxis.vue',
       defaultOption: {
         radiusAxis: {
-          max: 5
+          max: 5,
+          splitNumber: 5,
+          axisLine: bar_angleAxis_axis({
+            'lineStyle.color': '#ccc'
+          }),
+          axisLabel: {
+            show: true,
+            rotate: 0,
+            margin: 8,
+            color: '#000',
+            fontStyle: 'normal',
+            fontWeight: 'normal',
+            fontFamily: 'sans-serif',
+            fontSize: 12,
+          }
         },
       },
     },
     {
-      name: '内圈角度',
+      name: '极坐标系',
       opName: 'angleAxis',
       chartOption: true,
-      menuOption: true,
-      uniqueOption: true,
-      icon: 'i_angle',
-      componentPath: 'paramsBar/paramsBarAngle.vue',
+      menuOption: false,
+      uniqueOption: false,
       defaultOption: {
         angleAxis: {
           type: 'category',
-          data: ['a', 'b', 'c', 'd'],
-          startAngle: 60
+          clockwise: false,
+          startAngle: 75,
+          axisLine: bar_angleAxis_axis(),
+          axisTick: bar_angleAxis_axis({
+            'length': 5,
+            'lineStyle.color': '#000'
+          }),
+          splitLine: bar_angleAxis_axis({
+            'show': false
+          }),
         },
       },
     },
@@ -70,12 +110,38 @@ export default () => {
         series: [
           {
             type: 'bar',
-            data: [2, 1.2, 2.4, 3.6],
             coordinateSystem: 'polar',
             label: series_label
           }
         ]
       }
+    },
+    {
+      name: '坐标轴轴线',
+      opName: 'axisLine',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_circle',
+      componentPath: 'paramsBar/paramsBarAngleAxisLine.vue',
+    },
+    {
+      name: '坐标轴刻度',
+      opName: 'axisTick',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_tick',
+      componentPath: 'paramsBar/paramsBarAngleAxisTick.vue',
+    },
+    {
+      name: '坐标轴分割线',
+      opName: 'splitLine',
+      chartOption: false,
+      menuOption: true,
+      uniqueOption: true,
+      icon: 'i_sline',
+      componentPath: 'paramsBar/paramsBarAngleSplitLine.vue',
     },
     {
       name: '文本样式',
@@ -90,13 +156,10 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let angleAxis = common.option.angleAxis
-  let series = common.option.series
-  series[0].data = data.seriesData
-  angleAxis.data = data.angleAxisData
+  let dataset = common.option.dataset
+  dataset.source = data.datasetData
   return {
-    series,
-    angleAxis
+    dataset,
   }
 }
 
@@ -104,15 +167,8 @@ export const createExcelData = (config: any) => {
   return conveyToExcel([
     {
       direction: 'col',
-      data: config.angleAxis.data,
+      data: config.dataset.source,
       startCol: 0,
-      startRow: 0
-    },
-    {
-      direction: 'col',
-      data: config.series[0].data,
-      startCol: 1,
-      startRow: 0
     },
   ])
 }
@@ -121,21 +177,15 @@ export const createExcelData = (config: any) => {
 export const conveyExcelData = (rows: any) => {
   if (!rows) return null
   let datas = {
-    angleAxisData: <any>[],
-    seriesData: <any>[]
+    datasetData: <any>[],
   }
   for (let key in rows) {
     if (JSON.stringify(rows[key].cells) != '{}') {
-      if (rows[key].cells[0].text == '') {
-        datas.angleAxisData.push('')
-      } else {
-        datas.angleAxisData.push(rows[key].cells[0].text)
-      }
-      if (rows[key].cells[1].text == '') {
-        datas.seriesData.push('')
-      } else {
-        datas.seriesData.push(parseFloat(rows[key].cells[1].text))
-      }
+      if (!rows[key].cells[0] || !rows[key].cells[1]) break
+      datas.datasetData.push([
+        rows[key].cells[0].text,
+        rows[key].cells[1].text
+      ])
     } else break
   }
   return datas

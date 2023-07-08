@@ -3,6 +3,8 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 
@@ -13,6 +15,8 @@ export default () => {
     }),
     canvas,
     gridOption(),
+    graphicOption(),
+    colorOption(),
     {
       name: '内外圈大小',
       opName: 'polar',
@@ -52,7 +56,7 @@ export default () => {
       componentPath: 'paramsBar/paramsBarAxis_2.vue',
       defaultOption: {
         angleAxis: {
-          max: 4,
+          clockwise: false,
           startAngle: 75
         },
       },

@@ -5,6 +5,8 @@ import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import {bar_series_label} from "@/chartConfig/option";
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 const common: any = useCommonStore()
 
 export default () => {
@@ -14,9 +16,11 @@ export default () => {
     }),
     canvas,
     gridOption({
-      'bottom': '5%'
+      'bottom': '5%',
     }),
     legendOption(),
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',
@@ -157,5 +161,5 @@ export const conveyExcelData = (rows: any) => {
     datas.datasetData[i][0] = rows[i].cells[0].text
     datas.datasetData[i][1] = parseFloat(rows[i].cells[1].text)
   }
-  return datas
+  return datas;
 }

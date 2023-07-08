@@ -5,7 +5,6 @@
         <chartDom :key="key1" />
       </div>
     </div>
-
     <div v-loading="loadParams" element-loading-background="#303030" class="paramsPanelContainer">
       <paramsPanel ref="paramsPanelRef" :key="key2" />
     </div>

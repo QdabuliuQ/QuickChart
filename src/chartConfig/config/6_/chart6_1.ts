@@ -1,18 +1,10 @@
-import { markRaw } from 'vue';
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic"
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
-import paramsRadarStyle from '@/views/ChartPanel/components/paramsRadar/paramsRadarStyle.vue'
-import paramsRadarAxisName from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisName.vue'
-import paramsRadarAxisLine from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisLine.vue'
-import paramsRadarAxisTick from '@/views/ChartPanel/components/paramsRadar/paramsRadarAxisTick.vue'
-import paramsRadarAxisLabel from "@/views/ChartPanel/components/paramsRadar/paramsRadarAxisLabel.vue";
-import paramsRadarSplitLine from "@/views/ChartPanel/components/paramsRadar/paramsRadarSplitLine.vue";
-import paramsRadarSplitArea from "@/views/ChartPanel/components/paramsRadar/paramsRadarSplitArea.vue";
-import paramsRadarLineStyle from "@/views/ChartPanel/components/paramsRadar/paramsRadarLineStyle.vue";
+import colorOption from "@/chartConfig/commonParams/color";
 const common: any = useCommonStore()
 
 export default () => {
@@ -23,6 +15,7 @@ export default () => {
     gridOption(),
     canvas,
     graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

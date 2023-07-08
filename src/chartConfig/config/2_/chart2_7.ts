@@ -7,6 +7,8 @@ import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import {bar_series_label} from "@/chartConfig/option";
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 const series_label = bar_series_label({
@@ -30,6 +32,8 @@ export default () => {
       'top': 5,
       'icon': 'roundRect',
     }),
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

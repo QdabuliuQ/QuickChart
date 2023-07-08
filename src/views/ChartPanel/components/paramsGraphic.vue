@@ -1,8 +1,7 @@
 <template>
   <div class="paramsGraphic">
     <div class="manageGraphic" @click="drawer = true"><i class="iconfont i_manage"></i> 管理图形组件</div>
-  </div>
-  <el-drawer
+    <el-drawer
       v-model="drawer"
       :size="'35%'"
       title="管理图形组件"
@@ -10,16 +9,17 @@
       :direction="'rtl'"
       :before-close="handleClose"
       @open="drawerOpen"
-  >
-    <graphicComItem
+    >
+      <graphicComItem
         @delete-item="deleteItem"
         @toggle-item="toggleItem"
         @add-item="addItem"
         :components="config"
-    />
-    <optionItems v-if="config.length" :config="config[activeIdx]" />
-    <el-empty v-else description="暂无内容信息" />
-  </el-drawer>
+      />
+      <optionItems v-if="config.length" :config="config[activeIdx]" />
+      <el-empty v-else description="暂无内容信息" />
+    </el-drawer>
+  </div>
 </template>
 
 <script setup lang="ts">

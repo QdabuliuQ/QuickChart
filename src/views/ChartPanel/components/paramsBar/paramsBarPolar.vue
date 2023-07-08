@@ -1,83 +1,50 @@
 <template>
-  <div id="paramsBarPolar">
-    <div class="uniqueOptionContainer">
-      <div class="seriesItem">
-        <div style="width: 100%">(%)内圈大小</div>
-        <div class="optionOperation">
-          <el-input-number
-            size="small"
-            v-model="innerSize"
-            :min="1"
-            :max="100"
-            @change="handleChange"
-          />
-        </div>
-      </div>
-      <div class="seriesItem">
-        <div style="width: 100%">(%)外圈大小</div>
-        <div class="optionOperation">
-          <el-input-number
-            size="small"
-            v-model="outerSize"
-            :min="1"
-            :max="100"
-            @change="handleChange"
-          />
-        </div>
-      </div>
-    </div>
+  <div class="paramsBarPolar">
+    <option-items :config="config" />
   </div>
 </template>
 
-<script lang='ts'>
+<script setup lang='ts'>
 import {
-  defineComponent,
-  reactive,
-  toRefs,
-  getCurrentInstance,
+  watch,
+  reactive
 } from "vue";
+import useProxy from "@/hooks/useProxy";
+import {ConfigInt} from "@/types/common";
 import useCommonStore from "@/store/common";
+import optionItems from '@/components/optionItems.vue'
+import {debounce, getConfigValue} from "@/utils";
+const proxy = useProxy()
+const _common: any = useCommonStore()
 
-interface comInitData {
-  innerSize: number;
-  outerSize: number;
-}
-
-export default defineComponent({
-  name: "paramsBarPolar",
-  setup() {
-    let timer: any = null
-    const _this: any = getCurrentInstance();
-    const common: any = useCommonStore();
-    const data: comInitData = reactive({
-      innerSize: 0,
-      outerSize: 0,
-    });
-
-    data.innerSize = common.option.polar.radius[0];
-    data.outerSize = parseInt(common.option.polar.radius[1]);
-
-    const handleChange = () => {
-      if(timer) clearTimeout(timer)
-      timer = setTimeout(() => {
-        _this.proxy.$Bus.emit('optionChange', {
-          polar: {
-            radius: [data.innerSize, data.outerSize + '%']
-          },
-        })
-      }, 500);
-      
-    }
-
-    return {
-      handleChange,
-      ...toRefs(data),
-    };
+const config = reactive<ConfigInt>({
+  innerSize: {
+    type: 'input_number',
+    title: '内圈大小(%)',
+    max: 100,
+    value: parseInt(_common.option.polar.radius[0])
   },
-});
-</script>
+  outerSize: {
+    type: 'input_number',
+    title: '外圈大小(%)',
+    max: 100,
+    value: parseInt(_common.option.polar.radius[1])
+  },
+})
 
-<style lang='less'>
-#paramsBarPolar {
+const getData = () => {
+  const option = getConfigValue(config)
+  const polar = _common.option.polar
+  polar.radius[0] = option.innerSize + "%"
+  polar.radius[1] = option.outerSize + "%"
+  return polar
 }
-</style>
+
+watch(() => config, debounce(() => {
+  proxy.$Bus.emit("optionChange", {
+    polar: getData(),
+  });
+}, 500), {
+  deep: true
+})
+</script>

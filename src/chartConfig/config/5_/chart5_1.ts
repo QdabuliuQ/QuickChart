@@ -6,6 +6,8 @@ import xAxisOption from '@/chartConfig/commonParams/xAxis';
 import yAxisOption from '@/chartConfig/commonParams/yAxis';
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import { kline_series_itemstyle } from '@/chartConfig/option';
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 const common: any = useCommonStore()
 
 export default () => {
@@ -18,6 +20,8 @@ export default () => {
       'left': '8%'
     }),
     canvas,
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

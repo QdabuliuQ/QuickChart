@@ -1,15 +1,14 @@
 import useCommonStore from "@/store/common";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
 import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxisOption from "@/chartConfig/commonParams/yAxis";
+import colorOption from "@/chartConfig/commonParams/color";
 import { bar_series_backgroundStyle, bar_series_label } from "@/chartConfig/option"
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 
@@ -21,6 +20,8 @@ export default  () => {
     canvas,
     gridOption(),
     legendOption(),
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

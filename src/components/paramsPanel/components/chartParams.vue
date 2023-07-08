@@ -35,7 +35,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-
       </div>
       <div :key="data.key" class="collapseContainer">
         <div v-for="item in data.options" :key="item.opName" class="collapseItem">
@@ -48,7 +47,7 @@
             ]"
           >
             <div class="leftContent">
-              <i style="margin-right: 5px" :class="['iconfont', item.icon]"></i>
+              <i style="margin-right: 5px" :class="['iconfont', data.activeIndex == item.opName && data.loading ? 'i_loading loadingAnimation' : item.icon]"></i>
               {{ item.name }}
             </div>
             <div class="rightIcon">
@@ -92,6 +91,7 @@ interface comInitData {
   activeIndex: string;
   collapseList: any;
   key: number
+  loading: boolean
 }
 
 const common: any = useCommonStore();
@@ -105,17 +105,22 @@ const data: comInitData = reactive({
   image: "",
   activeIndex: "",
   key: 0,
+  loading: false,
   collapseList: {},
 });
 
-const toggleItem = (e: string, p: string): void => {
+const toggleItem = (e: string, p: string) => {
   if (e == data.activeIndex) {
     data.activeIndex = "";
   } else {
     data.activeIndex = e;
     // 查看map中是否存在组件缓存
     if(!componentsMap.value.has(p)) {
-      componentsMap.value.set(p, markRaw(defineAsyncComponent(() => import(`@/views/ChartPanel/components/${p}`))))
+      data.loading = true
+      setTimeout(() => {
+        componentsMap.value.set(p, markRaw(defineAsyncComponent(() => import(`@/views/ChartPanel/components/${p}`))))
+        data.loading = false
+      }, 0)
     }
     if (!data.collapseList[e]) {
       data.collapseList[e] = true;
@@ -277,6 +282,20 @@ watch(
             position: relative;
             top: 0.5px;
           }
+          .i_loading {
+            transform-origin: 50% 50%;
+          }
+          .loadingAnimation {
+            animation: rotateAnimation 1s linear infinite;
+          }
+          @keyframes rotateAnimation {
+            0% {
+              transform: rotate(0);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
         }
 
         .rightIcon {
@@ -304,7 +323,26 @@ watch(
       .paramsPanel {
         padding: 0 12px;
       }
-
+      .splitLine {
+        font-size: 12px;
+        font-weight: bold;
+        color: @theme;
+        margin: 8px 0 6px 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-bottom: 5px;
+        &::after {
+          position: absolute;
+          content: '';
+          width: 30%;
+          height: 3px;
+          bottom: 0;
+          left: 0;
+          background-color: @theme;
+          opacity: .4;
+        }
+      }
       .uniqueOptionContainer {
         padding: 0 12px;
       }

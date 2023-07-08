@@ -288,27 +288,3 @@ watch(() => axisLabelConfig, debounce(() => {
 })
 
 </script>
-<style lang="less">
-.paramsXAxis {
-  .splitLine {
-    font-size: 12px;
-    font-weight: bold;
-    color: @theme;
-    margin: 8px 0 6px 0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding-bottom: 5px;
-    &::after {
-      position: absolute;
-      content: '';
-      width: 30%;
-      height: 3px;
-      bottom: 0;
-      left: 0;
-      background-color: @theme;
-      opacity: .4;
-    }
-  }
-}
-</style>

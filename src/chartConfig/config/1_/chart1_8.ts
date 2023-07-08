@@ -5,9 +5,10 @@ import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvas from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import color from "@/chartConfig/commonParams/color";
+import colorOption from "@/chartConfig/commonParams/color";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import { line_series, line_series_label } from "@/chartConfig/option";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
@@ -18,7 +19,8 @@ export default () => {
     }),
     canvas,
     gridOption(),
-    color,
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

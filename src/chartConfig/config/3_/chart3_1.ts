@@ -6,6 +6,8 @@ import legendOption from "@/chartConfig/commonParams/legend";
 import pie_label from "@/chartConfig/commonParams/pie_label";
 import pie_labelLine from "@/chartConfig/commonParams/pie_labelLine";
 import {conveyToExcel} from '@/chartConfig/conveyUtils/conveyData';
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 
@@ -21,6 +23,8 @@ export default () => {
       'orient': 'vertical',
       'icon': 'roundRect',
     }),
+    graphicOption(),
+    colorOption(),
     {
       name: 'series',
       opName: 'series',

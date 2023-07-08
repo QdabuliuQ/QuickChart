@@ -6,6 +6,8 @@ import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { point_series_itemStyle, point_series_label, point_series_labelLine } from '@/chartConfig/option';
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
+import colorOption from "@/chartConfig/commonParams/color";
+import graphicOption from "@/chartConfig/commonParams/graphic";
 
 const common: any = useCommonStore()
 
@@ -16,6 +18,8 @@ export default () => {
     }),
     canvas,
     gridOption(),
+    graphicOption(),
+    colorOption(),
     {
       name: 'dataset',
       opName: 'dataset',

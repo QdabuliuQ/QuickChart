@@ -1,5 +1,5 @@
 <template>
-  <div id="paramsBarText" class="uniqueOptionContainer">
+  <div id="paramsBarText">
     <optionItems :config="config" />
   </div>
 </template>

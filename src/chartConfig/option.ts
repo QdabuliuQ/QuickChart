@@ -3,8 +3,7 @@ export const replaceOptionValue = (origin: any, option: any) => {
     if (key.indexOf('.') == -1) {
       if (Number.isNaN(option[key])) {
         delete origin[key]
-      }
-      else if (origin.hasOwnProperty(key)) {
+      } else {
         origin[key] = option[key] as any
       }
     } else {
@@ -13,7 +12,7 @@ export const replaceOptionValue = (origin: any, option: any) => {
       for (let i = 0; i < keys.length - 1; i++) {
         data = data[keys[i]]
       }
-      if (isNaN(option[key])) delete data[keys[keys.length - 1]]
+      if (!option[key]) delete data[keys[keys.length - 1]]
       else data[keys[keys.length - 1]] = option[key]
     }
   }
@@ -61,6 +60,20 @@ export const point_series_labelLine = (option?: any) => {
   }
   replaceOptionValue(res, option)
   return res
+}
+
+export const bar_angleAxis_axis = (option?: any) => {
+  const axisLine = {
+    show: true,
+    lineStyle: {
+      color: '',
+      width: 1,
+      type: 'solid',
+      opacity: 1,
+    }
+  }
+  replaceOptionValue(axisLine, option)
+  return axisLine
 }
 
 export const bar_series_backgroundStyle = (option?: any) => {
