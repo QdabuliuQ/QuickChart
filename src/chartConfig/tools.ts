@@ -14,7 +14,7 @@ export const replaceOptionValue = (origin: any, option: any): void => {
       for (let i = 0; i < keys.length - 1; i++) {
         data = data[keys[i]]
       }
-      if(isNaN(option[key])) delete data[keys[keys.length - 1]]
+      if(!option[key]) delete data[keys[keys.length - 1]]
       else data[keys[keys.length - 1]] = option[key]
     }
   }

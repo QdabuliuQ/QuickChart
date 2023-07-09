@@ -1,10 +1,10 @@
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
-import canvas from "@/chartConfig/commonParams/canvas";
+import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic"
-import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
+import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 const common: any = useCommonStore()
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
       'show': false
     }),
     gridOption(),
-    canvas,
+    canvasOption(),
     graphicOption(),
     colorOption(),
     {

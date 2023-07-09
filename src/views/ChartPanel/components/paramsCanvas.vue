@@ -17,6 +17,7 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 const _common: any = useCommonStore()
 const proxy = useProxy()
+console.log(_common.option)
 const config = reactive<ConfigInt>({
   backgroundColor: {
     type: 'color_picker',

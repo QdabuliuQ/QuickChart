@@ -1,10 +1,10 @@
 <template>
-  <div v-if="config" id="optionItems">
+  <div v-if="config" class="optionItems">
     <seriesItem v-for="(item, key) in config" :key="key" :title="item.title">
       <el-switch v-if="item.type == 'switch'" size="small" v-model="item.value" />
       <el-input-number v-else-if="item.type == 'input_number'" size="small" :max="item.max ? item.max : 300"
-        :min="item.min ? item.min : 0" :step="item.step ? item.step : 1" v-model="item.value" />
-      <el-color-picker v-else-if="item.type == 'color_picker'" v-model="item.value" show-alpha />
+        :min="item.min ? item.min : 0" :step="item.max == 1 ? .1 : 1" v-model="item.value" />
+      <el-color-picker size="small" v-else-if="item.type == 'color_picker'" v-model="item.value" show-alpha />
       <el-select v-else-if="item.type == 'select'" popper-class="paramsSelectPopperClass" v-model="item.value"
         placeholder="请选择" size="small">
         <el-option v-for="prop in item.options" :key="prop.value" :label="prop.label" :value="prop.value" />
@@ -26,3 +26,11 @@ interface PropsInt {
 }
 const { config } = defineProps<PropsInt>()
 </script>
+
+<style lang="less">
+.optionItems {
+  .el-color-picker__trigger {
+    width: 110px;
+  }
+}
+</style>

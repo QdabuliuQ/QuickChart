@@ -26,7 +26,8 @@ export const common = {
   borderType: '边框类型',
   orient: '排列方向',
   position: '位置',
-  offset: '偏移'
+  offset: '偏移',
+  align: '对齐方式'
 }
 
 export const label = {

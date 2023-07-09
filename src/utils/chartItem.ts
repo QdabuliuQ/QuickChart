@@ -194,6 +194,37 @@ const list: ListInt[] = [
       },
     ]
   },
+  {
+    type: '桑基图',
+    id: 7,
+    icon: 'i_sankey_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/7_1.webp"),
+        name: '基础桑基图',
+        id: '7_1'
+      },
+      {
+        cover: require("@/assets/image/7_2.webp"),
+        name: '基础桑基图2',
+        id: '7_2'
+      },
+    ]
+  },
+  {
+    type: '漏斗图',
+    id: 8,
+    icon: 'i_funnel_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/7_1.webp"),
+        name: '基础漏斗图',
+        id: '8_1'
+      },
+    ]
+  },
 ]
 
 export default list

@@ -187,3 +187,63 @@ export const kline_series_itemstyle = (option?: any) => {
   replaceOptionValue(res, option)
   return res
 }
+
+export const sankey_series = (option?: any) => {
+  let res: any = {
+    left: '5%',
+    top: '5%',
+    right: '20%',
+    bottom: '5%',
+    nodeWidth: 20,
+    nodeGap: 8,
+    nodeAlign: 'justify',
+    orient: 'horizontal',
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const sankey_series_label = (option?: any) => {
+  let res: any = {
+    show: true,
+    position: 'right',
+    rotate: 0,
+    offset: [0, 0],
+    color: '#000',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: 'sans-serif',
+    fontSize: 12,
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const sankey_series_itemStyle = (option?: any) => {
+  let res: any = {
+    borderWidth: 0,
+    borderType: 'solid',
+    borderColor: '#000',
+    shadowBlur: 0,
+    shadowColor: '',
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    opacity: 1,
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const sankey_series_lineStyle = (option?: any) => {
+  let res: any = {
+    color: '#314656' ,
+    opacity: 0.2 ,
+    curveness: 0.5 ,
+    shadowBlur: 0 ,
+    shadowColor: '' ,
+    shadowOffsetX: 0 ,
+    shadowOffsetY: 0 ,
+  }
+  replaceOptionValue(res, option)
+  return res
+}

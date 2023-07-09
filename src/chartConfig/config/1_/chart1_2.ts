@@ -1,6 +1,6 @@
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
-import canvas from "@/chartConfig/commonParams/canvas";
+import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
 import colorOption from "@/chartConfig/commonParams/color";
@@ -20,7 +20,7 @@ export default () => {
     titleOption({
       'show': false
     }),
-    canvas,
+    canvasOption(),
     gridOption(),
     legendOption({
       'show': false

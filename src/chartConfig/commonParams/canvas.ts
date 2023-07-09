@@ -1,16 +1,19 @@
-import { Common } from "../interface";
+import {Common} from "../interface";
 
-let canvas: Common = {
+const canvas = {
   name: '图表画布',
-  opName: 'canvas',
-  chartOption: false,
+  opName: 'backgroundColor',
+  chartOption: true,
   menuOption: true,
   icon: 'i_canvas',
   componentPath: 'paramsCanvas.vue',
   defaultOption: {
-    bgc: '#fff',
-    repeat: 'repeat'
-  },
+    backgroundColor: null,
+  }
 }
 
-export default canvas
+const canvasOption = (option?: any): Common => {
+  canvas.defaultOption.backgroundColor = option ? option : '#fff'
+  return canvas
+}
+export default canvasOption

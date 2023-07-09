@@ -12,5 +12,6 @@ export interface ConfigInt {
     step?: number
     attr?: string
     prefixs?: string[]
+    unit?: string
   }
 }

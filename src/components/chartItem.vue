@@ -87,6 +87,8 @@ export default defineComponent({
     overflow: hidden;
     background-color: #fff;
     aspect-ratio: 2/1.6;
+    border: 1px solid #5f5f5f;
+    box-sizing: border-box;
     &:hover .mask {
       opacity: 1;
     }
@@ -107,13 +109,14 @@ export default defineComponent({
       box-sizing: border-box;
       border: 2px solid @theme;
     }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      user-select: none;
+    }
   }
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    cursor: pointer;
-    user-select: none;
-  }
+
 }
 </style>

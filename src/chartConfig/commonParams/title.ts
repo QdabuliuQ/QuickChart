@@ -28,6 +28,7 @@ const titleOption = (options?: any): Common => {
     }
   }
   replaceOptionValue(dOption, options)
+  console.log(dOption, '-----')
   title.defaultOption.title = dOption
   return title
 }

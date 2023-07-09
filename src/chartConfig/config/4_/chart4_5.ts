@@ -1,6 +1,6 @@
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
-import canvas from "@/chartConfig/commonParams/canvas";
+import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import { point_series_label, point_series_labelLine } from '@/chartConfig/option';
 import { pointData_2 } from "@/chartConfig/constant";
@@ -16,7 +16,7 @@ export default () => {
     titleOption({
       'show': false
     }),
-    canvas,
+    canvasOption(),
     gridOption(),
     graphicOption(),
     colorOption(),

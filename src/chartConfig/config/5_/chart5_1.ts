@@ -1,6 +1,6 @@
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
-import canvas from "@/chartConfig/commonParams/canvas";
+import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import xAxisOption from '@/chartConfig/commonParams/xAxis';
 import yAxisOption from '@/chartConfig/commonParams/yAxis';
@@ -19,7 +19,7 @@ export default () => {
       'right': '5%',
       'left': '8%'
     }),
-    canvas,
+    canvasOption(),
     graphicOption(),
     colorOption(),
     {
