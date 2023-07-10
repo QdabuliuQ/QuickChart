@@ -4,7 +4,6 @@ import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
-import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
 import {
   sankey_series,
   sankey_series_itemStyle,

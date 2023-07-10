@@ -27,7 +27,8 @@ export const common = {
   orient: '排列方向',
   position: '位置',
   offset: '偏移',
-  align: '对齐方式'
+  align: '对齐方式',
+  length: '长度',
 }
 
 export const label = {

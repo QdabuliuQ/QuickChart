@@ -247,3 +247,38 @@ export const sankey_series_lineStyle = (option?: any) => {
   replaceOptionValue(res, option)
   return res
 }
+
+export const gauge_series = (option?: any) => {
+  let res = {
+    center: ['50%', '50%'],
+    radius: '75%',
+    startAngle: 225,
+    endAngle: -45,
+    splitNumber: 10,
+    min: 0,
+    max: 100,
+    clockwise: true,
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_axisLine = (option?: any) => {
+  let res = {
+    show: true ,
+    roundCap: false ,
+    lineStyle: {
+      color: [
+        [1, '#f2f4fb']
+      ],
+      width: 10,
+      shadowBlur: 0,
+      shadowColor: '',
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      opacity: .5,
+    }
+  }
+  replaceOptionValue(res, option)
+  return res
+}

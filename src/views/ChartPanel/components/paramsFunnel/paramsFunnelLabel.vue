@@ -17,7 +17,6 @@ import {fontFamily, fontStyle, fontWeight, orient, position} from "@/chartConfig
 const proxy = useProxy()
 const _common: any = useCommonStore()
 const seriesLabel = _common.option.series.label
-
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',

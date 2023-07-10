@@ -64,22 +64,31 @@ export default () => {
           label: {
             show: true,
             position: 'inside',
-            color: '#fff',
+            color: null,
             fontStyle: 'normal',
             fontWeight: 'normal',
             fontFamily: 'sans-serif',
             fontSize: 12,
           },
           labelLine: {
+            show: false,
             length: 10,
             lineStyle: {
               width: 1,
-              type: 'solid'
+              type: 'solid',
+              opacity: 1,
+              color: "#000",
             }
           },
           itemStyle: {
             borderColor: '#fff',
-            borderWidth: 1
+            borderWidth: 1,
+            borderType: 'solid',
+            shadowBlur: 0,
+            shadowColor: '',
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            opacity: 1,
           },
         }
       },
@@ -89,7 +98,7 @@ export default () => {
       opName: 'lineStyle',
       chartOption: false,
       menuOption: true,
-      icon: 'i_funnel_chart',
+      icon: 'i_funnel',
       componentPath: 'paramsFunnel/paramsFunnelStyle.vue',
     },
     {
@@ -100,7 +109,32 @@ export default () => {
       icon: 'i_text',
       componentPath: 'paramsFunnel/paramsFunnelLabel.vue',
     },
+    {
+      name: '引导线样式',
+      opName: 'labelLine',
+      chartOption: false,
+      menuOption: true,
+      icon: 'i_gline',
+      componentPath: 'paramsFunnel/paramsFunnelLine.vue',
+    },
+    {
+      name: '图形样式',
+      opName: 'itemStyle',
+      chartOption: false,
+      menuOption: true,
+      icon: 'i_triangle',
+      componentPath: 'paramsFunnel/paramsFunnelItem.vue',
+    },
   ]
+}
+
+export function combineOption(data: any) {
+  let dataset = common.option.dataset
+  dataset.source = data.datasetData
+  console.log(dataset)
+  return {
+    dataset
+  }
 }
 
 export const createExcelData = (config: any) => {
@@ -115,4 +149,17 @@ export const createExcelData = (config: any) => {
 
 export const conveyExcelData = (rows: any) => {
   if (!rows) return null
+  let datas = {
+    datasetData: <any>[]
+  }
+  let rowsLength = Object.keys(rows).length
+  for(let i = 0; i < rowsLength; i ++) {
+    if(!rows[i] || JSON.stringify(rows[i].cells) == '{}') break
+    if(!rows[i].cells[0] || !rows[i].cells[1]) break
+    datas.datasetData.push([
+      rows[i].cells[0].text,
+      parseInt(rows[i].cells[1].text)
+    ])
+  }
+  return datas
 }

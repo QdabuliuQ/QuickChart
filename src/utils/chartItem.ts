@@ -219,12 +219,25 @@ const list: ListInt[] = [
     show: false,
     charts: [
       {
-        cover: require("@/assets/image/7_1.webp"),
+        cover: require("@/assets/image/8_1.webp"),
         name: '基础漏斗图',
         id: '8_1'
       },
     ]
   },
+  {
+    type: '仪表盘',
+    id: 9,
+    icon: 'i_gauge_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/9_1.webp"),
+        name: '基础仪表盘',
+        id: '9_1'
+      },
+    ]
+  }
 ]
 
 export default list
