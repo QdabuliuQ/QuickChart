@@ -236,13 +236,13 @@ export const sankey_series_itemStyle = (option?: any) => {
 
 export const sankey_series_lineStyle = (option?: any) => {
   let res: any = {
-    color: '#314656' ,
-    opacity: 0.2 ,
-    curveness: 0.5 ,
-    shadowBlur: 0 ,
-    shadowColor: '' ,
-    shadowOffsetX: 0 ,
-    shadowOffsetY: 0 ,
+    color: '#314656',
+    opacity: 0.2,
+    curveness: 0.5,
+    shadowBlur: 0,
+    shadowColor: '',
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
   }
   replaceOptionValue(res, option)
   return res
@@ -265,8 +265,8 @@ export const gauge_series = (option?: any) => {
 
 export const gauge_series_axisLine = (option?: any) => {
   let res = {
-    show: true ,
-    roundCap: false ,
+    show: true,
+    roundCap: false,
     lineStyle: {
       color: [
         [1, '#f2f4fb']
@@ -278,6 +278,159 @@ export const gauge_series_axisLine = (option?: any) => {
       shadowOffsetY: 0,
       opacity: .5,
     }
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_progress = (option?: any) => {
+  let res = {
+    show: false,
+    width: 10,
+    roundCap: false,
+    itemStyle: {
+      borderColor: '#000',
+      borderWidth: 0,
+      borderType: 'solid',
+      shadowBlur: 0,
+      shadowColor: '',
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      opacity: 1,
+    },
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_splitLine = (option?: any) => {
+  let res = {
+    show: true,
+    length: 10,
+    distance: 10,
+    lineStyle: {
+      color: '#63677A',
+      width: 3,
+      type: 'solid',
+      shadowBlur: 0,
+      shadowColor: '',
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      opacity: 1
+    },
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_axisTick = (option?: any) => {
+  let res = {
+    show: true,
+    splitNumber: 6,
+    length: 6,
+    distance: 10,
+    lineStyle: {
+      color: '#63677A',
+      width: 1,
+      type: 'solid',
+      shadowBlur: 0,
+      shadowColor: '',
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      opacity: 1,
+    }
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_axisLabel = (option?: any) => {
+  let res = {
+    show: true,
+    distance: 16,
+    color: '#464646',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: 'sans-serif',
+    fontSize: 12,
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_pointer = (option?: any) => {
+  let res = {
+    show: true,
+    icon: '',
+    offsetCenter: ['0%', '0%'],
+    length: '60%',
+    width: 6,
+    itemStyle: {
+      color: '#5470c6',
+      borderColor: '#000',
+      borderWidth: 0,
+      borderType: 'solid',
+      shadowBlur: 0,
+      shadowColor: '',
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      opacity: 1,
+    },
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const gauge_series_detail = (option?: any) => {
+  let res = {
+    show: true ,
+    color: '#464646' ,
+    fontStyle: 'normal' ,
+    fontWeight: 'bold' ,
+    fontFamily: 'sans-serif' ,
+    fontSize: 30 ,
+    offsetCenter: ['0%', '40%']
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const sunburst_series = (option?: any) => {
+  let res = {
+    sort: 'desc',
+    radius: ['0%', '90%'],
+    center: ['50%', '50%'],
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const sunburst_series_label = (option?: any) => {
+  let res = {
+    show: true,
+    rotate: 'radial',
+    align: 'center',
+    color: '#fff',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: 'sans-serif',
+    fontSize: 12,
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const sunburst_series_itemStyle = (option?: any) => {
+  let res = {
+    borderColor: '',
+    borderWidth: 0,
+    borderType: 'solid',
+    shadowBlur: 0,
+    shadowColor: '',
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    opacity: 1,
+    borderRadius: 0
   }
   replaceOptionValue(res, option)
   return res

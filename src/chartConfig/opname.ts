@@ -29,6 +29,15 @@ export const common = {
   offset: '偏移',
   align: '对齐方式',
   length: '长度',
+  roundCap: '两端圆角',
+  distance: '距离',
+  fontStyle: '字体风格',
+  fontSize: '字体大小',
+  fontWeight: '字体粗细',
+  fontFamily: '字体类型',
+  sort: '排序方式',
+  innerSize: '内圈大小',
+  outerSize: '外圈大小'
 }
 
 export const label = {

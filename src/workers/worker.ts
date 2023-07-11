@@ -1,4 +1,27 @@
 
+const reset = (data: any[]) => {
+  let res = []
+  let map = new Map()
+  for(let [parent, child, val] of data) {
+    if(!map.has(parent)) {
+      res.push({
+        name: parent,
+      })
+      map.set(parent, res[res.length-1])
+    }
+    if(!map.has(child)) {
+      map.set(child, {
+        name: child,
+        value: val
+      })
+      let p = map.get(parent)
+      if(!p.children) p.children = []
+      p.children.push(map.get(child))
+    }
+  }
+  return res
+}
+
 const initRows = (rows: any) => {
   let res: any = {}
   let length: number = Object.keys(rows).length-1

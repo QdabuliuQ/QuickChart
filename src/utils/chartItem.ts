@@ -236,6 +236,29 @@ const list: ListInt[] = [
         name: '基础仪表盘',
         id: '9_1'
       },
+      {
+        cover: require("@/assets/image/9_2.webp"),
+        name: '速度仪表盘',
+        id: '9_2'
+      },
+      {
+        cover: require("@/assets/image/9_3.webp"),
+        name: '速度仪表盘2',
+        id: '9_3'
+      },
+    ]
+  },
+  {
+    type: '旭日图',
+    id: 10,
+    icon: 'i_sunburst_chart',
+    show: false,
+    charts: [
+      {
+        cover: require("@/assets/image/10_1.webp"),
+        name: '基础旭日图',
+        id: '10_1'
+      },
     ]
   }
 ]

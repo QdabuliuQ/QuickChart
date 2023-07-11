@@ -6,7 +6,11 @@
     </div>
     <div v-else>
       <input @change="fileUpload" accept="image/jpeg, image/png, image/jpg" ref="inputRef" style="display: none" type="file">
-      <el-button @click="uploadEvent" size="small" type="primary">上传图片</el-button>
+      <el-button @click="uploadEvent" size="small" type="primary">
+        <span style="transform: scale(.85)">
+          上传图片
+        </span>
+      </el-button>
     </div>
     <el-dialog class="imagePreviewDialog" v-model="dialogVisible">
       <img w-full :src="props.base64" />

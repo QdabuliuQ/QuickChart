@@ -5,7 +5,6 @@ import gridOption from "@/chartConfig/commonParams/grid";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import legendOption from "@/chartConfig/commonParams/legend";
-import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
 import {
   gauge_series, gauge_series_axisLabel,
   gauge_series_axisLine,
@@ -13,6 +12,10 @@ import {
   gauge_series_progress,
   gauge_series_splitLine
 } from "@/chartConfig/option";
+import {
+  createExcelData as _createExcelData,
+  conveyExcelData as _conveyExcelData
+} from './chart9_1'
 
 const common: any = useCommonStore()
 
@@ -39,17 +42,42 @@ export default () => {
       defaultOption: {
         series: {
           type: 'gauge',
-          ...gauge_series(),
-          axisLine: gauge_series_axisLine(),
-          progress: gauge_series_progress(),
-          splitLine: gauge_series_splitLine(),
-          axisTick: gauge_series_axisTick(),
-          axisLabel: gauge_series_axisLabel(),
+          ...gauge_series({
+            'radius': '80%'
+          }),
+          axisLine: gauge_series_axisLine({
+            'lineStyle.width': 30,
+            'lineStyle.color': [
+              [0.333333333333, '#67e0e3'],
+              [0.666666666666, '#37a2da'],
+              [1, '#fd666d']
+            ],
+          }),
+          progress: gauge_series_progress({
+            'show': false,
+          }),
+          splitLine: gauge_series_splitLine({
+            'distance': -30,
+            'length': 30,
+            'lineStyle.color': '#fff',
+            'lineStyle.width': 4
+          }),
+          axisTick: gauge_series_axisTick({
+            'distance': -30,
+            'length': 8,
+            'lineStyle.color': '#fff',
+            'lineStyle.width': 2
+          }),
+          axisLabel: gauge_series_axisLabel({
+            'color': '#999',
+            'distance': 40,
+            'fontSize': 20
+          }),
           pointer: gauge_series_pointer(),
           detail: gauge_series_detail(),
           data: [
             {
-              value: 20,
+              value: 70,
             }
           ]
         }
@@ -130,20 +158,5 @@ export function combineOption(data: any) {
   }
 }
 
-export const createExcelData = (config: any) => {
-  return conveyToExcel([
-    {
-      direction: 'col',
-      data: config.series.data,
-      startCol: 0,
-    },
-  ])
-}
-
-export const conveyExcelData = (rows: any) => {
-  if(!rows) return null
-  let datas = {
-    data: [rows[0].cells[0].text]
-  }
-  return datas
-}
+export const createExcelData = _createExcelData
+export const conveyExcelData = _conveyExcelData

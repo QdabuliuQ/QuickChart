@@ -1,4 +1,5 @@
 import { ConfigInt } from "@/types/common";
+import {common} from "@/chartConfig/opname";
 
 export const debounce = (func: Function, time: number = 200, immediate = false) => {
   let timer: number | null = null;

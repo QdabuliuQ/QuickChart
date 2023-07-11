@@ -13,5 +13,7 @@ export interface  ConfigInt {
     attr?: string
     prefixs?: string[]
     unit?: string
+    pre?: string
+    suf?: string
   }
 }

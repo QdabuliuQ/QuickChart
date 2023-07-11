@@ -25,37 +25,31 @@ const colors = reactive([...seriesAxisLine.lineStyle.color.map((item: any) => it
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
-    title: common.show,
     value: seriesAxisLine.show,
   },
   roundCap: {
     type: 'switch',
-    title: '两端显示圆形',
     value: seriesAxisLine.roundCap,
   },
   width: {
     type: 'input_number',
-    title: common.width,
     max: 100,
     prefixs: ['lineStyle'],
     value: seriesAxisLine.lineStyle.width
   },
   shadowBlur: {
     type: 'input_number',
-    title: common.shadowBlur,
     max: 100,
     prefixs: ['lineStyle'],
     value: seriesAxisLine.lineStyle.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
-    title: common.shadowColor,
     prefixs: ['lineStyle'],
     value: seriesAxisLine.lineStyle.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
-    title: common.shadowOffsetX,
     max: 500,
     min: -500,
     prefixs: ['lineStyle'],
@@ -63,7 +57,6 @@ const config = reactive<ConfigInt>({
   },
   shadowOffsetY: {
     type: 'input_number',
-    title: common.shadowOffsetY,
     max: 500,
     min: -500,
     prefixs: ['lineStyle'],
@@ -71,23 +64,34 @@ const config = reactive<ConfigInt>({
   },
   opacity: {
     type: 'input_number',
-    title: common.opacity,
     max: 1,
     prefixs: ['lineStyle'],
     value: seriesAxisLine.lineStyle.opacity
   }
 })
 
-const colorChange = (colors: string[]) => {
-  const series = _common.option.series
+const colorConfig = (colors: string[]): [][] => {
+  let colorItem: any = []
   if(colors.length) {
     let cnt = colors.length
     let p = 1 / cnt
-    let colorItem = []
     for(let i = 1; i <= cnt; i ++) {
       colorItem.push([i*p, colors[i-1]])
     }
-    series.axisLine.lineStyle.color = colorItem
+  }
+  return colorItem
+}
+
+const colorChange = (_colors: string[]) => {
+  const series = _common.option.series
+  if(_colors.length) {
+    // let cnt = colors.length
+    // let p = 1 / cnt
+    // let colorItem = []
+    // for(let i = 1; i <= cnt; i ++) {
+    //   colorItem.push([i*p, colors[i-1]])
+    // }
+    series.axisLine.lineStyle.color = colorConfig(_colors)
   } else {
     series.axisLine.lineStyle.color = null
   }
@@ -98,6 +102,8 @@ const colorChange = (colors: string[]) => {
 const getData = () => {
   const series = _common.option.series
   series.axisLine = getConfigValue(config)
+  series.axisLine.lineStyle.color = colorConfig(colors)
+  console.log(series.axisLine)
   return series
 }
 useWatchData(config, 'series', getData)
