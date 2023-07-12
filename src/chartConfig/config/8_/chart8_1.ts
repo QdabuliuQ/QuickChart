@@ -131,7 +131,6 @@ export default () => {
 export function combineOption(data: any) {
   let dataset = common.option.dataset
   dataset.source = data.datasetData
-  console.log(dataset)
   return {
     dataset
   }

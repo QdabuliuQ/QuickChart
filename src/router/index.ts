@@ -7,6 +7,7 @@ const Welcome = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/Wel
 const ChartPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPage/ChartPage.vue')
 const ChartPanel = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPanel/ChartPanel.vue')
 const MapPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/MapPage/MapPage.vue')
+const LoginPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/LoginPage/LoginPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -29,6 +30,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Document',
         component: Document
       },
+      {
+        path: '/login',
+        name: 'login',
+        component: LoginPage
+      }
     ]
   },
   {

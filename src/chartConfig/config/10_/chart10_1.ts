@@ -90,7 +90,9 @@ export default () => {
             }
           ],
           ...sunburst_series(),
-          label: sunburst_series_label(),
+          label: sunburst_series_label({
+            'color': '#000'
+          }),
           itemStyle: sunburst_series_itemStyle()
         }
       }
@@ -117,7 +119,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_circle_item',
-      componentPath: 'paramsSunburst/paramsSunburstItemStyle.vue'
+      componentPath: 'paramsSunburst/paramsSunburstItem.vue'
     },
   ]
 }
@@ -131,17 +133,18 @@ export function combineOption(datas: any) {
 }
 const convey = (data: any[]) => {
   let ans: any[][] = []
-  const dfs = (data: any[], name: string) => {
+  const dfs = (data: any[], name: string, value: number|undefined) => {
     for (let item of data) {
-      ans.push([name, item.name])
+      ans.push([name])
+      if(value) ans[ans.length - 1].push(value)
+      ans[ans.length - 1].push(item.name)
       if (item.value) ans[ans.length - 1].push(item.value)
-      if (item.children) dfs(item.children, item.name)
-
+      if (item.children) dfs(item.children, item.name, item.value)
     }
   }
   for (let item of data) {
     if (item.children) {
-      dfs(item.children, item.name)
+      dfs(item.children, item.name, item.value)
     }
   }
   return ans
@@ -170,21 +173,19 @@ export const conveyExcelData = (rows: any) => {
   let length = Object.keys(rows).length
   outer: for(let i = 0; i < length; i ++) {
     res[i] = []
-    for(let j = 0; j < 3; j ++) {
+    let rowsLength = Object.keys(rows[i].cells).length
+    for(let j = 0; j < rowsLength; j ++) {
       if(!rows[i] || JSON.stringify(rows[i].cells) == '{}') break outer
       if(!rows[i].cells[0] || !rows[i].cells[1]) break outer
-      res[i].push(
-        rows[i].cells[0].text,
-        rows[i].cells[1].text
-      )
-      if(rows[i].cells[2] && rows[i].cells[2].text) {
-        res[i].push(parseInt(rows[i].cells[2].text))
+      if(isNaN(rows[i].cells[j])) {
+        res[i].push(rows[i].cells[j].text)
+      } else {
+        res[i].push(parseInt(rows[i].cells[j].text))
       }
     }
   }
   let datas = {
     data: reset(res)
   }
-  console.log(datas)
   return datas
 }

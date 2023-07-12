@@ -259,6 +259,11 @@ const list: ListInt[] = [
         name: '基础旭日图',
         id: '10_1'
       },
+      {
+        cover: require("@/assets/image/10_2.webp"),
+        name: '颜色层次旭日图',
+        id: '10_2'
+      },
     ]
   }
 ]

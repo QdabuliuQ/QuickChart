@@ -1,11 +1,16 @@
 <template>
-  <div class="paramsSunburstItemStyle">
+  <div class="paramsSunburstItem">
+    <series-item v-if="series.levels" :title='"层级颜色"'>
+      <colorPanel @colorChange="colorChange" :colors="colors" />
+    </series-item>
     <option-items :config="config" />
   </div>
 </template>
 
 <script setup lang="ts">
 import {reactive} from 'vue';
+import seriesItem from "@/components/seriesItem.vue";
+import colorPanel from "@/components/colorsPanel.vue"
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
@@ -16,8 +21,15 @@ import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
 const _common: any = useCommonStore()
-const seriesItemStyle = _common.option.series.itemStyle
-
+const series: any = _common.option.series
+const seriesItemStyle = series.itemStyle
+const colors = reactive<string[]>([])
+if(series.levels) {
+  for(let i = 1; i < series.levels.length; i ++) {
+    colors.push(series.levels[i].itemStyle.color)
+  }
+  console.log(colors)
+}
 const config = reactive<ConfigInt>({
   borderColor: {
     type: 'color_picker',
@@ -67,6 +79,26 @@ const config = reactive<ConfigInt>({
   },
 })
 
+const colorChange = (colors: string) => {
+  const series = _common.option.series
+  let levels: {
+    [props: string]: any
+  }[] = [
+    {}
+  ]
+  for(let item of colors) {
+    levels.push({
+      itemStyle: {
+        color: item
+      }
+    })
+  }
+  series.levels = levels
+  proxy.$Bus.emit("optionChange", {
+    series
+  })
+}
+
 const getData = () => {
   const series = _common.option.series
   series.itemStyle = getConfigValue(config)
@@ -74,3 +106,11 @@ const getData = () => {
 }
 useWatchData(config, 'series', getData)
 </script>
+
+<style lang="less">
+.paramsSunburstItem {
+  .colorsPanel {
+    margin: 0;
+  }
+}
+</style>

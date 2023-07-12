@@ -1,6 +1,18 @@
 import { ConfigInt } from "@/types/common";
 import {common} from "@/chartConfig/opname";
 
+export const publicKey = `
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxJrpryxju3jgj+fWQTJH
+ssl4VvH3HKDI5+MOgea83SRJb5t8zOlaOT8HO7wT5X0E/N+RZdKmWSDUaPE1XtWp
+UyxDJNRnxNNnYwQkWsTa21znAur5zN6tWrj/HCZqo4mdqzUtAoaZZAiOCpSb7fgC
+xkjZmSB0YJKSpcV7hu3IDEdWjQycZ7CNS7vEhp90VP0H+SokJ9odvEs9MkyF/MFS
+RoMJqxXMM4Gd7cfJgQZKEujBPghXMqm6tdmXPjeZn4vIQgC70YGR6xoizZmBYtDY
+oEDy9Tu/nJOcunSos1OxiqIfdEa5lgD1lNrPlQ/+nmfonr1CRnKXIBb/KC6XidD0
+cwIDAQAB
+-----END PUBLIC KEY-----
+`
+
 export const debounce = (func: Function, time: number = 200, immediate = false) => {
   let timer: number | null = null;
   return (...args: any) => {

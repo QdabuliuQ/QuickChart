@@ -49,9 +49,13 @@
         </div>
       </div>
       <div class="more">
-        <div @click="router.push('/Document')" class="moreItem">
-          <i class="iconfont i_document"></i>
-          操作文档
+        <div @click="router.push('/login')" class="moreItem">
+          <i class="iconfont i_login"></i>
+          登录
+        </div>
+        <div class="moreItem">
+          <i class="iconfont i_register"></i>
+          注册
         </div>
       </div>
     </div>
@@ -61,19 +65,10 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent } from 'vue'
+<script setup lang='ts'>
 import { useRouter } from "vue-router";
+const router = useRouter()
 
-export default defineComponent({
-  name: 'IndexPage',
-  setup() {
-    const router = useRouter()
-    return {
-      router
-    }
-  }
-})
 </script>
 
 <style lang='less'>
@@ -117,15 +112,19 @@ export default defineComponent({
       }
     }
     .more {
+      display: flex;
+      align-items: center;
       .moreItem {
-        margin-left: 15px;
+        color: #aaaaaa;
+        margin-left: 20px;
         font-size: 14px;
         display: flex;
         align-items: center;
         cursor: pointer;
         transition: .2s all linear;
         .iconfont {
-          margin-right: 5px;
+          font-size: 25px;
+          margin-right: 8px;
         }
         &:hover {
           color: @theme;
