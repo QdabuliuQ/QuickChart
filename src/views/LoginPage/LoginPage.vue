@@ -93,41 +93,7 @@ const password = ref('')
         margin-bottom: 30px;
       }
     }
-    .el-input {
-      margin-bottom: 15px;
-      width: 300px;
-      .el-input__wrapper {
-        box-shadow: 0 0 0 1px #ccc;
-        input::placeholder {
-          font-size: 13px;
-        }
-      }
-      .is-focus {
-        box-shadow: 0 0 0 1px @theme !important;
-      }
-    }
-    .tip {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      font-size: 13px;
-      span {
-        cursor: pointer;
-      }
-      .forget {
-        color: #a1a1a1;
-      }
-      .register {
-        color: @theme;
-      }
-    }
-    .login {
-      height: 40px;
-      cursor: pointer;
-      border-radius: 8px;
-      background-color: @theme;
-      border: 0;
-    }
+
   }
 }
 </style>

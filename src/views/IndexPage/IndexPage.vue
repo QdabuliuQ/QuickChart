@@ -49,13 +49,9 @@
         </div>
       </div>
       <div class="more">
-        <div @click="router.push('/login')" class="moreItem">
+        <div @click="toLogin" class="moreItem">
           <i class="iconfont i_login"></i>
           登录
-        </div>
-        <div class="moreItem">
-          <i class="iconfont i_register"></i>
-          注册
         </div>
       </div>
     </div>
@@ -67,8 +63,13 @@
 
 <script setup lang='ts'>
 import { useRouter } from "vue-router";
+import useProxy from "@/hooks/useProxy";
 const router = useRouter()
+const proxy = useProxy()
 
+const toLogin = () => {
+  proxy.$Bus.emit('showLoginDialog')
+}
 </script>
 
 <style lang='less'>

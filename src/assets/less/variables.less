@@ -2,4 +2,29 @@
 @curColor: rgb(66, 66, 66);
 @theme: #ffae34;
 @hover: #efa22e;
+@grey: #a4a4a4;
+@grey2: #e8e8e8;
+
+.inputStyle() {
+  .el-input {
+    width: 300px;
+
+    .el-input__wrapper {
+      box-shadow: 0 0 0 1px @grey2;
+      padding: 5px 11px;
+
+      input {
+        color: #000;
+      }
+
+      input::placeholder {
+        font-size: 13px;
+      }
+    }
+
+    .is-focus {
+      box-shadow: 0 0 0 1px @theme !important;
+    }
+  }
+}
 

@@ -1,15 +1,20 @@
 <template>
   <router-view />
+  <login-dialog/>
 </template>
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { InitData } from "@/types/App";
 import { getCurrentInstance } from "vue";
+import loginDialog from '@/components/loginDialog.vue'
 
 let timer: any;
 export default defineComponent({
   name: "App",
+  components: {
+    loginDialog
+  },
   setup() {
     const _this: any = getCurrentInstance();
     const data = reactive(new InitData());

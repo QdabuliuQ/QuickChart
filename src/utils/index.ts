@@ -1,6 +1,7 @@
 import { ConfigInt } from "@/types/common";
 import {common} from "@/chartConfig/opname";
 
+export const emailPattern = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
 export const publicKey = `
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxJrpryxju3jgj+fWQTJH
