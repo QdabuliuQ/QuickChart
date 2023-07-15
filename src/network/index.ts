@@ -1,16 +1,27 @@
 import axios from "axios"
 
+const oss = 'http://127.0.0.1:3031'
 export const getToken = (): string => {
   return localStorage.getItem('token') ?? ''
 }
 
 const ajax = axios.create({
-  baseURL: 'http://127.0.0.1:3031',
+  baseURL: oss,
   headers: {
+    Authorization: getToken(),
     'content-type': 'application/x-www-form-urlencoded',
   },
   timeout: 5000,
 })
+
+export const upload = (url: string, data: any) => {
+  return axios.post(oss + '/upload/'+url, data, {
+    headers: {
+      Authorization: getToken(),
+      "Content-Type": "multipart/form-data",
+    }
+  })
+}
 
 // 请求拦截器
 // ajax.interceptors.request.use(function (config: any) {

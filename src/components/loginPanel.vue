@@ -5,7 +5,7 @@
         <el-input v-model="form.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item v-show="type == 'password'" prop="password">
-        <el-input v-model="form.password" placeholder="请输入密码" />
+        <el-input type="password" show-password v-model="form.password" placeholder="请输入密码" />
       </el-form-item>
       <el-form-item v-show="type == 'code'" prop="code">
         <el-input v-model="form.code" placeholder="验证码">
@@ -19,30 +19,36 @@
           </template>
         </el-input>
       </el-form-item>
-      <drag-verify class="dragItem" v-model:value="form.verify"></drag-verify>
+      <drag-verify :key="type" class="dragItem" v-model:value="verify"></drag-verify>
       <div class="tip">
-        <span @click="type = 'password'" class="toggle" v-show="type == 'code'">密码登录</span>
-        <span @click="type = 'code'" class="toggle" v-show="type == 'password'">验证码登录</span>
+        <span @click="typeToggle('password')" class="toggle" v-show="type == 'code'">密码登录</span>
+        <span @click="typeToggle('code')" class="toggle" v-show="type == 'password'">验证码登录</span>
         <span class="forget">忘记密码？</span>
       </div>
-      <button @click="toLogin" class="login">登录</button>
     </el-form>
+    <button @click="toLogin" class="login">登录</button>
   </div>
 </template>
 <script setup lang="ts">
 import {
   reactive,
   ref,
-  watch
+  watch,
+  defineExpose
 } from "vue";
+import JsEncrypt from "jsencrypt";
 import {FormInstance, FormRules} from "element-plus";
-import {emailPattern} from "@/utils";
+import {emailPattern, publicKey} from "@/utils";
 import dragVerify from "@/components/dragVerify.vue";
-import {getCode, login} from "@/network/login";
+import {getCode, login, loginByCode} from "@/network/login";
 import useProxy from "@/hooks/useProxy";
 
+const emits = defineEmits(['finished']);
 const proxy = useProxy()
 const ruleFormRef = ref<FormInstance>()
+defineExpose({
+  ruleFormRef
+})
 let rules = reactive<FormRules>({
   email: [
     { required: true, message: '邮箱不能为空', trigger: 'blur' },
@@ -53,8 +59,8 @@ const form = reactive({
   email: '',
   password: '',
   code: '',
-  verify: false
 })
+const verify = ref(false)
 const type = ref('code')
 const disable = ref(false)
 const codeTime = ref(60)
@@ -86,6 +92,13 @@ watch(type, (val: any) => {
   immediate: true
 })
 
+const typeToggle = (_type: string) => {
+  type.value = _type;
+  verify.value = false;
+  console.log(verify.value);
+  (ruleFormRef.value as any).resetFields()
+}
+
 let timer: any = null
 const sendCode = async () => {  // 发送验证码
   if(disable.value) return
@@ -97,10 +110,11 @@ const sendCode = async () => {  // 发送验证码
   });
   if(emailPattern.test(email)) {
     let { data } = await getCode({
-      email
+      email,
+      type: 'login'
     })
     if(!data.status) return  proxy.$notice({
-      message: "验证码发送失败",
+      message: data.msg,
       type: "error",
       position: "top-left",
     });
@@ -121,8 +135,10 @@ const sendCode = async () => {  // 发送验证码
   }
 }
 
+const en = new JsEncrypt()
+en.setPublicKey(publicKey)
 const toLogin = () => {  // 登录
-  if(!form.verify) return proxy.$Notice({
+  if(!verify.value) return proxy.$notice({
     type: 'error',
     message: '请完成滑动验证',
     position: "top-left",
@@ -133,28 +149,43 @@ const toLogin = () => {  // 登录
       type: "error",
       position: "top-left",
     })
-    if(type.value === 'code') {
-      let { data } = await login({
+    if(type.value === 'code') {  // 验证码登录
+      let { data } = await loginByCode({
         email: form.email,
         code: form.code
       })
-      if(!data.status) return proxy.$Notice({
+      if(!data.status) return proxy.$notice({
         type: 'error',
         message: data.msg,
         position: "top-left"
       })
       saveData(data.token, data.id, data.data)
-    } else {
+      proxy.$notice({
+        type: 'success',
+        message: data.msg,
+        position: "top-left"
+      })
+      emits('finished')
+      proxy.$Bus.emit('logined')
+    } else {  // 密码登录
       let { data } = await login({
         email: form.email,
-        password: form.password
+        password: en.encrypt(form.password) as string,
       })
-      if(!data.status) return proxy.$Notice({
+      if(!data.status) return proxy.$notice({
         type: 'error',
         message: data.msg,
         position: "top-left"
       })
       saveData(data.token, data.id, data.data)
+      proxy.$notice({
+        type: 'success',
+        message: data.msg,
+        position: "top-left"
+      })
+      emits('finished')
+      console.log('22312313')
+      proxy.$Bus.emit('logined')
     }
   })
 }
@@ -198,7 +229,7 @@ const saveData = (token: string, id: string, info: any) => {
     }
   }
   .dragItem {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
   .el-input-group__append {
     overflow: hidden;
@@ -214,6 +245,9 @@ const saveData = (token: string, id: string, info: any) => {
     padding: 0 20px;
     display: flex;
     align-items: center;
+  }
+  .el-form-item {
+    margin-bottom: 22px;
   }
 }
 </style>

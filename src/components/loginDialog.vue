@@ -1,6 +1,6 @@
 <template>
   <el-dialog class="loginDialogClass" v-model="visible" :show-close="false">
-    <i @click="visible = false" class="iconfont i_close_line"></i>
+    <i @click="close" class="iconfont i_close_line"></i>
     <div class="leftCover">
       <div>
         <div class="leftText">
@@ -21,8 +21,8 @@
         <div @click="active = 'register'" :class="[active == 'register' ? 'active' : '', 'tabItem']">账号注册</div>
       </div>
       <div class="panelContainer">
-        <loginPanel v-show="active == 'login'" />
-        <register-panel v-show="active == 'register'" />
+        <login-panel ref="loginPanelRef" @finished="visible = false" v-if="active == 'login'" />
+        <register-panel ref="registerRef" @finished="visible = false" v-else />
       </div>
     </div>
   </el-dialog>
@@ -35,7 +35,9 @@ import registerPanel from "./registerPanel.vue";
 import useProxy from "@/hooks/useProxy";
 
 let active = ref('login')
-let visible = ref(true)
+let visible = ref(false)
+const loginPanelRef = ref()
+const registerRef = ref()
 const proxy = useProxy()
 
 // 收到事件总线 打开登录窗口
@@ -43,6 +45,11 @@ proxy.$Bus.on('showLoginDialog', () => {
   visible.value = true
 })
 
+const close = () => {
+  loginPanelRef.value && loginPanelRef.value.ruleFormRef.resetFields()  // 清除表单内容
+  registerRef.value && registerRef.value.ruleFormRef.resetFields()  // 清除表单内容
+  visible.value = false
+}
 </script>
 
 <style lang="less">

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import {createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw} from 'vue-router'
 const IndexPage = () => import(/* webpackChunkName:"HomePageChunk" */ '@/views/IndexPage/IndexPage.vue')
 const HomePage = () => import(/* webpackChunkName:"HomePageChunk" */ '@/views/HomePage/HomePage.vue')
 const Document = () => import(/* webpackChunkName:"HomePageChunk" */ '@/views/Document/Document.vue')
@@ -7,33 +7,45 @@ const Welcome = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/Wel
 const ChartPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPage/ChartPage.vue')
 const ChartPanel = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPanel/ChartPanel.vue')
 const MapPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/MapPage/MapPage.vue')
-const LoginPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/LoginPage/LoginPage.vue')
+const InfoPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/InfoPage.vue')
+const DetailPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/DetailPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', redirect: '/HomePage' },
+  { path: '/', redirect: '/index' },
   {
-    path: '/IndexPage',
-    name: 'IndexPage',
+    path: '/index',
+    name: 'index',
     component: IndexPage,
     children: [
       {
-        path: '/IndexPage',
-        redirect: '/HomePage'
+        path: '/index',
+        redirect: '/index/home'
       },
       {
-        path: '/HomePage',
-        name: 'HomePage',
+        path: 'home',
+        name: 'home',
         component: HomePage
       },
       {
-        path: '/Document',
-        name: 'Document',
+        path: 'document',
+        name: 'document',
         component: Document
       },
       {
-        path: '/login',
-        name: 'login',
-        component: LoginPage
+        path: 'info',
+        name: 'info',
+        component: InfoPage,
+        children: [
+          {
+            path: '/index/info',
+            redirect: '/index/info/detail'
+          },
+          {
+            path: 'detail',
+            name: 'detail',
+            component: DetailPage
+          }
+        ]
       }
     ]
   },
@@ -79,7 +91,8 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  // history: createWebHashHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 

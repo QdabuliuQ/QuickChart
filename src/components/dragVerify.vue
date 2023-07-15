@@ -10,10 +10,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const emit = defineEmits(['update:value'])
-defineProps({
+const props = defineProps({
   value: {
     type: Boolean,
     defalut: false,
@@ -90,13 +90,7 @@ const onStart = (ev: MouseEvent | TouchEvent) => {
   document.addEventListener(upEvent, onEnd)
 }
 </script>
-<style lang="less" scoped>
-
-.flex() {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+<style lang="less">
 .drag-verify {
   width: 100%;
   .range {
