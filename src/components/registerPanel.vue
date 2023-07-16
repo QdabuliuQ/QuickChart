@@ -104,6 +104,7 @@ const sendCode = async () => {  // 发送验证码
       if (codeTime.value === 0) {
         clearInterval(timer)
         disable.value = false
+        codeTime.value = 60
       }
     }, 1000)
   } else {

@@ -28,7 +28,16 @@
       <i style="font-size: 12px; margin-right: 6px;" class="iconfont i_update"></i>
       更新资料
     </el-button>
+    <div class="pageTitle">安全设置</div>
+    <div class="settingItem">
+      <div class="leftIcon">
+        <img src="@/assets/image/setting.svg" />
+        修改登录的密码
+      </div>
+      <el-button @click="visible = true"><i class="iconfont i_clock"></i>密码修改</el-button>
+    </div>
   </div>
+  <password-modify v-model:visible="visible" />
 </template>
 <script setup lang="ts">
 import {
@@ -43,8 +52,11 @@ import {
 } from "@/network/info"
 import useProxy from "@/hooks/useProxy";
 import {debounce} from "lodash";
+import PasswordModify from "@/views/InfoPage/components/passwordModify.vue";
+import { useCheckState } from "@/hooks/useCheckState";
 
 const proxy = useProxy()
+const visible = ref(false)
 const ruleFormRef = ref<FormInstance>()
 const info = useLogin(false)
 const form: any = reactive({
@@ -62,6 +74,8 @@ const rules = reactive<FormRules>({
 })
 
 const updateInfo = debounce(async () => {
+  let check = useCheckState() as any;
+  console.log(check);
   (ruleFormRef.value as any).validate((valid: boolean) => {
     if(!valid) return proxy.$notice({
       type: 'error',
@@ -95,7 +109,38 @@ const updateInfo = debounce(async () => {
     })
   }
 })
+
 </script>
 <style lang="less">
-
+.DetailPage {
+  .settingItem {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    .leftIcon {
+      font-size: 16px;
+      img {
+        width: 70px;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid @grey;
+    }
+    .iconfont {
+      margin-right: 5px;
+      font-size: 14px;
+    }
+    .el-button:focus, .el-button:hover {
+      background-color: rgba(255, 174, 52, 0.25);
+      border: 1px solid @theme;
+    }
+    .el-button:active {
+      background-color: transparent;
+    }
+  }
+}
 </style>

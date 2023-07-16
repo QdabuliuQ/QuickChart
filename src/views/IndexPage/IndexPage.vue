@@ -55,7 +55,6 @@
         </div>
         <el-popover
           v-else
-          v-model:visible="visible"
           popper-class="menuPopoverClass"
           placement="bottom"
           :hide-after="50"
@@ -66,15 +65,7 @@
               {{ info.nickname }}
             </div>
           </template>
-          <div class="myMenuList">
-            <div @click="() => {
-              item.event ? item.event() : router.push(item.path as string)
-              visible = false
-            }" v-for="item in menuItems" :key="item.text" class="myMenuItem">
-              <i :class="[item.icon,'iconfont']"></i>
-                {{ item.text }}
-            </div>
-          </div>
+          <menu-list />
         </el-popover>
       </div>
     </div>
@@ -89,6 +80,8 @@ import { useRouter } from "vue-router";
 import useProxy from "@/hooks/useProxy";
 import {reactive, ref} from "vue";
 import {useLogin} from "@/hooks/useLogin";
+import menuList from "@/components/menuList.vue"
+
 const router = useRouter()
 const proxy = useProxy()
 
@@ -101,48 +94,7 @@ const info: any = reactive<infoInt>({
   email: '',
   nickname: ''
 })
-let visible = ref(false)
 
-interface menuItemInt {
-  icon: string
-  text: string
-  path?: string
-  event?: Function
-}
-const exitAccount = () => {
-  localStorage.removeItem('info')
-  localStorage.removeItem('token')
-  localStorage.removeItem('id')
-  console.log(1111)
-  window.location.href = `/`
-}
-const menuItems = reactive<menuItemInt[]>([
-  {
-    icon: 'i_login',
-    text: '账号管理',
-    path: 'info/detail'
-  },
-  {
-    icon: 'i_event',
-    text: '我的动态',
-    path: 'info/event'
-  },
-  {
-    icon: 'i_chart',
-    text: '创建图表',
-    path: 'info/create'
-  },
-  {
-    icon: 'i_collect',
-    text: '图表收藏',
-    path: 'info/collect'
-  },
-  {
-    icon: 'i_exit',
-    text: '退出',
-    event: exitAccount
-  }
-])
 const toLogin = () => {
   proxy.$Bus.emit('showLoginDialog')
 }
@@ -165,32 +117,6 @@ proxy.$Bus.on('logined', () => {
 </script>
 
 <style lang='less'>
-.menuPopoverClass {
-  padding: 0 !important;
-  width: auto !important;
-  min-width: 0 !important;
-  .myMenuList {
-    padding: 10px 0;
-    .myMenuItem {
-      padding: 0 20px 0 15px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      cursor: pointer;
-      letter-spacing: 1px;
-      i {
-        font-size: 19px;
-        margin-right: 8px;
-      }
-      &:hover {
-        color: @theme !important;
-        background-color: #444444;
-      }
-    }
-  }
-}
-
 #IndexPage {
   width: 80%;
   margin: 0 auto;

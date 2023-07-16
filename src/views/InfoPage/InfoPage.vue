@@ -5,19 +5,19 @@
         active-text-color="#ffae34"
         :default-active="active"
       >
-        <el-menu-item index="detail">
+        <el-menu-item @click="toggle('detail')" index="detail">
           <i class="iconfont i_login"></i>
           <span>账号管理</span>
         </el-menu-item>
-        <el-menu-item index="event">
+        <el-menu-item @click="toggle('event')" index="event">
           <i class="iconfont i_event"></i>
           <span>我的动态</span>
         </el-menu-item>
-        <el-menu-item index="chart">
+        <el-menu-item @click="toggle('chart')" index="chart">
           <i class="iconfont i_chart"></i>
-          <span>创建图表</span>
+          <span>我的图表</span>
         </el-menu-item>
-        <el-menu-item index="collect">
+        <el-menu-item @click="toggle('collect')" index="collect">
           <i class="iconfont i_collect"></i>
           <span>图表收藏</span>
         </el-menu-item>
@@ -33,12 +33,13 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
 
 let height = ref(0)
 const proxy = useProxy()
 const route = useRoute()
+const router = useRouter()
 let active = ref('detail')
 
 const computedHeight = () => {
@@ -48,6 +49,10 @@ const computedHeight = () => {
 proxy.$Bus.emit(() => {
   height.value = computedHeight()
 })
+
+const toggle = (path: string) => {
+  router.push('/index/info/' + path)
+}
 
 onMounted(() => {
   height.value = computedHeight()
@@ -65,6 +70,8 @@ onMounted(() => {
     box-sizing: border-box;
     padding: 30px 0;
     margin-top: 30px;
+    box-shadow: 0 0 9px 0 #0d0d0d;
+    z-index: 1;
     .el-menu {
       width: 180px;
       border-right: 0;
@@ -98,7 +105,21 @@ onMounted(() => {
       font-weight: bold;
       color: @theme;
       font-size: 17px;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+      position: relative;
+      &:not(:first-child) {
+        margin-top: 40px;
+      }
+      &:after {
+        position: absolute;
+        content: '';
+        width: 40px;
+        height: 2px;
+        background-color: @theme;
+        bottom: -5px;
+        left: 0;
+        border-radius: 2px;
+      }
     }
   }
 }

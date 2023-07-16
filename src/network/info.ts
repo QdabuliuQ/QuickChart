@@ -23,3 +23,22 @@ export function getProfile() {
     method: 'get'
   })
 }
+
+export function getCode() {
+  return ajax({
+    url: '/info/code',
+    method: 'get'
+  })
+}
+
+export function putPassword(data: {
+  old_password: string
+  new_password: string
+  code: string
+}) {
+  return ajax({
+    url: '/info/password',
+    method: 'put',
+    data
+  })
+}

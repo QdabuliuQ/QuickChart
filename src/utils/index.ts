@@ -101,3 +101,8 @@ export const getConfigValue = (config: ConfigInt) => {
   }
   return optionsRes
 }
+
+export function getInfo() {
+  if(localStorage.getItem('info')) return JSON.parse(localStorage.getItem('info') as string)
+  return null
+}

@@ -9,6 +9,7 @@ const ChartPanel = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/
 const MapPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/MapPage/MapPage.vue')
 const InfoPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/InfoPage.vue')
 const DetailPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/DetailPage.vue')
+const _ChartPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/ChartPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/index' },
@@ -41,10 +42,15 @@ const routes: Array<RouteRecordRaw> = [
             redirect: '/index/info/detail'
           },
           {
+            path: 'chart',
+            name: '_chart',
+            component: _ChartPage
+          },
+          {
             path: 'detail',
             name: 'detail',
             component: DetailPage
-          }
+          },
         ]
       }
     ]

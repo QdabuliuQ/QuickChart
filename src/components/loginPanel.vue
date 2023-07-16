@@ -79,7 +79,7 @@ watch(type, (val: any) => {
   } else if(val === 'code') {
     delete rules['password']
     rules['code'] = [
-      { required: true, message: '密码不能为空', trigger: 'blur' },
+      { required: true, message: '验证码不能为空', trigger: 'blur' },
       {
         pattern: /^\d{6}$/,
         message: '请输入6位验证码',
@@ -124,6 +124,7 @@ const sendCode = async () => {  // 发送验证码
       if(codeTime.value === 0) {
         clearInterval(timer)
         disable.value = false
+        codeTime.value = 60
       }
     }, 1000)
   } else {
