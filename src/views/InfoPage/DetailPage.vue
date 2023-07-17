@@ -75,7 +75,6 @@ const rules = reactive<FormRules>({
 
 const updateInfo = debounce(async () => {
   let check = useCheckState() as any;
-  console.log(check);
   (ruleFormRef.value as any).validate((valid: boolean) => {
     if(!valid) return proxy.$notice({
       type: 'error',
