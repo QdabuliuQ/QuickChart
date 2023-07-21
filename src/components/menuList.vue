@@ -46,11 +46,6 @@ const menuItems = reactive<menuItemInt[]>([
     path: '/index/info/chart'
   },
   {
-    icon: 'i_collect',
-    text: '图表收藏',
-    path: '/index/info/collect'
-  },
-  {
     icon: 'i_exit',
     text: '退出',
     event: exitAccount

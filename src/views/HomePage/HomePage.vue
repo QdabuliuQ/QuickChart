@@ -19,7 +19,7 @@
             @mouseenter="animate = true"
             @mouseleave="animate = false"
             class="startBtn"
-            @click="router.push('/EditPage')"
+            @click="router.push('/edit')"
           >
             开始制作图表
             <i

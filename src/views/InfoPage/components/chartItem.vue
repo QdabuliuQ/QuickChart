@@ -1,23 +1,21 @@
 <template>
   <div class="info_chartItem">
-    <div class="box">
-      <div class="mask">
+    <div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="box">
+      <div :style="{
+        opacity
+      }" @click="toModify" class="mask">
         <el-popover
           popper-class="chartItemPopoverClass"
           placement="bottom-start"
           :hide-after="0"
           trigger="hover"
         >
-          <div class="menuList">
+          <div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="menuList">
             <div @click="renameEvent" class="menuItem">
               <i class="iconfont i_rename"></i>
               重命名
             </div>
-            <div class="menuItem">
-              <i class="iconfont i_copy"></i>
-              复制
-            </div>
-            <div class="menuItem">
+            <div @click="deleteEvent" class="menuItem">
               <i class="iconfont i_delete_2"></i>
               删除
             </div>
@@ -28,7 +26,6 @@
             </div>
           </template>
         </el-popover>
-
         <div class="edit">编辑</div>
       </div>
       <img class="cover" :src="props.cover" />
@@ -42,7 +39,9 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import useProxy from "@/hooks/useProxy";
-import {putChartName} from "@/network/chart";
+import {deleteChart, putChartName} from "@/network/chart";
+import {ElMessageBox} from "element-plus";
+import router from "@/router";
 
 const props = defineProps<{
   chart_id: string
@@ -53,10 +52,15 @@ const props = defineProps<{
   time: number
   type: string
   user_id: string
+  idx: number
 }>()
+const emits = defineEmits([
+  'deleteItem'
+])
 const isSetName = ref<boolean>(false)
 const newName = ref<string>(props.name)
 const name = ref<string>(props.name)
+const opacity = ref<number>(0)
 let copyName = ''
 const proxy = useProxy()
 
@@ -65,7 +69,6 @@ const renameEvent = () => {  // 开启输入框
   isSetName.value = true;
 }
 const blurEvent = async () => {  // 失去焦点 关闭输入框
-
   let _name = newName.value.trim()
   if(_name.length === 0) {
     isSetName.value = false
@@ -109,13 +112,46 @@ const blurEvent = async () => {  // 失去焦点 关闭输入框
   })
 }
 
+const toModify = () => {
+  router.push('/modify/'+props.chart_id)
+}
+
+const deleteEvent = () => {
+  ElMessageBox.confirm(
+    '是否确定删除图表？',
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      let { data } = await deleteChart({
+        chart_id: props.chart_id
+      })
+      if(!data.status) return proxy.$notice({
+        type: 'error',
+        message: data.msg,
+        position: 'top-left'
+      })
+      emits('deleteItem', props.idx)
+      proxy.$notice({
+        type: 'success',
+        message: data.msg,
+        position: 'top-left'
+      })
+    })
+}
+
 </script>
 <style lang="less">
 .chartItemPopoverClass {
   width: 100px !important;
   min-width: 100px !important;
-  padding: 12px 0 !important;
+  padding: 0 !important;
   .menuList {
+    padding: 12px 0 !important;
     .menuItem {
       padding: 7px 10px;
       font-size: 13px;
@@ -139,9 +175,6 @@ const blurEvent = async () => {  // 失去焦点 关闭输入框
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    &:hover .mask {
-      opacity: 1;
-    }
   }
   .mask {
     position: absolute;
@@ -177,7 +210,6 @@ const blurEvent = async () => {  // 失去焦点 关闭输入框
         font-size: 18px;
       }
     }
-    opacity: 0;
   }
   .cover {
     width: 100%;

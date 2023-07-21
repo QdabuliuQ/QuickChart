@@ -44,22 +44,19 @@ export default defineComponent({
     });
 
     const toggleChart = () => {
+      console.log(router.currentRoute.value)
       let curId = router.currentRoute.value.params.id;
-      console.log(curId, props.id);
-      if (curId != props.id && router.currentRoute.value.name == "chart") {
+      if (curId != props.id && router.currentRoute.value.name == "type") {
         ElMessageBox.confirm("单图中插入新图表将会替换原图表及数据", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
         }).then(() => {
-          router.push({
-            path: "/chart/" + props.id
-          });
+          router.push("/edit/chart/type/" + props.id);
         });
       } else if(curId != props.id){
-        router.push({
-          path: "/chart/" + props.id
-        });
+        console.log('11111')
+        router.push("/edit/chart/type/" + props.id);
       }
     };
 

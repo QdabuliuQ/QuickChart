@@ -10,6 +10,7 @@ const MapPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/Map
 const InfoPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/InfoPage.vue')
 const DetailPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/DetailPage.vue')
 const _ChartPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/ChartPage.vue')
+const ModifyPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/modifyPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/index' },
@@ -56,21 +57,21 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    path: '/EditPage',
-    name: 'EditPage',
+    path: '/edit',
+    name: 'edit',
     component: EditPage,
     children: [
       {
-        path: '/EditPage',
-        redirect: '/Welcome'
+        path: '/edit',
+        redirect: '/edit/welcome'
       },
       {
-        path: '/Welcome',
-        name: 'Welcome',
+        path: 'welcome',
+        name: 'welcome',
         component: Welcome
       },
       {
-        path: '/ChartPage',
+        path: 'chart',
         name: 'ChartPage',
         meta: {
           typeIndex: 0
@@ -78,14 +79,14 @@ const routes: Array<RouteRecordRaw> = [
         component: ChartPage,
         children: [
           {
-            path: '/chart/:id',
-            name: 'chart',
+            path: 'type/:id',
+            name: 'type',
             component: ChartPanel
           }
         ]
       },
       {
-        path: '/MapPage',
+        path: 'map',
         name: 'MapPage',
         meta: {
           typeIndex: 1
@@ -93,6 +94,11 @@ const routes: Array<RouteRecordRaw> = [
         component: MapPage
       },
     ]
+  },
+  {
+    path: '/modify/:id',
+    name: 'modify',
+    component: ModifyPage
   }
 ]
 

@@ -1,7 +1,7 @@
 <template>
   <div class="ChartType">
     <div class="types">
-      <div @click="toggle('/ChartPage', 0)" :class="[type == 0 ? 'active': '', 'typeItem']">
+      <div @click="toggle('chart', 0)" :class="[type == 0 ? 'active': '', 'typeItem']">
         <i style="font-size: 20px" class="iconfont i_bar"></i>
         <span>图表</span>
       </div>
@@ -86,7 +86,9 @@ proxy.$Bus.on('logined', () => {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
+  .types {
+    width: 100%;
+  }
   .active {
     color: @theme;
     background-color: @curColor;

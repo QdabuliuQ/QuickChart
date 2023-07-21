@@ -70,4 +70,10 @@ img {
 .el-button:focus-visible {
   outline: 2px solid transparent !important;
 }
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
 </style>

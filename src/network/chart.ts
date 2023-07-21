@@ -37,3 +37,35 @@ export function putChartName(data: {
     data
   })
 }
+
+export function deleteChart(data: {
+  chart_id: string
+}) {
+  return ajax({
+    url: '/qc/chart',
+    method: 'delete',
+    data
+  })
+}
+
+export function getChartDetail(params: {
+  chart_id: string
+}) {
+  return ajax({
+    url: '/qc/chartDetail',
+    method: 'get',
+    params
+  })
+}
+
+export function putChart(data: {
+  chart_id: string
+  option: string
+  cover: string
+}) {
+  return ajax({
+    url: '/qc/chart',
+    method: 'put',
+    data
+  })
+}

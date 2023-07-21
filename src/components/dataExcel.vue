@@ -133,9 +133,6 @@ export default defineComponent({
         // 获取计算过后的data 合并成为option
         _this.proxy.$Bus.emit("dataChange", combineData(e.data.res));
       }
-      //  else if (e.data.type == 'init') {
-      //   excelData = e.data.res
-      // }
     }
     
 

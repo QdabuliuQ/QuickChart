@@ -39,20 +39,21 @@
       <div :key="data.key" class="collapseContainer">
         <div v-for="item in data.options" :key="item.opName" class="collapseItem">
           <div
-              v-if="item.menuOption"
-              @click="toggleItem(item.opName, item.componentPath)"
-              :class="[
+            v-if="item.menuOption"
+            @click="toggleItem(item.opName, item.componentPath)"
+            :class="[
               data.activeIndex == item.opName ? 'activeCollapseTitle' : '',
               'collapseTitle',
             ]"
           >
             <div class="leftContent">
-              <i style="margin-right: 5px" :class="['iconfont', data.activeIndex == item.opName && data.loading ? 'i_loading loadingAnimation' : item.icon]"></i>
+              <i style="margin-right: 5px"
+                 :class="['iconfont', data.activeIndex == item.opName && data.loading ? 'i_loading loadingAnimation' : item.icon]"></i>
               {{ item.name }}
             </div>
             <div class="rightIcon">
               <i
-                  :class="[
+                :class="[
                   data.activeIndex == item.opName ? 'rotateIcon' : '',
                   'iconfont',
                   'i_hide',
@@ -79,6 +80,7 @@ import {
 import {useRouter} from "vue-router";
 import useCommonStore from "@/store/common";
 import useProxy from "@/hooks/useProxy";
+
 const props = defineProps<{
   type: number
 }>()
@@ -115,7 +117,7 @@ const toggleItem = (e: string, p: string) => {
   } else {
     data.activeIndex = e;
     // 查看map中是否存在组件缓存
-    if(!componentsMap.value.has(p)) {
+    if (!componentsMap.value.has(p)) {
       data.loading = true
       setTimeout(() => {
         componentsMap.value.set(p, markRaw(defineAsyncComponent(() => import(`@/views/ChartPanel/components/${p}`))))
@@ -144,8 +146,8 @@ const initParams = () => {
   }
 
   data.image = require("@/assets/image/" +
-      router.currentRoute.value.params.id +
-      ".webp");
+    router.currentRoute.value.params.id +
+    ".webp");
 }
 
 onMounted(() => {
@@ -166,15 +168,15 @@ onMounted(() => {
 });
 
 watch(
-    () => props.type,
-    (n: number) => {
-      if (n) {
-        data.options = common.chartConfig;
-        proxy.$Bus.emit("updateData", common.option);
-      } else {
-        proxy.$Bus.emit("editData");
-      }
+  () => props.type,
+  (n: number) => {
+    if (n) {
+      data.options = common.chartConfig;
+      proxy.$Bus.emit("updateData", common.option);
+    } else {
+      proxy.$Bus.emit("editData");
     }
+  }
 );
 </script>
 
@@ -267,12 +269,15 @@ watch(
             position: relative;
             top: 0.5px;
           }
+
           .i_loading {
             transform-origin: 50% 50%;
           }
+
           .loadingAnimation {
             animation: rotateAnimation 1s linear infinite;
           }
+
           @keyframes rotateAnimation {
             0% {
               transform: rotate(0);
@@ -308,6 +313,7 @@ watch(
       .paramsPanel {
         padding: 0 12px;
       }
+
       .splitLine {
         font-size: 12px;
         font-weight: bold;
@@ -317,6 +323,7 @@ watch(
         display: flex;
         align-items: center;
         padding-bottom: 5px;
+
         &::after {
           position: absolute;
           content: '';
@@ -328,6 +335,7 @@ watch(
           opacity: .4;
         }
       }
+
       .uniqueOptionContainer {
         padding: 0 12px;
       }

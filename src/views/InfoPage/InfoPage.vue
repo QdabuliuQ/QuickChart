@@ -17,10 +17,6 @@
           <i class="iconfont i_chart"></i>
           <span>我的图表</span>
         </el-menu-item>
-        <el-menu-item @click="toggle('collect')" index="collect">
-          <i class="iconfont i_collect"></i>
-          <span>图表收藏</span>
-        </el-menu-item>
       </el-menu>
     </div>
     <div class="rightContainer">

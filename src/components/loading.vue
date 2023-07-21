@@ -1,52 +1,33 @@
 <template>
-  <div id="loading">
+  <div class="loadingComponent">
     <div
       class="loadingContainer"
-      :element-loading-text="text"
-      element-loading-background="#292929"
-      v-loading="isLoading"
+      :element-loading-text="props.text ? props.text : '加载中...'"
+      :element-loading-background="props.bgc ? props.bgc : '#292929'"
+      v-loading="data.isLoading"
     ></div>
   </div>
 </template>
 
-<script lang='ts'>
-import {
-  defineComponent,
-  reactive,
-  onMounted,
-  toRefs,
-} from "vue";
+<script setup lang="ts">
+import {reactive, defineProps} from "vue";
+
+const props = defineProps<{
+  text: string
+  bgc?: string
+}>()
 
 interface comInitData {
   isLoading: boolean;
 }
-
-interface Props {
-  text?: string | number;
-}
-
-export default defineComponent({
-  name: "loading",
-  props: {
-    text: {
-      type: String,
-      default: "加载中...",
-    },
-  },
-  setup() {
-    const data: comInitData = reactive({
-      isLoading: true,
-    });
-    onMounted(() => {});
-    return {
-      ...toRefs(data),
-    };
-  },
+const data: comInitData = reactive({
+  isLoading: true,
 });
+
 </script>
 
 <style lang='less'>
-#loading {
+.loadingComponent {
   width: 100%;
   height: 100%;
   position: relative;

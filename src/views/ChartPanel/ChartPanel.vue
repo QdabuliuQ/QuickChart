@@ -57,7 +57,7 @@ import {deepCopy, getInfo} from "@/utils";
 import useProxy from "@/hooks/useProxy";
 import {useCheckState} from "@/hooks/useCheckState";
 import {FormInstance, FormRules, ElLoading } from "element-plus";
-import {chartCoverUpload, postChart} from "@/network/chart";
+import {chartCoverUpload, getChartDetail, postChart} from "@/network/chart";
 const paramsPanel = defineAsyncComponent(() => import("@/components/paramsPanel/paramsPanel.vue"))
 const chartDom = defineAsyncComponent(() => import("@/components/chartDom.vue"))
 
@@ -104,32 +104,68 @@ const getType = () => {
   return router.currentRoute.value.params.id?.toString().split("_")[0]
 }
 
-const getChartOption = (cb?: () => void) => {
-  let res: any = router.currentRoute.value.params.id?.toString().split("_");
-  import(
-    `@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`
-    ).then((res: any) => {
-    // 如果返回是函数 则执行 不是则直接使用配置对象
-    let option = typeof res.default == 'function' ? res.default() : res.default
-    let tmpOption: any = {}; // 临时配置
+const getChartOption = async (cb?: () => void) => {
+  if (router.currentRoute.value.name === 'modify') {
+    let { id } = router.currentRoute.value.params
+    let { data } = await getChartDetail({
+      chart_id: id as string
+    })
+    if(!data.status) return proxy.$notice({
+      type: 'error',
+      message: data.msg,
+      position: 'top-left'
+    })
+    console.log(data)
+    sessionStorage.setItem('chartInfo', JSON.stringify(data.data))
+    let res = await import(`@/chartConfig/config/${parseInt(data.data.type)}_/chart${data.data.type}`)
+    let option = res.default()
     let chartConfig: any[] = [];
-    for (let item of option) {
-      if (item.chartOption) {
-        tmpOption[item.opName] = item.defaultOption[item.opName];
+    for(let item of option) {
+      if(data.data.option.hasOwnProperty(item.opName)) {
+        item.defaultOption[item.opName] = data.data.option[item.opName]
       }
       if (item.menuOption) {
         chartConfig.push(item);
       }
     }
-
-    // 保存数据到pinia
+    console.log(chartConfig)
     common.$patch((state: any) => {
-      state.option = tmpOption;
+      state.option = data.data.option;
       state.chartConfig = chartConfig;
-      state.defaultOption = deepCopy(tmpOption);
+      state.defaultOption = deepCopy(data.data.option);
     });
     if (cb) cb(); // 执行回调函数
-  });
+    data.loadChart = false;
+    console.log(data.loadChart, '执行')
+  } else {
+    let res: any = router.currentRoute.value.params.id?.toString().split("_");
+    import(
+      `@/chartConfig/config/${res[0]}_/chart${router.currentRoute.value.params.id}`
+      ).then((res: any) => {
+      // 如果返回是函数 则执行 不是则直接使用配置对象
+      let option = res.default()
+      let tmpOption: any = {}; // 临时配置
+      let chartConfig: any[] = [];
+      for (let item of option) {
+        if (item.chartOption) {
+          tmpOption[item.opName] = item.defaultOption[item.opName];
+        }
+        if (item.menuOption) {
+          chartConfig.push(item);
+        }
+      }
+
+      // 保存数据到pinia
+      common.$patch((state: any) => {
+        state.option = tmpOption;
+        state.chartConfig = chartConfig;
+        state.defaultOption = deepCopy(tmpOption);
+      });
+      data.loadChart = false;
+      if (cb) cb(); // 执行回调函数
+    });
+  }
+
 };
 
 getChartOption();
@@ -192,9 +228,14 @@ const saveChart = async () => {
       background: 'rgba(0, 0, 0, 0.7)',
     })
     let res = await saveImage()  // 生成图片 并且上传服务器
+    if(!res) return proxy.$notice({
+      type: 'error',
+      message: '保存图表失败',
+      position: 'top-left'
+    })
     let { data } = await postChart({  // 添加图表
       name: form.name,
-      type: getType(),
+      type: router.currentRoute.value.params.id as string,
       option: JSON.stringify(common.$state.option),
       cover: res
     })
@@ -230,7 +271,7 @@ onMounted(() => {
     (document.getElementById("ChartPanel")?.clientWidth as number) - 210;
   data.id = router.currentRoute.value.params.id as string;
   proxy.$Bus.on("resize", resize);
-  data.loadChart = false;
+
   proxy.$Bus.on('loadFinished', loadFinished)
 });
 
@@ -238,9 +279,10 @@ onUnmounted(() => {
   // 取消订阅
   proxy.$Bus.off('resize', resize)
   proxy.$Bus.off('loadFinished', loadFinished)
+  stop()  // 取消订阅
 })
 
-watch(
+const stop = watch(
   () => router.currentRoute.value.params.id,
   (n) => {
     data.id = n as string;

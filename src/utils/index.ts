@@ -1,5 +1,6 @@
 import { ConfigInt } from "@/types/common";
 import {common} from "@/chartConfig/opname";
+import html2canvas from "html2canvas";
 
 export const emailPattern = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
 export const publicKey = `
@@ -105,4 +106,24 @@ export const getConfigValue = (config: ConfigInt) => {
 export function getInfo() {
   if(localStorage.getItem('info')) return JSON.parse(localStorage.getItem('info') as string)
   return null
+}
+
+const dataUrlToBlob = (dataUrl: string) => {
+  let arr: any[] = dataUrl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    // arr[0]是data:image/png;base64
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], {
+    type: mime
+  });
+}
+export async function conveyToImage(dom: HTMLElement) {
+  const canvas = await html2canvas(dom)
+  let dataURL = canvas.toDataURL("image/png");
+  return dataUrlToBlob(dataURL);
 }

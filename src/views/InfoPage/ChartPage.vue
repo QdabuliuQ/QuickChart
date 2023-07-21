@@ -2,7 +2,8 @@
   <div class="ChartPage">
     <div class="pageTitle">我的图表</div>
     <div v-if="charts.length" class="chartContainer">
-      <chart-item v-for="item in charts"
+      <chart-item v-for="(item,idx) in charts"
+        :key="item.chart_id"
         :chart_id="item.chart_id"
         :name="item.name"
         :cover="item.cover"
@@ -10,9 +11,21 @@
         :state="item.state"
         :time="item.time"
         :type="item.type"
-        :user_id="item.user_id"/>
+        :user_id="item.user_id"
+        :idx="idx"
+        @delete-item="deleteItem"/>
     </div>
     <el-empty v-else description="暂无图表"/>
+    <div class="paginationContainer">
+      <el-pagination
+        v-model:current-page="offset"
+        hide-on-single-page
+        background
+        layout="prev, pager, next"
+        :page-size="limit"
+        :total="count"
+        @current-change="currentChange"/>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -32,7 +45,9 @@ const charts = reactive<{
   type: string
   user_id: string
 }[]>([])
-const offset = ref<number>(0)
+const offset = ref<number>(1)
+const count = ref<number>(0)
+const limit = ref<number>(0)
 const proxy = useProxy()
 
 const getData = async () => {
@@ -44,13 +59,23 @@ const getData = async () => {
     message: data.msg,
     position: 'top-left'
   })
+  count.value = data.count
+  limit.value = data.limit
   charts.length = 0
   for (let item of data.data) {
     charts.push(item)
   }
-  console.log(charts)
 }
 getData()
+
+const deleteItem = (idx: number) => {
+  charts.splice(idx, 1)
+}
+
+const currentChange = (e: number) => {
+  offset.value = e
+  getData()
+}
 
 </script>
 <style lang="less">
