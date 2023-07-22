@@ -76,7 +76,6 @@ import Loading from "@/components/loading.vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
 
-
 const props = defineProps<{
   image: string
   loading: boolean
@@ -86,13 +85,12 @@ const common: any = useCommonStore();
 const proxy = useProxy()
 const height = ref<string>('0px')
 const activeIndex = ref<string>()
-const componentsMap = ref(new Map<string, any>())
+const componentsMap = reactive(new Map<string, any>())
 const icon_loading = ref<boolean>(false)
 const options = reactive<Array<any>>([])
 const key = ref<number>(0)
 
 const initOptions = () => {
-  console.log(common, '=====', common.$state)
   options.push(...common.chartConfig)
 }
 
@@ -102,10 +100,10 @@ const toggleItem = (e: string, p: string) => {
   } else {
     activeIndex.value = e;
     // 查看map中是否存在组件缓存
-    if (!componentsMap.value.has(p)) {
+    if (!componentsMap.has(p)) {
       icon_loading.value = true
       setTimeout(() => {
-        componentsMap.value.set(p, markRaw(defineAsyncComponent(() => import(`@/views/ChartPanel/components/${p}`))))
+        componentsMap.set(p, markRaw(defineAsyncComponent(() => import(`@/views/ChartPanel/components/${p}`))))
         icon_loading.value = false
       }, 0)
     }
@@ -136,13 +134,15 @@ const resizeEvent = (e: number) => {
 proxy.$Bus.on("resize", resizeEvent);
 
 let stop = watch(() => props.loading, () => {
+  componentsMap.clear()
+  options.length = 0
   initOptions()
 })
 
 onMounted(() => {
   height.value = document.documentElement.clientHeight + 'px'
 })
-onUnmounted(() => {
+onUnmounted(() => {``
   // 取消订阅
   proxy.$Bus.off('chartChange', changeEvent)
   proxy.$Bus.off("resetChartData", resetEvent)

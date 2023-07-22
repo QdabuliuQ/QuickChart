@@ -53,7 +53,7 @@ import {
 import html2canvas from 'html2canvas'
 import { useRouter } from "vue-router";
 import useCommonStore from "@/store/common";
-import {deepCopy, getInfo} from "@/utils";
+import {conveyToImage, deepCopy, getInfo} from "@/utils";
 import useProxy from "@/hooks/useProxy";
 import {useCheckState} from "@/hooks/useCheckState";
 import {FormInstance, FormRules, ElLoading } from "element-plus";
@@ -227,18 +227,19 @@ const saveChart = async () => {
       text: '加载中',
       background: 'rgba(0, 0, 0, 0.7)',
     })
-    let res = await saveImage()  // 生成图片 并且上传服务器
-    if(!res) return proxy.$notice({
-      type: 'error',
-      message: '保存图表失败',
-      position: 'top-left'
-    })
-    let { data } = await postChart({  // 添加图表
-      name: form.name,
-      type: router.currentRoute.value.params.id as string,
-      option: JSON.stringify(common.$state.option),
-      cover: res
-    })
+    let blob = await conveyToImage(chartDomRef.value.chartDomRef);
+    const formData = new FormData();
+    formData.append("cover", blob);
+    formData.append("name", form.name);
+    formData.append("type", router.currentRoute.value.params.id as string);
+    formData.append("option", JSON.stringify(common.$state.option));
+    let { data } = await postChart(formData)
+    // let { data } = await postChart({  // 添加图表
+    //   name: form.name,
+    //   type: router.currentRoute.value.params.id as string,
+    //   option: JSON.stringify(common.$state.option),
+    //   cover: res
+    // })
     if(!data.status) {
       loading.close()
       return proxy.$notice({

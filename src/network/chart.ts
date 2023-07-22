@@ -1,17 +1,27 @@
 import ajax, {upload} from "@/network/index";
 
-export function postChart(data: {  // 保存图表
-  name: string
-  type: string
-  option: string
-  cover: string
-}) {
+// export function postChart(data: {  // 保存图表
+//   name: string
+//   type: string
+//   option: string
+//   cover: string
+// }) {
+//   return ajax({
+//     url: '/qc/chart',
+//     method: 'post',
+//     data
+//   })
+// }
+
+export function postChart(data: FormData) {
   return ajax({
     url: '/qc/chart',
     method: 'post',
     data
   })
 }
+
+
 
 export function chartCoverUpload(data: FormData) {
   return upload('/chartCover', data)
@@ -58,11 +68,19 @@ export function getChartDetail(params: {
   })
 }
 
-export function putChart(data: {
-  chart_id: string
-  option: string
-  cover: string
-}) {
+// export function putChart(data: {
+//   chart_id: string
+//   option: string
+//   cover: string
+// }) {
+//   return ajax({
+//     url: '/qc/chart',
+//     method: 'put',
+//     data
+//   })
+// }
+
+export function putChart(data: FormData) {
   return ajax({
     url: '/qc/chart',
     method: 'put',

@@ -52,6 +52,7 @@ import {fileType} from "@/utils/fileType";
 import {exportFile, importFile, stox} from "@/utils/excelOpe";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
+import {deepCopy} from "@/utils";
 
 const props = defineProps<{
   loading: boolean
@@ -60,14 +61,14 @@ const props = defineProps<{
 }>()
 
 let timer: any;
-let excelData: any;
+let excelData: any, originData: any;
 let sheetObj: any;
 let conveyData: any, combineData: any, createInitiativeData: any;
 const common = useCommonStore()
 const worker = new Worker()
 const uploadExecelInputRef = ref();
 const proxy = useProxy()
-const loading = ref<boolean>(true)
+const loading = ref<boolean>(props.loading)
 
 const setExcelData = () => {
   worker.postMessage({
@@ -109,7 +110,7 @@ const resetChartData = () => {
   setTimeout(() => {
     sheetObj.loadData({
       name: "sheet11",
-      rows: excelData,
+      rows: originData,
     })
   }, 0);
   setTimeout(() => {
@@ -173,7 +174,6 @@ const initData = () => {
       .change((res) => {  // 图表数据修改
         clearTimeout(timer);
         timer = setTimeout(() => {
-          console.log('改变')
           worker.postMessage({
             data: JSON.stringify(res.rows),
             options: JSON.stringify(common.option),
@@ -206,16 +206,23 @@ const initHandleFun = () => {
   conveyData = conveyExcelData;
   combineData = combineOption
   excelData = createInitiativeData(common.option)
+  originData = deepCopy(excelData)
   initData()
 }
 
-let stop = watch(() => props.loading, () => {
+let flag = 0
+let stop = watch(() => props.loading, (nval: boolean) => {
   initHandleFun()
-  loading.value = false
+  loading.value = nval
+})
+let stop2 = watch(() => props.detail_type, (nval: string) => {
+  console.log('gaibian')
+  flag = 0
 })
 
 onUnmounted(() => {
   stop()
+  stop2()
   worker.terminate()
 })
 

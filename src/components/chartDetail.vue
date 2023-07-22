@@ -3,15 +3,13 @@
   <div v-else class="chartDetail">
     <div class="chartContainer">
       <div class="scrollContainer">
-        <div @click="router.go(-1)" class="backBtn" v-if="props.back">
-          <i class="iconfont i_exit"></i>
-        </div>
+        <el-button v-if="props.back" @click="router.go(-1)" class="backBtn" type="info"> <i class="iconfont i_exit"></i>返回</el-button>
         <div class="btnList">
-          <el-button @click="toSave" type="primary" plain>
+          <el-button @click="toSave" type="primary" >
             <i class="iconfont i_save1"></i>
             另存为
           </el-button>
-          <el-button v-if="props.update" @click="toUpdate" type="success" plain>
+          <el-button v-if="props.update" @click="toUpdate" type="success" >
             <i class="iconfont i_save"></i>
             保存
           </el-button>
@@ -63,9 +61,9 @@ const props = withDefaults(defineProps<{
   type: string
   detailType: string
   loading: boolean
-  back: boolean
-  update: boolean
-  chart_id: string
+  back?: boolean
+  update?: boolean
+  chart_id?: string
 }>(), {
   type: '',
   detailType: '',
@@ -92,18 +90,6 @@ const rules = reactive<FormRules>({
     { max: 15, message: '图表名称不能超过15个字符', trigger: 'blur' },
   ],
 })
-const saveImage = async () => {
-  let blob = await conveyToImage(chartDomRef.value.chartDomRef);
-  const formData = new FormData();
-  formData.append("cover", blob);
-  formData.append('type', props.type)
-  let { data } = await chartCoverUpload(formData)
-  if(!data.status) {
-    save_loading && save_loading.close()
-    return false
-  }
-  return data.url
-}
 const saveChart = async () => {
   // 表单验证
   (formRef.value as any).validate(async (valid: boolean) => {
@@ -113,18 +99,14 @@ const saveChart = async () => {
       text: '加载中',
       background: 'rgba(0, 0, 0, 0.7)',
     })
-    let res = await saveImage()  // 生成图片 并且上传服务器
-    if(!res) return proxy.$notice({
-      type: 'error',
-      message: '保存图表失败',
-      position: 'top-left'
-    })
-    let { data } = await postChart({  // 添加图表
-      name: form.name,
-      type: props.detailType,
-      option: JSON.stringify(common.$state.option),
-      cover: res
-    })
+    let blob = await conveyToImage(chartDomRef.value.chartDomRef);
+    const formData = new FormData();
+    formData.append("cover", blob);
+    formData.append("name", form.name);
+    formData.append("type", props.detailType);
+    formData.append("option", JSON.stringify(common.$state.option));
+
+    let { data } = await postChart(formData)
     if(!data.status) {
       save_loading.close()
       return proxy.$notice({
@@ -157,17 +139,15 @@ const toUpdate = async () => {
     text: '加载中',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  let res = await saveImage()  // 生成图片 并且上传服务器
-  if(!res) return proxy.$notice({
-    type: 'error',
-    message: '保存图表失败',
-    position: 'top-left'
-  })
-  let { data } = await putChart({  // 添加图表
-    chart_id: props.chart_id,
-    option: JSON.stringify(common.$state.option),
-    cover: res
-  })
+
+  let blob = await conveyToImage(chartDomRef.value.chartDomRef);
+  const formData = new FormData();
+  formData.append("cover", blob);
+  formData.append("chart_id", props.chart_id);
+  formData.append("option", JSON.stringify(common.$state.option));
+
+  let { data } = await putChart(formData)
+
   if(!data.status) {
     save_loading.close()
     return proxy.$notice({
@@ -209,14 +189,9 @@ const toUpdate = async () => {
         position: absolute;
         top: 10px;
         left: 10px;
-        padding: 15px;
-        border-radius: 50%;
-        color: #fff;
-        background-color: #3c3c3c;
-        cursor: pointer;
-        .flex();
         .iconfont {
-          font-size: 18px;
+          font-size: 14px;
+          margin-right: 5px;
         }
       }
 

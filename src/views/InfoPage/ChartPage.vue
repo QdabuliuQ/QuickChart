@@ -6,7 +6,7 @@
         :key="item.chart_id"
         :chart_id="item.chart_id"
         :name="item.name"
-        :cover="item.cover"
+        :cover="item.cover + '?tempid='+Math.random()"
         :option="item.option"
         :state="item.state"
         :time="item.time"
@@ -66,6 +66,7 @@ const getData = async () => {
     charts.push(item)
   }
 }
+console.log('执行了')
 getData()
 
 const deleteItem = (idx: number) => {

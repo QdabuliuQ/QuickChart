@@ -43,7 +43,6 @@ const proxy = useProxy()
 const router = useRouter()
 const { id } = router.currentRoute.value.params  // 获取图表ID
 
-// 1加载中  2加载成功  3加载失败
 const state = ref<number>(1)
 const detailType = ref<string>('')
 const type = ref<string>('')
@@ -79,7 +78,6 @@ const getConfig = async () => {
         chartConfig.push(item);
       }
     }
-    console.log(chartConfig, '=====')
     common.$patch((state: any) => {
       state.option = data.data.option;
       state.chartConfig = chartConfig;
