@@ -175,6 +175,9 @@ const deleteEvent = () => {
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
+    background-image: url("../../../assets/image/bg.jpg");
+    background-size: cover;
+    background-repeat: repeat;
   }
   .mask {
     position: absolute;

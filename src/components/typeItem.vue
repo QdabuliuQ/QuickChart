@@ -7,7 +7,7 @@
       </div>
       <el-scrollbar :height="height">
         <div class="itemList">
-          <div class="itemBox" v-for="item in list" :key="item.id">
+          <div class="itemBox" v-for="item in itemlist" :key="item.id">
             <div @click="item.show = !item.show" class="typeCard">
               <i style="margin-right: 8px;" :class="['iconfont', item.icon]"></i>
               {{ item.type }}
@@ -31,56 +31,37 @@
   </div>
 </template>
 
-<script lang='ts'>
-import {
-  defineComponent,
-  reactive,
-  onMounted,
-  toRefs,
-  ref,
-  getCurrentInstance,
-} from "vue";
+<script setup lang="ts">
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 import { useRouter } from "vue-router";
 import chartItem from "./chartItem.vue";
-import list, { ListInt } from "@/utils/chartItem";
+import list, {ListInt} from "@/utils/chartItem";
+import useProxy from "@/hooks/useProxy";
 
-interface comInitData {
-  list: ListInt[];
-  height: any;
+const router = useRouter()
+const proxy = useProxy()
+const itemlist = reactive<ListInt[]>(list)
+const height = ref<string>('')
+const typeTitleRef = ref();
+
+const resizeEvent = (e: number) => {
+  height.value = e - typeTitleRef.value.offsetHeight - 5 + "px";
 }
 
-export default defineComponent({
-  name: "typeItem",
-  components: {
-    chartItem,
-  },
-  setup() {
-    const router = useRouter()
-    const _this: any = getCurrentInstance();
-    const typeTitleRef = ref();
-    const data: comInitData = reactive({
-      list: [],
-      height: 0,
-    });
-    onMounted(() => {
-      data.height =
-        document.documentElement.clientHeight -
-        typeTitleRef.value.offsetHeight -
-        5 +
-        "px";
+proxy.$Bus.on("resize", resizeEvent);
 
-      data.list = list;
-      _this.proxy.$Bus.on("resize", (e: number) => {
-        data.height = e - typeTitleRef.value.offsetHeight - 5 + "px";
-      });
-    });
-    return {
-      router,
-      typeTitleRef,
-      ...toRefs(data),
-    };
-  },
+onMounted(() => {
+  height.value =
+    document.documentElement.clientHeight -
+    typeTitleRef.value.offsetHeight -
+    5 +
+    "px";
 });
+
+onUnmounted(() => {
+  proxy.$Bus.off("resize", resizeEvent);
+})
+
 </script>
 
 <style lang='less'>

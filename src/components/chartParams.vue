@@ -117,7 +117,6 @@ const downloadChart = (type: string): void => {
   proxy.$Bus.emit("downloadChart", type);
 };
 
-
 const changeEvent = ({cb}: { cb: Function }) => {
   initOptions()
   cb()
@@ -164,10 +163,14 @@ onUnmounted(() => {``
   .chartCover {
     width: 90%;
     margin: 10px auto;
-
+    background-image: url("../assets/image/bg.jpg");
+    background-size: cover;
+    background-repeat: repeat;
+    border-radius: 8px;
+    overflow: hidden;
     img {
       width: 100%;
-      border-radius: 8px;
+
       vertical-align: middle;
     }
   }

@@ -127,3 +127,10 @@ export async function conveyToImage(dom: HTMLElement) {
   let dataURL = canvas.toDataURL("image/png");
   return dataUrlToBlob(dataURL);
 }
+
+export function createImage(url: string): HTMLImageElement {
+  let image = new Image();
+  image.src = url
+  image.setAttribute("crossOrigin",'Anonymous')
+  return image
+}

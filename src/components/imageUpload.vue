@@ -1,6 +1,6 @@
 <template>
   <div class="imageUpload">
-    <div v-if="base64">
+    <div v-if="props.image">
       <el-link @click="dialogVisible = true" type="primary">查看</el-link>
       <el-link @click="deleteImage" type="danger">删除</el-link>
     </div>
@@ -13,7 +13,7 @@
       </el-button>
     </div>
     <el-dialog class="imagePreviewDialog" v-model="dialogVisible">
-      <img w-full :src="props.base64" />
+      <img w-full :src="props.image" />
     </el-dialog>
   </div>
 </template>
@@ -21,9 +21,10 @@
 import {defineProps, ref} from "vue";
 import {fileType} from "@/utils";
 import useProxy from "@/hooks/useProxy";
+import {graphicUpload} from "@/network/chart";
 const proxy = useProxy()
 const props = defineProps<{
-  base64: string
+  image: string
 }>()
 const emits = defineEmits([
     "imageChange",
@@ -37,20 +38,30 @@ const uploadEvent = () => {
 const deleteImage = () => {
   emits('deleteImage')
 }
-const fileUpload = (e: Event) => {
+const fileUpload = async (e: Event) => {
   let img = (inputRef.value as any).files[0]
   if(fileType(img.name) == 'image') {
     if(img.size / 1024 > 100) {
       proxy.$notice({
         message: '图片大小不能大于100kb',
         type: 'error',
+        position: 'top-left'
       })
     } else {
-      let reader = new FileReader();
-      reader.readAsDataURL(img);
-      reader.onload = function (e)  {
-        emits("imageChange", this.result)
-      }
+      let formData = new FormData()
+      formData.append('image', img)
+      let { data } = await graphicUpload(formData)
+      if(!data.status) return proxy.$notice({
+        message: data.msg,
+        type: 'error',
+        position: 'top-left'
+      })
+      // let image = new Image();
+      // image.src = data.url
+      // image.setAttribute("crossOrigin",'Anonymous')
+      // emits("imageChange", image)
+
+      emits("imageChange", data.url)
     }
   } else {
     proxy.$notice({

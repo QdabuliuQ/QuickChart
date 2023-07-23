@@ -1,5 +1,5 @@
 <template>
-  <div id="EditPage">
+  <div class="EditPage">
     <ChartType />
     <div class="rightRouterContainer">
       <router-view></router-view>
@@ -7,37 +7,19 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, getCurrentInstance } from 'vue'
+<script setup lang="ts">
+import {ref} from "vue";
+import {useRouter} from "vue-router";
 import ChartType from "./components/ChartType.vue";
-import { useRouter } from "vue-router";
-import { InitData } from "@/types/EditPage/EditPage";
 
-export default defineComponent({
-  name: 'EditPage',
-  components: {
-    ChartType,
-  },
-  setup() {
-    const router = useRouter()
-    const _this: any = getCurrentInstance()
-    const data = reactive(new InitData())
-    onMounted(() => {
-      data.type = router.currentRoute.value.meta.typeIndex as number
-      
-      _this.proxy.$Bus.on('resize', (e: number) => {
-        console.log(e);
-      })
-    })
-    return {
-      ...toRefs(data),
-    }
-  }
-})
+const router = useRouter()
+const type = ref<number>(0)
+type.value = router.currentRoute.value.meta.typeIndex as number
 </script>
 
+
 <style lang='less'>
-#EditPage {
+.EditPage {
   display: flex;
   width: 100vw;
   height: 100vh;

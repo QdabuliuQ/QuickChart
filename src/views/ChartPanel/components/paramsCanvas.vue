@@ -11,13 +11,13 @@ import {
 } from "vue";
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
-import { common, label } from '@/chartConfig/opname';
+import { common } from '@/chartConfig/opname';
 import useCommonStore from "@/store/common";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 const _common: any = useCommonStore()
 const proxy = useProxy()
-console.log(_common.option)
+
 const config = reactive<ConfigInt>({
   backgroundColor: {
     type: 'color_picker',
@@ -27,17 +27,19 @@ const config = reactive<ConfigInt>({
   bgImage: {
     type: 'imgload',
     title: '背景图片',
-    value: ''
+    value: typeof _common.option.backgroundColor === 'object' ? _common.option.backgroundColor.url : ''
   }
 })
 
 const getData = () => {
   const option = getConfigValue(config)
-
+  console.log(option)
   if(option.bgImage) {
     return {
       repeat: 'repeat',
       image: option.bgImage
+      // image: createImage(option.bgImage),
+      // url: option.bgImage
     }
   } else {
     delete option.bgImage
