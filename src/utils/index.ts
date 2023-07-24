@@ -134,3 +134,21 @@ export function createImage(url: string): HTMLImageElement {
   image.setAttribute("crossOrigin",'Anonymous')
   return image
 }
+
+export function setImageOption(option: any, isJson: boolean = true) {
+  let _option = deepCopy(option)
+  if(typeof option.backgroundColor === 'object') {
+    _option.backgroundColor.image = _option.backgroundColor.url
+    delete _option.backgroundColor.url
+    if(_option.graphic.length) {
+      for(let item of _option.graphic) {
+        if(item.type === 'image') {
+          item.style.image = item.style.url
+          delete item.style.url
+        }
+      }
+    }
+    return isJson ? JSON.stringify(_option) : _option
+  }
+  return isJson ? JSON.stringify(_option) : _option
+}

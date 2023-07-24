@@ -34,7 +34,7 @@ import emptyTip from "@/components/emptyTip.vue"
 import {useRouter} from "vue-router";
 import {getChartDetail} from "@/network/chart";
 import useProxy from "@/hooks/useProxy";
-import {deepCopy} from "@/utils";
+import {createImage, deepCopy} from "@/utils";
 import useCommonStore from "@/store/common";
 
 
@@ -66,6 +66,20 @@ const getConfig = async () => {
   image.value = data.data.cover
   detailType.value = data.data.type
   type.value = parseInt(data.data.type).toString()
+  if(typeof data.data.option.backgroundColor === 'object') {
+    let src = data.data.option.backgroundColor.image
+    data.data.option.backgroundColor.image = createImage(src)
+    data.data.option.backgroundColor.url = src
+  }
+  if(data.data.option.graphic.length) {
+    for(let item of data.data.option.graphic) {
+      if(item.type === 'image') {
+        let src = item.style.image
+        item.style.image = createImage(src)
+        item.style.url = src
+      }
+    }
+  }
   try {
     let res = await import(`@/chartConfig/config/${parseInt(data.data.type)}_/chart${data.data.type}`)
     let option = res.default()

@@ -33,6 +33,7 @@ import useCommonStore from "@/store/common";
 import optionItems from '@/components/optionItems.vue'
 import graphicComItem from "@/components/graphicComItem.vue"
 import { ElMessageBox } from "element-plus";
+import {createImage} from "@/utils";
 const proxy = useProxy()
 const _common: any = useCommonStore()
 const drawer = ref<boolean>(false)
@@ -48,7 +49,7 @@ const handleClose = (done: () => void) => {
     cancelButtonText: '取消',
   }).then(() => {
     let g = coveyConfigToOption(config)
-    console.log(g)
+    console.log(g, '----')
     proxy.$Bus.emit("optionChange", {
       graphic: g,
     });
@@ -74,7 +75,11 @@ const coveyConfigToOption = (config: ConfigInt[]): any[] => {
         if(key == 'left' || key == 'top') {
           p[key] = item[key]["value"] + '%'
         } else {
-          p[key] = item[key]["value"]
+          if(key === 'image') {
+            p[key] = createImage(item[key]["value"])
+            p['url'] = item[key]["value"]
+          }
+          else p[key] = item[key]["value"]
         }
       } else {
         if(key == 'left' || key == 'top') {
@@ -157,7 +162,7 @@ const getConfigs = (options: any[]) => {
         image: {
           type: 'imgload',
           title: '图片上传',
-          value: item.style.image,
+          value: item.style.image ? item.style.url : '',
           attr: 'style'
         },
         left: {

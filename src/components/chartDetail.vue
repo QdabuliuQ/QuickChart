@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import {reactive, ref, defineProps, withDefaults} from "vue";
 import {useRouter} from "vue-router";
-import {conveyToImage, getInfo} from "@/utils";
+import {conveyToImage, getInfo, setImageOption} from "@/utils";
 import {useCheckState} from "@/hooks/useCheckState";
 import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
@@ -90,14 +90,6 @@ const rules = reactive<FormRules>({
     { max: 15, message: '图表名称不能超过15个字符', trigger: 'blur' },
   ],
 })
-const dataURLtoFile = (dataURI: string, type: string) => {
-  let binary = atob(dataURI.split(',')[1]);
-  let array = [];
-  for (let i = 0; i < binary.length; i++) {
-    array.push(binary.charCodeAt(i));
-  }
-  return new Blob([new Uint8Array(array)], {type: type});
-}
 const base64ToFile = (): File => {
   let base64 = chartDomRef.value.chartInstance.getDataURL({
     pixelRatio: 1
@@ -119,23 +111,13 @@ const saveChart = async () => {
       text: '加载中',
       background: 'rgba(0, 0, 0, 0.7)',
     })
-    if(typeof common.option.backgroundColor === 'object') {
-      proxy.$Bus.emit("setBgImage", 'image')
-    }
-    let base64 = chartDomRef.value.chartInstance.getDataURL({
-      pixelRatio: 1
-    })
-    let blob = dataURLtoFile(base64, 'image/png');
-    let cover = new File([blob], Date.now() + '.png');
-    if(typeof common.option.backgroundColor === 'object') {
-      proxy.$Bus.emit("setBgImage", 'url')
-    }
+
+    let cover = base64ToFile()
     const formData = new FormData();
-    // let cover = base64ToFile()
     formData.append("cover", cover);
     formData.append("name", form.name);
     formData.append("type", props.detailType);
-    formData.append("option", JSON.stringify(common.$state.option));
+    formData.append("option", setImageOption(common.option));
 
     let { data } = await postChart(formData)
     if(!data.status) {
@@ -171,35 +153,27 @@ const toUpdate = async () => {
     text: '加载中',
     background: 'rgba(0, 0, 0, 0.7)',
   })
-  console.log(common.option)
-  // let blob = await conveyToImage(chartDomRef.value.chartDomRef);
-  // const formData = new FormData();
-  // let base64 = chartDomRef.value.chartInstance.getDataURL({
-  //   pixelRatio: 1
-  // })
-  // let blob = dataURLtoFile(base64, 'image/png');
-  // let cover = new File([blob], Date.now() + '.png');
-  // const formData = new FormData();
-  // // let cover = base64ToFile()
-  // formData.append("cover", cover);
-  // formData.append("chart_id", props.chart_id);
-  // formData.append("option", JSON.stringify(common.$state.option));
-  //
-  // let { data } = await putChart(formData)
-  //
-  // if(!data.status) {
-  //   save_loading.close()
-  //   return proxy.$notice({
-  //     type: 'error',
-  //     message: data.msg,
-  //     position: 'top-left'
-  //   })
-  // }
-  // proxy.$notice({
-  //   type: 'success',
-  //   message: data.msg,
-  //   position: 'top-left'
-  // })
+  let cover = base64ToFile()
+  const formData = new FormData();
+  formData.append("cover", cover);
+  formData.append("chart_id", props.chart_id);
+  formData.append("option", setImageOption(common.option));
+
+  let { data } = await putChart(formData)
+
+  if(!data.status) {
+    save_loading.close()
+    return proxy.$notice({
+      type: 'error',
+      message: data.msg,
+      position: 'top-left'
+    })
+  }
+  proxy.$notice({
+    type: 'success',
+    message: data.msg,
+    position: 'top-left'
+  })
   save_loading.close()
 }
 

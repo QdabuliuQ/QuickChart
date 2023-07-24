@@ -20,7 +20,7 @@ import {
 } from "vue";
 import useCommonStore from "@/store/common";
 import useProxy from "@/hooks/useProxy";
-import {createImage, deepCopy} from '@/utils/index'
+import {createImage, deepCopy, setImageOption} from '@/utils/index'
 
 interface comInitData {
   options: any;
@@ -104,8 +104,11 @@ const base64ToBlob = (code: string) => {
   return new Blob([uInt8Array], {type: contentType});
 };
 const getCode = (type: string) => {
-  Reflect.deleteProperty(data.option, "waterMark");
-  let jdata: any = JSON.stringify(data.option, null, 4);
+  // let _option: any = deepCopy(data.option)
+  let _option = setImageOption(data.option, false)
+  delete _option.waterMark
+  // Reflect.deleteProperty(data.option, "waterMark");
+  let jdata: any = JSON.stringify(_option, null, 4);
   const optionCode = jdata.replace(/"(\w+)":/g, "$1:");
   if (type == 'js') {
     data.code = `
@@ -125,27 +128,6 @@ const initChart = () => {
 
   data.option = common.option;
   data.code = common.option;
-
-  proxy.$Bus.on("setBgImage", (type: 'image'|'url') => {
-    if(type === 'image') {
-      const url = common.option.backgroundColor.image
-      let image = createImage(url)
-      chartInstance.setOption({
-        backgroundColor: {
-          image,
-          repeat: 'repeat',
-        }
-      })
-    } else {
-      const url = common.option.backgroundColor.image
-      chartInstance.setOption({
-        backgroundColor: {
-          image: url,
-          repeat: 'repeat',
-        }
-      })
-    }
-  })
 
   // 监听图表配置变化
   proxy.$Bus.on("optionChange", (e: any) => {
