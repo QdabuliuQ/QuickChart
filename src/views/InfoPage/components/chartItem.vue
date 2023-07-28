@@ -89,7 +89,7 @@ const blurEvent = async () => {  // 失去焦点 关闭输入框
     })
   }
   if(_name === name.value) return
-  let { data } = await putChartName({  // 调用接口
+  let data = await putChartName({  // 调用接口
     name: _name,
     chart_id: props.chart_id
   })
@@ -127,7 +127,7 @@ const deleteEvent = () => {
     }
   )
     .then(async () => {
-      let { data } = await deleteChart({
+      let data = await deleteChart({
         chart_id: props.chart_id
       })
       if(!data.status) return proxy.$notice({

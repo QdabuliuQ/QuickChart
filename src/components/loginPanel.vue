@@ -109,7 +109,7 @@ const sendCode = async () => {  // 发送验证码
     position: "top-left",
   });
   if(emailPattern.test(email)) {
-    let { data } = await getCode({
+    let data = await getCode({
       email,
       type: 'login'
     })
@@ -151,7 +151,7 @@ const toLogin = () => {  // 登录
       position: "top-left",
     })
     if(type.value === 'code') {  // 验证码登录
-      let { data } = await loginByCode({
+      let data = await loginByCode({
         email: form.email,
         code: form.code
       })
@@ -169,7 +169,7 @@ const toLogin = () => {  // 登录
       emits('finished')
       proxy.$Bus.emit('logined')
     } else {  // 密码登录
-      let { data } = await login({
+      let data = await login({
         email: form.email,
         password: en.encrypt(form.password) as string,
       })

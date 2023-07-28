@@ -5,19 +5,47 @@
       <div class="scrollContainer">
         <el-button v-if="props.back" @click="router.go(-1)" class="backBtn" type="info"> <i class="iconfont i_exit"></i>返回</el-button>
         <div class="btnList">
-          <el-button @click="toSave" type="primary" >
+          <el-button v-login="() => visible = true" type="primary" >
             <i class="iconfont i_save1"></i>
             另存为
           </el-button>
-          <el-button v-if="props.update" @click="toUpdate" type="success" >
+          <el-button v-if="props.update" v-login="toUpdate" type="success" >
             <i class="iconfont i_save"></i>
             保存
+          </el-button>
+          <el-button v-login="() => shareVisible = true" v-if="props.share" class="shareBtn" type="primary" color="#626aef">
+            <i class="iconfont i_share"></i>
+            分享
           </el-button>
         </div>
         <chart-dom ref="chartDomRef" :key="key" />
       </div>
     </div>
   </div>
+  <el-dialog
+    v-model="shareVisible"
+    title="分享"
+    width="30%"
+    @close="shareContent = ''"
+  >
+    <el-input
+      v-model="shareContent"
+      maxlength="300"
+      placeholder="说点什么吧~~~"
+      show-word-limit
+      type="textarea"
+      :rows="6"
+      :resize="'none'"
+    />
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="shareVisible = false">取消</el-button>
+        <el-button type="primary" @click="shareEvent">
+          提交
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
   <el-dialog
     v-model="visible"
     title="保存图表"
@@ -47,7 +75,7 @@
 <script setup lang="ts">
 import {reactive, ref, defineProps, withDefaults} from "vue";
 import {useRouter} from "vue-router";
-import {conveyToImage, getInfo, setImageOption} from "@/utils";
+import {setImageOption} from "@/utils";
 import {useCheckState} from "@/hooks/useCheckState";
 import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
@@ -55,6 +83,7 @@ import ChartDom from "@/components/chartDom.vue";
 import {ElLoading, FormInstance, FormRules} from "element-plus";
 import {postChart, putChart} from "@/network/chart";
 import useCommonStore from "@/store/common";
+import {postEvent} from "@/network/event";
 
 const router = useRouter()
 const props = withDefaults(defineProps<{
@@ -63,6 +92,7 @@ const props = withDefaults(defineProps<{
   loading: boolean
   back?: boolean
   update?: boolean
+  share?: boolean
   chart_id?: string
 }>(), {
   type: '',
@@ -70,12 +100,14 @@ const props = withDefaults(defineProps<{
   loading: true,
   back: false,
   update: false,
+  share: false,
   chart_id: ''
 })
-// const props =
 const common: any = useCommonStore();
 const proxy = useProxy()
 const visible = ref<boolean>(false)
+const shareVisible = ref<boolean>(false)
+const shareContent = ref<string>('')
 const key = ref<number>(0)
 const formRef = ref<FormInstance>()
 const chartDomRef = ref()
@@ -119,7 +151,7 @@ const saveChart = async () => {
     formData.append("type", props.detailType);
     formData.append("option", setImageOption(common.option));
 
-    let { data } = await postChart(formData)
+    let data: any = await postChart(formData)
     if(!data.status) {
       save_loading.close()
       return proxy.$notice({
@@ -138,16 +170,7 @@ const saveChart = async () => {
   })
 }
 
-const toSave = () => {
-  let res = getInfo()
-  if(!res) (useCheckState() as any).check(proxy)
-  else visible.value = true
-}
-
 const toUpdate = async () => {
-
-  let info = getInfo()
-  if(!info) (useCheckState() as any).check(proxy)
   save_loading = ElLoading.service({
     lock: true,
     text: '加载中',
@@ -159,7 +182,7 @@ const toUpdate = async () => {
   formData.append("chart_id", props.chart_id);
   formData.append("option", setImageOption(common.option));
 
-  let { data } = await putChart(formData)
+  let data: any = await putChart(formData)
 
   if(!data.status) {
     save_loading.close()
@@ -175,6 +198,25 @@ const toUpdate = async () => {
     position: 'top-left'
   })
   save_loading.close()
+}
+
+const shareEvent = async () => {
+  let content = shareContent.value.trim()
+  if (content.length === 0 || content.length > 300) return proxy.$notice({
+    type: 'error',
+    message: '输入内容有误',
+    position: 'top-left'
+  })
+  let data: any = await postEvent({
+    chart_id: props.chart_id,
+    content
+  })
+  proxy.$notice({
+    type: 'success',
+    message: data.msg,
+    position: 'top-left'
+  })
+  shareVisible.value = false
 }
 
 </script>
@@ -241,6 +283,16 @@ const toUpdate = async () => {
         .iconfont {
           margin-right: 5px;
           font-size: 14px;
+        }
+        .shareBtn {
+          &:hover {
+            border: 1px solid #555bca;
+            background-color: #555bca;
+          }
+          &:focus {
+            border: 1px solid #555bca;
+            background-color: #555bca;
+          }
         }
         .el-button-style();
       }

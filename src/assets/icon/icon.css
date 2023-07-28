@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_t88xur73mil.woff2?t=1689599079664') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3670180_t88xur73mil.woff?t=1689599079664') format('woff'),
-  url('//at.alicdn.com/t/c/font_3670180_t88xur73mil.ttf?t=1689599079664') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_lc3hws8jmwr.woff2?t=1690551875037') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3670180_lc3hws8jmwr.woff?t=1690551875037') format('woff'),
+  url('//at.alicdn.com/t/c/font_3670180_lc3hws8jmwr.ttf?t=1690551875037') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_share:before {
+  content: "\e626";
+}
+
+.i_comment:before {
+  content: "\e612";
+}
+
+.i_praise:before {
+  content: "\e62a";
+}
+
+.i_all:before {
+  content: "\e684";
 }
 
 .i_copy:before {
@@ -27,10 +43,6 @@
 
 .i_save1:before {
   content: "\e6cb";
-}
-
-.i_save2:before {
-  content: "\e61f";
 }
 
 .i_email:before {

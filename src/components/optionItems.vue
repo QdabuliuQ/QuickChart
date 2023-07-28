@@ -10,7 +10,13 @@
         <el-option v-for="prop in item.options" :key="prop.value" :label="prop.label" :value="prop.value" />
       </el-select>
       <el-input v-else-if="item.type == 'input_text'" size="small" v-model="item.value" />
-      <imageUpload v-else-if="item.type == 'imgload'" @deleteImage="() => item.value = ''" @imageChange="(e: any) => item.value = e" :image="item.value" />
+      <imageUpload
+        v-else-if="item.type == 'imgload'"
+        @deleteImage="() => item.value = ''"
+        @imageChange="(e: any) => item.value = e"
+        :image="item.value"
+        :imgType="item.imgType ? item.imgType : 'url'"
+        :imgSize="item.imgSize ? item.imgSize : 100"/>
     </seriesItem>
   </div>
 </template>

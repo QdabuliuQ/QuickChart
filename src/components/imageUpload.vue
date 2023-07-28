@@ -13,7 +13,9 @@
       </el-button>
     </div>
     <el-dialog class="imagePreviewDialog" v-model="dialogVisible">
-      <img w-full :src="props.image" />
+      <div class="imageContainer">
+        <img w-full :src="props.image" />
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -25,6 +27,8 @@ import {graphicUpload} from "@/network/chart";
 const proxy = useProxy()
 const props = defineProps<{
   image: string
+  imgType: string
+  imgSize: number
 }>()
 const emits = defineEmits([
     "imageChange",
@@ -41,27 +45,32 @@ const deleteImage = () => {
 const fileUpload = async (e: Event) => {
   let img = (inputRef.value as any).files[0]
   if(fileType(img.name) == 'image') {
-    if(img.size / 1024 > 100) {
+    if(img.size / 1024 > props.imgSize) {
       proxy.$notice({
-        message: '图片大小不能大于100kb',
+        message: `图片大小不能大于${props.imgSize}kb`,
         type: 'error',
         position: 'top-left'
       })
     } else {
-      let formData = new FormData()
-      formData.append('image', img)
-      let { data } = await graphicUpload(formData)
-      if(!data.status) return proxy.$notice({
-        message: data.msg,
-        type: 'error',
-        position: 'top-left'
-      })
-      // let image = new Image();
-      // image.src = data.url
-      // image.setAttribute("crossOrigin",'Anonymous')
-      // emits("imageChange", image)
-
-      emits("imageChange", data.url)
+      if(props.imgType === 'url') {
+        let formData = new FormData()
+        formData.append('image', img)
+        let data = await graphicUpload(formData)
+        if(!data.status) return proxy.$notice({
+          message: data.msg,
+          type: 'error',
+          position: 'top-left'
+        })
+        emits("imageChange", data.url)
+      } else {
+        const reader = new FileReader();
+        reader.readAsDataURL(img);
+        reader.onload = function (ev: any) {
+          console.log(ev.target.result)
+          // base64码
+          emits("imageChange", ev.target.result)
+        }
+      }
     }
   } else {
     proxy.$notice({
@@ -76,11 +85,19 @@ const fileUpload = async (e: Event) => {
 .imagePreviewDialog {
   .el-dialog__body {
     height: 50vh;
-    img {
-      width: 100%;
+
+    .imageContainer {
+      background-image: url("../assets/image/bg.jpg");
+      background-repeat: repeat;
+      background-size: cover;
       height: 100%;
-      object-fit: contain;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
+
   }
 }
 .imageUpload {

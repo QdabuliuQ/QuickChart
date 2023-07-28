@@ -1,7 +1,7 @@
 import { ListInt } from "@/chartConfig/constant"
 
 type optionType = null | 'imgload' | 'select' | 'input_number' | 'input_text' | 'color_picker' | 'switch'
-export interface  ConfigInt {
+export interface ConfigInt {
   [propName: string]: {
     type: optionType
     value?: any
@@ -15,5 +15,29 @@ export interface  ConfigInt {
     unit?: string
     pre?: string
     suf?: string
+    imgType?: string
+    imgSize?: number
   }
+}
+
+export interface EventInt {
+  chart_id: string
+  content: string
+  cover: string
+  event_id: string
+  name: string
+  nickname: string
+  state: string
+  time: number
+  user_id: string
+  user_pic: string
+  is_praise: number
+  praise_count: number
+}
+
+export interface ResponseInt {
+  msg: string
+  status: number
+  data?: any
+  [props: string]: any
 }

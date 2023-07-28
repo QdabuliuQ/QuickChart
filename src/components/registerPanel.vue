@@ -89,7 +89,7 @@ const sendCode = async () => {  // 发送验证码
     position: "top-left",
   });
   if (emailPattern.test(email)) {
-    let {data} = await getCode({
+    let data: any = await getCode({
       email,
       type: 'register'
     })
@@ -124,7 +124,7 @@ const registerEvent = async () => {  // 注册账号
   })
   await (ruleFormRef.value as any).validate(async (valid: boolean) => {
     if (valid) {
-      let {data} = await register({
+      let data: any = await register({
         email: form.email,
         code: form.code,
         password: en.encrypt(form.password) as string,

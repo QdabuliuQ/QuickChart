@@ -51,7 +51,7 @@ const limit = ref<number>(0)
 const proxy = useProxy()
 
 const getData = async () => {
-  let {data} = await getChart({
+  let data: any = await getChart({
     offset: offset.value
   })
   if (!data.status) return proxy.$notice({

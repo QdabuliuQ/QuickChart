@@ -33,11 +33,8 @@ const config = reactive<ConfigInt>({
 
 const getData = () => {
   const option = getConfigValue(config)
-  console.log(option)
   if(option.bgImage) {
     return {
-      // repeat: 'repeat',
-      // image: option.bgImage
       image: createImage(option.bgImage),
       url: option.bgImage,
       repeat: 'repeat',

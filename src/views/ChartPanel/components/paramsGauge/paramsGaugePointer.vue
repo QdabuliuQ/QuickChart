@@ -10,7 +10,7 @@ import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
 import useCommonStore from "@/store/common";
 import {ConfigInt} from '@/types/common';
-import {getConfigValue} from '@/utils';
+import {createImage, getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
@@ -24,7 +24,9 @@ const config = reactive<ConfigInt>({
   icon: {
     type: 'imgload',
     title: '指针图标',
-    value: seriesPointer.icon
+    imgType: 'base64',
+    imgSize: 10,
+    value: seriesPointer.icon ? seriesPointer.icon.replace('image://', '') : ''
   },
   offsetX: {
     type: 'input_number',
@@ -111,7 +113,11 @@ const getData = () => {
   const series = _common.option.series
   const option = getConfigValue(config)
   option.offsetCenter = [option.offsetY, option.offsetX]
-  if(option.icon) option.icon = "image://" + option.icon
+  console.log(option)
+  // if(option.icon) option.icon = "image://" + option.icon
+  if(option.icon) {
+    option.icon = 'image://' + option.icon
+  }
   delete option.offsetX
   delete option.offsetY
   series.pointer = option

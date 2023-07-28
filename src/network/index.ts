@@ -1,6 +1,8 @@
 import axios from "axios"
+import { ElNotification } from 'element-plus'
+// import Mitt from "@/mitt"
 
-const oss = 'http://127.0.0.1:3031'
+const oss: string = 'http://127.0.0.1:3031'
 export const getToken = (): string => {
   return localStorage.getItem('token') ?? ''
 }
@@ -40,20 +42,26 @@ export const upload = (url: string, data: any) => {
 // })
 
 // 响应拦截器
-// ajax.interceptors.response.use((req: any): any => {
-//   if(req.data.status == -1) {
-//     Toast.fail('登录失效')
-//     localStorage.removeItem('info')
-//     localStorage.removeItem('id')
-//     localStorage.removeItem('token')
-//     window.location.href = window.location.protocol + '//' + window.location.host + '/login'
-//   } else {
-//     return req.data
-//   }
-// }, err=>{
-//   Toast.fail('网络错误')
-//   return
-// });
+ajax.interceptors.response.use((req: any): any => {
+  if(req.data.status == 0) {
+    ElNotification({
+      type: 'error',
+      message: req.data.msg,
+      position: 'top-left'
+    })
+  } else {
+    return req.data
+  }
+
+  // if(req.data.status == -1) {
+  //   // window.location.href = window.location.protocol + '//' + window.location.host + '/login'
+  // } else {
+  //   return req.data
+  // }
+}, err=>{
+  // Toast.fail('网络错误')
+  return
+});
 
 
 export default ajax

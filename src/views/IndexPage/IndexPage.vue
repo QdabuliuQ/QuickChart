@@ -1,50 +1,25 @@
 <template>
   <div id="IndexPage">
-    <div class="header">
-      <div class="logo">
-        <img
-          @click="router.push('/')"
-          class="logoIcon" src="@/assets/image/logo.png" alt="" />
-        <img
-          @click="router.push('/')"
-          class="
+    <div  class="header">
+      <div class="left">
+        <div class="logo" @click="router.push('/')">
+          <img
+            class="logoIcon" src="@/assets/image/logo.png" alt=""/>
+          <img
+            class="
             titleIcon
             animate__animated animate__delay-2s animate__rubberBand
           "
-          src="@/assets/image/quickChart.png"
-          alt=""
-        />
-        <div class="userInfo">
-          <div class="user">
-            <el-popover placement="bottom" :width="300" trigger="hover">
-              <template #reference>
-                <span>QdabuliuQ</span>
-              </template>
-              <div class="infoContainer">
-                <div>
-                  项目仓库地址：
-                  <a href="https://github.com/QdabuliuQ/EchartQwQ"
-                    >https://github.com/QdabuliuQ/EchartQwQ</a
-                  >
-                </div>
-                <div class="infoItem">
-                  <el-divider content-position="left">
-                    <span class="title">更多信息：</span>
-                  </el-divider>
-                  <div class="itemContainer">
-                    <div class="item">
-                      <img src="@/assets/image/github.png" alt="" />
-                      <a href="https://github.com/QdabuliuQ">Github仓库</a>
-                    </div>
-                    <div class="item">
-                      <img src="@/assets/image/gitee.png" alt="" />
-                      <a href="https://gitee.com/qdabuliuq">Gitee仓库</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </el-popover>
-            出品
+            src="@/assets/image/quickChart.png"
+            alt=""
+          />
+        </div>
+        <div class="menu">
+          <div @click="toPage('home')" :class="[active == 'home' ? 'active' : '', 'menuItem']">
+            首页
+          </div>
+          <div @click="toPage('community')" :class="[active == 'community'  ? 'active' : '', 'menuItem']">
+            社区
           </div>
         </div>
       </div>
@@ -60,12 +35,12 @@
           :hide-after="50"
         >
           <template #reference>
-            <div @click="visible = true" class="moreItem">
-              <img :src="info.user_pic" />
+            <div class="moreItem">
+              <img :src="info.user_pic"/>
               {{ info.nickname }}
             </div>
           </template>
-          <menu-list />
+          <menu-list/>
         </el-popover>
       </div>
     </div>
@@ -76,9 +51,9 @@
 </template>
 
 <script setup lang='ts'>
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
-import {reactive, ref} from "vue";
+import {onUnmounted, reactive, ref, watch} from "vue";
 import {useLogin} from "@/hooks/useLogin";
 import menuList from "@/components/menuList.vue"
 
@@ -86,10 +61,13 @@ const router = useRouter()
 const proxy = useProxy()
 
 const isLogin = ref(false)
+const active = ref<string>('home')
+
 interface infoInt {
   email: string
   nickname: string
 }
+
 const info: any = reactive<infoInt>({
   email: '',
   nickname: ''
@@ -100,18 +78,34 @@ const toLogin = () => {
 }
 
 let res: any = useLogin(false)
-if(res) {
-  for(let key in (res as infoInt)) {
+if (res) {
+  for (let key in (res as infoInt)) {
     info[key] = res[key]
   }
   isLogin.value = true
 }
 proxy.$Bus.on('logined', () => {
   let _info: any = JSON.parse(localStorage.getItem('info') as string)
-  for(let key in _info) {
+  for (let key in _info) {
     info[key] = _info[key]
   }
   isLogin.value = true
+})
+
+const toPage = (path: string) => {
+  router.push('/index/' + path)
+  // router.push(path)
+}
+
+let stop = watch(() => router.currentRoute.value.path, () => {
+  console.log(router.currentRoute.value)
+  active.value = router.currentRoute.value.name as string
+}, {
+  immediate: true
+})
+
+onUnmounted(() => {
+  stop()
 })
 
 </script>
@@ -121,34 +115,64 @@ proxy.$Bus.on('logined', () => {
   width: 80%;
   margin: 0 auto;
   min-width: 1100px;
+
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
     border-bottom: 2px solid #494949;
+    .left {
+      display: flex;
+      align-items: center;
+    }
+    .menu {
+      display: flex;
+      align-items: center;
+      .menuItem {
+        padding: 10px 30px 12px;
+        margin-right: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        letter-spacing: 3px;
+        text-indent: 3px;
+        &:hover {
+          background-color: @grey;
+        }
+      }
+      .active {
+        background-color: @theme !important;
+        color: #fff;
+      }
+    }
     .logo {
       display: flex;
       align-items: center;
+      margin-right: 50px;
       .logoIcon {
         cursor: pointer;
         width: 40px;
       }
+
       .titleIcon {
         cursor: pointer;
         width: 200px;
         margin-left: 5px;
         padding-right: 10px;
       }
+
       .userInfo {
         padding-left: 15px;
         box-sizing: border-box;
         border-left: 1px solid #ccc;
+
         .user {
           span {
             border-bottom: 2px dashed rgb(135, 135, 135);
             cursor: pointer;
             transition: 0.2s all linear;
+
             &:hover {
               color: @theme;
             }
@@ -156,9 +180,11 @@ proxy.$Bus.on('logined', () => {
         }
       }
     }
+
     .more {
       display: flex;
       align-items: center;
+
       .moreItem {
         color: #aaaaaa;
         margin-left: 20px;
@@ -167,13 +193,16 @@ proxy.$Bus.on('logined', () => {
         align-items: center;
         cursor: pointer;
         transition: .2s all linear;
+
         .iconfont {
           font-size: 25px;
           margin-right: 8px;
         }
+
         &:hover {
           color: @theme;
         }
+
         img {
           width: 30px;
           height: 30px;

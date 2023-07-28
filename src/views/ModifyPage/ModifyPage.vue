@@ -11,6 +11,7 @@
         <chart-detail
           :back="true"
           :update="true"
+          :share="true"
           :loading="chart_loading"
           :detail-type="detailType"
           :chart_id="id as string"
@@ -52,7 +53,7 @@ const data_loading = ref<boolean>(true)
 const image = ref<string>('')
 
 const getConfig = async () => {
-  const { data } = await getChartDetail({
+  let data = await getChartDetail({
     chart_id: id as string
   })
   if(!data.status) {
@@ -66,12 +67,12 @@ const getConfig = async () => {
   image.value = data.data.cover
   detailType.value = data.data.type
   type.value = parseInt(data.data.type).toString()
-  if(typeof data.data.option.backgroundColor === 'object') {
+  if(typeof data.data.option.backgroundColor === 'object') {  // 处理背景颜色
     let src = data.data.option.backgroundColor.image
     data.data.option.backgroundColor.image = createImage(src)
     data.data.option.backgroundColor.url = src
   }
-  if(data.data.option.graphic.length) {
+  if(data.data.option.graphic.length) {  // 处理图形组件
     for(let item of data.data.option.graphic) {
       if(item.type === 'image') {
         let src = item.style.image

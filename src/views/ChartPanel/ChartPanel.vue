@@ -66,9 +66,10 @@ const getConfig = async () => {
   detailType.value = router.currentRoute.value.params.id as string
   type.value = parseInt(router.currentRoute.value.params.id as string).toString()
   try {
-    image.value = require("@/assets/image/" +
-      detailType.value +
-      ".webp");
+    let m = await import("@/assets/image/" +
+    detailType.value +
+    ".webp");
+    image.value = m.default
     let res = await import(`@/chartConfig/config/${type.value}_/chart${detailType.value}`)
     let option = res.default()
     let chartConfig: any[] = [];

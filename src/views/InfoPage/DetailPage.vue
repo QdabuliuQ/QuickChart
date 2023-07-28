@@ -82,7 +82,7 @@ const updateInfo = debounce(async () => {
       position: 'top-left'
     })
   })
-  let { data } = await putProfile({
+  let data = await putProfile({
     user_pic: form.user_pic,
     desc: form.desc,
     homePage: form.homePage,
@@ -95,7 +95,7 @@ const updateInfo = debounce(async () => {
       position: "top-left"
     })
   } else {
-    let { data } = await getProfile();
+    let data = await getProfile();
     localStorage.setItem('info', JSON.stringify(data.data))
     for(let key in data.data) {
       form[key] = data.data[key]

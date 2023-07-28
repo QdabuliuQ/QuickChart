@@ -3,7 +3,7 @@
     <loading v-if="props.loading" :bgc="'rgb(66, 66, 66)'" text="" />
     <el-scrollbar v-else :height="height">
       <div class="chartCover">
-        <img :src="props.image" alt=""/>
+        <img :src="props.image.indexOf('data:image') != -1 ? props.image : props.image + '?tempid='+Math.random()" alt=""/>
       </div>
       <div class="btnList">
         <el-dropdown trigger="click">

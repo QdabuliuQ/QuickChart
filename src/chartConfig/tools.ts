@@ -10,7 +10,7 @@ export const replaceOptionValue = (origin: any, option: any): void => {
       }
     } else {
       let keys = key.split('.')
-      let data = origin
+      let { data } = origin
       for (let i = 0; i < keys.length - 1; i++) {
         data = data[keys[i]]
       }
