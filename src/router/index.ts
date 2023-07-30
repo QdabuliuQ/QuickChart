@@ -12,6 +12,8 @@ const DetailPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views
 const _ChartPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/ChartPage.vue')
 const ModifyPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/ModifyPage.vue')
 const CommunityPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/CommunityPage/CommunityPage.vue')
+const EventPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/EventPage.vue')
+
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/index' },
@@ -38,13 +40,17 @@ const routes: Array<RouteRecordRaw> = [
             component: _ChartPage
           },
           {
+            path: 'event',
+            name: 'event',
+            component: EventPage,
+          },
+          {
             path: 'detail',
             name: 'detail',
             component: DetailPage
           },
         ]
       },
-
     ]
   },
   {

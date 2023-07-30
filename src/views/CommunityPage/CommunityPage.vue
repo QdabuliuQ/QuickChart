@@ -14,19 +14,7 @@
       <div v-if="events.length" class="container">
         <eventItem
           v-for="item in events"
-          :key="item.event_id"
-          :chart_id="item.chart_id"
-          :content="item.content"
-          :cover="item.cover"
-          :event_id="item.event_id"
-          :name="item.name"
-          :nickname="item.nickname"
-          :state="item.state"
-          :time="item.time"
-          :user_id="item.user_id"
-          :user_pic="item.user_pic"
-          :is_praise="item.is_praise ? item.is_praise : 0"
-          :praise_count="item.praise_count ? item.praise_count : 0"
+          v-bind="item"
           @praiseEvent="(type: string) => {
             type === '1' ? item.praise_count ++ : item.praise_count --
             type === '1' ? item.is_praise ++ : item.is_praise --

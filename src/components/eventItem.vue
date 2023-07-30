@@ -14,6 +14,10 @@
           <div class="chartInfo">
             <div class="edit">编辑</div>
             <div class="name">{{ props.name }}</div>
+            <div class="author">
+              <el-avatar :size="27" :src="props.au_user_pic" />
+              <span>{{props.au_nickname}}</span>
+            </div>
           </div>
         </div>
         <img :alt="props.name" :src="props.cover"  />
@@ -47,6 +51,9 @@ interface EventInt {
   user_pic: string
   is_praise: number
   praise_count: number
+  au_nickname: string
+  au_user_pic: string
+  au_user_id: string
 }
 
 const props = defineProps<EventInt>()
@@ -137,6 +144,15 @@ const praiseEvent = async () => {
             overflow: hidden;
             white-space: nowrap;
             font-size: 15px;
+          }
+          .author {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            span {
+              margin-left: 5px;
+              font-size: 14px;
+            }
           }
         }
       }

@@ -13,7 +13,7 @@
       >
         <div class="imageContainer">
           <div @click="toggleChart" class="mask">插入图表</div>
-          <img :src="cover" alt="" />
+          <img :src="cover" alt=""/>
         </div>
         <div>{{ name }}</div>
       </div>
@@ -26,47 +26,22 @@
   </el-popover>
 </template>
 
-<script lang='ts'>
-import { defineComponent, reactive, toRefs } from "vue";
-import { useRouter } from "vue-router";
-import { ElMessageBox } from "element-plus";
-interface comInitData {
-  visible: boolean;
-}
+<script setup lang='ts'>
+import { ref} from "vue";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "chartItem",
-  props: ["cover", "id", "name"],
-  setup(props) {
-    const router = useRouter();
-    const data: comInitData = reactive({
-      visible: false,
-    });
+const props = defineProps<{
+  cover: string
+  id: string
+  name: string
+}>()
+const emits = defineEmits(['clickEvent'])
+const router = useRouter();
+const visible = ref<boolean>(false)
 
-    const toggleChart = () => {
-      console.log(router.currentRoute.value)
-      let curId = router.currentRoute.value.params.id;
-      if (curId != props.id && router.currentRoute.value.name == "type") {
-        ElMessageBox.confirm("单图中插入新图表将会替换原图表及数据", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }).then(() => {
-          router.push("/edit/chart/type/" + props.id);
-        });
-      } else if(curId != props.id){
-        console.log('11111')
-        router.push("/edit/chart/type/" + props.id);
-      }
-    };
-
-    return {
-      router,
-      toggleChart,
-      ...toRefs(data),
-    };
-  },
-});
+const toggleChart = () => {
+  emits('clickEvent', props.id)
+};
 </script>
 
 <style lang='less'>
@@ -86,9 +61,11 @@ export default defineComponent({
     aspect-ratio: 2/1.6;
     border: 1px solid #5f5f5f;
     box-sizing: border-box;
+
     &:hover .mask {
       opacity: 1;
     }
+
     .mask {
       position: absolute;
       width: 100%;
@@ -106,6 +83,7 @@ export default defineComponent({
       box-sizing: border-box;
       border: 2px solid @theme;
     }
+
     img {
       width: 100%;
       height: 100%;

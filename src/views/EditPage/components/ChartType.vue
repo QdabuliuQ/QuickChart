@@ -5,7 +5,7 @@
         <i style="font-size: 20px" class="iconfont i_bar"></i>
         <span>图表</span>
       </div>
-      <div @click="toggle('/MapPage', 1)" :class="[type == 1 ? 'active': '', 'typeItem']">
+      <div @click="toggle('map', 1)" :class="[type == 1 ? 'active': '', 'typeItem']">
         <i class="iconfont i_map"></i>
         <span>地图</span>
       </div>
@@ -48,7 +48,7 @@ const router = useRouter()
 const type = ref<number>(0)
 
 const toggle = (e: string, t: number) => {
-  router.replace(e)
+  router.replace('/edit/' + e)
   type.value = t
 }
 

@@ -33,6 +33,9 @@ export interface EventInt {
   user_pic: string
   is_praise: number
   praise_count: number
+  au_nickname: string
+  au_user_pic: string
+  au_user_id: string
 }
 
 export interface ResponseInt {

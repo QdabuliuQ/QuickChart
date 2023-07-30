@@ -21,7 +21,6 @@ export function postPraise(data: {
     data
   })
 }
-
 export function postEvent(data: {
   chart_id: string
   content: string
@@ -30,5 +29,15 @@ export function postEvent(data: {
     url: '/ev/event',
     method: 'post',
     data
+  })
+}
+export function getUserEvent(params: {
+  user_id: string
+  offset: number
+}) {
+  return ajax({
+    url: '/ev/userEvent',
+    method: 'get',
+    params
   })
 }

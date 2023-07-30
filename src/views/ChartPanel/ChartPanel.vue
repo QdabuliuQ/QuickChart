@@ -65,36 +65,38 @@ const opType = ref<number>(1)
 const getConfig = async () => {
   detailType.value = router.currentRoute.value.params.id as string
   type.value = parseInt(router.currentRoute.value.params.id as string).toString()
-  try {
-    let m = await import("@/assets/image/" +
-    detailType.value +
-    ".webp");
-    image.value = m.default
-    let res = await import(`@/chartConfig/config/${type.value}_/chart${detailType.value}`)
-    let option = res.default()
-    let chartConfig: any[] = [];
-    let tmpOption: any = {}; // 临时配置
-    for(let item of option) {
-      if (item.chartOption) {
-        tmpOption[item.opName] = item.defaultOption[item.opName];
-      }
-      if (item.menuOption) {
-        chartConfig.push(item);
-      }
+  let m = await import("@/assets/image/" +
+  detailType.value +
+  ".webp");
+  image.value = m.default
+  let res = await import(`@/chartConfig/config/${type.value}_/chart${detailType.value}`)
+  let option = res.default()
+  let chartConfig: any[] = [];
+  let tmpOption: any = {}; // 临时配置
+  for(let item of option) {
+    if (item.chartOption) {
+      tmpOption[item.opName] = item.defaultOption[item.opName];
     }
-    common.$patch((state: any) => {
-      state.option = tmpOption;
-      state.chartConfig = chartConfig;
-      state.defaultOption = deepCopy(tmpOption);
-    });
-    chart_loading.value = false
-    setTimeout(() => {
-      params_loading.value = false
-    }, 800)
-  } catch (err) {
-    console.log(err)
-    state.value = 0
+    if (item.menuOption) {
+      chartConfig.push(item);
+    }
   }
+  common.$patch((state: any) => {
+    state.option = tmpOption;
+    state.chartConfig = chartConfig;
+    state.defaultOption = deepCopy(tmpOption);
+  });
+  chart_loading.value = false
+  setTimeout(() => {
+    params_loading.value = false
+  }, 800)
+
+  // try {
+  //
+  // } catch (err) {
+  //   console.log(err)
+  //   state.value = 0
+  // }
 }
 getConfig()
 
