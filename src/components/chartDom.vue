@@ -20,7 +20,7 @@ import {
 } from "vue";
 import useCommonStore from "@/store/common";
 import useProxy from "@/hooks/useProxy";
-import {createImage, deepCopy, setImageOption} from '@/utils/index'
+import {deepCopy, setImageOption} from '@/utils/index'
 
 interface comInitData {
   options: any;

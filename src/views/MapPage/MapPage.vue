@@ -1,12 +1,19 @@
 <template>
   <div class="MapPage">
     <chart-menu :itemlist="list" :click-event="clickEvent" />
+    <div class="chartContainer">
+      <router-view></router-view>
+    </div>
   </div>
   <el-dialog
     v-model="visible"
     title="选择地区"
     width="45%"
     class="cityDialogClass"
+    @close="() => {
+      active = 0
+      cityActive = -1
+    }"
   >
     <div class="cityContainer">
       <div class="leftProvince">
@@ -30,7 +37,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="visible = false">取消</el-button>
-        <el-button type="primary" @click="visible = false">
+        <el-button type="primary" @click="confirmEvent">
           确认
         </el-button>
       </span>
@@ -43,6 +50,8 @@ import chartMenu from "@/components/chartMenu.vue"
 import list from "@/utils/mapItem"
 import {getCityData} from "@/network/map";
 import {ref} from "vue";
+import {ElMessageBox} from "element-plus";
+import {useRouter} from "vue-router";
 
 interface CityInt {
   adcode: string
@@ -55,11 +64,12 @@ interface CityInt {
   }[]
 }
 
-const visible = ref<boolean>(true)
+const visible = ref<boolean>(false)
 const city = ref<CityInt[]>([])
 const active = ref<number>(0)
 const cityActive = ref<number>(-1)
-
+const mapId = ref<string>('')
+const router = useRouter()
 
 const getData = async () => {
   if(localStorage.getItem('city')) {
@@ -77,16 +87,36 @@ const provinceClick = (idx: number) => {
   cityActive.value = -1
 }
 const cityClick = (idx: number) => {
-  cityActive.value = idx
+  if(idx === cityActive.value) cityActive.value = -1
+  else cityActive.value = idx
 }
 
-const clickEvent = () => {
+const clickEvent = (id: string) => {
+  let curId = router.currentRoute.value.params.id;
+  if (curId != id && router.currentRoute.value.name == "mapType") {
+    visible.value = true
+  } else if (curId != id) {
+    visible.value = true
+  }
+  mapId.value = id
+}
 
+const confirmEvent = () => {
+  let adcode = cityActive.value !== -1 ? (city.value[active.value] as any).districts[cityActive.value].adcode : city.value[active.value].adcode
+  router.push('/edit/map/type/' + mapId.value + '/' + adcode)
+  visible.value = false
 }
 
 </script>
 
 <style lang='less'>
+.MapPage {
+  height: 100%;
+  display: flex;
+  .chartContainer {
+    flex: 1;
+  }
+}
 .cityDialogClass {
   .el-dialog__body {
     padding: 15px;
@@ -133,7 +163,6 @@ const clickEvent = () => {
         }
       }
     }
-
   }
 }
 </style>

@@ -6,3 +6,13 @@ export function getCityData() {
     method: 'get'
   })
 }
+
+export function getCityJSON(params: {
+  adcode: string
+}) {
+  return ajax({
+    url: '/map/cityJSON',
+    method: 'get',
+    params
+  })
+}

@@ -1,5 +1,5 @@
 <template>
-  <div id="ChartPage">
+  <div class="ChartPage">
     <chart-menu :click-event="clickEvent" :itemlist="list" />
     <div class="chartContainer">
       <router-view></router-view>
@@ -32,7 +32,7 @@ const clickEvent = (id: string) => {
 </script>
 
 <style lang='less'>
-#ChartPage {
+.ChartPage {
   height: 100%;
   display: flex;
   .chartContainer {

@@ -76,7 +76,6 @@
 import {reactive, ref, defineProps, withDefaults} from "vue";
 import {useRouter} from "vue-router";
 import {setImageOption} from "@/utils";
-import {useCheckState} from "@/hooks/useCheckState";
 import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
 import ChartDom from "@/components/chartDom.vue";
@@ -249,31 +248,32 @@ const shareEvent = async () => {
           margin-right: 5px;
         }
       }
+      .scrollContainer();
 
       /* 滚动条整体 */
-      &::-webkit-scrollbar {
-        height: 10px;
-        width: 10px;
-      }
-
-      /* 两个滚动条交接处 -- x轴和y轴 */
-      &::-webkit-scrollbar-corner {
-        background-color: transparent;
-      }
-
-      /* 滚动条滑块 */
-      &::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-        background: #535353;
-      }
-
-      /* 滚动条轨道 */
-      &::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        background: transparent;
-      }
+      //&::-webkit-scrollbar {
+      //  height: 10px;
+      //  width: 10px;
+      //}
+      //
+      ///* 两个滚动条交接处 -- x轴和y轴 */
+      //&::-webkit-scrollbar-corner {
+      //  background-color: transparent;
+      //}
+      //
+      ///* 滚动条滑块 */
+      //&::-webkit-scrollbar-thumb {
+      //  border-radius: 10px;
+      //  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      //  background: #535353;
+      //}
+      //
+      ///* 滚动条轨道 */
+      //&::-webkit-scrollbar-track {
+      //  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      //  border-radius: 10px;
+      //  background: transparent;
+      //}
 
       .btnList {
         position: absolute;

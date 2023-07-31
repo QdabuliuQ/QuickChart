@@ -1,35 +1,11 @@
 <template>
-  <div class="ChartPanel">
+  <div class="MapPanel">
     <div class="infoContainer" v-if="state === 1">
       <div class="leftChartContainer">
-        <chart-detail
+        <map-detail
           :loading="chart_loading"
           :detail-type="detailType"
-          :type="type" />
-      </div>
-      <div class="rightParamsContainer">
-        <div class="panelBtnList">
-          <div @click="toggle(0)" :class="[opType == 0 ? 'active' : '', 'btnItem']">
-            编辑数据
-          </div>
-          <div @click="toggle(1)" :class="[opType == 1 ? 'active' : '', 'btnItem']">
-            编辑图表
-          </div>
-        </div>
-        <div :style="{
-          width: opType === 0 ? '450px' : '220px'
-        }" class="paramsContainer">
-          <chart-data
-            v-show="opType == 0"
-            :detail_type="detailType"
-            :type="type"
-            :key="detailType"
-            :loading="data_loading" />
-          <chart-params
-            v-show="opType == 1"
-            :loading="params_loading"
-            :image="image" />
-        </div>
+          :type="type"/>
       </div>
     </div>
     <div v-else class="emptyContainer">
@@ -37,39 +13,49 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from "vue";
-import useCommonStore from "@/store/common";
-import useProxy from "@/hooks/useProxy";
+
 import {useRouter} from "vue-router";
-import {deepCopy} from "@/utils";
-import ChartDetail from "@/components/chartDetail.vue";
-import ChartParams from "@/components/chartParams.vue";
-import ChartData from "@/components/chartData.vue";
+import {getCityJSON} from "@/network/map";
+import {ref} from "vue";
 import EmptyTip from "@/components/emptyTip.vue";
+import MapDetail from "@/components/mapDetail.vue";
+import {deepCopy} from "@/utils";
+import useCommonStore from "@/store/common";
 
 const common: any = useCommonStore();
-const proxy = useProxy()
 const router = useRouter()
-
-const state = ref<number>(1)
-const chart_loading = ref<boolean>(true)
-const params_loading = ref<boolean>(true)
-const data_loading = ref<boolean>(true)
+const {
+  id,
+  adcode
+} = router.currentRoute.value.params
 const detailType = ref<string>('')
 const type = ref<string>('')
+const state = ref<number>(1)
 const image = ref<string>('')
-const opType = ref<number>(1)
+const chart_loading = ref<boolean>(true)
+let JSONData: any = ''
+const getJSON = async () => {
+  if(localStorage.getItem("MAP"+adcode)) {
+    JSONData = localStorage.getItem("MAP"+adcode)
+  } else {
+    let data = await getCityJSON({
+      adcode: adcode as string
+    })
+    JSONData = data.data
+    localStorage.setItem("MAP"+adcode, JSONData)
+  }
+}
 
 const getConfig = async () => {
-  detailType.value = router.currentRoute.value.params.id as string
-  type.value = parseInt(router.currentRoute.value.params.id as string).toString()
+  await getJSON()
+  detailType.value = id as string
+  type.value = parseInt(id as string).toString()
   let m = await import("@/assets/image/" +
   detailType.value +
   ".webp");
   image.value = m.default
-  let res = await import(`@/chartConfig/config/chart/${type.value}_/chart${detailType.value}`)
+  let res = await import(`@/chartConfig/config/map/${type.value}_/map${detailType.value}`)
   let option = res.default()
   let chartConfig: any[] = [];
   let tmpOption: any = {}; // 临时配置
@@ -85,42 +71,15 @@ const getConfig = async () => {
     state.option = tmpOption;
     state.chartConfig = chartConfig;
     state.defaultOption = deepCopy(tmpOption);
+    state.JSON = JSON.stringify(JSONData)
   });
   chart_loading.value = false
-  setTimeout(() => {
-    params_loading.value = false
-  }, 800)
 }
 getConfig()
 
-const toggle = (type: number) => {
-  opType.value = type
-  if(type === 0 && data_loading.value) {
-    setTimeout(() => {
-      data_loading.value = false
-    }, 500)
-  }
-}
-
-const stop = watch(
-  () => router.currentRoute.value.params.id,
-  (n) => {
-    opType.value = 1
-    chart_loading.value = true
-    data_loading.value = true
-    params_loading.value = true
-    getConfig()
-  }
-);
-
-onUnmounted(() => {
-  stop()
-})
-
 </script>
-
-<style lang='less'>
-.ChartPanel {
+<style lang="less">
+.MapPanel {
   width: 100%;
   height: 100%;
   .infoContainer {
@@ -137,7 +96,6 @@ onUnmounted(() => {
         display: flex;
         align-items: center;
         font-size: 12.5px;
-
         .btnItem {
           flex: 1;
           text-align: center;

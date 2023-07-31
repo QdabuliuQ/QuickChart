@@ -1,18 +1,18 @@
 import {createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw} from 'vue-router'
 const IndexPage = () => import(/* webpackChunkName:"HomePageChunk" */ '@/views/IndexPage/IndexPage.vue')
 const HomePage = () => import(/* webpackChunkName:"HomePageChunk" */ '@/views/HomePage/HomePage.vue')
-const Document = () => import(/* webpackChunkName:"HomePageChunk" */ '@/views/Document/Document.vue')
 const EditPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/EditPage/EditPage.vue')
 const Welcome = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/Welcome/Welcome.vue')
 const ChartPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPage/ChartPage.vue')
 const ChartPanel = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/ChartPanel/ChartPanel.vue')
-const MapPage = () => import(/* webpackChunkName:"EditPageChunk" */ '@/views/MapPage/MapPage.vue')
-const InfoPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/InfoPage.vue')
-const DetailPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/DetailPage.vue')
-const _ChartPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/ChartPage.vue')
+const MapPage = () => import(/* webpackChunkName:"MapChunk" */ '@/views/MapPage/MapPage.vue')
+const InfoPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/InfoPage.vue')
+const DetailPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/DetailPage.vue')
+const _ChartPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/ChartPage.vue')
 const ModifyPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/ModifyPage.vue')
 const CommunityPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/CommunityPage/CommunityPage.vue')
 const EventPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/EventPage.vue')
+const MapPanel = () => import(/* webpackChunkName:"MapChunk" */ '@/views/MapPanel/MapPanel.vue')
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -88,7 +88,14 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           typeIndex: 1
         },
-        component: MapPage
+        component: MapPage,
+        children: [
+          {
+            path: 'type/:id/:adcode',
+            name: 'mapType',
+            component: MapPanel
+          }
+        ]
       },
     ]
   },

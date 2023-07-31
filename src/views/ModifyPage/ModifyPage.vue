@@ -53,7 +53,7 @@ const data_loading = ref<boolean>(true)
 const image = ref<string>('')
 
 const getConfig = async () => {
-  let data = await getChartDetail({
+  let data: any = await getChartDetail({
     chart_id: id as string
   })
   if(!data.status) {
@@ -82,7 +82,7 @@ const getConfig = async () => {
     }
   }
   try {
-    let res = await import(`@/chartConfig/config/${parseInt(data.data.type)}_/chart${data.data.type}`)
+    let res = await import(`@/chartConfig/config/chart/${parseInt(data.data.type)}_/chart${data.data.type}`)
     let option = res.default()
     let chartConfig: any[] = [];
     for(let item of option) {
