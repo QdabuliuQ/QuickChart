@@ -75,10 +75,12 @@ import {onMounted, defineProps, reactive, ref, markRaw, defineAsyncComponent, wa
 import Loading from "@/components/loading.vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
+import * as path from "path";
 
 const props = defineProps<{
   image: string
   loading: boolean
+  path: string
 }>()
 
 const common: any = useCommonStore();
@@ -89,7 +91,6 @@ const componentsMap = reactive(new Map<string, any>())
 const icon_loading = ref<boolean>(false)
 const options = reactive<Array<any>>([])
 const key = ref<number>(0)
-
 const initOptions = () => {
   options.push(...common.chartConfig)
 }
@@ -103,7 +104,11 @@ const toggleItem = (e: string, p: string) => {
     if (!componentsMap.has(p)) {
       icon_loading.value = true
       setTimeout(() => {
-        componentsMap.set(p, markRaw(defineAsyncComponent(() => import(`@/views/ChartPanel/components/${p}`))))
+        if (common.type === 'map') {
+          componentsMap.set(p, markRaw(defineAsyncComponent(() => import('@/views/MapPanel/components/' + p))))
+        } else {
+          componentsMap.set(p, markRaw(defineAsyncComponent(() => import('@/views/ChartPanel/components/' + p))))
+        }
         icon_loading.value = false
       }, 0)
     }

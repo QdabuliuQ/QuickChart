@@ -8,12 +8,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
-import json from "@/assets/410300.js"
-
-console.log(json)
+import {downloadFile} from "@/utils";
 
 const proxy = useProxy()
 const width = ref<number>(700)
@@ -21,16 +19,82 @@ const height = ref<number>(500)
 const mapDomRef = ref(null)
 const common: any = useCommonStore()
 
+let chartInstance: any;
+let option: any = null
+const optionChange = (e: any) => {
+  let k: string = Object.keys(e)[0];
+  for (let key in option) {
+    if (key == k) {
+      option[key] = e[key];
+      break;
+    }
+  }
+  chartInstance.setOption(option, true);
+  common.$patch((state: any) => {
+    state.option = option;
+  });
+}
+const canvasChange = (e: any) => {
+  if (e.hasOwnProperty('backgroundColor')) {
+    const {backgroundColor} = e;
+    option.backgroundColor = backgroundColor;
+    chartInstance.setOption({
+      backgroundColor,
+    });
+  } else {
+    option.backgroundColor = e
+    chartInstance.setOption({
+      backgroundColor: e,
+    });
+  }
+  // 修改pinia数据
+  common.$patch((state: any) => {
+    state.option = option
+  });
+}
+const downloadChart = (type: string) => {
+  if (type == 'png') {
+    let res = chartInstance.getDataURL({
+      pixelRatio: 2,
+    });
+    downloadFile("chart.png", res);
+  } else {
+    // // 生成html字符串
+    // const html = getHTML(getCode('js'));
+    // // 创建一个a标签
+    // let a = document.createElement("a");
+    // // 创建一个包含blob对象的url
+    // let url = window.URL.createObjectURL(
+    //   new Blob([html], {
+    //     type: "",
+    //   })
+    // );
+    // a.href = url;
+    // a.download = "chart.html";
+    // a.click();
+    // window.URL.revokeObjectURL(url);
+  }
+}
+
 const initChart = () => {
-  let chartInstance = proxy.$echarts.init(mapDomRef.value);
-  console.log(common.JSON)
-  proxy.$echarts.registerMap('洛阳', json);
-  console.log(common.option)
+  chartInstance = proxy.$echarts.init(mapDomRef.value);
+  proxy.$echarts.registerMap('map', common.mapJSON);
   chartInstance.setOption(common.option);
+  option = common.option;
+
+  proxy.$Bus.on("optionChange", optionChange);  // 监听图表配置变化
+  proxy.$Bus.on("canvasChange", canvasChange);
+  proxy.$Bus.on("downloadChart", downloadChart);  // 下载图表
 }
 
 onMounted(() => {
   initChart()
+})
+
+onUnmounted(() => {
+  proxy.$Bus.off("optionChange", optionChange);
+  proxy.$Bus.off("canvasChange", canvasChange);
+  proxy.$Bus.off("downloadChart", downloadChart);
 })
 
 </script>

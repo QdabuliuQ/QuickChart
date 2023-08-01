@@ -7,6 +7,31 @@
           :detail-type="detailType"
           :type="type"/>
       </div>
+      <div class="rightParamsContainer">
+        <div class="panelBtnList">
+          <div @click="toggle(0)" :class="[opType == 0 ? 'active' : '', 'btnItem']">
+            编辑数据
+          </div>
+          <div @click="toggle(1)" :class="[opType == 1 ? 'active' : '', 'btnItem']">
+            编辑图表
+          </div>
+        </div>
+        <div :style="{
+          width: opType === 0 ? '450px' : '220px'
+        }" class="paramsContainer">
+          <chart-data
+            v-show="opType == 0"
+            :detail_type="detailType"
+            :type="type"
+            :key="detailType"
+            :loading="data_loading" />
+          <chart-params
+            v-show="opType == 1"
+            :loading="params_loading"
+            :image="image"
+            :path="'@/views/MapPanel/components/'"/>
+        </div>
+      </div>
     </div>
     <div v-else class="emptyContainer">
       <empty-tip />
@@ -14,14 +39,16 @@
   </div>
 </template>
 <script setup lang="ts">
+import {ref} from "vue";
 
+import useCommonStore from "@/store/common";
 import {useRouter} from "vue-router";
 import {getCityJSON} from "@/network/map";
-import {ref} from "vue";
+import {deepCopy} from "@/utils";
 import EmptyTip from "@/components/emptyTip.vue";
 import MapDetail from "@/components/mapDetail.vue";
-import {deepCopy} from "@/utils";
-import useCommonStore from "@/store/common";
+import ChartParams from "@/components/chartParams.vue";
+import ChartData from "@/components/chartData.vue";
 
 const common: any = useCommonStore();
 const router = useRouter()
@@ -33,17 +60,22 @@ const detailType = ref<string>('')
 const type = ref<string>('')
 const state = ref<number>(1)
 const image = ref<string>('')
+const opType = ref<number>(1)
 const chart_loading = ref<boolean>(true)
+const params_loading = ref<boolean>(true)
+const data_loading = ref<boolean>(true)
+
 let JSONData: any = ''
 const getJSON = async () => {
-  if(localStorage.getItem("MAP"+adcode)) {
-    JSONData = localStorage.getItem("MAP"+adcode)
+  if(localStorage.getItem(adcode as string)) {
+    JSONData = JSON.parse(localStorage.getItem(adcode as string) as string)
   } else {
     let data = await getCityJSON({
       adcode: adcode as string
     })
+    console.log(data.data)
     JSONData = data.data
-    localStorage.setItem("MAP"+adcode, JSONData)
+    localStorage.setItem(adcode as string, JSON.stringify(data.data))
   }
 }
 
@@ -71,11 +103,24 @@ const getConfig = async () => {
     state.option = tmpOption;
     state.chartConfig = chartConfig;
     state.defaultOption = deepCopy(tmpOption);
-    state.JSON = JSON.stringify(JSONData)
+    state.mapJSON = JSONData
+    state.type = 'map'
   });
   chart_loading.value = false
+  setTimeout(() => {
+    params_loading.value = false
+  }, 800)
 }
 getConfig()
+
+const toggle = (type: number) => {
+  opType.value = type
+  if(type === 0 && data_loading.value) {
+    setTimeout(() => {
+      data_loading.value = false
+    }, 500)
+  }
+}
 
 </script>
 <style lang="less">

@@ -7,7 +7,8 @@ export default defineStore('common', {
       option: null,
       chartConfig: null,  
       defaultOption: null,  // 默认配置
-      JSON: null
+      mapJSON: null,
+      type: ''
     }
   }
 });

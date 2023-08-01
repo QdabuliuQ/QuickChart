@@ -28,7 +28,8 @@
           <chart-params
             v-show="opType == 1"
             :loading="params_loading"
-            :image="image" />
+            :image="image"
+            :path="'@/views/ChartPanel/components/'"/>
         </div>
       </div>
     </div>
@@ -85,6 +86,7 @@ const getConfig = async () => {
     state.option = tmpOption;
     state.chartConfig = chartConfig;
     state.defaultOption = deepCopy(tmpOption);
+    state.type = 'chart'
   });
   chart_loading.value = false
   setTimeout(() => {

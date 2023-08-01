@@ -10,25 +10,26 @@
     title="选择地区"
     width="45%"
     class="cityDialogClass"
-    @close="() => {
-      active = 0
-      cityActive = -1
-    }"
+    @close="closeEvent"
   >
     <div class="cityContainer">
       <div class="leftProvince">
         <el-scrollbar height="300px">
-          <div @click="provinceClick(idx)" v-for="(item,idx) in city" :key="item.adcode" :class="[active === idx ? 'active' : '', 'provinceItem']">
+          <div @click="provinceClick(idx)" v-for="(item,idx) in city" :key="item.code" :class="[pIdx === idx ? 'active' : '', 'provinceItem']">
             {{ item.name }}
           </div>
         </el-scrollbar>
       </div>
-      <div class="rightCity">
-        <div style="width: 100%; display: flex; align-items: center; justify-content: center" v-if="!city[active].districts" class="empty">
-          <el-empty description="暂无数据" />
-        </div>
-        <el-scrollbar v-else height="300px">
-          <div @click="cityClick(idx)" v-for="(item, idx) in city[active].districts" :key="item.adcode" :class="[cityActive === idx ? 'active' : '', 'cityItem']">
+      <div class="centerCity">
+        <el-scrollbar height="300px">
+          <div @click="cityClick(idx)" v-for="(item,idx) in city[active].children" :key="item.code" :class="[cIdx === idx ? 'active' : '', 'provinceItem']">
+            {{ item.name }}
+          </div>
+        </el-scrollbar>
+      </div>
+      <div class="rightArea">
+        <el-scrollbar height="300px">
+          <div @click="areaClick(idx as number)" v-for="(item, idx) in (city[active] as any).children[cityActive].children" :key="item.code" :class="[aIdx === idx ? 'active' : '', 'cityItem']">
             {{ item.name }}
           </div>
         </el-scrollbar>
@@ -54,20 +55,23 @@ import {ElMessageBox} from "element-plus";
 import {useRouter} from "vue-router";
 
 interface CityInt {
-  adcode: string
-  level: string
+  code: string
   name: string
-  districts?: {
-    adcode: string
-    level: string
+  children?: {
+    code: string
     name: string
+    children?: any
   }[]
 }
 
 const visible = ref<boolean>(false)
 const city = ref<CityInt[]>([])
 const active = ref<number>(0)
-const cityActive = ref<number>(-1)
+const cityActive = ref<number>(0)
+const pIdx = ref<number>(0)
+const cIdx = ref<number>(-1)
+const aIdx = ref<number>(-1)
+
 const mapId = ref<string>('')
 const router = useRouter()
 
@@ -83,12 +87,26 @@ const getData = async () => {
 getData()
 
 const provinceClick = (idx: number) => {
-  active.value = idx
-  cityActive.value = -1
+  if (idx !== pIdx.value) {
+    pIdx.value = idx
+    active.value = idx
+  }
+  cityActive.value = 0
+  cIdx.value = -1
+  aIdx.value = -1
 }
 const cityClick = (idx: number) => {
-  if(idx === cityActive.value) cityActive.value = -1
-  else cityActive.value = idx
+  if(idx === cIdx.value) {
+    cIdx.value = -1
+  } else {
+    cityActive.value = idx
+    cIdx.value = idx
+    aIdx.value = -1
+  }
+}
+const areaClick = (idx: number) => {
+  if(idx === aIdx.value) aIdx.value = -1
+  else aIdx.value = idx
 }
 
 const clickEvent = (id: string) => {
@@ -102,9 +120,24 @@ const clickEvent = (id: string) => {
 }
 
 const confirmEvent = () => {
-  let adcode = cityActive.value !== -1 ? (city.value[active.value] as any).districts[cityActive.value].adcode : city.value[active.value].adcode
-  router.push('/edit/map/type/' + mapId.value + '/' + adcode)
+  let code = ''
+  if (aIdx.value != -1) {
+    code = (city.value[pIdx.value] as any).children[cityActive.value].children[aIdx.value].code
+  } else if(cIdx.value != -1) {
+    code = (city.value[pIdx.value] as any).children[cIdx.value].code
+  } else {
+    code = (city.value[pIdx.value] as any).code
+  }
+  router.push('/edit/map/type/' + mapId.value + '/' + code)
   visible.value = false
+}
+
+const closeEvent = () => {
+  active.value = 0
+  cityActive.value = 0
+  pIdx.value = 0
+  cIdx.value = -1
+  aIdx.value = -1
 }
 
 </script>
@@ -127,8 +160,8 @@ const confirmEvent = () => {
       background-color: @theme !important;
       color: #fff;
     }
-    .leftProvince {
-      width: 30%;
+    .leftProvince  {
+      width: 25%;
       .provinceItem {
         padding: 10px;
         cursor: pointer;
@@ -139,7 +172,20 @@ const confirmEvent = () => {
         }
       }
     }
-    .rightCity {
+    .centerCity {
+      width: 25%;
+      border-left: 1px solid #444;
+      .provinceItem {
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        &:hover {
+          background-color: @grey;
+          color: #fff;
+        }
+      }
+    }
+    .rightArea {
       flex: 1;
       padding-left: 30px;
       display: flex;
