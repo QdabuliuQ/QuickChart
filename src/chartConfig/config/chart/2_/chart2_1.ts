@@ -9,9 +9,9 @@ import colorOption from "@/chartConfig/commonParams/color";
 import { bar_series_backgroundStyle, bar_series_label } from "@/chartConfig/option"
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
-
 export default  () => {
   return [
     titleOption({
@@ -49,7 +49,7 @@ export default  () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
-      componentPath: 'paramsXAxis.vue',
+      componentPath: chartPath + 'paramsXAxis',
       defaultOption: {
         xAxis: [{
           ...xAxisOption(),
@@ -63,7 +63,7 @@ export default  () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
-      componentPath: 'paramsYAxis.vue',
+      componentPath: chartPath + 'paramsYAxis',
       defaultOption: {
         yAxis: [{
           ...yAxisOption(),
@@ -98,7 +98,7 @@ export default  () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: 'paramsBar/paramsBarText.vue'
+      componentPath: chartPath +  'paramsBar/paramsBarText'
     },
     {
       name: '背景样式',
@@ -107,7 +107,7 @@ export default  () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_bg',
-      componentPath: 'paramsBar/paramsBarBgStyle.vue'
+      componentPath: chartPath +  'paramsBar/paramsBarBgStyle'
     },
   ]
 }

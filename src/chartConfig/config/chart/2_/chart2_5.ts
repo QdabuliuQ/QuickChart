@@ -6,6 +6,7 @@ import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
 import {bar_angleAxis_axis, bar_series_label} from "@/chartConfig/option";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 const series_label = bar_series_label({
@@ -44,7 +45,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angleAxis',
-      componentPath: 'paramsBar/paramsBarPolar.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarPolar',
       defaultOption: {
         polar: {
           radius: ['15%', '80%']
@@ -141,7 +142,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_sline',
-      componentPath: 'paramsBar/paramsBarAngleSplitLine.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarAngleSplitLine.vue',
     },
     {
       name: '文本样式',
@@ -150,7 +151,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: 'paramsBar/paramsBarText.vue'
+      componentPath: chartPath + 'paramsBar/paramsBarText'
     },
   ]
 }

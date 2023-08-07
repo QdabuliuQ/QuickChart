@@ -1,5 +1,5 @@
 import {
-  asisOpNameList
+  asisOpNameList, chartPath
 } from "@/chartConfig/constant";
 import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
@@ -92,7 +92,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_line',
-      componentPath: 'paramsLine/paramsLineStyle.vue'
+      componentPath: chartPath +  'paramsLine/paramsLineStyle'
     },
     {
       name: '字体样式',
@@ -101,7 +101,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: 'paramsLine/paramsLineText.vue'
+      componentPath: chartPath +  'paramsLine/paramsLineText'
     },
   ]
 }

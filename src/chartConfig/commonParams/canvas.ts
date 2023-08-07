@@ -1,4 +1,5 @@
 import {Common} from "../interface";
+import {chartPath} from "@/chartConfig/constant";
 
 const canvas = {
   name: '图表画布',
@@ -6,7 +7,7 @@ const canvas = {
   chartOption: true,
   menuOption: true,
   icon: 'i_canvas',
-  componentPath: 'paramsCanvas.vue',
+  componentPath: chartPath + 'paramsCanvas',
   defaultOption: {
     backgroundColor: null,
   }

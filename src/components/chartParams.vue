@@ -75,7 +75,6 @@ import {onMounted, defineProps, reactive, ref, markRaw, defineAsyncComponent, wa
 import Loading from "@/components/loading.vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
-import * as path from "path";
 
 const props = defineProps<{
   image: string
@@ -103,12 +102,8 @@ const toggleItem = (e: string, p: string) => {
     // 查看map中是否存在组件缓存
     if (!componentsMap.has(p)) {
       icon_loading.value = true
-      setTimeout(() => {
-        if (common.type === 'map') {
-          componentsMap.set(p, markRaw(defineAsyncComponent(() => import('@/views/MapPanel/components/' + p))))
-        } else {
-          componentsMap.set(p, markRaw(defineAsyncComponent(() => import('@/views/ChartPanel/components/' + p))))
-        }
+      setTimeout(async () => {
+        componentsMap.set(p, markRaw((await import('@/views' + p + '.vue')).default))
         icon_loading.value = false
       }, 0)
     }
@@ -132,8 +127,9 @@ const resetEvent = () => {
   initOptions()
 }
 proxy.$Bus.on('resetChartData', resetEvent)
-const resizeEvent = (e: number) => {
-  height.value = document.documentElement.clientHeight + "px";
+const resizeEvent = () => {
+  height.value = document.documentElement.clientHeight - document.getElementsByClassName('panelBtnList')[0].offsetHeight + "px";
+
 }
 proxy.$Bus.on("resize", resizeEvent);
 
@@ -144,7 +140,7 @@ let stop = watch(() => props.loading, () => {
 })
 
 onMounted(() => {
-  height.value = document.documentElement.clientHeight + 'px'
+  resizeEvent()
 })
 onUnmounted(() => {``
   // 取消订阅

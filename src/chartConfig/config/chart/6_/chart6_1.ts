@@ -5,6 +5,7 @@ import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic"
 import colorOption from "@/chartConfig/commonParams/color";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
+import {chartPath} from "@/chartConfig/constant";
 const common: any = useCommonStore()
 
 export default () => {
@@ -183,7 +184,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radar_chart',
-      componentPath: "paramsRadar/paramsRadarStyle.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarStyle",
     },
     {
       name: '文本样式',
@@ -192,7 +193,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: "paramsRadar/paramsRadarAxisName.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarAxisName",
     },
     {
       name: '坐标轴样式',
@@ -201,7 +202,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_sline',
-      componentPath: "paramsRadar/paramsRadarAxisLine.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarAxisLine",
     },
     {
       name: '轴刻度样式',
@@ -210,7 +211,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_tick',
-      componentPath: "paramsRadar/paramsRadarAxisTick.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarAxisTick",
     },
     {
       name: '轴刻尺样式',
@@ -219,7 +220,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_num',
-      componentPath: "paramsRadar/paramsRadarAxisLabel.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarAxisLabel",
     },
     {
       name: '分割线样式',
@@ -228,7 +229,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gsline',
-      componentPath: "paramsRadar/paramsRadarSplitLine.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarSplitLine",
     },
     {
       name: '分割域样式',
@@ -237,7 +238,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_sarea',
-      componentPath: "paramsRadar/paramsRadarSplitArea.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarSplitArea",
     },
     {
       name: '线段样式',
@@ -246,7 +247,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radar_line',
-      componentPath: "paramsRadar/paramsRadarLineStyle.vue",
+      componentPath: chartPath + "paramsRadar/paramsRadarLineStyle",
     },
   ]
 }

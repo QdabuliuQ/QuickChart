@@ -2,7 +2,7 @@ import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
-import { pointData } from "@/chartConfig/constant";
+import {chartPath, pointData} from "@/chartConfig/constant";
 import { 
   point_series_itemStyle
 } from "@/chartConfig/option";
@@ -72,7 +72,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_point',
-      componentPath: "paramsPoint/paramsPointStyle.vue",
+      componentPath: chartPath + 'paramsPoint/paramsPointStyle'
     },
     {
       name: '内外圈大小',
@@ -91,7 +91,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angleAxis',
-      componentPath: "paramsPoint/paramsPointAngleAxis.vue",
+      componentPath: chartPath + "paramsPoint/paramsPointAngleAxis",
       defaultOption: {
         angleAxis: {
           type: 'category',

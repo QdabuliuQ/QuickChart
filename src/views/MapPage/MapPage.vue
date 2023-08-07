@@ -199,7 +199,7 @@ const closeEvent = () => {
       }
       .cityItem {
         padding: 6px 13px 7px;
-        margin: 7px;
+        margin: 0 7px 7px 0;
         border-radius: 5px;
         font-size: 14px;
         cursor: pointer;

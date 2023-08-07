@@ -46,6 +46,7 @@ const yAxisOption = (options?: any): any => {
     }
   }
   replaceOptionValue(dOption, options)
+  console.log(dOption)
   return dOption
 }
 export default yAxisOption

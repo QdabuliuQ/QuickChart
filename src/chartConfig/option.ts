@@ -1,22 +1,4 @@
-export const replaceOptionValue = (origin: any, option: any) => {
-  for (let key in option) {
-    if (key.indexOf('.') == -1) {
-      if (Number.isNaN(option[key])) {
-        delete origin[key]
-      } else {
-        origin[key] = option[key] as any
-      }
-    } else {
-      let keys = key.split('.');
-      let data = origin
-      for (let i = 0; i < keys.length - 1; i++) {
-        data = data[keys[i]]
-      }
-      if (!option[key]) delete data[keys[keys.length - 1]]
-      else data[keys[keys.length - 1]] = option[key]
-    }
-  }
-}
+import { replaceOptionValue } from "@/chartConfig/tools";
 
 export const point_series_itemStyle = (option?: any) => {
   let res: any = {

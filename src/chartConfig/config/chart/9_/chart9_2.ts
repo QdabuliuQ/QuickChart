@@ -16,6 +16,7 @@ import {
   createExcelData as _createExcelData,
   conveyExcelData as _conveyExcelData
 } from './chart9_1'
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 
@@ -84,7 +85,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_gauge_chart',
-      componentPath: 'paramsGauge/paramsGaugeStyle.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeStyle',
     },
     {
       name: '轴线样式',
@@ -92,7 +93,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_circle',
-      componentPath: 'paramsGauge/paramsGaugeAxisLine.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeAxisLine',
     },
     {
       name: '进度条样式',
@@ -100,7 +101,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_progress',
-      componentPath: 'paramsGauge/paramsGaugeProgress.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeProgress',
     },
     {
       name: '分割线样式',
@@ -108,7 +109,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_sline',
-      componentPath: 'paramsGauge/paramsGaugeSplitLine.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeSplitLine',
     },
     {
       name: '刻度样式',
@@ -116,7 +117,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_tick',
-      componentPath: 'paramsGauge/paramsGaugeAxisTick.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeAxisTick',
     },
     {
       name: '刻度文本样式',
@@ -124,7 +125,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_text',
-      componentPath: 'paramsGauge/paramsGaugeAxisLabel.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeAxisLabel',
     },
     {
       name: '指针样式',
@@ -132,7 +133,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_pointer',
-      componentPath: 'paramsGauge/paramsGaugePointer.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugePointer',
     },
     {
       name: '数据文本样式',
@@ -140,7 +141,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_num',
-      componentPath: 'paramsGauge/paramsGaugeDetail.vue',
+      componentPath: chartPath + 'paramsGauge/paramsGaugeDetail',
     },
   ]
 }

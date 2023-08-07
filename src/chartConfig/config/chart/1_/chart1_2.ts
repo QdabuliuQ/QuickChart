@@ -9,6 +9,7 @@ import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { line_series, line_series_label } from "@/chartConfig/option";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 const lineSeriesOption = line_series({
@@ -55,7 +56,7 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
-      componentPath: 'paramsXAxis.vue',
+      componentPath: chartPath + 'paramsXAxis',
       defaultOption: {
         xAxis: [{
           ...xAxisOption(),
@@ -69,7 +70,7 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
-      componentPath: 'paramsYAxis.vue',
+      componentPath: chartPath + 'paramsYAxis',
       defaultOption: {
         yAxis: [{
           ...yAxisOption(),
@@ -102,7 +103,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_line',
-      componentPath: 'paramsLine/paramsLineStyle.vue'
+      componentPath:chartPath +  'paramsLine/paramsLineStyle'
     },
     {
       name: '字体样式',
@@ -111,7 +112,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: 'paramsLine/paramsLineText.vue'
+      componentPath:chartPath +  'paramsLine/paramsLineText'
     },
   ]
 }

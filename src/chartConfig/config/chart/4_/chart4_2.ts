@@ -7,6 +7,7 @@ import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 const common: any = useCommonStore()
 const xData = [
   '12a', '1a', '2a', '3a', '4a', '5a', '6a',
@@ -52,7 +53,7 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
-      componentPath: 'paramsXAxis.vue',
+      componentPath: chartPath + 'paramsXAxis',
       defaultOption: {
         xAxis: [{
           ...xAxisOption({
@@ -73,7 +74,7 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
-      componentPath: 'paramsYAxis.vue',
+      componentPath: chartPath + 'paramsYAxis',
       defaultOption: {
         yAxis: [{
           ...yAxisOption({
@@ -118,7 +119,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_point',
-      componentPath: "paramsPoint/paramsPointStyle.vue",
+      componentPath: chartPath + 'paramsPoint/paramsPointStyle'
     },
   ]
 }

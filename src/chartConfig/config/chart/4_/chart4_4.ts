@@ -3,7 +3,7 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import { point_series_label, point_series_labelLine } from '@/chartConfig/option';
-import { pointData_2 } from "@/chartConfig/constant";
+import {chartPath, pointData_2} from "@/chartConfig/constant";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
@@ -83,7 +83,7 @@ export default () => {
             },
             labelLine: point_series_labelLine({
               'show': true,
-              'length': null,
+              'length': 'EMPTY',
               'length2': 5,
               'lineStyle.color': '#bbb'
             }),
@@ -91,8 +91,8 @@ export default () => {
               ...point_series_label({
                 'show': true,
                 'color': '#000',
-                'offset': [null, null],
-                'align': null
+                'offset': 'EMPTY',
+                'align': 'EMPTY'
               }),
               formatter: function (param: any) {
                 return param.data[3];
@@ -111,7 +111,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: "paramsPoint/paramsPointText.vue",
+      componentPath: chartPath + 'paramsPoint/paramsPointText'
     },
     {
       name: '引导线样式',
@@ -120,7 +120,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gline',
-      componentPath: "paramsPoint/paramsPointLine.vue",
+      componentPath: chartPath + 'paramsPoint/paramsPointLine'
     },
   ]
 }

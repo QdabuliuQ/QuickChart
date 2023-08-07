@@ -18,7 +18,7 @@ import {debounce, getConfigValue} from "@/utils";
 import {align, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 const proxy = useProxy()
 const _common: any = useCommonStore()
-
+console.log(_common.option.series[0].label)
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
@@ -53,36 +53,43 @@ const config = reactive<ConfigInt>({
     type: 'color_picker',
     title: label.color,
     value: _common.option.series[0].label.color
-  },
-  offsetX: {
+  }
+})
+if (_common.option.series[0].label.offset) {
+  config['offsetX'] = {
     type: 'input_number',
     title: label.offsetX,
     max: 500,
     min: -500,
     value: _common.option.series[0].label.offset[0]
-  },
-  offsetY: {
+  }
+  config['offsetY'] = {
     type: 'input_number',
     title: label.offsetY,
     max: 500,
     min: -500,
-    value: _common.option.series[0].label.offset[0]
-  },
-  align: {
+    value: _common.option.series[0].label.offset[1]
+  }
+}
+if (_common.option.series[0].label.align) {
+  config['align'] = {
     type: 'select',
     title: label.align,
     options: align,
     value: _common.option.series[0].label.align
   }
-})
+}
+
 const getData = () => {
   let series = _common.option.series
   const option = getConfigValue(config)
-  option.offset = [option.offsetX, option.offsetY]
-  delete option.offsetX
-  delete option.offsetY
+  if (option.offsetX) {
+    option.offset = [option.offsetX, option.offsetY]
+    delete option.offsetX
+    delete option.offsetY
+  }
   for(let item of series) {
-    item.label = option
+    item.label = Object.assign(item.label, option)
   }
   return series
 }

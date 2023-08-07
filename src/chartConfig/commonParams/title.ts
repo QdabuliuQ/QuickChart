@@ -1,5 +1,6 @@
 import { Common } from "../interface";
 import { replaceOptionValue } from "@/chartConfig/tools";
+import {chartPath} from "@/chartConfig/constant";
 
 const title: Common = {
   name: '标题样式',
@@ -7,7 +8,7 @@ const title: Common = {
   chartOption: true,
   menuOption: true,
   icon: 'i_title',
-  componentPath: 'paramsTitle.vue',
+  componentPath: chartPath + 'paramsTitle',
   defaultOption: {
     title: null,
   },
@@ -28,7 +29,6 @@ const titleOption = (options?: any): Common => {
     }
   }
   replaceOptionValue(dOption, options)
-  console.log(dOption, '-----')
   title.defaultOption.title = dOption
   return title
 }

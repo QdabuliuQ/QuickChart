@@ -1,18 +1,15 @@
 import useCommonStore from "@/store/common";
-import {
-  asisOpNameList
-} from "@/chartConfig/constant";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import legendOption from "@/chartConfig/commonParams/legend";
-import colcolorOptionor from "@/chartConfig/commonParams/color";
 import xAxisOption from "@/chartConfig/commonParams/xAxis";
 import yAxisOption from "@/chartConfig/commonParams/yAxis";
 import { line_series, line_series_label } from "@/chartConfig/option";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
@@ -59,7 +56,7 @@ const getOption = () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
-      componentPath: 'paramsXAxis.vue',
+      componentPath: chartPath +  'paramsXAxis',
       defaultOption: {
         xAxis: [{
           ...xAxisOption(),
@@ -74,7 +71,7 @@ const getOption = () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
-      componentPath: 'paramsYAxis.vue',
+      componentPath: chartPath +  'paramsYAxis',
       defaultOption: {
         yAxis: [{
           ...yAxisOption(),
@@ -139,7 +136,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_line',
-      componentPath: 'paramsLine/paramsLineStyle.vue'
+      componentPath: chartPath + 'paramsLine/paramsLineStyle'
     },
     {
       name: '字体样式',
@@ -148,7 +145,7 @@ const getOption = () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: 'paramsLine/paramsLineText.vue'
+      componentPath: chartPath +  'paramsLine/paramsLineText'
     },
   ]
 }

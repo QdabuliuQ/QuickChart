@@ -5,6 +5,7 @@ import gridOption from "@/chartConfig/commonParams/grid";
 import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 
@@ -24,7 +25,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_circle',
-      componentPath: 'paramsBar/paramsBarPolar.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarPolar',
       defaultOption: {
         polar: {
           radius: [30, '80%']
@@ -53,7 +54,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angle',
-      componentPath: 'paramsBar/paramsBarAxis_2.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarAxis_2',
       defaultOption: {
         angleAxis: {
           clockwise: false,

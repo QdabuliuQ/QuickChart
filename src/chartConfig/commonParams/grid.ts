@@ -1,5 +1,6 @@
 import {Common} from "../interface";
 import {replaceOptionValue} from "@/chartConfig/tools";
+import {chartPath} from "@/chartConfig/constant";
 
 const grid = {
     name: '图表布局',
@@ -7,7 +8,7 @@ const grid = {
     chartOption: true,
     menuOption: true,
     icon: 'i_grid',
-    componentPath: 'paramsGrid.vue',
+    componentPath: chartPath + 'paramsGrid',
     defaultOption: {
         grid: null
     },

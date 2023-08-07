@@ -1,5 +1,6 @@
 import { Common } from "../interface";
 import { replaceOptionValue } from "../tools";
+import {chartPath} from "@/chartConfig/constant";
 
 const legend: Common = {
   name: '图例样式',
@@ -7,7 +8,7 @@ const legend: Common = {
   chartOption: true,
   menuOption: true,
   icon: 'i_legend',
-  componentPath: 'paramsLegend.vue',
+  componentPath: chartPath + 'paramsLegend',
   defaultOption: {
     legend: null
   },

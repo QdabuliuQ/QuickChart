@@ -15,24 +15,12 @@ import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 
 const _common: any = useCommonStore()
-const label = _common.option.series[0].label.normal
+const label = _common.option.series[0].label
 const config = reactive<ConfigInt>({
   show: {
     type: "switch",
     title: common.show,
     value: label.show
-  },
-  position: {
-    type: "select",
-    title: common.position,
-    options: position,
-    value: label.position
-  },
-  distance: {
-    type: "input_number",
-    title: common.distance,
-    max: 300,
-    value: label.distance
   },
   rotate: {
     type: "input_number",
@@ -107,7 +95,7 @@ const getData = () => {
   option.offset = [option.offsetX, option.offsetY]
   delete option.offsetX
   delete option.offsetY
-  series[0].label.normal = option
+  series[0].label = option
   return series
 }
 useWatchData(config, 'series', getData)

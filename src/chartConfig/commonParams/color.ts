@@ -1,4 +1,5 @@
 import { Common } from "../interface";
+import {chartPath} from "@/chartConfig/constant";
 
 let color: Common = {
   name: '系列颜色',
@@ -6,7 +7,7 @@ let color: Common = {
   chartOption: true,
   menuOption: true,
   icon: 'i_color',
-  componentPath: 'paramsColor.vue',
+  componentPath: chartPath + 'paramsColor',
   defaultOption: {
     color: null
   },

@@ -7,6 +7,7 @@ import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import {bar_series_label} from "@/chartConfig/option";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 const common: any = useCommonStore()
 
 export default () => {
@@ -114,7 +115,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: 'paramsBar/paramsBarText.vue'
+      componentPath: chartPath + 'paramsBar/paramsBarText'
     },
     {
       name: '背景样式',
@@ -123,7 +124,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_bg',
-      componentPath: 'paramsBar/paramsBarBgStyle.vue'
+      componentPath: chartPath + 'paramsBar/paramsBarBgStyle.vue'
     },
   ]
 }

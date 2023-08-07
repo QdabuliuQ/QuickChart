@@ -1,4 +1,5 @@
 import {Common} from "../interface";
+import {chartPath} from "@/chartConfig/constant";
 
 const graphicOption = (): Common => {
   return {
@@ -7,7 +8,7 @@ const graphicOption = (): Common => {
     chartOption: true,
     menuOption: true,
     icon: 'i_component',
-    componentPath: 'paramsGraphic.vue',
+    componentPath: chartPath + 'paramsGraphic',
     defaultOption: {
       graphic: []
     },

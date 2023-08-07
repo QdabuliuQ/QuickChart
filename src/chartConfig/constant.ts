@@ -1,4 +1,5 @@
-export const comPath: string = '@/views/ChartPanel/components/'
+export const chartPath: string = '/ChartPanel/components/'
+export const mapPath: string = '/MapPanel/components'
 export interface ListInt {
     value: string | number
     label: string | number

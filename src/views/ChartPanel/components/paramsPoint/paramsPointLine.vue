@@ -25,12 +25,6 @@ const config = reactive<ConfigInt>({
     title: common.show,
     value: _common.option.series[0].labelLine.show
   },
-  length: {
-    type: 'input_number',
-    title: '线段1长度',
-    max: 500,
-    value: _common.option.series[0].labelLine.length
-  },
   length2: {
     type: 'input_number',
     title: '线段2长度',
@@ -58,12 +52,20 @@ const config = reactive<ConfigInt>({
     value: _common.option.series[0].labelLine.lineStyle.width
   },
 })
+if (_common.option.series[0].labelLine.length) {
+  config['length'] = {
+    type: 'input_number',
+    title: '线段1长度',
+    max: 500,
+    value: _common.option.series[0].labelLine.length
+  }
+}
 
 const getData = () => {
   let series = _common.option.series
   const option = getConfigValue(config)
   for(let item of series) {
-    item.labelLine = option
+    Object.assign(item.labelLine, option)
   }
   return series
 }

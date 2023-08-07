@@ -3,6 +3,7 @@ import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {mapPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 
@@ -32,26 +33,35 @@ export default () => {
       defaultOption: {
         series: [
           {
-            type:'map',
+            type: 'map',
             map: 'map',
             data: [],
             roam: true,
             label: {
-              normal: {
-                show: false ,
-                position: 'inside',
-                distance: 5,
-                rotate: 0,
-                offset: [0,0],
-                color: '#000' ,
-                fontStyle: 'normal' ,
-                fontWeight: 'normal' ,
-                fontFamily: 'sans-serif' ,
-                fontSize: 12,
-                borderColor: null,
-                borderWidth: 0,
-                borderType: 'solid' ,
-              }
+              show: false,
+              rotate: 0,
+              offset: [0, 0],
+              color: '#000',
+              fontStyle: 'normal',
+              fontWeight: 'normal',
+              fontFamily: 'sans-serif',
+              fontSize: 12,
+              borderColor: null,
+              borderWidth: 0,
+              borderType: 'solid',
+            },
+            itemStyle: {
+              areaColor: '#eee',
+              borderColor: 'rgba(152, 152, 152, 1)',
+              borderWidth: 1,
+              borderType: 'solid',
+              shadowBlur: 0,
+              shadowColor: '',
+              shadowOffsetX: 0,
+              shadowOffsetY: 0,
+            },
+            labelLine: {
+              show: true
             }
           }
         ]
@@ -63,7 +73,15 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_text',
-      componentPath: 'paramsLabel.vue',
+      componentPath: mapPath + '/paramsLabel',
+    },
+    {
+      name: '板块样式',
+      opName: 'itemStyle',
+      chartOption: false,
+      menuOption: true,
+      icon: 'i_block',
+      componentPath: mapPath + '/paramsItem',
     },
   ]
 }

@@ -11,6 +11,7 @@ import {
   sankey_series_lineStyle
 } from "@/chartConfig/option";
 import { createExcelData as _createExcelData, conveyExcelData as _conveyExcelData } from './chart7_1'
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 
@@ -139,7 +140,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_sankey_chart',
-      componentPath: 'paramsSankey/paramsSankeyStyle.vue',
+      componentPath: chartPath + 'paramsSankey/paramsSankeyStyle',
     },
     {
       name: '文本样式',
@@ -147,7 +148,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_text',
-      componentPath: 'paramsSankey/paramsSankeyLabel.vue',
+      componentPath: chartPath + 'paramsSankey/paramsSankeyLabel',
     },
     {
       name: '节点矩形样式',
@@ -155,7 +156,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_rect',
-      componentPath: 'paramsSankey/paramsSankeyItem.vue',
+      componentPath: chartPath + 'paramsSankey/paramsSankeyItem',
     },
     {
       name: '图边样式',
@@ -163,7 +164,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_sankey_line',
-      componentPath: 'paramsSankey/paramsSankeyLine.vue',
+      componentPath: chartPath + 'paramsSankey/paramsSankeyLine',
     },
   ]
 }

@@ -9,6 +9,7 @@ import {
   createExcelData as _createExcelData,
   conveyExcelData as _conveyExcelData
 } from './chart10_1'
+import {chartPath} from "@/chartConfig/constant";
 const common: any = useCommonStore()
 
 export default () => {
@@ -136,7 +137,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_sunburst_chart',
-      componentPath: 'paramsSunburst/paramsSunburstStyle.vue'
+      componentPath: chartPath + 'paramsSunburst/paramsSunburstStyle'
     },
     {
       name: '文本样式',
@@ -144,7 +145,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_text',
-      componentPath: 'paramsSunburst/paramsSunburstLabel.vue'
+      componentPath: chartPath + 'paramsSunburst/paramsSunburstLabel'
     },
     {
       name: '图扇样式',
@@ -152,7 +153,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_circle_item',
-      componentPath: 'paramsSunburst/paramsSunburstItem.vue'
+      componentPath: chartPath + 'paramsSunburst/paramsSunburstItem'
     },
   ]
 }

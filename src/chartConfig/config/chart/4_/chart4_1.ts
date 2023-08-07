@@ -8,6 +8,7 @@ import { point_series_itemStyle, point_series_label, point_series_labelLine } fr
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 
@@ -62,7 +63,7 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_X',
-      componentPath: 'paramsXAxis.vue',
+      componentPath: chartPath + 'paramsXAxis',
       defaultOption: {
         xAxis: [{ ...xAxisOption() }],
       },
@@ -73,7 +74,7 @@ export default () => {
       chartOption: true,
       menuOption: true,
       icon: 'i_Y',
-      componentPath: 'paramsYAxis.vue',
+      componentPath: chartPath + 'paramsYAxis',
       defaultOption: {
         yAxis: [{ ...yAxisOption() }],
       }
@@ -104,7 +105,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_point',
-      componentPath: "paramsPoint/paramsPointStyle.vue",
+      componentPath: chartPath + "paramsPoint/paramsPointStyle",
     },
     {
       name: '文本样式',
@@ -113,7 +114,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_text',
-      componentPath: "paramsPoint/paramsPointText.vue",
+      componentPath: chartPath + "paramsPoint/paramsPointText",
     },
     {
       name: '引导线样式',
@@ -122,7 +123,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gline',
-      componentPath: "paramsPoint/paramsPointLine.vue",
+      componentPath: chartPath + 'paramsPoint/paramsPointLine'
     },
   ]
 }

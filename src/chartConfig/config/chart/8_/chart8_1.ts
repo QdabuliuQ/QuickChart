@@ -6,6 +6,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import legendOption from "@/chartConfig/commonParams/legend";
 import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
+import {chartPath} from "@/chartConfig/constant";
 
 const common: any = useCommonStore()
 
@@ -99,7 +100,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_funnel',
-      componentPath: 'paramsFunnel/paramsFunnelStyle.vue',
+      componentPath: chartPath + 'paramsFunnel/paramsFunnelStyle',
     },
     {
       name: '文本样式',
@@ -107,7 +108,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_text',
-      componentPath: 'paramsFunnel/paramsFunnelLabel.vue',
+      componentPath: chartPath + 'paramsFunnel/paramsFunnelLabel',
     },
     {
       name: '引导线样式',
@@ -115,7 +116,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_gline',
-      componentPath: 'paramsFunnel/paramsFunnelLine.vue',
+      componentPath: chartPath + 'paramsFunnel/paramsFunnelLine',
     },
     {
       name: '图形样式',
@@ -123,7 +124,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       icon: 'i_triangle',
-      componentPath: 'paramsFunnel/paramsFunnelItem.vue',
+      componentPath: chartPath + 'paramsFunnel/paramsFunnelItem',
     },
   ]
 }
