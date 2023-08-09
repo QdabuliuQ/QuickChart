@@ -1,4 +1,4 @@
-import { replaceOptionValue } from "@/chartConfig/tools";
+import {replaceOptionValue} from "@/chartConfig/tools";
 
 export const point_series_itemStyle = (option?: any) => {
   let res: any = {
@@ -365,12 +365,12 @@ export const gauge_series_pointer = (option?: any) => {
 
 export const gauge_series_detail = (option?: any) => {
   let res = {
-    show: true ,
-    color: '#464646' ,
-    fontStyle: 'normal' ,
-    fontWeight: 'bold' ,
-    fontFamily: 'sans-serif' ,
-    fontSize: 30 ,
+    show: true,
+    color: '#464646',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontFamily: 'sans-serif',
+    fontSize: 30,
     offsetCenter: ['0%', '40%']
   }
   replaceOptionValue(res, option)
@@ -413,6 +413,65 @@ export const sunburst_series_itemStyle = (option?: any) => {
     shadowOffsetY: 0,
     opacity: 1,
     borderRadius: 0
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const map_visual_map = (option?: any) => {
+  let res = {
+    show: true,
+    text: ['', ''],
+    inverse: false,
+    min: 0,
+    max: 100,
+    itemWidth: 20,
+    itemHeight: 140,
+    textGap: 10,
+    left: '0%',
+    top: '0%',
+    orient: 'vertical',
+    color: ['#215096','#3598c1','#40a9ed','#b7d6f3','#edfbfb' ],
+    textStyle: {
+      color: "#333",
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontFamily: 'sans-serif',
+      fontSize: 12,
+    }
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const map_series_label = (option?: any) => {
+  let res = {
+    show: false,
+    rotate: 0,
+    offset: [0, 0],
+    color: '#000',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: 'sans-serif',
+    fontSize: 12,
+    borderColor: null,
+    borderWidth: 0,
+    borderType: 'solid',
+  }
+  replaceOptionValue(res, option)
+  return res
+}
+
+export const map_series_itemStyle = (option?: any) => {
+  let res = {
+    areaColor: '#eee',
+    borderColor: 'rgba(152, 152, 152, 1)',
+    borderWidth: 1,
+    borderType: 'solid',
+    shadowBlur: 0,
+    shadowColor: '',
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
   }
   replaceOptionValue(res, option)
   return res

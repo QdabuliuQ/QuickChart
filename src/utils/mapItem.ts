@@ -9,8 +9,13 @@ const list: ListInt[] = [
     charts: [
       {
         cover: require('@/assets/image/1_1.webp'),
-        name: '区域地图1',
+        name: '区域地图',
         id: '1_1',
+      },
+      {
+        cover: require('@/assets/image/1_1.webp'),
+        name: '数据地图',
+        id: '1_2',
       },
     ]
   }

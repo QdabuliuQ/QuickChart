@@ -16,7 +16,7 @@ import {downloadFile} from "@/utils";
 const proxy = useProxy()
 const width = ref<number>(700)
 const height = ref<number>(500)
-const mapDomRef = ref(null)
+const mapDomRef = ref<any>(null)
 const common: any = useCommonStore()
 
 let chartInstance: any;
@@ -75,16 +75,27 @@ const downloadChart = (type: string) => {
     // window.URL.revokeObjectURL(url);
   }
 }
-
+const dataChange = (e: any) => {
+  let piniaOption = common.option
+  for (let key in e) {
+    piniaOption[key] = e[key]
+  }
+  chartInstance.setOption(piniaOption, true);
+  // 修改pinia数据
+  common.$patch((state: any) => {
+    state.option = piniaOption
+  });
+}
 const initChart = () => {
-  chartInstance = proxy.$echarts.init(mapDomRef.value);
+  chartInstance = proxy.$echarts.init((mapDomRef.value) as HTMLElement);
   proxy.$echarts.registerMap('map', common.mapJSON);
   chartInstance.setOption(common.option);
   option = common.option;
 
   proxy.$Bus.on("optionChange", optionChange);  // 监听图表配置变化
-  proxy.$Bus.on("canvasChange", canvasChange);
+  proxy.$Bus.on("canvasChange", canvasChange);  // 修改画布
   proxy.$Bus.on("downloadChart", downloadChart);  // 下载图表
+  proxy.$Bus.on("dataChange", dataChange);  // 修改数据
 }
 
 onMounted(() => {

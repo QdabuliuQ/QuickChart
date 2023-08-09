@@ -9,7 +9,7 @@
         placeholder="请选择" size="small">
         <el-option v-for="prop in item.options" :key="prop.value" :label="prop.label" :value="prop.value" />
       </el-select>
-      <el-input v-else-if="item.type == 'input_text'" size="small" v-model="item.value" />
+      <el-input v-else-if="item.type == 'input_text'" maxlength="20" size="small" v-model="item.value" />
       <imageUpload
         v-else-if="item.type == 'imgload'"
         @deleteImage="() => item.value = ''"

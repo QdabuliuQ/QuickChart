@@ -39,10 +39,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
-
+import {nextTick, ref} from "vue";
 import useCommonStore from "@/store/common";
-import {useRouter} from "vue-router";
+import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import {getCityJSON} from "@/network/map";
 import {deepCopy} from "@/utils";
 import EmptyTip from "@/components/emptyTip.vue";
@@ -52,7 +51,7 @@ import ChartData from "@/components/chartData.vue";
 
 const common: any = useCommonStore();
 const router = useRouter()
-const {
+let {
   id,
   adcode
 } = router.currentRoute.value.params
@@ -73,7 +72,6 @@ const getJSON = async () => {
     let data = await getCityJSON({
       adcode: adcode as string
     })
-    console.log(data.data)
     JSONData = data.data
     localStorage.setItem(adcode as string, JSON.stringify(data.data))
   }
@@ -121,6 +119,17 @@ const toggle = (type: number) => {
     }, 500)
   }
 }
+
+onBeforeRouteUpdate(() => {
+  chart_loading.value = true
+  params_loading.value = true
+  setTimeout(() => {
+    id = router.currentRoute.value.params.id
+    adcode = router.currentRoute.value.params.adcode
+    console.log(id, adcode)
+    getConfig()
+  }, 300)
+})
 
 </script>
 <style lang="less">

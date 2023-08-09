@@ -43,7 +43,7 @@
 import {onUnmounted, ref, watch} from "vue";
 import useCommonStore from "@/store/common";
 import useProxy from "@/hooks/useProxy";
-import {useRouter} from "vue-router";
+import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import {deepCopy} from "@/utils";
 import ChartDetail from "@/components/chartDetail.vue";
 import ChartParams from "@/components/chartParams.vue";

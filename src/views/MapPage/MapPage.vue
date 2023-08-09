@@ -111,6 +111,7 @@ const areaClick = (idx: number) => {
 
 const clickEvent = (id: string) => {
   let curId = router.currentRoute.value.params.id;
+  console.log(curId)
   if (curId != id && router.currentRoute.value.name == "mapType") {
     visible.value = true
   } else if (curId != id) {

@@ -174,6 +174,7 @@ const initData = () => {
       .change((res) => {  // 图表数据修改
         clearTimeout(timer);
         timer = setTimeout(() => {
+          console.log("发送")
           worker.postMessage({
             data: JSON.stringify(res.rows),
             options: JSON.stringify(common.option),
@@ -201,7 +202,7 @@ const initHandleFun = () => {
     createExcelData,
     conveyExcelData,
     combineOption
-  } = require(`@/chartConfig/config/${props.type}_/chart${props.detail_type}`)
+  } = require(`@/chartConfig/config/${common.type}/${props.type}_/${common.type}${props.detail_type}`)
   createInitiativeData = createExcelData;
   conveyData = conveyExcelData;
   combineData = combineOption

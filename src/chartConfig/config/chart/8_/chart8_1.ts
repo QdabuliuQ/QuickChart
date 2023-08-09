@@ -158,7 +158,7 @@ export const conveyExcelData = (rows: any) => {
     if(!rows[i].cells[0] || !rows[i].cells[1]) break
     datas.datasetData.push([
       rows[i].cells[0].text,
-      parseInt(rows[i].cells[1].text)
+      parseFloat(rows[i].cells[1].text)
     ])
   }
   return datas
