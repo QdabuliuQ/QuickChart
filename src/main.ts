@@ -11,6 +11,7 @@ import '@/assets/less/elementStyle.less'
 import { ElNotification } from 'element-plus'
 // echart图表库
 import * as echarts from 'echarts'
+import "echarts-gl" //3D地图插件
 // 代码高亮
 import 'highlight.js/styles/atom-one-dark.css'
 import 'highlight.js/lib/common'

@@ -24,11 +24,41 @@ export default () => {
       componentPath: mapPath + "paramsVisualMap",
       defaultOption: {
         visualMap: {
-          type: 'continuous',
+          type: 'piecewise',
           ...map_visual_map({
-            "left": "3%",
-            "top": "65%"
+            "left": "2%",
+            "top": "68%",
+            "color": "EMPTY",
+            "itemWidth": 20,
+            "itemHeight": 20
           }),
+          showLabel: true,
+          pieces: [{
+            lte: 9999,
+            gte: 1001,
+            label: "> 1001 人",
+            color: "#7f1100"
+          }, {
+            lte: 1000,
+            gte: 501,
+            label: "501 - 1000 人",
+            color: "#ff5428"
+          }, {
+            lte: 500,
+            gte: 101,
+            label: "101 - 500人",
+            color: "#ff8c71"
+          }, {
+            lte: 100,
+            gte: 1,
+            label: "1 - 100人",
+            color: "#ffd768"
+          }, {
+            lte: 0,
+            gte: 0,
+            label: '0人',
+            color: "#d7d7d7"
+          }]
         }
       }
     },
@@ -84,9 +114,9 @@ export const conveyExcelData = (rows: any, options: any) => {
     seriesData: <any>[]
   }
   let rowsLength = Object.keys(rows).length
-  for(let i = 0; i < rowsLength; i ++) {
-    if(!rows[i] || JSON.stringify(rows[i].cells) == '{}') break
-    if(!rows[i].cells[0] || !rows[i].cells[1]) break
+  for (let i = 0; i < rowsLength; i++) {
+    if (!rows[i] || JSON.stringify(rows[i].cells) == '{}') break
+    if (!rows[i].cells[0] || !rows[i].cells[1]) break
     datas.seriesData.push({
       name: rows[i].cells[0].text,
       value: parseFloat(rows[i].cells[1].text)

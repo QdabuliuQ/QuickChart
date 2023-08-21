@@ -1,7 +1,10 @@
 <template>
   <div class="paramsVisualMap">
-    <series-item :title='"颜色分布"'>
-      <colorPanel @colorChange="colorChange" :colors="colors" />
+    <series-item v-if="visualMap.color" :title='"颜色分布"'>
+      <color-panel @colorChange="colorChange" :colors="colors" />
+    </series-item>
+    <series-item v-if="visualMap.pieces" :title='"数据图例"'>
+      <pieces-option @pieces-change="piecesChange" @pieces-delete="piecesDelete" @pieces-add="piecesAdd" :pieces="pieces" />
     </series-item>
     <option-items :config="config" />
   </div>
@@ -18,11 +21,29 @@ import {fontFamily, fontStyle, fontWeight, orient} from "@/chartConfig/constant"
 import useProxy from "@/hooks/useProxy";
 import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
+import PiecesOption from "@/views/MapPanel/components/piecesOption.vue";
+
+// const pieces = reactive([
+//   {
+//     lte: 0,
+//     gte: 100,
+//     label: "hhh",
+//     color: "#fff"
+//   },
+// ])
 
 const proxy = useProxy()
 const _common: any = useCommonStore()
 const visualMap = _common.option.visualMap
-const colors = reactive<string[]>(visualMap.color)
+let colors = null
+if (visualMap.color) {
+  colors = reactive(visualMap.color)
+}
+let pieces: any = null
+if(visualMap.pieces) {
+  pieces = reactive(visualMap.pieces)
+}
+
 const config = reactive<ConfigInt>({
   show: {
     type: "switch",
@@ -128,9 +149,29 @@ const config = reactive<ConfigInt>({
   },
 })
 
+const piecesAdd = () => {
+  pieces.push({
+    lte: 0,
+    gte: 0,
+    label: "",
+    color: "#ccc"
+  })
+}
+const piecesDelete = (idx: number) => {
+  pieces.splice(idx, 1)
+}
+
 const colorChange = (colors: string[]) => {
   let visualMap = _common.option.visualMap
   visualMap.color = colors
+  proxy.$Bus.emit("optionChange", {
+    visualMap
+  })
+}
+
+const piecesChange = (pieces: any[]) => {
+  let visualMap = _common.option.visualMap
+  visualMap.pieces = pieces
   proxy.$Bus.emit("optionChange", {
     visualMap
   })

@@ -6,13 +6,18 @@ import graphicOption from "@/chartConfig/commonParams/graphic";
 import {mapPath} from "@/chartConfig/constant";
 import {map_series_label, map_visual_map} from "@/chartConfig/option";
 import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
+import {
+  combineOption as _combineOption,
+  createExcelData as _createExcelData,
+  conveyExcelData as _conveyExcelData
+} from "./map1_3"
 
 const common: any = useCommonStore()
 
 export default () => {
   return [
     titleOption(),
-    canvasOption(),
+    canvasOption("#3b3b3b"),
     gridOption(),
     graphicOption(),
     {
@@ -33,64 +38,45 @@ export default () => {
       }
     },
     {
-      name: '数据',
+      name: '3D配置',
       opName: 'series',
       chartOption: true,
-      menuOption: false,
+      menuOption: true,
+      icon: "i_threeD",
+      componentPath: mapPath + "paramsGeo3D",
       defaultOption: {
         series: [
           {
-            type: 'map',
+            type: 'map3D',
             map: 'map',
+            boxDepth: 120, //地图倾斜度
+            regionHeight: 5, //地图厚度
+            label: {
+              show: true, //是否显示市
+              textStyle: {
+                color: "#000", //文字颜色
+                fontSize: 12, //文字大小
+                fontFamily: 'sans-serif',
+                backgroundColor: "rgba(255,255,255,.6)", //透明度0清空文字背景
+              },
+            },
+            itemStyle: {
+              opacity: 0.9, // 透明度
+              borderWidth: 0.6, //分界线宽度
+              borderColor: "#207fce", //分界线颜色
+            },
             data: [],
             roam: true,
-            label: map_series_label()
           }
         ]
       }
-    },
-    {
-      name: '文本样式',
-      opName: 'label',
-      chartOption: false,
-      menuOption: true,
-      icon: 'i_text',
-      componentPath: mapPath + 'paramsLabel',
     },
   ]
 }
 
 export function combineOption(data: any) {
-  let series = common.option.series
-  series[0].data = data.seriesData
-  return {
-    series
-  }
+  return _combineOption(data)
 }
 
-export const createExcelData = (config: any) => {
-  return conveyToExcel([
-    {
-      direction: 'col',
-      data: config.series[0].data,
-      startCol: 0,
-    },
-  ])
-}
-
-export const conveyExcelData = (rows: any, options: any) => {
-  if (!rows) return null
-  let datas = {
-    seriesData: <any>[]
-  }
-  let rowsLength = Object.keys(rows).length
-  for(let i = 0; i < rowsLength; i ++) {
-    if(!rows[i] || JSON.stringify(rows[i].cells) == '{}') break
-    if(!rows[i].cells[0] || !rows[i].cells[1]) break
-    datas.seriesData.push({
-      name: rows[i].cells[0].text,
-      value: parseFloat(rows[i].cells[1].text)
-    })
-  }
-  return datas
-}
+export const createExcelData = _createExcelData
+export const conveyExcelData = _conveyExcelData

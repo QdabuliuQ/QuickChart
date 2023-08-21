@@ -81,7 +81,7 @@ const getConfig = async () => {
   await getJSON()
   detailType.value = id as string
   type.value = parseInt(id as string).toString()
-  let m = await import("@/assets/image/" +
+  let m = await import("@/assets/image/map" +
   detailType.value +
   ".webp");
   image.value = m.default
@@ -97,6 +97,7 @@ const getConfig = async () => {
       chartConfig.push(item);
     }
   }
+  console.log(tmpOption)
   common.$patch((state: any) => {
     state.option = tmpOption;
     state.chartConfig = chartConfig;

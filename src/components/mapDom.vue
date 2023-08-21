@@ -13,6 +13,7 @@ import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
 import {downloadFile} from "@/utils";
 
+
 const proxy = useProxy()
 const width = ref<number>(700)
 const height = ref<number>(500)
@@ -29,7 +30,8 @@ const optionChange = (e: any) => {
       break;
     }
   }
-  chartInstance.setOption(option, true);
+  // chartInstance.setOption(option, true);
+  chartInstance.setOption(option);
   common.$patch((state: any) => {
     state.option = option;
   });
@@ -88,6 +90,7 @@ const dataChange = (e: any) => {
 }
 const initChart = () => {
   chartInstance = proxy.$echarts.init((mapDomRef.value) as HTMLElement);
+  chartInstance.clear()
   proxy.$echarts.registerMap('map', common.mapJSON);
   chartInstance.setOption(common.option);
   option = common.option;
@@ -103,6 +106,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  chartInstance.clear()
   proxy.$Bus.off("optionChange", optionChange);
   proxy.$Bus.off("canvasChange", canvasChange);
   proxy.$Bus.off("downloadChart", downloadChart);
