@@ -22,16 +22,22 @@
       </div>
       <div class="centerCity">
         <el-scrollbar height="300px">
-          <div @click="cityClick(idx)" v-for="(item,idx) in city[active].children" :key="item.code" :class="[cIdx === idx ? 'active' : '', 'provinceItem']">
-            {{ item.name }}
-          </div>
+          <template v-if="city[pIdx] && city[pIdx].children">
+            <div @click="cityClick(idx)" v-for="(item,idx) in city[pIdx].children" :key="item.code" :class="[cIdx === idx ? 'active' : '', 'provinceItem']">
+              {{ item.name }}
+            </div>
+          </template>
+          <div v-else class="empty">暂无数据</div>
         </el-scrollbar>
       </div>
       <div class="rightArea">
         <el-scrollbar height="300px">
-          <div @click="areaClick(idx as number)" v-for="(item, idx) in (city[active] as any).children[cityActive].children" :key="item.code" :class="[aIdx === idx ? 'active' : '', 'cityItem']">
-            {{ item.name }}
-          </div>
+          <template v-if="city[pIdx] && city[pIdx].children && (city[pIdx].children as any)[cIdx] && (city[pIdx].children as any)[cIdx].children">
+            <div @click="areaClick(idx as number)" v-for="(item, idx) in (city[pIdx] as any).children[cIdx].children" :key="item.code" :class="[aIdx === idx ? 'active' : '', 'cityItem']">
+              {{ item.name }}
+            </div>
+          </template>
+          <div v-else class="empty">暂无数据</div>
         </el-scrollbar>
       </div>
     </div>
@@ -66,9 +72,7 @@ interface CityInt {
 
 const visible = ref<boolean>(false)
 const city = ref<CityInt[]>([])
-const active = ref<number>(0)
-const cityActive = ref<number>(0)
-const pIdx = ref<number>(0)
+const pIdx = ref<number>(-1)
 const cIdx = ref<number>(-1)
 const aIdx = ref<number>(-1)
 
@@ -89,9 +93,7 @@ getData()
 const provinceClick = (idx: number) => {
   if (idx !== pIdx.value) {
     pIdx.value = idx
-    active.value = idx
   }
-  cityActive.value = 0
   cIdx.value = -1
   aIdx.value = -1
 }
@@ -99,7 +101,6 @@ const cityClick = (idx: number) => {
   if(idx === cIdx.value) {
     cIdx.value = -1
   } else {
-    cityActive.value = idx
     cIdx.value = idx
     aIdx.value = -1
   }
@@ -111,7 +112,6 @@ const areaClick = (idx: number) => {
 
 const clickEvent = (id: string) => {
   let curId = router.currentRoute.value.params.id;
-  console.log(curId)
   if (curId != id && router.currentRoute.value.name == "mapType") {
     visible.value = true
   } else if (curId != id) {
@@ -123,20 +123,20 @@ const clickEvent = (id: string) => {
 const confirmEvent = () => {
   let code = ''
   if (aIdx.value != -1) {
-    code = (city.value[pIdx.value] as any).children[cityActive.value].children[aIdx.value].code
+    code = (city.value[pIdx.value] as any).children[cIdx.value].children[aIdx.value].code
   } else if(cIdx.value != -1) {
     code = (city.value[pIdx.value] as any).children[cIdx.value].code
-  } else {
+  } else if(pIdx.value != -1){
     code = (city.value[pIdx.value] as any).code
   }
-  router.push('/edit/map/type/' + mapId.value + '/' + code)
-  visible.value = false
+  if (code !== "") {
+    router.push('/edit/map/type/' + mapId.value + '/' + code)
+    visible.value = false
+  }
 }
 
 const closeEvent = () => {
-  active.value = 0
-  cityActive.value = 0
-  pIdx.value = 0
+  pIdx.value = -1
   cIdx.value = -1
   aIdx.value = -1
 }
@@ -154,6 +154,22 @@ const closeEvent = () => {
 .cityDialogClass {
   .el-dialog__body {
     padding: 15px;
+  }
+  .el-scrollbar__wrap {
+    position: relative;
+  }
+  .empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-size: 13px;
+    color: @grey2;
   }
   .cityContainer {
     display: flex;
@@ -199,7 +215,7 @@ const closeEvent = () => {
         }
       }
       .cityItem {
-        padding: 6px 13px 7px;
+        padding: 10px 13px;
         margin: 0 7px 7px 0;
         border-radius: 5px;
         font-size: 14px;
