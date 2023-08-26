@@ -16,8 +16,6 @@ import "echarts-gl" //3D地图插件
 import 'highlight.js/styles/atom-one-dark.css'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
-// animate动画
-import 'animate.css/animate.min.css' 
 // 字体图标
 import "@/assets/icon/icon.css"
 import moment from 'moment'
@@ -25,7 +23,6 @@ import Mitt from "@/mitt";
 
 const app = createApp(App)
 app.config.globalProperties.$notice = ElNotification;
-
 app.config.globalProperties.$Bus = Mitt;
 app.config.globalProperties.$echarts = echarts // 全局挂载echarts
 app.config.globalProperties.$moment = moment

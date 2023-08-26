@@ -1,15 +1,12 @@
 <template>
   <div id="IndexPage">
-    <div  class="header">
+    <div class="header">
       <div class="left">
         <div class="logo" @click="router.push('/')">
           <img
             class="logoIcon" src="@/assets/image/logo.png" alt=""/>
           <img
-            class="
-            titleIcon
-            animate__animated animate__delay-2s animate__rubberBand
-          "
+            class="titleIcon"
             src="@/assets/image/quickChart.png"
             alt=""
           />
@@ -94,7 +91,6 @@ proxy.$Bus.on('logined', () => {
 
 const toPage = (path: string) => {
   router.push('/index/' + path)
-  // router.push(path)
 }
 
 let stop = watch(() => router.currentRoute.value.path, () => {
@@ -107,7 +103,6 @@ let stop = watch(() => router.currentRoute.value.path, () => {
 onUnmounted(() => {
   stop()
 })
-
 </script>
 
 <style lang='less'>
@@ -122,13 +117,16 @@ onUnmounted(() => {
     justify-content: space-between;
     padding: 20px 0;
     border-bottom: 2px solid #494949;
+
     .left {
       display: flex;
       align-items: center;
     }
+
     .menu {
       display: flex;
       align-items: center;
+
       .menuItem {
         padding: 10px 30px 12px;
         margin-right: 20px;
@@ -137,19 +135,23 @@ onUnmounted(() => {
         font-size: 14px;
         letter-spacing: 3px;
         text-indent: 3px;
+
         &:hover {
           background-color: @grey;
         }
       }
+
       .active {
         background-color: @theme !important;
         color: #fff;
       }
     }
+
     .logo {
       display: flex;
       align-items: center;
       margin-right: 50px;
+
       .logoIcon {
         cursor: pointer;
         width: 40px;

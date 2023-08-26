@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@highlightjs/vue-plugin": "^2.1.0",
-    "animate.css": "^4.1.1",
     "axios": "^1.4.0",
     "core-js": "^3.6.5",
     "echarts": "^4.1.0",
