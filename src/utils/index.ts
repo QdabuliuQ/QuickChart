@@ -1,6 +1,7 @@
 import { ConfigInt } from "@/types/common";
 import {common} from "@/chartConfig/opname";
 import html2canvas from "html2canvas";
+import {oss} from "@/network";
 
 export const emailPattern = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
 export const publicKey = `
@@ -179,4 +180,70 @@ export function downloadFile (fileName: string, content: string) {
       view: window,
     })
   );
-};
+}
+
+export function formatHTML (html: string, tab = "  ") {
+  let formatted = '', indent = '';
+  html.split(/>\s*</).forEach(function (node: string) {
+    if (node.match(/^\/\w/)) indent = indent.substring(tab.length);
+    formatted += indent + '<' + node + '>\r\n';
+    if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab;
+  });
+  return formatted.substring(1, formatted.length - 3);
+}
+
+export function generateMapCode(option: any, width: number, height: number, code: string) {
+  option = JSON.stringify(option, null, 2);
+  option = option.replace(/"(\w+)":/g, "$1:");
+  const html = `
+  <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+          #chart {
+            width: ${width}px;
+            height: ${height}px;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="chart"></div>
+        <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+        <script>
+          $.ajax({
+            url: "${oss}/map/cityJSON?adcode=${code}",
+            success: function (res) {
+              console.log(res)
+              const chart = echarts.init(document.getElementById('chart'));
+              const option = ${option};
+              echarts.registerMap('map', res.data)
+              chart.setOption(option);
+            }
+          })
+        </scrip` + `t>
+      </body>
+    </html>
+  `;
+  return html;
+}
+
+export function htmlDownload(html: string) {
+  // 创建一个a标签
+  let a: any = document.createElement("a");
+  // 创建一个包含blob对象的url
+  let url = window.URL.createObjectURL(
+    new Blob([html], {
+      type: "",
+    })
+  );
+  a.href = url;
+  a.download = "chart.html";
+  a.click();
+  window.URL.revokeObjectURL(url);
+  a = null
+}

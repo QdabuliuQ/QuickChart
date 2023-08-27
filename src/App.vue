@@ -76,4 +76,14 @@ img {
   justify-content: center;
   margin: 20px 0;
 }
+.hljs {
+  overflow-y: scroll;
+  max-height: 430px;
+  font-size: 18px;
+}
+.codeDialogClass {
+  .el-dialog__body {
+    padding: 0 15px 15px;
+  }
+}
 </style>

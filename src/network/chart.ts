@@ -8,8 +8,6 @@ export function postChart(data: FormData) {
   })
 }
 
-
-
 export function chartCoverUpload(data: FormData) {
   return upload('/chartCover', data)
 }

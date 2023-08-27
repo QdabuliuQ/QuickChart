@@ -5,6 +5,7 @@ import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {mapPath} from "@/chartConfig/constant";
 import {map_series_itemStyle, map_series_label} from "@/chartConfig/option";
+import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
 
 const common: any = useCommonStore()
 
@@ -68,15 +69,35 @@ export default () => {
 
 export function combineOption(data: any) {
   let series = common.option.series
+  series[0].data = data.seriesData
   return {
     series
   }
 }
 
 export const createExcelData = (config: any) => {
-  return []
+  return conveyToExcel([
+    {
+      direction: 'col',
+      data: config.series[0].data,
+      startCol: 0,
+    },
+  ])
 }
 
 export const conveyExcelData = (rows: any, options: any) => {
-  return null
+  if (!rows) return null
+  let datas = {
+    seriesData: <any>[]
+  }
+  let rowsLength = Object.keys(rows).length
+  for(let i = 0; i < rowsLength; i ++) {
+    if(!rows[i] || JSON.stringify(rows[i].cells) == '{}') break
+    if(!rows[i].cells[0] || !rows[i].cells[1]) break
+    datas.seriesData.push({
+      name: rows[i].cells[0].text,
+      value: parseFloat(rows[i].cells[1].text)
+    })
+  }
+  return datas
 }

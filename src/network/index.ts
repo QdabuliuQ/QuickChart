@@ -1,8 +1,7 @@
 import axios from "axios"
 import { ElNotification } from 'element-plus'
-// import Mitt from "@/mitt"
 
-const oss: string = 'http://127.0.0.1:3031'
+export const oss: string = 'http://127.0.0.1:3031'
 export const getToken = (): string => {
   return localStorage.getItem('token') ?? ''
 }

@@ -6,7 +6,7 @@
   }" class="transparentBg">
     <div ref="chartDomRef" id="chartDom"></div>
   </div>
-  <el-dialog class="codeDialogClass" v-model="data.codeDialog" title="代码配置" width="40%">
+  <el-dialog class="codeDialogClass" v-model="data.codeDialog" title="代码配置" width="50%">
     <highlightjs class="language-javascript" language="javascript" :code="data.code" />
   </el-dialog>
 </template>
@@ -20,7 +20,7 @@ import {
 } from "vue";
 import useCommonStore from "@/store/common";
 import useProxy from "@/hooks/useProxy";
-import {deepCopy, setImageOption} from '@/utils/index'
+import {deepCopy, htmlDownload, setImageOption} from '@/utils/index'
 
 interface comInitData {
   options: any;
@@ -106,13 +106,10 @@ const base64ToBlob = (code: string) => {
 const getCode = (type: string) => {
   // let _option: any = deepCopy(data.option)
   let _option = setImageOption(data.option, false)
-  delete _option.waterMark
-  // Reflect.deleteProperty(data.option, "waterMark");
   let jdata: any = JSON.stringify(_option, null, 4);
   const optionCode = jdata.replace(/"(\w+)":/g, "$1:");
   if (type == 'js') {
-    data.code = `
-const chart = echarts.init(document.getElementById('chart'));
+    data.code = `const chart = echarts.init(document.getElementById('chart'));
 const option = ${optionCode};
 chart.setOption(option);  //设置option`
   } else {
@@ -191,20 +188,8 @@ const initChart = () => {
       });
       downloadFile("chart.png", res);
     } else {
-      // 生成html字符串
-      const html = getHTML(getCode('js'));
-      // 创建一个a标签
-      let a = document.createElement("a");
-      // 创建一个包含blob对象的url
-      let url = window.URL.createObjectURL(
-        new Blob([html], {
-          type: "",
-        })
-      );
-      a.href = url;
-      a.download = "chart.html";
-      a.click();
-      window.URL.revokeObjectURL(url);
+      // 生成html字符串 并且下载
+      htmlDownload(getHTML(getCode('js')))
     }
   });
 
@@ -227,9 +212,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   // 清空图表实例
-  // chart_i.clear()
-  // chart_i.dispose()
-  // chart_i = null
   chart_i.value!.clear()
   chart_i.value!.dispose()
 
@@ -257,17 +239,5 @@ onUnmounted(() => {
   background-image: url("../assets/image/bg.jpg");
   background-size: cover;
   background-repeat: repeat;
-}
-
-.hljs {
-  overflow-y: scroll;
-  max-height: 420px;
-  font-size: 18px;
-}
-
-.codeDialogClass {
-  .el-dialog__body {
-    padding: 0 15px 15px;
-  }
 }
 </style>

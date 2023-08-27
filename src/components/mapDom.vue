@@ -5,18 +5,25 @@
     margin: '15vh auto 0',
   }" class="transparentBg">
     <div ref="mapDomRef" id="mapDom"></div>
+    <el-dialog class="codeDialogClass" v-model="codeDialog" title="代码配置" width="50%">
+      <highlightjs class="language-javascript" language="javascript" :code="code" />
+    </el-dialog>
   </div>
 </template>
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref} from "vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
-import {downloadFile} from "@/utils";
+import {downloadFile, generateMapCode, htmlDownload} from "@/utils";
+import {useRoute} from "vue-router";
+import {oss} from "@/network";
 
-
+const route = useRoute()
 const proxy = useProxy()
 const width = ref<number>(700)
 const height = ref<number>(500)
+const codeDialog = ref<boolean>(false)
+const code = ref<string>('')
 const mapDomRef = ref<any>(null)
 const common: any = useCommonStore()
 
@@ -61,20 +68,14 @@ const downloadChart = (type: string) => {
     });
     downloadFile("chart.png", res);
   } else {
-    // // 生成html字符串
-    // const html = getHTML(getCode('js'));
-    // // 创建一个a标签
-    // let a = document.createElement("a");
-    // // 创建一个包含blob对象的url
-    // let url = window.URL.createObjectURL(
-    //   new Blob([html], {
-    //     type: "",
-    //   })
-    // );
-    // a.href = url;
-    // a.download = "chart.html";
-    // a.click();
-    // window.URL.revokeObjectURL(url);
+    // 生成html字符串
+    const html = generateMapCode(
+      common.option,
+      width.value,
+      height.value,
+      route.params.adcode as string
+    )
+    htmlDownload(html)
   }
 }
 const dataChange = (e: any) => {
@@ -88,6 +89,23 @@ const dataChange = (e: any) => {
     state.option = piniaOption
   });
 }
+
+const createCode = (type: string) => {
+
+  const jData = JSON.stringify(common.option, null, 4);
+  const option = jData.replace(/"(\w+)":/g, "$1:");
+  if (type === "js") {
+    code.value = `// mapJson url: ${oss}/map/cityJSON?adcode=${route.params.adcode}
+const chart = echarts.init(document.getElementById('chart'));
+const option = ${option};
+chart.setOption(option);  //设置option`
+  } else {
+    code.value = option
+    console.log(option, "----", typeof option, type)
+  }
+  codeDialog.value = true
+}
+
 const initChart = () => {
   chartInstance = proxy.$echarts.init((mapDomRef.value) as HTMLElement);
   chartInstance.clear()
@@ -99,6 +117,7 @@ const initChart = () => {
   proxy.$Bus.on("canvasChange", canvasChange);  // 修改画布
   proxy.$Bus.on("downloadChart", downloadChart);  // 下载图表
   proxy.$Bus.on("dataChange", dataChange);  // 修改数据
+  proxy.$Bus.on("createCode", createCode);
 }
 
 onMounted(() => {
