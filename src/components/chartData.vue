@@ -44,7 +44,7 @@
 </template>
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
-import Worker from "worker-loader!@/workers/worker";
+// import Worker from "worker-loader!@/workers/worker";
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
 Spreadsheet.locale("zh-cn", zhCN);
@@ -64,10 +64,10 @@ let timer: any;
 let excelData: any, originData: any;
 let sheetObj: any;
 let conveyData: any, combineData: any, createInitiativeData: any;
-const common = useCommonStore()
-const worker = new Worker()
-const uploadExecelInputRef = ref();
 const proxy = useProxy()
+const common = useCommonStore()
+const worker = proxy.$worker
+const uploadExecelInputRef = ref();
 const loading = ref<boolean>(props.loading)
 
 const setExcelData = () => {
@@ -174,7 +174,6 @@ const initData = () => {
       .change((res) => {  // 图表数据修改
         clearTimeout(timer);
         timer = setTimeout(() => {
-          console.log("发送")
           worker.postMessage({
             data: JSON.stringify(res.rows),
             options: JSON.stringify(common.option),
@@ -217,14 +216,12 @@ let stop = watch(() => props.loading, (nval: boolean) => {
   loading.value = nval
 })
 let stop2 = watch(() => props.detail_type, (nval: string) => {
-  console.log('gaibian')
   flag = 0
 })
 
 onUnmounted(() => {
   stop()
   stop2()
-  worker.terminate()
 })
 
 </script>

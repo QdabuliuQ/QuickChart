@@ -224,8 +224,6 @@ onUnmounted(() => {
   proxy.$Bus.off('resetChartData')
 })
 
-
-
 </script>
 
 <style lang='less'>

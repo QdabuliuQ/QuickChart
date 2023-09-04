@@ -53,6 +53,7 @@ const props = defineProps<{
   type: string
   user_id: string
   idx: number
+  blur: Function
 }>()
 const emits = defineEmits([
   'deleteItem'
@@ -89,31 +90,42 @@ const blurEvent = async () => {  // 失去焦点 关闭输入框
     })
   }
   if(_name === name.value) return
-  let data = await putChartName({  // 调用接口
-    name: _name,
-    chart_id: props.chart_id
-  })
-  if(!data.status) {
-    isSetName.value = false
-    newName.value = copyName
-    return proxy.$notice({
-      type: 'error',
-      message: data.msg,
-      position: 'top-left'
+  if(typeof props.blur === "function") {
+    props.blur(_name, props.chart_id).then(() => {
+      isSetName.value = false
+      name.value = _name  // 修改名称
+      copyName = _name
+    }, () => {
+      isSetName.value = false
+      newName.value = copyName
     })
   }
-  isSetName.value = false
-  name.value = _name  // 修改名称
-  copyName = _name
-  proxy.$notice({
-    type: 'success',
-    message: data.msg,
-    position: 'top-left'
-  })
+
+  // let data: any = await putChartName({  // 调用接口
+  //   name: _name,
+  //   chart_id: props.chart_id
+  // })
+  // if(!data.status) {
+  //   isSetName.value = false
+  //   newName.value = copyName
+  //   return proxy.$notice({
+  //     type: 'error',
+  //     message: data.msg,
+  //     position: 'top-left'
+  //   })
+  // }
+  // isSetName.value = false
+  // name.value = _name  // 修改名称
+  // copyName = _name
+  // proxy.$notice({
+  //   type: 'success',
+  //   message: data.msg,
+  //   position: 'top-left'
+  // })
 }
 
 const toModify = () => {
-  router.push('/modify/'+props.chart_id)
+  router.push('/chart/'+props.chart_id)
 }
 
 const deleteEvent = () => {
@@ -127,20 +139,24 @@ const deleteEvent = () => {
     }
   )
     .then(async () => {
-      let data = await deleteChart({
-        chart_id: props.chart_id
+      emits('deleteItem', {
+        idx: props.idx,
+        id: props.chart_id
       })
-      if(!data.status) return proxy.$notice({
-        type: 'error',
-        message: data.msg,
-        position: 'top-left'
-      })
-      emits('deleteItem', props.idx)
-      proxy.$notice({
-        type: 'success',
-        message: data.msg,
-        position: 'top-left'
-      })
+      // let data = await deleteChart({
+      //   chart_id: props.chart_id
+      // })
+      // if(!data.status) return proxy.$notice({
+      //   type: 'error',
+      //   message: data.msg,
+      //   position: 'top-left'
+      // })
+      //
+      // proxy.$notice({
+      //   type: 'success',
+      //   message: data.msg,
+      //   position: 'top-left'
+      // })
     })
 }
 

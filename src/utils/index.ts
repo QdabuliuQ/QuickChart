@@ -247,3 +247,13 @@ export function htmlDownload(html: string) {
   window.URL.revokeObjectURL(url);
   a = null
 }
+
+export function base64ToFile(base64: any): File {
+  let binary = atob(base64.split(',')[1]);
+  let array = [];
+  for (let i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i));
+  }
+  let blob = new Blob([new Uint8Array(array)], {type: 'image/png'});
+  return new File([blob], Date.now() + '.png');
+}

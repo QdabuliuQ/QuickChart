@@ -1,18 +1,14 @@
-import useCommonStore from "@/store/common";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {mapPath} from "@/chartConfig/constant";
-import {map_series_label, map_visual_map} from "@/chartConfig/option";
-import {conveyToExcel} from "@/chartConfig/conveyUtils/conveyData";
+import {map_visual_map} from "@/chartConfig/option";
 import {
   combineOption as _combineOption,
   createExcelData as _createExcelData,
   conveyExcelData as _conveyExcelData
-} from "./map1_3"
-
-const common: any = useCommonStore()
+} from "./map1_1"
 
 export default () => {
   return [

@@ -103,7 +103,6 @@ const initRows = (rows: any) => {
   return res
 }
 
-
 addEventListener('message', e => {
   const {data, options, type, handle}: any = e.data
   let fun = eval(`(${handle})`)

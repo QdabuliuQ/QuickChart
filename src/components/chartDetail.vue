@@ -121,6 +121,8 @@ const rules = reactive<FormRules>({
     { max: 15, message: '图表名称不能超过15个字符', trigger: 'blur' },
   ],
 })
+
+// todo 修改
 const base64ToFile = (): File => {
   let base64 = chartDomRef.value.chartInstance.getDataURL({
     pixelRatio: 1
@@ -249,32 +251,6 @@ const shareEvent = async () => {
         }
       }
       .scrollContainer();
-
-      /* 滚动条整体 */
-      //&::-webkit-scrollbar {
-      //  height: 10px;
-      //  width: 10px;
-      //}
-      //
-      ///* 两个滚动条交接处 -- x轴和y轴 */
-      //&::-webkit-scrollbar-corner {
-      //  background-color: transparent;
-      //}
-      //
-      ///* 滚动条滑块 */
-      //&::-webkit-scrollbar-thumb {
-      //  border-radius: 10px;
-      //  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-      //  background: #535353;
-      //}
-      //
-      ///* 滚动条轨道 */
-      //&::-webkit-scrollbar-track {
-      //  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-      //  border-radius: 10px;
-      //  background: transparent;
-      //}
-
       .btnList {
         position: absolute;
         top: 10px;

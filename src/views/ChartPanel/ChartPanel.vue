@@ -28,8 +28,7 @@
           <chart-params
             v-show="opType == 1"
             :loading="params_loading"
-            :image="image"
-            :path="'@/views/ChartPanel/components/'"/>
+            :image="image"/>
         </div>
       </div>
     </div>

@@ -71,7 +71,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {onMounted, defineProps, reactive, ref, markRaw, defineAsyncComponent, watch, onUnmounted} from "vue";
+import {onMounted, defineProps, reactive, ref, markRaw, watch, onUnmounted} from "vue";
 import Loading from "@/components/loading.vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
@@ -79,7 +79,6 @@ import useCommonStore from "@/store/common";
 const props = defineProps<{
   image: string
   loading: boolean
-  path: string
 }>()
 
 const common: any = useCommonStore();
@@ -128,7 +127,8 @@ const resetEvent = () => {
 }
 proxy.$Bus.on('resetChartData', resetEvent)
 const resizeEvent = () => {
-  height.value = document.documentElement.clientHeight - document.getElementsByClassName('panelBtnList')[0].offsetHeight + "px";
+  let dom = document.getElementsByClassName('panelBtnList')[0]
+  height.value = document.documentElement.clientHeight - (dom ? (dom as HTMLDivElement).offsetHeight : 0) + "px";
 
 }
 proxy.$Bus.on("resize", resizeEvent);

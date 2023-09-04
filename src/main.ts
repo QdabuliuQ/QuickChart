@@ -20,19 +20,21 @@ import hljsVuePlugin from '@highlightjs/vue-plugin'
 import "@/assets/icon/icon.css"
 import moment from 'moment'
 import Mitt from "@/mitt";
+import Worker from "worker-loader!@/workers/worker";
 
 const app = createApp(App)
 app.config.globalProperties.$notice = ElNotification;
 app.config.globalProperties.$Bus = Mitt;
 app.config.globalProperties.$echarts = echarts // 全局挂载echarts
 app.config.globalProperties.$moment = moment
+app.config.globalProperties.$worker = new Worker()
 
 const verifyLogin = (binding: DirectiveBinding) => {
+  // 没有登录
   if(!localStorage.getItem('info') || !localStorage.getItem('token')){  // 判断是否登录
-    app.config.globalProperties.$Bus.emit('showLoginDialog')
-  } else {  // 没有登录
-    console.log('执行了')
-    binding.value();  // 向下执行
+    app.config.globalProperties.$Bus.emit('showLoginDialog')  // 弹出登录窗口
+  } else {
+    binding.value();  // 调用回调函数
   }
 }
 let verifyFun: Function;
@@ -40,11 +42,11 @@ app.directive('login',{
   // vue2中对应bind
   mounted:(el,binding) => {
     verifyFun = verifyLogin.bind(null,binding);
-    el.addEventListener('click',verifyFun)
+    el.addEventListener('click',verifyFun)  // 给元素添加点击事件
   },
-  // vue2中对应unbind
+  // 卸载回调
   unmounted:(el,binding) => {
-    el.removeEventListener('click',verifyFun)
+    el.removeEventListener('click',verifyFun)  // 移除事件
   }
 })
 

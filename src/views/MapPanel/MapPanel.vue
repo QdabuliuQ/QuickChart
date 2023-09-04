@@ -5,7 +5,8 @@
         <map-detail
           :loading="chart_loading"
           :detail-type="detailType"
-          :type="type"/>
+          :type="type"
+          :adcode="router.currentRoute.value.params.adcode as string"/>
       </div>
       <div class="rightParamsContainer">
         <div class="panelBtnList">
@@ -97,7 +98,6 @@ const getConfig = async () => {
       chartConfig.push(item);
     }
   }
-  console.log(tmpOption)
   common.$patch((state: any) => {
     state.option = tmpOption;
     state.chartConfig = chartConfig;

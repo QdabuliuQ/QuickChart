@@ -16,3 +16,49 @@ export function getCityJSON(params: {
     params
   })
 }
+
+export function getRegionJSON() {
+  return ajax({
+    url: '/map/regionJSON',
+    method: 'get'
+  })
+}
+
+export function postChart(data: FormData) {
+  return ajax({
+    url: '/map/chart',
+    method: 'post',
+    data
+  })
+}
+
+export function getChart(params: {
+  offset: number
+}) {
+  return ajax({
+    url: '/map/chart',
+    method: "get",
+    params
+  })
+}
+
+export function putChartName(data: {
+  name: string
+  map_id: string
+}) {
+  return ajax({
+    url: '/map/chartName',
+    method: "put",
+    data
+  })
+}
+
+export function deleteChart(data: {
+  map_id: string
+}) {
+  return ajax({
+    url: '/map/chart',
+    method: "delete",
+    data
+  })
+}

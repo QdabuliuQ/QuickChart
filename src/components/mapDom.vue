@@ -18,6 +18,7 @@ import {downloadFile, generateMapCode, htmlDownload} from "@/utils";
 import {useRoute} from "vue-router";
 import {oss} from "@/network";
 
+const common: any = useCommonStore()
 const route = useRoute()
 const proxy = useProxy()
 const width = ref<number>(700)
@@ -25,7 +26,11 @@ const height = ref<number>(500)
 const codeDialog = ref<boolean>(false)
 const code = ref<string>('')
 const mapDomRef = ref<any>(null)
-const common: any = useCommonStore()
+const chart_i = ref<any>()
+
+defineExpose({
+  chartInstance: chart_i
+})
 
 let chartInstance: any;
 let option: any = null
@@ -101,13 +106,13 @@ const option = ${option};
 chart.setOption(option);  //设置option`
   } else {
     code.value = option
-    console.log(option, "----", typeof option, type)
   }
   codeDialog.value = true
 }
 
 const initChart = () => {
   chartInstance = proxy.$echarts.init((mapDomRef.value) as HTMLElement);
+  chart_i.value = chartInstance
   chartInstance.clear()
   proxy.$echarts.registerMap('map', common.mapJSON);
   chartInstance.setOption(common.option);

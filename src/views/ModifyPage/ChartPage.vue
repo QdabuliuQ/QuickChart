@@ -1,5 +1,5 @@
 <template>
-  <div class="modifyPage">
+  <div class="Modify_ChartPage">
     <div class="infoContainer" v-if="state === 1">
       <div class="leftExcelContainer">
         <chart-data
@@ -37,7 +37,6 @@ import {getChartDetail} from "@/network/chart";
 import useProxy from "@/hooks/useProxy";
 import {createImage, deepCopy} from "@/utils";
 import useCommonStore from "@/store/common";
-
 
 const common: any = useCommonStore();
 const proxy = useProxy()
@@ -97,6 +96,7 @@ const getConfig = async () => {
       state.option = data.data.option;
       state.chartConfig = chartConfig;
       state.defaultOption = deepCopy(data.data.option);
+      state.type = 'chart'
     });
     chart_loading.value = false
     setTimeout(() => {
@@ -111,7 +111,7 @@ getConfig()
 
 </script>
 <style lang="less">
-.modifyPage {
+.Modify_ChartPage {
   width: 100vw;
   height: 100vh;
   .infoContainer {

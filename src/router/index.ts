@@ -9,7 +9,7 @@ const MapPage = () => import(/* webpackChunkName:"MapChunk" */ '@/views/MapPage/
 const InfoPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/InfoPage.vue')
 const DetailPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/DetailPage.vue')
 const _ChartPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/ChartPage.vue')
-const ModifyPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/ModifyPage.vue')
+const Modify_ChartPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/ChartPage.vue')
 const CommunityPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/CommunityPage/CommunityPage.vue')
 const EventPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/EventPage.vue')
 const MapPanel = () => import(/* webpackChunkName:"MapChunk" */ '@/views/MapPanel/MapPanel.vue')
@@ -100,9 +100,9 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    path: '/modify/:id',
-    name: 'modify',
-    component: ModifyPage
+    path: '/chart/:id',
+    name: 'modifyChart',
+    component: Modify_ChartPage
   }
 ]
 
