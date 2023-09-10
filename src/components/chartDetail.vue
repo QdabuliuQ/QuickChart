@@ -22,30 +22,9 @@
       </div>
     </div>
   </div>
-  <el-dialog
-    v-model="shareVisible"
-    title="分享"
-    width="30%"
-    @close="shareContent = ''"
-  >
-    <el-input
-      v-model="shareContent"
-      maxlength="300"
-      placeholder="说点什么吧~~~"
-      show-word-limit
-      type="textarea"
-      :rows="6"
-      :resize="'none'"
-    />
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="shareVisible = false">取消</el-button>
-        <el-button type="primary" @click="shareEvent">
-          提交
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+  <share-chart-dialog
+    v-model:visible="shareVisible"
+    @share-event="shareEvent" />
   <el-dialog
     v-model="visible"
     title="保存图表"
@@ -83,6 +62,7 @@ import {ElLoading, FormInstance, FormRules} from "element-plus";
 import {postChart, putChart} from "@/network/chart";
 import useCommonStore from "@/store/common";
 import {postEvent} from "@/network/event";
+import ShareChartDialog from "@/components/shareChartDialog.vue";
 
 const router = useRouter()
 const props = withDefaults(defineProps<{
@@ -186,38 +166,39 @@ const toUpdate = async () => {
   let data: any = await putChart(formData)
 
   if(!data.status) {
-    save_loading.close()
-    return proxy.$notice({
+    proxy.$notice({
       type: 'error',
       message: data.msg,
       position: 'top-left'
     })
+  } else {
+    proxy.$notice({
+      type: 'success',
+      message: data.msg,
+      position: 'top-left'
+    })
   }
-  proxy.$notice({
-    type: 'success',
-    message: data.msg,
-    position: 'top-left'
-  })
   save_loading.close()
 }
 
-const shareEvent = async () => {
-  let content = shareContent.value.trim()
-  if (content.length === 0 || content.length > 300) return proxy.$notice({
-    type: 'error',
-    message: '输入内容有误',
-    position: 'top-left'
-  })
+const shareEvent = async (content: string) => {
   let data: any = await postEvent({
     chart_id: props.chart_id,
-    content
+    content,
+    type: 'chart',
+    d_type: parseInt(props.type).toString()
+  })
+  shareVisible.value = false
+  if(data.status !== 1) return proxy.$notice({
+    type: 'error',
+    message: data.msg,
+    position: 'top-left'
   })
   proxy.$notice({
     type: 'success',
     message: data.msg,
     position: 'top-left'
   })
-  shareVisible.value = false
 }
 
 </script>
@@ -243,8 +224,8 @@ const shareEvent = async () => {
       position: relative;
       .backBtn {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        top: 8px;
+        left: 8px;
         .iconfont {
           font-size: 14px;
           margin-right: 5px;
@@ -253,8 +234,8 @@ const shareEvent = async () => {
       .scrollContainer();
       .btnList {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 8px;
+        right: 8px;
         z-index: 2;
         .iconfont {
           margin-right: 5px;

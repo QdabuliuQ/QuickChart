@@ -5,7 +5,8 @@
       <el-link @click="deleteImage" type="danger">删除</el-link>
     </div>
     <div v-else>
-      <input @change="fileUpload" accept="image/jpeg, image/png, image/jpg" ref="inputRef" style="display: none" type="file">
+      <input @change="fileUpload" accept="image/jpeg, image/png, image/jpg" ref="inputRef" style="display: none"
+             type="file">
       <el-button @click="uploadEvent" size="small" type="primary">
         <span style="transform: scale(.85)">
           上传图片
@@ -14,7 +15,7 @@
     </div>
     <el-dialog class="imagePreviewDialog" v-model="dialogVisible">
       <div class="imageContainer">
-        <img w-full :src="props.image" />
+        <img w-full :src="props.image"/>
       </div>
     </el-dialog>
   </div>
@@ -24,15 +25,17 @@ import {defineProps, ref} from "vue";
 import {fileType} from "@/utils";
 import useProxy from "@/hooks/useProxy";
 import {graphicUpload} from "@/network/chart";
+
 const proxy = useProxy()
 const props = defineProps<{
   image: string
   imgType: string
   imgSize: number
 }>()
+console.log(props.image)
 const emits = defineEmits([
-    "imageChange",
-    "deleteImage"
+  "imageChange",
+  "deleteImage"
 ])
 const dialogVisible = ref<boolean>(false)
 const inputRef = ref<HTMLInputElement>()
@@ -44,29 +47,29 @@ const deleteImage = () => {
 }
 const fileUpload = async (e: Event) => {
   let img = (inputRef.value as any).files[0]
-  if(fileType(img.name) == 'image') {
-    if(img.size / 1024 > props.imgSize) {
+  if (fileType(img.name) == 'image') {
+    if (img.size / 1024 > props.imgSize) {
       proxy.$notice({
         message: `图片大小不能大于${props.imgSize}kb`,
         type: 'error',
         position: 'top-left'
       })
     } else {
-      if(props.imgType === 'url') {
+      if (props.imgType === 'url') {
         let formData = new FormData()
         formData.append('image', img)
-        let data = await graphicUpload(formData)
-        if(!data.status) return proxy.$notice({
+        let {data}: any = await graphicUpload(formData)
+        if (!data.status) return proxy.$notice({
           message: data.msg,
           type: 'error',
           position: 'top-left'
         })
+        console.log(data, "-----")
         emits("imageChange", data.url)
       } else {
         const reader = new FileReader();
         reader.readAsDataURL(img);
         reader.onload = function (ev: any) {
-          console.log(ev.target.result)
           // base64码
           emits("imageChange", ev.target.result)
         }
@@ -91,6 +94,7 @@ const fileUpload = async (e: Event) => {
       background-repeat: repeat;
       background-size: cover;
       height: 100%;
+
       img {
         width: 100%;
         height: 100%;
@@ -100,6 +104,7 @@ const fileUpload = async (e: Event) => {
 
   }
 }
+
 .imageUpload {
   .el-link {
     margin-left: 10px;

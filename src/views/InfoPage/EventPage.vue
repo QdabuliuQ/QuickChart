@@ -1,7 +1,10 @@
 <template>
   <div class="EventPage">
     <template style="display: block">
-      <eventItem v-for="item in events" :key="item.event_id" v-bind="item" />
+      <eventItem
+        v-for="item in events"
+        :key="item.event_id"
+        v-bind="item" />
       <div class="paginationContainer">
         <el-pagination
           v-model:current-page="offset"

@@ -3,7 +3,7 @@
     v-model="visible"
     title="保存图表"
     width="30%"
-    @close="formRef.resetFields()"
+    @close="closeEvent"
   >
     <el-form
       ref="formRef"
@@ -17,7 +17,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false">取消</el-button>
+        <el-button @click="cancelEvent">取消</el-button>
         <el-button type="primary" @click="saveEvent">
           保存
         </el-button>
@@ -40,7 +40,10 @@ const props = withDefaults(defineProps<{
   visible: false,
   title: "保存图表"
 })
-const emits = defineEmits(['saveChart'])
+const emits = defineEmits([
+  'saveChart',
+  'update:visible'
+])
 const visible = ref<boolean>(false)
 const form = reactive({
   name: '',
@@ -64,6 +67,16 @@ const saveEvent = () => {
       emits("saveChart", form.name)
     }
   })
+}
+
+const cancelEvent = () => {
+  visible.value = false
+  emits("update:visible", false)
+}
+
+const closeEvent = () => {
+  formRef.value!.resetFields()
+  emits("update:visible", false)
 }
 
 const stop = watch(() => props.visible, (val: boolean) => {

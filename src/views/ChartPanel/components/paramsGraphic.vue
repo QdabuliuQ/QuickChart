@@ -48,8 +48,7 @@ const handleClose = (done: () => void) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
   }).then(() => {
-    let g = coveyConfigToOption(config)
-    console.log(g, '----')
+    let g = conveyConfigToOption(config)
     proxy.$Bus.emit("optionChange", {
       graphic: g,
     });
@@ -58,7 +57,7 @@ const handleClose = (done: () => void) => {
     done()
   })
 }
-const coveyConfigToOption = (config: ConfigInt[]): any[] => {
+const conveyConfigToOption = (config: ConfigInt[]): any[] => {
   let options: any[] = []
   for(let item of config) {
     let option: any = {}
@@ -154,6 +153,7 @@ const getConfigs = (options: any[]) => {
         }
       })
     } else if(item.type == 'image') {
+      console.log(item.style.url, "----", item.style.image)
       config.push({
         type: {
           type: null,
@@ -163,7 +163,8 @@ const getConfigs = (options: any[]) => {
           type: 'imgload',
           title: '图片上传',
           value: item.style.image ? item.style.url : '',
-          attr: 'style'
+          attr: 'style',
+          imgType: "url"
         },
         left: {
           type: 'input_number',

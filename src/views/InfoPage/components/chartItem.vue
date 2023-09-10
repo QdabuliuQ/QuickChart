@@ -56,7 +56,8 @@ const props = defineProps<{
   blur: Function
 }>()
 const emits = defineEmits([
-  'deleteItem'
+  'deleteItem',
+  'clickItem'
 ])
 const isSetName = ref<boolean>(false)
 const newName = ref<string>(props.name)
@@ -100,32 +101,11 @@ const blurEvent = async () => {  // 失去焦点 关闭输入框
       newName.value = copyName
     })
   }
-
-  // let data: any = await putChartName({  // 调用接口
-  //   name: _name,
-  //   chart_id: props.chart_id
-  // })
-  // if(!data.status) {
-  //   isSetName.value = false
-  //   newName.value = copyName
-  //   return proxy.$notice({
-  //     type: 'error',
-  //     message: data.msg,
-  //     position: 'top-left'
-  //   })
-  // }
-  // isSetName.value = false
-  // name.value = _name  // 修改名称
-  // copyName = _name
-  // proxy.$notice({
-  //   type: 'success',
-  //   message: data.msg,
-  //   position: 'top-left'
-  // })
 }
 
 const toModify = () => {
-  router.push('/chart/'+props.chart_id)
+  emits("clickItem", props.chart_id)
+  // router.push('/chart/'+props.chart_id)
 }
 
 const deleteEvent = () => {

@@ -99,7 +99,7 @@ const info: any = useLogin(false)
 let timer: any = null
 const sendCode = async() => {
   if(disable.value) return
-  let data = await getCode()
+  let data: any = await getCode()
   if(!data.status) return proxy.$notice({
     message: data.msg,
     type: "error",
@@ -124,7 +124,7 @@ en.setPublicKey(publicKey)
 const submit = async () => {  // 提交修改信息
   (ruleFormRef.value as any).validate(async (valid: boolean) => {
     if(!valid) return
-    let data = await putPassword({
+    let data: any = await putPassword({
       old_password: en.encrypt(form.old_password) as string,
       new_password: en.encrypt(form.new_password) as string,
       code: form.code

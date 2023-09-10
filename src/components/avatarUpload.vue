@@ -43,7 +43,7 @@ const change = async () => {
   })
   let formData = new FormData()
   formData.append('avatar', file)
-  let data = await avatarUpload(formData)
+  let data: any = await avatarUpload(formData)
   if(!data.status) return proxy.$notice({
     type: 'error',
     message: data.msg,

@@ -36,6 +36,7 @@ export interface EventInt {
   au_nickname: string
   au_user_pic: string
   au_user_id: string
+  type: string
 }
 
 export interface ResponseInt {

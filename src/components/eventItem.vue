@@ -19,6 +19,7 @@
               <span>{{props.au_nickname}}</span>
             </div>
           </div>
+          <i :class="['iconfont', props.type === 'chart' ? 'i_bar' : 'i_map']"></i>
         </div>
         <img :alt="props.name" :src="props.cover"  />
       </div>
@@ -54,6 +55,7 @@ interface EventInt {
   au_nickname: string
   au_user_pic: string
   au_user_id: string
+  type: string
 }
 
 const props = defineProps<EventInt>()
@@ -125,6 +127,12 @@ const praiseEvent = async () => {
         display: flex;
         align-items: center;
         justify-content: center;
+        .iconfont {
+          position: absolute;
+          left: 10px;
+          bottom: 10px;
+          font-size: 25px;
+        }
         .chartInfo {
           display: flex;
           flex-direction: column;

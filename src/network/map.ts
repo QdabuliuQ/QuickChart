@@ -62,3 +62,21 @@ export function deleteChart(data: {
     data
   })
 }
+
+export function getChartDetail(params: {
+  map_id: string
+}) {
+  return ajax({
+    url: '/map/chartDetail',
+    method: 'get',
+    params
+  })
+}
+
+export function putChart(data: FormData) {
+  return ajax({
+    url: '/map/chart',
+    method: 'put',
+    data
+  })
+}

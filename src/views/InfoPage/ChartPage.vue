@@ -18,6 +18,7 @@
                   :user_id="item.user_id"
                   :idx="idx"
                   :blur="blurEvent"
+                  @click-item="clickItem"
                   @delete-item="deleteItem"/>
     </div>
     <el-empty v-else description="暂无图表"/>
@@ -39,8 +40,9 @@ import {deleteChart, getChart, putChartName} from "@/network/chart";
 import {getChart as getMap, putChartName as putMapName, deleteChart as deleteMap} from "@/network/map"
 import useProxy from "@/hooks/useProxy";
 import ChartItem from "./components/chartItem.vue";
+import {useRouter} from "vue-router";
 
-
+const router = useRouter()
 const charts = reactive<{
   chart_id: string
   map_id?: string
@@ -115,6 +117,11 @@ const blurEvent = (newName: string, chart_id: string) => {
       position: 'top-left'
     })
   })
+}
+
+const clickItem = (id: string) => {
+  if (type.value === 'chart') router.push('/chart/'+id)
+  else router.push('/map/'+id)
 }
 
 // 刪除图表

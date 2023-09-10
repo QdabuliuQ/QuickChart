@@ -13,7 +13,7 @@
             <i class="iconfont i_save"></i>
             保存
           </el-button>
-          <el-button v-login="() => shareVisible = true" v-if="props.share" class="shareBtn" type="primary" color="#626aef">
+          <el-button v-login="show" v-if="props.share" class="shareBtn" type="primary" color="#626aef">
             <i class="iconfont i_share"></i>
             分享
           </el-button>
@@ -21,7 +21,8 @@
         <map-dom ref="chartDomRef" />
       </div>
     </div>
-    <save-chart-dialog :visible="visible" @save-chart="saveChart" />
+    <save-chart-dialog v-model:visible="visible" @save-chart="saveChart" />
+    <share-chart-dialog v-model:visible="shareVisible" @share-event="shareEvent" />
   </div>
 </template>
 
@@ -34,17 +35,21 @@ import SaveChartDialog from "@/components/saveChartDialog.vue";
 import {ElLoading} from "element-plus";
 import {base64ToFile, setImageOption} from "@/utils";
 import useCommonStore from "@/store/common";
-import {postChart} from "@/network/map";
+import {postChart, putChart} from "@/network/map";
 import useProxy from "@/hooks/useProxy";
+import ShareChartDialog from "@/components/shareChartDialog.vue";
+import {postEvent} from "@/network/event";
 
 const proxy = useProxy()
 const props = defineProps<{
   loading: boolean
   adcode: string
+  detailType: string
   type: string
   back?: boolean
   update?: boolean
   share?: boolean
+  map_id?: string
 }>()
 
 const router = useRouter()
@@ -53,6 +58,11 @@ const chartDomRef = ref()
 const shareVisible = ref<boolean>(false)
 const visible = ref<boolean>(false)
 let save_loading = null
+
+const show = () =>{
+  shareVisible.value = true
+}
+
 const saveChart = async (name: string) => {
   save_loading = ElLoading.service({
     lock: true,
@@ -65,7 +75,7 @@ const saveChart = async (name: string) => {
   const formData = new FormData();
   formData.append("cover", cover);
   formData.append("name", name);
-  formData.append("type", props.type);
+  formData.append("type", props.detailType);
   formData.append("option", setImageOption(common.option));
   formData.append("adcode", props.adcode)
   let data: any = await postChart(formData)
@@ -86,8 +96,54 @@ const saveChart = async (name: string) => {
   visible.value = false
 }
 
-const toUpdate = () => {
+const shareEvent = async (content: string) => {
+  let data: any = await postEvent({
+    chart_id: props.map_id as string,
+    content,
+    type: 'map',
+    d_type: parseInt(props.type).toString()
+  })
+  shareVisible.value = false
+  if(data.status !== 1) return proxy.$notice({
+    type: 'error',
+    message: data.msg,
+    position: 'top-left'
+  })
+  proxy.$notice({
+    type: 'success',
+    message: data.msg,
+    position: 'top-left'
+  })
+}
 
+const toUpdate = async () => {
+  save_loading = ElLoading.service({
+    lock: true,
+    text: '加载中',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  const cover = base64ToFile(chartDomRef.value.chartInstance.getDataURL({
+    pixelRatio: 1
+  }))
+  const formData = new FormData();
+  formData.append("cover", cover);
+  formData.append("map_id", props.map_id as string);
+  formData.append("option", setImageOption(common.option));
+  let data: any = await putChart(formData)
+  if(!data.status) {
+    proxy.$notice({
+      type: 'error',
+      message: data.msg,
+      position: 'top-left'
+    })
+  } else {
+    proxy.$notice({
+      type: 'success',
+      message: data.msg,
+      position: 'top-left'
+    })
+  }
+  save_loading.close()
 }
 
 </script>
@@ -114,10 +170,19 @@ const toUpdate = () => {
       overflow: auto;
       position: relative;
       .scrollContainer();
+      .backBtn {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        .iconfont {
+          font-size: 14px;
+          margin-right: 5px;
+        }
+      }
       .btnList {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 8px;
+        right: 8px;
         z-index: 2;
         .iconfont {
           margin-right: 5px;

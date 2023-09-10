@@ -24,6 +24,8 @@ export function postPraise(data: {
 export function postEvent(data: {
   chart_id: string
   content: string
+  type: 'chart'|'map',
+  d_type: string
 }) {
   return ajax({
     url: '/ev/event',
