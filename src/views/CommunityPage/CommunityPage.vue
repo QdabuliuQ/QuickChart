@@ -13,12 +13,24 @@
     <div class="info">
       <div v-if="events.length" class="container">
         <eventItem
-          v-for="item in events"
-          v-bind="item"
-          @praiseEvent="(type: string) => {
-            type === '1' ? item.praise_count ++ : item.praise_count --
-            type === '1' ? item.is_praise ++ : item.is_praise --
-          }"/>
+          v-for="(item, idx) in events"
+          :key="item.event_id"
+          :chart_id="item.chart_id"
+          :content="item.content"
+          :cover="item.cover"
+          :event_id="item.event_id"
+          :name="item.name"
+          :nickname="item.nickname"
+          :state="item.state"
+          :time="item.time"
+          :user_id="item.user_id"
+          :user_pic="item.user_pic"
+          v-model:is_praise="events[idx].is_praise"
+          v-model:praise_count="events[idx].praise_count"
+          :au_nickname="item.au_nickname"
+          :au_user_pic="item.au_user_pic"
+          :au_user_id="item.au_user_id"
+          :type="item.type"/>
       </div>
       <el-empty v-else description="空空如也~~~" />
     </div>

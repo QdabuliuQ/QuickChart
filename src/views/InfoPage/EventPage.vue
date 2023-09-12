@@ -2,9 +2,25 @@
   <div class="EventPage">
     <template style="display: block">
       <eventItem
-        v-for="item in events"
+        v-for="(item, idx) in events"
         :key="item.event_id"
-        v-bind="item" />
+        :chart_id="item.chart_id"
+        :content="item.content"
+        :cover="item.cover"
+        :event_id="item.event_id"
+        :name="item.name"
+        :nickname="item.nickname"
+        :state="item.state"
+        :time="item.time"
+        :user_id="item.user_id"
+        :user_pic="item.user_pic"
+        v-model:is_praise="events[idx].is_praise"
+        v-model:praise_count="events[idx].praise_count"
+        :au_nickname="item.au_nickname"
+        :au_user_pic="item.au_user_pic"
+        :au_user_id="item.au_user_id"
+        :comments="item.comments"
+        :type="item.type" />
       <div class="paginationContainer">
         <el-pagination
           v-model:current-page="offset"
@@ -47,6 +63,26 @@ const getData = async () => {
   limit.value = data.limit
   events.length = 0
   for(let item of data.data) {
+    item.comments = [
+      {
+        user_id: '1',
+        user_pic: 'http://127.0.0.1:3031/avatar/1689414168218nmr4C.jpeg',
+        nickname: '1111',
+        content: 'dsadasdads',
+        comment_id: '1',
+        event_id: '1',
+        time: 1694356157803
+      },
+      {
+        user_id: '1',
+        user_pic: 'http://127.0.0.1:3031/avatar/1689414168218nmr4C.jpeg',
+        nickname: '1111',
+        content: 'dsadasdads',
+        comment_id: '2',
+        event_id: '1',
+        time: 1694356157803
+      },
+    ]
     events.push(item)
   }
 }

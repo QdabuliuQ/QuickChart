@@ -9,7 +9,7 @@
     </div>
     <div class="eventInfo">
       <div class="content" v-if="props.content">{{props.content}}</div>
-      <div class="chart">
+      <div @click="toDetail" class="chart">
         <div class="mask">
           <div class="chartInfo">
             <div class="edit">编辑</div>
@@ -25,19 +25,42 @@
       </div>
       <div class="operation">
         <div v-login="praiseEvent" :class="[props.is_praise ? 'active' : '', 'item']"><i class="iconfont i_praise"></i>{{props.praise_count ? props.praise_count : '点赞'}}</div>
-        <div class="item"><i class="iconfont i_comment"></i>{{ '评论'}}</div>
+        <div class="item" @click="getComment"><i class="iconfont i_comment"></i>{{ '评论'}}</div>
+      </div>
+      <div v-show="showComment" class="commentInfo">
+        <CommentInput />
+        <template v-if="comments.length">
+          <CommentItem
+            v-for="(item, idx) in props.comments"
+            :key="item.comment_id"
+            :comment_id="item.comment_id"
+            :event_id="item.event_id"
+            :user_id="item.user_id"
+            :user_pic="item.user_pic"
+            :nickname="item.nickname"
+            :time="item.time"
+            :content="item.content"/>
+        </template>
+        <el-empty v-else description="暂无评论哦" />
       </div>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import {
   defineProps,
-  defineEmits
+  defineEmits,
+  ref
 } from "vue"
+import {useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
 import {postPraise} from "@/network/event";
+import CommentItem from "@/components/commentItem.vue";
+import {CommentInt} from "@/types/common";
+import CommentInput from "@/components/commentInput.vue";
+
 
 interface EventInt {
   chart_id: string
@@ -56,25 +79,41 @@ interface EventInt {
   au_user_pic: string
   au_user_id: string
   type: string
+  comments: CommentInt[]
 }
 
+const router = useRouter()
 const props = defineProps<EventInt>()
-const emits = defineEmits(['praiseEvent'])
+const emits = defineEmits([
+  'update:is_praise',
+  'update:praise_count'
+])
 const proxy = useProxy()
+const showComment = ref<boolean>(false)
+
+const toDetail = () => {
+  router.push((props.type === 'chart' ? `/chart/` : '/map/') + props.chart_id)
+}
 
 const praiseEvent = async () => {
   let type = (props.is_praise === 1 ? 0 : 1).toString()
-  let data = await postPraise({
+  let data: any = await postPraise({
     event_id: props.event_id,
     type,
   })
   if(data.status === 0) return proxy.$notice({
     type: 'error',
-    message: data.message,
+    message: data.msg,
     position: 'top-left'
   })
   if(data.status === -2) return proxy.$Bus.emit('showLoginDialog')
-  emits('praiseEvent', type)
+
+  emits('update:is_praise', type == '1' ? 1 : 0)
+  emits('update:praise_count', type === '1' ? props.praise_count + 1 : props.praise_count-1)
+}
+
+const getComment = () => {
+  showComment.value = !showComment.value
 }
 
 </script>
@@ -98,12 +137,16 @@ const praiseEvent = async () => {
       .time {
         margin-top: 4px;
         font-size: 13px;
-        color: #ccc;
+        color: #929292;
       }
     }
   }
   .eventInfo {
     margin-left: 55px;
+    .commentInfo {
+      padding: 15px 0;
+      border-bottom: 1px solid #525252;
+    }
     .content {
       width: 100%;
       word-break: break-all;

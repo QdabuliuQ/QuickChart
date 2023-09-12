@@ -20,6 +20,16 @@ export interface ConfigInt {
   }
 }
 
+export interface CommentInt {
+  comment_id: string
+  event_id: string
+  content: string
+  user_id: string
+  user_pic: string
+  nickname: string
+  time: number
+}
+
 export interface EventInt {
   chart_id: string
   content: string
@@ -37,6 +47,7 @@ export interface EventInt {
   au_user_pic: string
   au_user_id: string
   type: string
+  comments: CommentInt[]
 }
 
 export interface ResponseInt {
