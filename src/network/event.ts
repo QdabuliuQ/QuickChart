@@ -43,3 +43,25 @@ export function getUserEvent(params: {
     params
   })
 }
+
+export function postComment(data: {
+  content: string
+  event_id: string
+}) {
+  return ajax({
+    url: '/com/comment',
+    method: 'post',
+    data
+  })
+}
+
+export function getComment(params: {
+  event_id: string
+  offset: number
+}) {
+  return ajax({
+    url: '/com/comment',
+    method: 'get',
+    params
+  })
+}

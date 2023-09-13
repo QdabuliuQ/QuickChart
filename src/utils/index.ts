@@ -257,3 +257,11 @@ export function base64ToFile(base64: any): File {
   let blob = new Blob([new Uint8Array(array)], {type: 'image/png'});
   return new File([blob], Date.now() + '.png');
 }
+
+export function getMessageOption(type: 'error'|'success'|'warning', msg: string) {
+  return {
+    type,
+    message: msg,
+    position: 'top-left'
+  }
+}

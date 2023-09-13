@@ -28,7 +28,7 @@
         <div class="item" @click="getComment"><i class="iconfont i_comment"></i>{{ '评论'}}</div>
       </div>
       <div v-show="showComment" class="commentInfo">
-        <CommentInput />
+        <CommentInput :send="send" />
         <template v-if="comments.length">
           <CommentItem
             v-for="(item, idx) in props.comments"
@@ -56,7 +56,7 @@ import {
 } from "vue"
 import {useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
-import {postPraise} from "@/network/event";
+import {postComment, postPraise} from "@/network/event";
 import CommentItem from "@/components/commentItem.vue";
 import {CommentInt} from "@/types/common";
 import CommentInput from "@/components/commentInput.vue";
@@ -114,6 +114,17 @@ const praiseEvent = async () => {
 
 const getComment = () => {
   showComment.value = !showComment.value
+}
+
+const send = (comment: string): Promise<boolean> => {
+  return new Promise(async (resolve, reject) => {
+    let data: any = await postComment({
+      content: comment,
+      event_id: props.event_id
+    })
+    if(data.status) resolve(true)
+    else reject(false)
+  })
 }
 
 </script>

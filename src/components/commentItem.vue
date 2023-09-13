@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="bottomContent">
-      {{props.content}}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      {{props.content}}
     </div>
   </div>
 </template>
