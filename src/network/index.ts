@@ -18,27 +18,26 @@ const ajax = axios.create({
 export const upload = (url: string, data: any) => {
   return axios.post(oss + '/upload/'+url, data, {
     headers: {
-      Authorization: getToken(),
       "Content-Type": "multipart/form-data",
     }
   })
 }
 
 // 请求拦截器
-// ajax.interceptors.request.use(function (config: any) {
-//   // 发送请求的相关逻辑
-//   // config:对象  与 axios.defaults 相当
-//   // 借助config配置token
-//   let token = getToken()
-//   // 判断token存在再做配置
-//   if (token) {
-//     config.headers.Authorization = token
-//   }
-//   return config
-// }, function (error) {
-//   // Do something with request error
-//   return Promise.reject(error)
-// })
+ajax.interceptors.request.use(function (config: any) {
+  // 发送请求的相关逻辑
+  // config:对象  与 axios.defaults 相当
+  // 借助config配置token
+  let token = getToken()
+  // 判断token存在再做配置
+  if (token) {
+    config.headers.Authorization = token
+  }
+  return config
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error)
+})
 
 // 响应拦截器
 ajax.interceptors.response.use((req: any): any => {

@@ -70,12 +70,6 @@ img {
 .el-button:focus-visible {
   outline: 2px solid transparent !important;
 }
-.paginationContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0;
-}
 .hljs {
   overflow-y: scroll;
   max-height: 430px;
@@ -85,5 +79,10 @@ img {
   .el-dialog__body {
     padding: 0 15px 15px;
   }
+}
+.paginationClass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

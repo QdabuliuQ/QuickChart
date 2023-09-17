@@ -20,7 +20,7 @@
       </el-menu>
     </div>
     <div class="rightContainer">
-      <el-scrollbar :height="height + 'px'">
+      <el-scrollbar ref="scrollBarRef" :height="height + 'px'">
         <router-view/>
       </el-scrollbar>
     </div>
@@ -31,12 +31,14 @@
 import {onMounted, ref} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
+import {ElScrollbar} from "element-plus";
 
 let height = ref(0)
 const proxy = useProxy()
 const route = useRoute()
 const router = useRouter()
 let active = ref('detail')
+const scrollBarRef = ref<InstanceType<typeof ElScrollbar>>()
 
 const computedHeight = () => {
   return document.documentElement.clientHeight - (document.querySelector('.header') as HTMLDivElement).offsetHeight - 2 - 60
@@ -53,6 +55,10 @@ const toggle = (path: string) => {
 onMounted(() => {
   height.value = computedHeight()
   active.value = route.path.substring(route.path.lastIndexOf('/') + 1)
+
+  proxy.$Bus.on("infoPageScrollToTop", () => {
+    scrollBarRef.value && scrollBarRef.value.setScrollTop(0)
+  })
 })
 </script>
 

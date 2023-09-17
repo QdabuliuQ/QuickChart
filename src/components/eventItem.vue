@@ -40,11 +40,11 @@
             :nickname="item.nickname"
             :time="item.time"
             :content="item.content"/>
+          <el-pagination @current-change="changeEvent" hide-on-single-page class="paginationClass" background layout="prev, pager, next" :page-size="limit" :total="total" />
         </template>
         <el-empty v-else description="暂无评论哦" />
       </div>
     </div>
-
   </div>
 </template>
 
@@ -60,7 +60,8 @@ import {postComment, postPraise} from "@/network/event";
 import CommentItem from "@/components/commentItem.vue";
 import {CommentInt} from "@/types/common";
 import CommentInput from "@/components/commentInput.vue";
-
+import {getComment as getCommentData} from "@/network/event"
+import usePagination from "@/hooks/usePagination";
 
 interface EventInt {
   chart_id: string
@@ -86,7 +87,8 @@ const router = useRouter()
 const props = defineProps<EventInt>()
 const emits = defineEmits([
   'update:is_praise',
-  'update:praise_count'
+  'update:praise_count',
+  'update:comments'
 ])
 const proxy = useProxy()
 const showComment = ref<boolean>(false)
@@ -95,6 +97,24 @@ const toDetail = () => {
   router.push((props.type === 'chart' ? `/chart/` : '/map/') + props.chart_id)
 }
 
+/**
+ * 获取评论数据
+ */
+const getData = async () => {
+  let data: any = await getCommentData({
+    event_id: props.event_id,
+    offset: offset.value
+  })
+  emits("update:comments", data.data)
+  total.value = data.count
+  limit.value = data.limit
+}
+let [limit, total, offset, changeEvent]: any = usePagination(getData)
+
+/**
+ * 点赞动态
+ * @return void
+ */
 const praiseEvent = async () => {
   let type = (props.is_praise === 1 ? 0 : 1).toString()
   let data: any = await postPraise({
@@ -112,10 +132,22 @@ const praiseEvent = async () => {
   emits('update:praise_count', type === '1' ? props.praise_count + 1 : props.praise_count-1)
 }
 
+/**
+ * 打开评论面板
+ * @return void
+ */
 const getComment = () => {
   showComment.value = !showComment.value
+  if(props.comments.length === 0) {
+    getData()
+  }
 }
 
+/**
+ * 发送评论
+ * @param comment 评论消息
+ * @return Promise<boolean> 返回Promise
+ */
 const send = (comment: string): Promise<boolean> => {
   return new Promise(async (resolve, reject) => {
     let data: any = await postComment({

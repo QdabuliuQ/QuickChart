@@ -25,12 +25,21 @@
           :time="item.time"
           :user_id="item.user_id"
           :user_pic="item.user_pic"
+          v-model:comments="events[idx].comments"
           v-model:is_praise="events[idx].is_praise"
           v-model:praise_count="events[idx].praise_count"
           :au_nickname="item.au_nickname"
           :au_user_pic="item.au_user_pic"
           :au_user_id="item.au_user_id"
           :type="item.type"/>
+        <el-pagination
+          class="paginationClass"
+          v-model:current-page="offset"
+          background
+          layout="prev, pager, next"
+          :page-size="limit"
+          :total="total"
+          @current-change="changeEvent"/>
       </div>
       <el-empty v-else description="空空如也~~~" />
     </div>
@@ -73,17 +82,18 @@ import {EventInt} from "@/types/common";
 import eventItem from "@/components/eventItem.vue"
 import {getInfo} from "@/utils";
 import {useCheckState} from "@/hooks/useCheckState";
+import usePagination from "@/hooks/usePagination";
 
 const items = reactive<ListInt[]>(list)
 const active = ref<number>(0)
 const events = reactive<EventInt[]>([])
 const info = reactive<any>(getInfo())
 const proxy = useProxy()
-let offset: number = 1
 
 const getData = async () => {
+  window.scrollTo(0, 0)
   let data: any = await getEvents({
-    offset,
+    offset: offset.value,
     type: (active.value).toString()
   })
   if(!data.status) return proxy.$notice({
@@ -91,11 +101,15 @@ const getData = async () => {
     message: data.msg,
     position: 'top-left'
   })
+  limit.value = data.limit
+  total.value = data.count
   events.length = 0
   for(let item of data.data) {
+    item.comments = []
     events.push(item)
   }
 }
+let [limit, total, offset, changeEvent]: any = usePagination(getData)
 getData()
 
 const toLogin = () => {
@@ -187,6 +201,7 @@ const toLogin = () => {
     margin-right: 270px;
     padding: 20px;
     border-radius: 10px;
+    flex: 1;
     .container {
       max-width: 100%;
     }
