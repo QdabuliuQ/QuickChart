@@ -17,6 +17,7 @@
         v-model:comments="events[idx].comments"
         v-model:is_praise="events[idx].is_praise"
         v-model:praise_count="events[idx].praise_count"
+        :comment_count="item.comment_count"
         :au_nickname="item.au_nickname"
         :au_user_pic="item.au_user_pic"
         :au_user_id="item.au_user_id"

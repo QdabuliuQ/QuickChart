@@ -15,6 +15,7 @@
           :loading="chart_loading"
           :detail-type="detailType"
           :chart_id="id as string"
+          :info-panel="true"
           :type="type" />
       </div>
       <div class="rightParamsContainer">

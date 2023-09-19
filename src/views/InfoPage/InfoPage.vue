@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import {onMounted, onUnmounted, ref} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
 import {ElScrollbar} from "element-plus";
@@ -51,14 +51,19 @@ proxy.$Bus.emit(() => {
 const toggle = (path: string) => {
   router.push('/index/info/' + path)
 }
+const infoPageScrollToTop = () => {
+  scrollBarRef.value && scrollBarRef.value.setScrollTop(0)
+}
 
 onMounted(() => {
   height.value = computedHeight()
   active.value = route.path.substring(route.path.lastIndexOf('/') + 1)
 
-  proxy.$Bus.on("infoPageScrollToTop", () => {
-    scrollBarRef.value && scrollBarRef.value.setScrollTop(0)
-  })
+  proxy.$Bus.on("infoPageScrollToTop", infoPageScrollToTop)
+})
+
+onUnmounted(() => {
+  proxy.$Bus.off("infoPageScrollToTop", infoPageScrollToTop)
 })
 </script>
 

@@ -25,7 +25,7 @@
       </div>
       <div class="operation">
         <div v-login="praiseEvent" :class="[props.is_praise ? 'active' : '', 'item']"><i class="iconfont i_praise"></i>{{props.praise_count ? props.praise_count : '点赞'}}</div>
-        <div class="item" @click="getComment"><i class="iconfont i_comment"></i>{{ '评论'}}</div>
+        <div class="item" @click="getComment"><i class="iconfont i_comment"></i>{{ props.comment_count ? props.comment_count : '评论'}}</div>
       </div>
       <div v-show="showComment" class="commentInfo">
         <CommentInput :send="send" />
@@ -76,6 +76,7 @@ interface EventInt {
   user_pic: string
   is_praise: number
   praise_count: number
+  comment_count: number
   au_nickname: string
   au_user_pic: string
   au_user_id: string

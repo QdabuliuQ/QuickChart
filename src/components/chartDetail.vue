@@ -18,6 +18,11 @@
             分享
           </el-button>
         </div>
+        <info-panel
+          v-if="proxy.infoPanel"
+          v-model:is_praise="is_praise"
+          v-model:praise_count="praise_count"
+          :praiseEvent="praiseEvent"/>
         <chart-dom ref="chartDomRef" :key="key" />
       </div>
     </div>
@@ -59,34 +64,42 @@ import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
 import ChartDom from "@/components/chartDom.vue";
 import {ElLoading, FormInstance, FormRules} from "element-plus";
-import {postChart, putChart} from "@/network/chart";
+import {postChart, postPraise, putChart} from "@/network/chart";
 import useCommonStore from "@/store/common";
 import {postEvent} from "@/network/event";
 import ShareChartDialog from "@/components/shareChartDialog.vue";
+import InfoPanel from "@/components/infoPanel.vue";
 
 const router = useRouter()
 const props = withDefaults(defineProps<{
   type: string
   detailType: string
   loading: boolean
+  is_praise?: string
+  praise_count?: number
   back?: boolean
   update?: boolean
   share?: boolean
   chart_id?: string
+  infoPanel?: boolean
 }>(), {
   type: '',
   detailType: '',
   loading: true,
+  is_praise: '0',
+  praise_count: 0,
   back: false,
   update: false,
   share: false,
-  chart_id: ''
+  chart_id: '',
+  infoPanel: false
 })
 const common: any = useCommonStore();
 const proxy = useProxy()
+const is_praise = ref<string>(props.is_praise)
+const praise_count = ref<number>(props.praise_count)
 const visible = ref<boolean>(false)
 const shareVisible = ref<boolean>(false)
-const shareContent = ref<string>('')
 const key = ref<number>(0)
 const formRef = ref<FormInstance>()
 const chartDomRef = ref()
@@ -101,6 +114,17 @@ const rules = reactive<FormRules>({
     { max: 15, message: '图表名称不能超过15个字符', trigger: 'blur' },
   ],
 })
+
+const praiseEvent = (is_praise: string): Promise<boolean> => {
+  return new Promise(async (resolve, reject) => {
+    let data = await postPraise({
+      chart_id: props.chart_id,
+      state: is_praise
+    })
+    if(data.status) resolve(true)
+    reject(false)
+  })
+}
 
 // todo 修改
 const base64ToFile = (): File => {
@@ -207,6 +231,7 @@ const shareEvent = async (content: string) => {
   width: 100%;
   height: 100%;
   .chartContainer {
+    height: 100%;
     .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
       white-space: nowrap;
       display: inline-block;

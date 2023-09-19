@@ -64,3 +64,14 @@ export function putChart(data: FormData) {
 export function graphicUpload(data: FormData) {
   return upload('/graphic', data)
 }
+
+export function postPraise(data: {
+  chart_id: string
+  state: string
+}) {
+  return ajax({
+    url: "/qc/praise",
+    method: 'post',
+    data
+  })
+}
