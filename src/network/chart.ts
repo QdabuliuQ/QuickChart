@@ -75,3 +75,14 @@ export function postPraise(data: {
     data
   })
 }
+
+export function postComment(data: {
+  chart_id: string
+  content: string
+}) {
+  return ajax({
+    url: "/qc/comment",
+    method: "post",
+    data
+  })
+}

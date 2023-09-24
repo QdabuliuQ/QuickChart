@@ -19,9 +19,10 @@
           </el-button>
         </div>
         <info-panel
-          v-if="proxy.infoPanel"
+          v-if="props.infoPanel"
           v-model:is_praise="is_praise"
           v-model:praise_count="praise_count"
+          :chart_id="props.chart_id"
           :praiseEvent="praiseEvent"/>
         <chart-dom ref="chartDomRef" :key="key" />
       </div>
@@ -57,7 +58,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import {reactive, ref, defineProps, withDefaults} from "vue";
+import {reactive, ref, defineProps, withDefaults, watch, onUnmounted} from "vue";
 import {useRouter} from "vue-router";
 import {setImageOption} from "@/utils";
 import useProxy from "@/hooks/useProxy";
@@ -75,7 +76,7 @@ const props = withDefaults(defineProps<{
   type: string
   detailType: string
   loading: boolean
-  is_praise?: string
+  is_praise?: number
   praise_count?: number
   back?: boolean
   update?: boolean
@@ -86,7 +87,7 @@ const props = withDefaults(defineProps<{
   type: '',
   detailType: '',
   loading: true,
-  is_praise: '0',
+  is_praise: 0,
   praise_count: 0,
   back: false,
   update: false,
@@ -96,7 +97,7 @@ const props = withDefaults(defineProps<{
 })
 const common: any = useCommonStore();
 const proxy = useProxy()
-const is_praise = ref<string>(props.is_praise)
+const is_praise = ref<number>(props.is_praise)
 const praise_count = ref<number>(props.praise_count)
 const visible = ref<boolean>(false)
 const shareVisible = ref<boolean>(false)
@@ -224,6 +225,18 @@ const shareEvent = async (content: string) => {
     position: 'top-left'
   })
 }
+
+let stop1 = watch(() => props.is_praise, (newVal: number) => {
+  is_praise.value = newVal
+})
+let stop2 = watch(() => props.praise_count, (newVal: number) => {
+  praise_count.value = newVal
+})
+
+onUnmounted(() => {
+  stop1()
+  stop2()
+})
 
 </script>
 <style lang="less">

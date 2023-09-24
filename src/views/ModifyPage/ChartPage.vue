@@ -16,7 +16,9 @@
           :detail-type="detailType"
           :chart_id="id as string"
           :info-panel="true"
-          :type="type" />
+          :type="type"
+          :praise_count="praise_count"
+          :is_praise="is_praise"/>
       </div>
       <div class="rightParamsContainer">
         <chart-params :loading="params_loading" :image="image" />
@@ -50,6 +52,8 @@ const type = ref<string>('')
 const chart_loading = ref<boolean>(true)
 const params_loading = ref<boolean>(true)
 const data_loading = ref<boolean>(true)
+const praise_count = ref<number>(0)
+const is_praise = ref<number>(0)
 const image = ref<string>('')
 
 const getConfig = async () => {
@@ -66,6 +70,8 @@ const getConfig = async () => {
   }
   image.value = data.data.cover
   detailType.value = data.data.type
+  praise_count.value = data.praise_count
+  is_praise.value = data.is_praise
   type.value = parseInt(data.data.type).toString()
   if(typeof data.data.option.backgroundColor === 'object') {  // 处理背景颜色
     let src = data.data.option.backgroundColor.image
