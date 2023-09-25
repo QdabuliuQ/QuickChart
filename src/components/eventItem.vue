@@ -29,12 +29,12 @@
       </div>
       <div v-show="showComment" class="commentInfo">
         <CommentInput :send="send" />
-        <template v-if="comments.length">
+        <template v-if="props.comments.length">
           <CommentItem
             v-for="(item, idx) in props.comments"
             :key="item.comment_id"
             :comment_id="item.comment_id"
-            :event_id="item.event_id"
+            :id="item.event_id"
             :user_id="item.user_id"
             :user_pic="item.user_pic"
             :nickname="item.nickname"

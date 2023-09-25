@@ -19,15 +19,39 @@
       title="评论内容"
     >
       <comment-input :send="send" />
+      <template v-if="comments.length">
+        <CommentItem
+          v-for="(item, idx) in comments"
+          :key="item.comment_id"
+          :comment_id="item.comment_id"
+          :id="item.chart_id"
+          :user_id="item.user_id"
+          :user_pic="item.user_pic"
+          :nickname="item.nickname"
+          :time="item.time"
+          :self="item.self"
+          :content="item.content"/>
+        <el-pagination
+          @current-change="changeEvent"
+          hide-on-single-page
+          class="paginationClass"
+          background
+          v-model:current-page="offset"
+          layout="prev, pager, next"
+          :page-size="limit"
+          :total="total" />
+      </template>
+      <el-empty v-else description="暂无评论哦" />
     </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import CommentInput from "@/components/commentInput.vue";
 import CommentItem from "@/components/commentItem.vue";
 import {postComment} from "@/network/chart";
+import usePagination from "@/hooks/usePagination";
 
 const props = defineProps<{
   chart_id: string
@@ -40,6 +64,8 @@ const emits = defineEmits([
   'update:is_praise',
   'update:praise_count'
 ])
+const comments = reactive<any>([])
+let flag = false
 const drawer = ref<boolean>(false)
 
 const toPraise = () => {
@@ -50,12 +76,32 @@ const toPraise = () => {
   })
 }
 
+const getCommentData = async (e: number) => {
+  comments.length = 0
+  let data = await props.getData(e)
+  for(let item of data.data) {
+    comments.push(item)
+  }
+  total.value = data.count
+  limit.value = data.limit
+}
+
+let [limit, total, offset, changeEvent]: any = usePagination(getCommentData)
+
 /**
  * 打开弹窗
  * @return void
  */
-const showComment = () => {
+const showComment = async () => {
   drawer.value = true
+  if(comments.length === 0) {
+    let data: any = await props.getData(offset.value)
+    for(let item of data.data) {
+      comments.push(item)
+    }
+    total.value = data.count
+    limit.value = data.limit
+  }
 }
 
 /**
@@ -84,6 +130,24 @@ const send = (content: string) => {
   }
   .el-drawer__body {
     padding: 10px;
+    &::-webkit-scrollbar{
+      width:10px;
+      height:10px;
+    }
+    &::-webkit-scrollbar-track{
+      background: #323232;
+      border-radius:2px;
+    }
+    &::-webkit-scrollbar-thumb{
+      background: #565656;
+      border-radius:10px;
+    }
+    &::-webkit-scrollbar-corner{
+      background: #179a16;
+    }
+    .commentData {
+      border-bottom: 1px solid #2f2f2f;
+    }
   }
 }
 .infoPanel {

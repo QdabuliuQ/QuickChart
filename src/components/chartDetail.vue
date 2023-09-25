@@ -23,7 +23,8 @@
           v-model:is_praise="is_praise"
           v-model:praise_count="praise_count"
           :chart_id="props.chart_id"
-          :praiseEvent="praiseEvent"/>
+          :praiseEvent="praiseEvent"
+          :get-data="props.getData"/>
         <chart-dom ref="chartDomRef" :key="key" />
       </div>
     </div>
@@ -83,6 +84,7 @@ const props = withDefaults(defineProps<{
   share?: boolean
   chart_id?: string
   infoPanel?: boolean
+  getData?: Function
 }>(), {
   type: '',
   detailType: '',
@@ -93,7 +95,8 @@ const props = withDefaults(defineProps<{
   update: false,
   share: false,
   chart_id: '',
-  infoPanel: false
+  infoPanel: false,
+  getData: () => {}
 })
 const common: any = useCommonStore();
 const proxy = useProxy()

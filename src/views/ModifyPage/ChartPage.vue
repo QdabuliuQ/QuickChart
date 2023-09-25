@@ -18,7 +18,8 @@
           :info-panel="true"
           :type="type"
           :praise_count="praise_count"
-          :is_praise="is_praise"/>
+          :is_praise="is_praise"
+          :get-data="getCommentData"/>
       </div>
       <div class="rightParamsContainer">
         <chart-params :loading="params_loading" :image="image" />
@@ -36,7 +37,7 @@ import chartParams from "@/components/chartParams.vue"
 import chartDetail from "@/components/chartDetail.vue"
 import emptyTip from "@/components/emptyTip.vue"
 import {useRouter} from "vue-router";
-import {getChartDetail} from "@/network/chart";
+import {getChartDetail, getComment} from "@/network/chart";
 import useProxy from "@/hooks/useProxy";
 import {createImage, deepCopy} from "@/utils";
 import useCommonStore from "@/store/common";
@@ -115,6 +116,13 @@ const getConfig = async () => {
   }
 }
 getConfig()
+
+const getCommentData = async (e: number) => {
+  return await getComment({
+    offset: e,
+    chart_id: id as string
+  })
+}
 
 </script>
 <style lang="less">

@@ -86,3 +86,14 @@ export function postComment(data: {
     data
   })
 }
+
+export function getComment(params: {
+  offset: number
+  chart_id: string
+}) {
+  return ajax({
+    url: "/qc/comment",
+    method: "get",
+    params
+  })
+}
