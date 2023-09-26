@@ -97,3 +97,13 @@ export function getComment(params: {
     params
   })
 }
+
+export function deleteComment(data: {
+  comment_id: string
+}) {
+  return ajax({
+    url: "/qc/comment",
+    method: "delete",
+    data
+  })
+}

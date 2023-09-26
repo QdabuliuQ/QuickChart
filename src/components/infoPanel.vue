@@ -25,12 +25,14 @@
           :key="item.comment_id"
           :comment_id="item.comment_id"
           :id="item.chart_id"
+          :idx="idx as number"
           :user_id="item.user_id"
           :user_pic="item.user_pic"
           :nickname="item.nickname"
           :time="item.time"
           :self="item.self"
-          :content="item.content"/>
+          :content="item.content"
+          @delete="deleteEvent"/>
         <el-pagination
           @current-change="changeEvent"
           hide-on-single-page
@@ -50,8 +52,9 @@
 import {reactive, ref} from "vue";
 import CommentInput from "@/components/commentInput.vue";
 import CommentItem from "@/components/commentItem.vue";
-import {postComment} from "@/network/chart";
+import {deleteComment, postComment} from "@/network/chart";
 import usePagination from "@/hooks/usePagination";
+import useProxy from "@/hooks/useProxy";
 
 const props = defineProps<{
   chart_id: string
@@ -67,6 +70,7 @@ const emits = defineEmits([
 const comments = reactive<any>([])
 let flag = false
 const drawer = ref<boolean>(false)
+const proxy = useProxy()
 
 const toPraise = () => {
   let state = props.is_praise == 1 ? 0 : 1
@@ -115,9 +119,26 @@ const send = (content: string) => {
       chart_id: props.chart_id,
       content
     })
-    if(data.status) resolve(true)
+    if(data.status) {
+      comments.unshift(data.data)
+      resolve(true)
+    }
     else reject(false)
   })
+}
+
+const deleteEvent = async (info: any) => {
+  let data: any = await deleteComment({
+    comment_id: info.comment_id
+  })
+  if(data.status) {
+    comments.splice(info.idx, 1)
+    proxy.$notice({
+      type: "success",
+      message: data.msg,
+      position: "top-left"
+    })
+  }
 }
 
 </script>
@@ -129,7 +150,7 @@ const send = (content: string) => {
     padding: 15px 10px 10px;
   }
   .el-drawer__body {
-    padding: 10px;
+    padding: 20px 15px;
     &::-webkit-scrollbar{
       width:10px;
       height:10px;
@@ -145,8 +166,12 @@ const send = (content: string) => {
     &::-webkit-scrollbar-corner{
       background: #179a16;
     }
-    .commentData {
-      border-bottom: 1px solid #2f2f2f;
+    .commentItem {
+      &:not(:last-child) {
+        .commentData {
+          border-bottom: 1px solid #2f2f2f;
+        }
+      }
     }
   }
 }

@@ -42,6 +42,7 @@ import useProxy from "@/hooks/useProxy";
 
 interface PropsInt {
   comment_id: string
+  idx: number
   id: string
   content: string
   user_id: string
@@ -50,14 +51,12 @@ interface PropsInt {
   time: number
   self?: number
 }
+const emits = defineEmits(['delete'])
 const props = defineProps<PropsInt>()
 const proxy = useProxy()
 
 const confirmEvent = () => {
-  console.log("comfirm")
-}
-const cancelEvent = () => {
-
+  emits('delete', props)
 }
 
 </script>
@@ -66,6 +65,10 @@ const cancelEvent = () => {
 .commentItem {
   &:not(:last-child) {
     margin-bottom: 15px;
+    .commentData {
+      border-bottom: 1px solid #525252;
+      padding-bottom: 15px;
+    }
   }
   .topInfo {
     display: flex;
@@ -95,11 +98,9 @@ const cancelEvent = () => {
   }
   .commentData {
     margin-left: 50px;
-    padding-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #525252;
     font-size: 13px;
     .dataItem {
       display: flex;

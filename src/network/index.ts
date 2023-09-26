@@ -42,6 +42,11 @@ ajax.interceptors.request.use(function (config: any) {
 // 响应拦截器
 ajax.interceptors.response.use((req: any): any => {
   if(req.data.status == 0) {
+    ElNotification({
+      type: "error",
+      message: req.data.msg,
+      position: "top-left"
+    })
     return req.data
   } else {
     return req.data
