@@ -24,6 +24,7 @@
           v-model:praise_count="praise_count"
           :chart_id="props.chart_id"
           :praiseEvent="praiseEvent"
+          :comment_count="props.comment_count"
           :get-data="props.getData"/>
         <chart-dom ref="chartDomRef" :key="key" />
       </div>
@@ -77,6 +78,7 @@ const props = withDefaults(defineProps<{
   type: string
   detailType: string
   loading: boolean
+  comment_count?: number
   is_praise?: number
   praise_count?: number
   back?: boolean
@@ -89,6 +91,7 @@ const props = withDefaults(defineProps<{
   type: '',
   detailType: '',
   loading: true,
+  comment_count: 0,
   is_praise: 0,
   praise_count: 0,
   back: false,

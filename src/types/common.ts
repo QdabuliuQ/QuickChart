@@ -28,6 +28,7 @@ export interface CommentInt {
   user_pic: string
   nickname: string
   time: number
+  self: number
 }
 
 export interface EventInt {

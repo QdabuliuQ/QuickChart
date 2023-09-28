@@ -9,7 +9,7 @@
     <div @click="showComment" class="infoBtn">
       <div class="btnContainer">
         <i class="iconfont i_comment"></i>
-        <span>评论</span>
+        <span>{{props.comment_count == 0 ? '评论' : props.comment_count}}</span>
       </div>
     </div>
     <el-drawer
@@ -60,6 +60,7 @@ const props = defineProps<{
   chart_id: string
   is_praise: number
   praise_count: number
+  comment_count: number
   praiseEvent: Function
   getData: Function
 }>()

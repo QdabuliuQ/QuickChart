@@ -19,6 +19,7 @@
           :type="type"
           :praise_count="praise_count"
           :is_praise="is_praise"
+          :comment_count="comment_count"
           :get-data="getCommentData"/>
       </div>
       <div class="rightParamsContainer">
@@ -55,6 +56,7 @@ const params_loading = ref<boolean>(true)
 const data_loading = ref<boolean>(true)
 const praise_count = ref<number>(0)
 const is_praise = ref<number>(0)
+const comment_count = ref<number>(0)
 const image = ref<string>('')
 
 const getConfig = async () => {
@@ -72,6 +74,7 @@ const getConfig = async () => {
   image.value = data.data.cover
   detailType.value = data.data.type
   praise_count.value = data.praise_count
+  comment_count.value = data.comment_count
   is_praise.value = data.is_praise
   type.value = parseInt(data.data.type).toString()
   if(typeof data.data.option.backgroundColor === 'object') {  // 处理背景颜色

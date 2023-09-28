@@ -35,11 +35,14 @@
             :key="item.comment_id"
             :comment_id="item.comment_id"
             :id="item.event_id"
+            :idx="idx"
             :user_id="item.user_id"
             :user_pic="item.user_pic"
             :nickname="item.nickname"
             :time="item.time"
-            :content="item.content"/>
+            :content="item.content"
+            :self="item.self"
+            @delete="deleteEvent"/>
           <el-pagination @current-change="changeEvent" hide-on-single-page class="paginationClass" background layout="prev, pager, next" :page-size="limit" :total="total" />
         </template>
         <el-empty v-else description="暂无评论哦" />
@@ -56,7 +59,7 @@ import {
 } from "vue"
 import {useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
-import {postComment, postPraise} from "@/network/event";
+import {deleteComment, postComment, postPraise} from "@/network/event";
 import CommentItem from "@/components/commentItem.vue";
 import {CommentInt} from "@/types/common";
 import CommentInput from "@/components/commentInput.vue";
@@ -158,6 +161,22 @@ const send = (comment: string): Promise<boolean> => {
     if(data.status) resolve(true)
     else reject(false)
   })
+}
+
+const deleteEvent = async (info: any) => {
+  let data: any = await deleteComment({
+    comment_id: info.comment_id
+  })
+  if(data.status) {
+    proxy.$notice({
+      type: "success",
+      message: data.msg,
+      position: "top-left"
+    })
+    let comments = [...props.comments]
+    comments.splice(info.idx, 1)
+    emits("update:comments", comments)
+  }
 }
 
 </script>

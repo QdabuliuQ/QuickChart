@@ -1,28 +1,31 @@
 <template>
   <div class="InfoPage">
-    <div class="leftMenu">
-      <el-menu
-        active-text-color="#ffae34"
-        :default-active="active"
-      >
-        <el-menu-item @click="toggle('detail')" index="detail">
-          <i class="iconfont i_login"></i>
-          <span>账号管理</span>
-        </el-menu-item>
-        <el-menu-item @click="toggle('event')" index="event">
-          <i class="iconfont i_event"></i>
-          <span>我的动态</span>
-        </el-menu-item>
-        <el-menu-item @click="toggle('chart')" index="chart">
-          <i class="iconfont i_chart"></i>
-          <span>我的图表</span>
-        </el-menu-item>
-      </el-menu>
-    </div>
+    <el-affix :offset="20">
+      <div class="leftMenu">
+        <el-menu
+          active-text-color="#ffae34"
+          :default-active="active"
+        >
+          <el-menu-item @click="toggle('detail')" index="detail">
+            <i class="iconfont i_login"></i>
+            <span>账号管理</span>
+          </el-menu-item>
+          <el-menu-item @click="toggle('event')" index="event">
+            <i class="iconfont i_event"></i>
+            <span>我的动态</span>
+          </el-menu-item>
+          <el-menu-item @click="toggle('chart')" index="chart">
+            <i class="iconfont i_chart"></i>
+            <span>我的图表</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </el-affix>
     <div class="rightContainer">
-      <el-scrollbar ref="scrollBarRef" :height="height + 'px'">
-        <router-view/>
-      </el-scrollbar>
+      <router-view/>
+<!--      <el-scrollbar ref="scrollBarRef" :height="height + 'px'">-->
+<!--        <router-view/>-->
+<!--      </el-scrollbar>-->
     </div>
   </div>
 </template>
@@ -70,13 +73,13 @@ onUnmounted(() => {
 <style lang="less">
 .InfoPage {
   display: flex;
+  align-items: flex-start;
+  margin-top: 20px;
   .leftMenu {
-    position: fixed;
     background-color: #353535;
     border-radius: 15px;
     box-sizing: border-box;
     padding: 30px 0;
-    margin-top: 30px;
     box-shadow: 0 0 9px 0 #0d0d0d;
     z-index: 1;
     .el-menu {
@@ -100,14 +103,12 @@ onUnmounted(() => {
   }
   .rightContainer {
     flex: 1;
-    margin-left: 200px;
-    margin-top: 30px;
+    margin: 0 0 20px 20px;
     background-color: #353535;
     box-sizing: border-box;
     border-radius: 15px;
-    .el-scrollbar__view {
-      padding: 30px;
-    }
+    padding: 30px;
+    min-height: 80vh;
     .pageTitle {
       font-weight: bold;
       color: @theme;
