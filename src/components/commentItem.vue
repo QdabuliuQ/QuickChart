@@ -11,9 +11,9 @@
       {{props.content}}
     </div>
     <div class="commentData">
-      <div class="dataItem">
+      <div @click="praiseEvent" :class="[props.is_praise == '1' ? 'active' : '', 'dataItem']">
         <i class="iconfont i_praise"></i>
-        点赞
+        {{props.praise_count ? props.praise_count : '点赞'}}
       </div>
       <el-popconfirm
         v-if="props.self"
@@ -50,13 +50,18 @@ interface PropsInt {
   nickname: string
   time: number
   self?: number
+  is_praise?: number
+  praise_count?: number
 }
-const emits = defineEmits(['delete'])
+const emits = defineEmits(['delete', 'praise'])
 const props = defineProps<PropsInt>()
 const proxy = useProxy()
 
 const confirmEvent = () => {
   emits('delete', props)
+}
+const praiseEvent = () => {
+  emits('praise', props)
 }
 
 </script>
@@ -102,6 +107,9 @@ const confirmEvent = () => {
     align-items: center;
     justify-content: space-between;
     font-size: 13px;
+    .active {
+      color: @theme !important;
+    }
     .dataItem {
       display: flex;
       align-items: center;

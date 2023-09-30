@@ -1,5 +1,9 @@
 import ajax, {upload} from "@/network/index";
 
+/**
+ * 保存图表
+ * @param data
+ */
 export function postChart(data: FormData) {
   return ajax({
     url: '/qc/chart',
@@ -12,6 +16,10 @@ export function chartCoverUpload(data: FormData) {
   return upload('/chartCover', data)
 }
 
+/**
+ * 获取图表
+ * @param params
+ */
 export function getChart(params: {
   offset: number
 }) {
@@ -22,6 +30,10 @@ export function getChart(params: {
   })
 }
 
+/**
+ * 修改图表名称
+ * @param data
+ */
 export function putChartName(data: {
   name: string
   chart_id: string
@@ -33,6 +45,10 @@ export function putChartName(data: {
   })
 }
 
+/**
+ * 删除图表
+ * @param data
+ */
 export function deleteChart(data: {
   chart_id: string
 }) {
@@ -43,6 +59,10 @@ export function deleteChart(data: {
   })
 }
 
+/**
+ * 获取图表信息
+ * @param params
+ */
 export function getChartDetail(params: {
   chart_id: string
 }) {
@@ -53,6 +73,10 @@ export function getChartDetail(params: {
   })
 }
 
+/**
+ * 修改图表
+ * @param data
+ */
 export function putChart(data: FormData) {
   return ajax({
     url: '/qc/chart',
@@ -65,6 +89,10 @@ export function graphicUpload(data: FormData) {
   return upload('/graphic', data)
 }
 
+/**
+ * 点赞图表
+ * @param data
+ */
 export function postPraise(data: {
   chart_id: string
   state: string
@@ -76,6 +104,10 @@ export function postPraise(data: {
   })
 }
 
+/**
+ * 发布评论
+ * @param data
+ */
 export function postComment(data: {
   chart_id: string
   content: string
@@ -87,6 +119,10 @@ export function postComment(data: {
   })
 }
 
+/**
+ * 获取评论
+ * @param params
+ */
 export function getComment(params: {
   offset: number
   chart_id: string
@@ -98,12 +134,31 @@ export function getComment(params: {
   })
 }
 
+/**
+ * 删除评论
+ * @param data
+ */
 export function deleteComment(data: {
   comment_id: string
 }) {
   return ajax({
     url: "/qc/comment",
     method: "delete",
+    data
+  })
+}
+
+/**
+ * 点赞/取消点赞评论
+ * @param data
+ */
+export function postPraiseComment(data: {
+  comment_id: string
+  type: '1' | '0'
+}) {
+  return ajax({
+    url: '/qc/praiseComment',
+    method: 'post',
     data
   })
 }

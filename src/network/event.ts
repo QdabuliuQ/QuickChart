@@ -75,3 +75,14 @@ export function deleteComment(data: {
     data
   })
 }
+
+export function postPraiseComment(data: {
+  comment_id: string
+  type: '1' | '0'
+}) {
+  return ajax({
+    url: "/com/praiseComment",
+    method: 'post',
+    data
+  })
+}

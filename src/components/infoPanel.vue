@@ -12,48 +12,12 @@
         <span>{{props.comment_count == 0 ? '评论' : props.comment_count}}</span>
       </div>
     </div>
-    <el-drawer
-      custom-class="commentDrawerCustomClass"
-      v-model="drawer"
-      direction="ltr"
-      title="评论内容"
-    >
-      <comment-input :send="send" />
-      <template v-if="comments.length">
-        <CommentItem
-          v-for="(item, idx) in comments"
-          :key="item.comment_id"
-          :comment_id="item.comment_id"
-          :id="item.chart_id"
-          :idx="idx as number"
-          :user_id="item.user_id"
-          :user_pic="item.user_pic"
-          :nickname="item.nickname"
-          :time="item.time"
-          :self="item.self"
-          :content="item.content"
-          @delete="deleteEvent"/>
-        <el-pagination
-          @current-change="changeEvent"
-          hide-on-single-page
-          class="paginationClass"
-          background
-          v-model:current-page="offset"
-          layout="prev, pager, next"
-          :page-size="limit"
-          :total="total" />
-      </template>
-      <el-empty v-else description="暂无评论哦" />
-    </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-import CommentInput from "@/components/commentInput.vue";
-import CommentItem from "@/components/commentItem.vue";
-import {deleteComment, postComment} from "@/network/chart";
-import usePagination from "@/hooks/usePagination";
+import {postComment} from "@/network/chart";
 import useProxy from "@/hooks/useProxy";
 
 const props = defineProps<{
@@ -62,11 +26,11 @@ const props = defineProps<{
   praise_count: number
   comment_count: number
   praiseEvent: Function
-  getData: Function
 }>()
 const emits = defineEmits([
   'update:is_praise',
-  'update:praise_count'
+  'update:praise_count',
+  'showDrawer'
 ])
 const comments = reactive<any>([])
 let flag = false
@@ -81,32 +45,12 @@ const toPraise = () => {
   })
 }
 
-const getCommentData = async (e: number) => {
-  comments.length = 0
-  let data = await props.getData(e)
-  for(let item of data.data) {
-    comments.push(item)
-  }
-  total.value = data.count
-  limit.value = data.limit
-}
-
-let [limit, total, offset, changeEvent]: any = usePagination(getCommentData)
-
 /**
  * 打开弹窗
  * @return void
  */
 const showComment = async () => {
-  drawer.value = true
-  if(comments.length === 0) {
-    let data: any = await props.getData(offset.value)
-    for(let item of data.data) {
-      comments.push(item)
-    }
-    total.value = data.count
-    limit.value = data.limit
-  }
+  emits('showDrawer')
 }
 
 /**
@@ -127,21 +71,6 @@ const send = (content: string) => {
     else reject(false)
   })
 }
-
-const deleteEvent = async (info: any) => {
-  let data: any = await deleteComment({
-    comment_id: info.comment_id
-  })
-  if(data.status) {
-    comments.splice(info.idx, 1)
-    proxy.$notice({
-      type: "success",
-      message: data.msg,
-      position: "top-left"
-    })
-  }
-}
-
 </script>
 
 <style lang="less">

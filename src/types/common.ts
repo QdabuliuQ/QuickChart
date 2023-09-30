@@ -29,6 +29,8 @@ export interface CommentInt {
   nickname: string
   time: number
   self: number
+  is_praise?: string|number
+  praise_count?: number
 }
 
 export interface EventInt {

@@ -53,7 +53,6 @@ const shareEvent = () => {
 
 const cancelEvent = () => {
   visible.value = false
-
 }
 const closeEvent = () => {
   content.value = ''

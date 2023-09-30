@@ -19,17 +19,23 @@
           </el-button>
         </div>
         <info-panel
-          v-if="props.infoPanel"
           v-model:is_praise="is_praise"
           v-model:praise_count="praise_count"
           :chart_id="props.chart_id"
-          :praiseEvent="praiseEvent"
           :comment_count="props.comment_count"
-          :get-data="props.getData"/>
+          :praise-event="praiseEvent"
+          @showDrawer="show = true"/>
         <chart-dom ref="chartDomRef" :key="key" />
       </div>
     </div>
   </div>
+  <comment-drawer
+    v-model:drawer="show"
+    :chart_id="props.chart_id"
+    :post-comment="_postComment"
+    :delete-comment="_deleteComment"
+    :praise-comment="_praiseComment"
+    :get-data="_getComment" />
   <share-chart-dialog
     v-model:visible="shareVisible"
     @share-event="shareEvent" />
@@ -67,11 +73,20 @@ import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
 import ChartDom from "@/components/chartDom.vue";
 import {ElLoading, FormInstance, FormRules} from "element-plus";
-import {postChart, postPraise, putChart} from "@/network/chart";
+import {
+  deleteComment,
+  getComment,
+  postChart,
+  postComment,
+  postPraise,
+  postPraiseComment,
+  putChart
+} from "@/network/chart";
 import useCommonStore from "@/store/common";
 import {postEvent} from "@/network/event";
 import ShareChartDialog from "@/components/shareChartDialog.vue";
 import InfoPanel from "@/components/infoPanel.vue";
+import CommentDrawer from "@/components/commentDrawer.vue";
 
 const router = useRouter()
 const props = withDefaults(defineProps<{
@@ -108,6 +123,7 @@ const praise_count = ref<number>(props.praise_count)
 const visible = ref<boolean>(false)
 const shareVisible = ref<boolean>(false)
 const key = ref<number>(0)
+const show = ref<boolean>(false)
 const formRef = ref<FormInstance>()
 const chartDomRef = ref()
 
@@ -229,6 +245,30 @@ const shareEvent = async (content: string) => {
     type: 'success',
     message: data.msg,
     position: 'top-left'
+  })
+}
+
+const _postComment = async (data: {
+  chart_id: string
+  content: string
+}) => {
+  return await postComment(data)
+}
+const _deleteComment = async (data: {
+  comment_id: string
+}) => {
+  return await deleteComment(data)
+}
+const _getComment = async (e: number) => {
+  return await getComment({
+    offset: e,
+    chart_id: props.chart_id
+  })
+}
+const _praiseComment = async (info: any) => {
+  return await postPraiseComment({
+    comment_id: info.comment_id as string,
+    type: info.is_praise == '1' ? '0' : '1'
   })
 }
 

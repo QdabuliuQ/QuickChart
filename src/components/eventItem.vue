@@ -42,7 +42,10 @@
             :time="item.time"
             :content="item.content"
             :self="item.self"
-            @delete="deleteEvent"/>
+            :is_praise="item.is_praise as number"
+            :praise_count="item.praise_count as number"
+            @delete="deleteEvent"
+            @praise="praiseCommentEvent"/>
           <el-pagination @current-change="changeEvent" hide-on-single-page class="paginationClass" background layout="prev, pager, next" :page-size="limit" :total="total" />
         </template>
         <el-empty v-else description="暂无评论哦" />
@@ -59,7 +62,7 @@ import {
 } from "vue"
 import {useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
-import {deleteComment, postComment, postPraise} from "@/network/event";
+import {deleteComment, postComment, postPraise, postPraiseComment} from "@/network/event";
 import CommentItem from "@/components/commentItem.vue";
 import {CommentInt} from "@/types/common";
 import CommentInput from "@/components/commentInput.vue";
@@ -115,6 +118,24 @@ const getData = async () => {
 }
 let [limit, total, offset, changeEvent]: any = usePagination(getData)
 
+const praiseCommentEvent = async (info: any) => {
+  let data: any = await postPraiseComment({
+    comment_id: info.comment_id,
+    type: info.is_praise == '1' ? '0' : '1'
+  })
+  let type = info.is_praise == '1' ? '0' : '1'
+  if(data.status) {
+    if(type === '1') {
+      props.comments[info.idx].is_praise = 1;
+      (props.comments[info.idx].praise_count as number) ++;
+    } else {
+      props.comments[info.idx].is_praise = 0;
+      (props.comments[info.idx].praise_count as number) --;
+    }
+    emits('update:comments', props.comments)
+  }
+}
+
 /**
  * 点赞动态
  * @return void
@@ -158,7 +179,12 @@ const send = (comment: string): Promise<boolean> => {
       content: comment,
       event_id: props.event_id
     })
-    if(data.status) resolve(true)
+    if(data.status) {
+      let comments = [...props.comments]
+      comments.unshift(data.data)
+      emits("update:comments", comments)
+      resolve(true)
+    }
     else reject(false)
   })
 }

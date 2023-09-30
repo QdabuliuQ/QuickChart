@@ -1,0 +1,166 @@
+<template>
+  <el-drawer
+    custom-class="commentDrawerCustomClass"
+    v-model="drawer"
+    direction="ltr"
+    title="评论内容"
+    @close="closeEvent"
+  >
+    <comment-input :send="send" />
+    <template v-if="comments.length">
+      <comment-item
+        v-for="(item, idx) in comments"
+        :key="item.comment_id"
+        :comment_id="item.comment_id"
+        :id="item.chart_id"
+        :idx="idx as number"
+        :user_id="item.user_id"
+        :user_pic="item.user_pic"
+        :nickname="item.nickname"
+        :time="item.time"
+        :self="item.self"
+        :content="item.content"
+        :is_praise="item.is_praise"
+        :praise_count="item.praise_count"
+        @delete="deleteEvent"
+        @praise="praiseEvent"/>
+      <el-pagination
+        @current-change="changeEvent"
+        hide-on-single-page
+        class="paginationClass"
+        background
+        v-model:current-page="offset"
+        layout="prev, pager, next"
+        :page-size="limit"
+        :total="total" />
+    </template>
+    <el-empty v-else description="暂无评论哦" />
+  </el-drawer>
+</template>
+<script setup lang="ts">
+import CommentInput from "@/components/commentInput.vue";
+import CommentItem from "@/components/commentItem.vue";
+import useProxy from "@/hooks/useProxy";
+import usePagination from "@/hooks/usePagination";
+import {onUnmounted, reactive, ref, watch} from "vue";
+
+const props = defineProps<{
+  drawer: boolean
+  getData: Function,
+  postComment: Function
+  deleteComment: Function
+  praiseComment: Function
+  chart_id: string
+}>()
+const emits = defineEmits([
+  'update:drawer'
+])
+const comments = reactive<any>([])
+const drawer = ref<boolean>(props.drawer)
+const proxy = useProxy()
+
+const closeEvent = () => {
+  emits("update:drawer", false)
+}
+
+const getCommentData = async (e: number) => {
+  let data: any = await props.getData(e)
+  for(let item of data.data) {
+    comments.push(item)
+  }
+  total.value = data.count
+  limit.value = data.limit
+}
+let [limit, total, offset, changeEvent]: any = usePagination(getCommentData)
+
+/**
+ * 评论点赞
+ * @param info 评论信息
+ */
+const praiseEvent = async (info: any) => {
+  let data: any = await props.praiseComment(info)
+  if(data.status) {
+    let type = info.is_praise == '1' ? '0' : '1'
+    if(type === '1') {
+      comments[info.idx].is_praise = 1
+      comments[info.idx].praise_count ++
+    } else {
+      comments[info.idx].is_praise = 0
+      comments[info.idx].praise_count --
+    }
+  }
+}
+
+const deleteEvent = async (info: any) => {
+  let data: any = await props.deleteComment({
+    comment_id: info.comment_id
+  })
+  if(data.status) {
+    comments.splice(info.idx, 1)
+    proxy.$notice({
+      type: "success",
+      message: data.msg,
+      position: "top-left"
+    })
+  }
+}
+
+const send = (content: string) => {
+  return new Promise( async (resolve, reject) => {
+    let data: any = await props.postComment({
+      chart_id: props.chart_id,
+      content
+    })
+    if(data.status) {
+      comments.unshift(data.data)
+      resolve(true)
+    }
+    else reject(false)
+  })
+}
+
+let stop = watch(() => props.drawer, (newVal: boolean) => {
+  drawer.value = newVal
+  if(newVal && comments.length === 0) {
+    getCommentData(offset.value)
+  }
+})
+
+onUnmounted(() => {
+  stop()
+})
+</script>
+
+<style lang="less">
+.commentDrawerCustomClass {
+  .el-drawer__header {
+    margin-bottom: 0;
+    padding: 15px 10px 10px;
+  }
+  .el-drawer__body {
+    padding: 20px 15px;
+    &::-webkit-scrollbar{
+      width:10px;
+      height:10px;
+    }
+    &::-webkit-scrollbar-track{
+      background: #323232;
+      border-radius:2px;
+    }
+    &::-webkit-scrollbar-thumb{
+      background: #565656;
+      border-radius:10px;
+    }
+    &::-webkit-scrollbar-corner{
+      background: #179a16;
+    }
+    .commentItem {
+      &:not(:last-child) {
+        .commentData {
+          border-bottom: 1px solid #2f2f2f;
+        }
+      }
+    }
+  }
+}
+</style>
