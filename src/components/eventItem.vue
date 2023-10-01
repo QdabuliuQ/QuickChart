@@ -21,7 +21,7 @@
           </div>
           <i :class="['iconfont', props.type === 'chart' ? 'i_bar' : 'i_map']"></i>
         </div>
-        <img :alt="props.name" :src="props.cover"  />
+        <img class="cover" :alt="props.name" :src="props.cover"  />
       </div>
       <div class="operation">
         <div v-login="praiseEvent" :class="[props.is_praise ? 'active' : '', 'item']"><i class="iconfont i_praise"></i>{{props.praise_count ? props.praise_count : '点赞'}}</div>
@@ -29,26 +29,53 @@
       </div>
       <div v-show="showComment" class="commentInfo">
         <CommentInput :send="send" />
-        <template v-if="props.comments.length">
-          <CommentItem
-            v-for="(item, idx) in props.comments"
-            :key="item.comment_id"
-            :comment_id="item.comment_id"
-            :id="item.event_id"
-            :idx="idx"
-            :user_id="item.user_id"
-            :user_pic="item.user_pic"
-            :nickname="item.nickname"
-            :time="item.time"
-            :content="item.content"
-            :self="item.self"
-            :is_praise="item.is_praise as number"
-            :praise_count="item.praise_count as number"
-            @delete="deleteEvent"
-            @praise="praiseCommentEvent"/>
-          <el-pagination @current-change="changeEvent" hide-on-single-page class="paginationClass" background layout="prev, pager, next" :page-size="limit" :total="total" />
-        </template>
-        <el-empty v-else description="暂无评论哦" />
+        <skeleton
+          :loading-class="['el-avatar','nickname','time', 'bottomContent', 'dataItem']"
+          :status="status"
+          :count="2" >
+          <template v-slot:template="{setSlotRef}">
+            <CommentItem
+              style="margin-bottom: 15px"
+              :comment_id="'null'"
+              :id="'null'"
+              :idx="1"
+              :user_id="'null'"
+              :user_pic="'null'"
+              :self="1"
+              :nickname="'xxxxxxxxxxxxx'"
+              :time="123123123"
+              :content="'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"/>
+          </template>
+          <template v-slot:content>
+            <CommentItem
+              v-for="(item, idx) in props.comments"
+              :key="item.comment_id"
+              :comment_id="item.comment_id"
+              :id="item.event_id"
+              :idx="idx"
+              :user_id="item.user_id"
+              :user_pic="item.user_pic"
+              :nickname="item.nickname"
+              :time="item.time"
+              :content="item.content"
+              :self="item.self"
+              :is_praise="item.is_praise as number"
+              :praise_count="item.praise_count as number"
+              @delete="deleteEvent"
+              @praise="praiseCommentEvent"/>
+            <el-pagination
+              @current-change="changeEvent"
+              hide-on-single-page
+              class="paginationClass"
+              background
+              layout="prev, pager, next"
+              :page-size="limit"
+              :total="total" />
+          </template>
+          <template v-slot:empty>
+            <el-empty description="暂无评论哦" />
+          </template>
+        </skeleton>
       </div>
     </div>
   </div>
@@ -68,6 +95,7 @@ import {CommentInt} from "@/types/common";
 import CommentInput from "@/components/commentInput.vue";
 import {getComment as getCommentData} from "@/network/event"
 import usePagination from "@/hooks/usePagination";
+import Skeleton from "@/components/skeleton.vue";
 
 interface EventInt {
   chart_id: string
@@ -77,17 +105,17 @@ interface EventInt {
   name: string
   nickname: string
   state: string
-  time: number
+  time?: number
   user_id: string
   user_pic: string
-  is_praise: number
-  praise_count: number
-  comment_count: number
-  au_nickname: string
-  au_user_pic: string
-  au_user_id: string
-  type: string
-  comments: CommentInt[]
+  is_praise?: number
+  praise_count?: number
+  comment_count?: number
+  au_nickname?: string
+  au_user_pic?: string
+  au_user_id?: string
+  type?: string
+  comments?: CommentInt[]
 }
 
 const router = useRouter()
@@ -99,6 +127,7 @@ const emits = defineEmits([
 ])
 const proxy = useProxy()
 const showComment = ref<boolean>(false)
+const status = ref<'1'|'2'|'3'>('1')
 
 const toDetail = () => {
   router.push((props.type === 'chart' ? `/chart/` : '/map/') + props.chart_id)
@@ -108,10 +137,16 @@ const toDetail = () => {
  * 获取评论数据
  */
 const getData = async () => {
+  status.value = '1'
   let data: any = await getCommentData({
     event_id: props.event_id,
     offset: offset.value
   })
+  if(!data.status || data.data.length === 0) {
+    status.value = '3'
+  } else {
+    status.value = '2'
+  }
   emits("update:comments", data.data)
   total.value = data.count
   limit.value = data.limit
@@ -126,11 +161,11 @@ const praiseCommentEvent = async (info: any) => {
   let type = info.is_praise == '1' ? '0' : '1'
   if(data.status) {
     if(type === '1') {
-      props.comments[info.idx].is_praise = 1;
-      (props.comments[info.idx].praise_count as number) ++;
+      props.comments![info.idx].is_praise = 1;
+      (props.comments![info.idx].praise_count as number) ++;
     } else {
-      props.comments[info.idx].is_praise = 0;
-      (props.comments[info.idx].praise_count as number) --;
+      props.comments![info.idx].is_praise = 0;
+      (props.comments![info.idx].praise_count as number) --;
     }
     emits('update:comments', props.comments)
   }
@@ -163,7 +198,7 @@ const praiseEvent = async () => {
  */
 const getComment = () => {
   showComment.value = !showComment.value
-  if(props.comments.length === 0) {
+  if(props.comments && props.comments.length === 0) {
     getData()
   }
 }
@@ -180,7 +215,7 @@ const send = (comment: string): Promise<boolean> => {
       event_id: props.event_id
     })
     if(data.status) {
-      let comments = [...props.comments]
+      let comments = [...props.comments!]
       comments.unshift(data.data)
       emits("update:comments", comments)
       resolve(true)
@@ -199,7 +234,7 @@ const deleteEvent = async (info: any) => {
       message: data.msg,
       position: "top-left"
     })
-    let comments = [...props.comments]
+    let comments = [...props.comments!]
     comments.splice(info.idx, 1)
     emits("update:comments", comments)
   }
@@ -308,6 +343,8 @@ const deleteEvent = async (info: any) => {
       padding-bottom: 15px;
       border-bottom: 1px solid #525252;
       .item {
+        display: flex;
+        align-items: center;
         flex: 1;
         font-size: 14px;
         cursor: pointer;

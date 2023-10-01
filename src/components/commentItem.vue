@@ -99,7 +99,7 @@ const praiseEvent = () => {
     margin-left: 50px;
     word-break: break-all;
     line-height: 25px;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
   }
   .commentData {
     margin-left: 50px;

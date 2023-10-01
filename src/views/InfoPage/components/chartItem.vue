@@ -49,11 +49,11 @@ const props = defineProps<{
   name: string
   option: string
   state: string
-  time: number
-  type: string
+  time?: number
+  type?: string
   user_id: string
-  idx: number
-  blur: Function
+  idx?: number
+  blur?: Function
 }>()
 const emits = defineEmits([
   'deleteItem',
@@ -212,6 +212,7 @@ const deleteEvent = () => {
   }
   .cover {
     width: 100%;
+    height: 125px;
     object-fit: cover;
     vertical-align: middle;
   }

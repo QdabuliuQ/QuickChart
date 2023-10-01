@@ -1,0 +1,104 @@
+<template>
+  <div class="skeleton">
+    <template v-if="props.status === '1'">
+      <div class="skeleton_loading">
+        <div v-for="_ in props.count" class="skeleton_container">
+          <slot name="template" :setSlotRef="setSlotRef"></slot>
+        </div>
+      </div>
+    </template>
+    <div v-else-if="props.status === '2'" class="skeleton_content">
+      <slot name="content"></slot>
+    </div>
+    <div v-else>
+      <slot name="empty"></slot>
+    </div>
+  </div>
+</template>
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
+
+const props = withDefaults(defineProps<{
+  status: '1' | '2'| '3'
+  count: number
+  loadingClass: string[]
+  hiddenClass?: string[]
+  color1?: string
+  color2?: string
+}>(), {
+  status: '1',
+  count: 1,
+  color1: 'rgb(62, 62, 62)',
+  color2: 'rgb(73, 73, 73)'
+})
+const classSet = new Set(props.loadingClass)
+const hiddenClass = new Set(props.hiddenClass)
+const loadingBGC = `linear-gradient(111deg, ${props.color1} 25%, ${props.color2} 37%, ${props.color1} 63%)`
+const slotRef = ref<HTMLElement>()
+const setSlotRef = (el: HTMLElement)=>{
+  slotRef.value = el
+}
+
+const addAnimationLoadingClass = (dom: HTMLElement) => {
+  if(!dom) return
+  if (dom.classList) {
+    let classList = Array.from(dom.classList)
+    for(let _class of classList) {
+      if(hiddenClass.has(_class)) {
+        dom.classList.add('hiddenContent')
+        return;
+      }
+      if(classSet.has(_class)) {
+        let style = window.getComputedStyle(dom)
+        let val = style.getPropertyValue('border-radius')
+        if(val == '0px' || !val) {
+          dom.classList.add('borderRadius')
+        }
+        dom.classList.add('skeletonLoading')
+        dom.style.backgroundImage = loadingBGC
+        break
+      }
+    }
+  }
+  if(dom.childNodes) {
+    for(let child of dom.childNodes) {
+      addAnimationLoadingClass(child as HTMLElement)
+    }
+  }
+}
+
+onMounted(() => {
+  let slotContainers = document.querySelectorAll('.skeleton_container')
+  for(let dom of slotContainers) {
+    addAnimationLoadingClass(dom.children[0] as HTMLElement)
+  }
+})
+
+</script>
+<style lang="less">
+.skeleton {
+  user-select: none;
+  .hiddenContent {
+    opacity: 0;
+    display: none;
+  }
+  .borderRadius {
+    border-radius: 10px;
+  }
+  .skeletonLoading {
+    color: transparent !important;
+    background-size: 400% 100%;
+    background-position: 100% 50%;
+    animation: skeleton-loading 1.4s ease infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
+}
+</style>

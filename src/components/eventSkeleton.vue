@@ -1,6 +1,6 @@
 <template>
   <div class="eventSkeleton">
-    <div v-for="item in count" class="skeletonItem">
+    <div v-for="_ in count" class="skeletonItem">
       <div class="avatar skeletonLoading"></div>
     </div>
   </div>
