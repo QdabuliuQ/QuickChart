@@ -265,3 +265,17 @@ export function getMessageOption(type: 'error'|'success'|'warning', msg: string)
     position: 'top-left'
   }
 }
+
+export function ajaxRequest(request: Function, args?: any, time: number = 1000): Promise<any> {
+  return new Promise(async (resolve) => {
+    let res = await Promise.all([
+      args ? request(args) : request(),
+      new Promise((_resolve) => {
+        setTimeout(() => {
+          _resolve(true)
+        }, time)
+      })
+    ])
+    resolve(res[0])
+  })
+}

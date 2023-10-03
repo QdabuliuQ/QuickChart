@@ -16,7 +16,9 @@
           :share="true"
           :back="true"
           :adcode="adcode"
-          :map_id="id as string"/>
+          :map_id="id as string"
+          :praise_count="praise_count"
+          :is_praise="is_praise"/>
       </div>
       <div class="rightParamsContainer">
         <chart-params
@@ -53,6 +55,8 @@ const params_loading = ref<boolean>(true)
 const data_loading = ref<boolean>(true)
 const adcode = ref<string>('')
 const image = ref<string>('')
+const praise_count = ref<number>(0)
+const is_praise = ref<number>(0)
 const self = ref<boolean>(false)
 
 const getDetail = async () => {
@@ -64,6 +68,8 @@ const getDetail = async () => {
   adcode.value = data.data.adcode
   image.value = data.data.cover
   self.value = data.self
+  praise_count.value = data.data.praise_count
+  is_praise.value = data.data.is_praise
   await getJSON(adcode.value)
   await getConfig(data.data.type, data.data.option)
 }

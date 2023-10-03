@@ -18,30 +18,42 @@
             分享
           </el-button>
         </div>
+        <info-panel
+          v-model:is_praise="is_praise"
+          v-model:praise_count="praise_count"
+          :chart_id="props.map_id as string"
+          :comment_count="props.comment_count"
+          :praise-event="praiseEvent"
+          @showDrawer="showDrawer = true"/>
         <map-dom ref="chartDomRef" />
       </div>
     </div>
+    <comment-drawer
+      v-model:drawer="showDrawer"
+      :chart_id="props.map_id as string"/>
     <save-chart-dialog v-model:visible="visible" @save-chart="saveChart" />
     <share-chart-dialog v-model:visible="shareVisible" @share-event="shareEvent" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {onUnmounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
+import {ElLoading} from "element-plus";
+import useCommonStore from "@/store/common";
+import useProxy from "@/hooks/useProxy";
+import {base64ToFile, setImageOption} from "@/utils";
+import {postChart, postPraise, putChart} from "@/network/map";
+import {postEvent} from "@/network/event";
+import ShareChartDialog from "@/components/shareChartDialog.vue";
+import InfoPanel from "@/components/infoPanel.vue";
+import CommentDrawer from "@/components/commentDrawer.vue";
 import Loading from "@/components/loading.vue";
 import MapDom from "@/components/mapDom.vue";
 import SaveChartDialog from "@/components/saveChartDialog.vue";
-import {ElLoading} from "element-plus";
-import {base64ToFile, setImageOption} from "@/utils";
-import useCommonStore from "@/store/common";
-import {postChart, putChart} from "@/network/map";
-import useProxy from "@/hooks/useProxy";
-import ShareChartDialog from "@/components/shareChartDialog.vue";
-import {postEvent} from "@/network/event";
 
 const proxy = useProxy()
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   loading: boolean
   adcode: string
   detailType: string
@@ -50,13 +62,25 @@ const props = defineProps<{
   update?: boolean
   share?: boolean
   map_id?: string
-}>()
+  is_praise?: number
+  praise_count?: number
+  comment_count?: number
+}>(), {
+  loading: true,
+  adcode: '',
+  is_praise: 0,
+  praise_count: 0,
+  comment_count: 0
+})
 
 const router = useRouter()
 const common = useCommonStore()
 const chartDomRef = ref()
 const shareVisible = ref<boolean>(false)
+const showDrawer = ref<boolean>(false)
 const visible = ref<boolean>(false)
+const is_praise = ref<number>(props.is_praise)
+const praise_count = ref<number>(props.praise_count)
 let save_loading = null
 
 const show = () =>{
@@ -116,6 +140,17 @@ const shareEvent = async (content: string) => {
   })
 }
 
+const praiseEvent = (is_praise: string): Promise<boolean> => {
+  return new Promise(async (resolve, reject) => {
+    let data = await postPraise({
+      map_id: props.map_id as string,
+      state: is_praise
+    })
+    if(data.status) resolve(true)
+    reject(false)
+  })
+}
+
 const toUpdate = async () => {
   save_loading = ElLoading.service({
     lock: true,
@@ -145,6 +180,19 @@ const toUpdate = async () => {
   }
   save_loading.close()
 }
+
+let stop1 = watch(() => props.is_praise, (newVal: number) => {
+  is_praise.value = newVal
+})
+let stop2 = watch(() => props.praise_count, (newVal: number) => {
+  praise_count.value = newVal
+})
+
+onUnmounted(() => {
+  stop1()
+  stop2()
+})
+
 
 </script>
 <style lang="less">

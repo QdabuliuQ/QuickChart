@@ -7,34 +7,82 @@
     @close="closeEvent"
   >
     <comment-input :send="send" />
-    <template v-if="comments.length">
-      <comment-item
-        v-for="(item, idx) in comments"
-        :key="item.comment_id"
-        :comment_id="item.comment_id"
-        :id="item.chart_id"
-        :idx="idx as number"
-        :user_id="item.user_id"
-        :user_pic="item.user_pic"
-        :nickname="item.nickname"
-        :time="item.time"
-        :self="item.self"
-        :content="item.content"
-        :is_praise="item.is_praise"
-        :praise_count="item.praise_count"
-        @delete="deleteEvent"
-        @praise="praiseEvent"/>
-      <el-pagination
-        @current-change="changeEvent"
-        hide-on-single-page
-        class="paginationClass"
-        background
-        v-model:current-page="offset"
-        layout="prev, pager, next"
-        :page-size="limit"
-        :total="total" />
-    </template>
-    <el-empty v-else description="暂无评论哦" />
+    <skeleton
+      :status="status"
+      :count="5"
+      :loading-class="['el-avatar','nickname','time', 'bottomContent', 'dataItem']">
+      <template v-slot:template="{setSlotRef}">
+        <CommentItem
+          style="margin-bottom: 15px"
+          :comment_id="'null'"
+          :id="'null'"
+          :idx="1"
+          :user_id="'null'"
+          :user_pic="'null'"
+          :self="1"
+          :nickname="'xxxxxxxxxxxxx'"
+          :time="123123123"
+          :content="'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"/>
+      </template>
+      <template v-slot:content>
+        <comment-item
+          v-for="(item, idx) in comments"
+          :key="item.comment_id"
+          :comment_id="item.comment_id"
+          :id="item.chart_id"
+          :idx="idx as number"
+          :user_id="item.user_id"
+          :user_pic="item.user_pic"
+          :nickname="item.nickname"
+          :time="item.time"
+          :self="item.self"
+          :content="item.content"
+          :is_praise="item.is_praise"
+          :praise_count="item.praise_count"
+          @delete="deleteEvent"
+          @praise="praiseEvent"/>
+        <el-pagination
+          @current-change="changeEvent"
+          hide-on-single-page
+          class="paginationClass"
+          background
+          v-model:current-page="offset"
+          layout="prev, pager, next"
+          :page-size="limit"
+          :total="total" />
+      </template>
+      <template v-slot:empty>
+        <el-empty description="暂无评论哦" />
+      </template>
+    </skeleton>
+<!--    <template v-if="comments.length">-->
+<!--      <comment-item-->
+<!--        v-for="(item, idx) in comments"-->
+<!--        :key="item.comment_id"-->
+<!--        :comment_id="item.comment_id"-->
+<!--        :id="item.chart_id"-->
+<!--        :idx="idx as number"-->
+<!--        :user_id="item.user_id"-->
+<!--        :user_pic="item.user_pic"-->
+<!--        :nickname="item.nickname"-->
+<!--        :time="item.time"-->
+<!--        :self="item.self"-->
+<!--        :content="item.content"-->
+<!--        :is_praise="item.is_praise"-->
+<!--        :praise_count="item.praise_count"-->
+<!--        @delete="deleteEvent"-->
+<!--        @praise="praiseEvent"/>-->
+<!--      <el-pagination-->
+<!--        @current-change="changeEvent"-->
+<!--        hide-on-single-page-->
+<!--        class="paginationClass"-->
+<!--        background-->
+<!--        v-model:current-page="offset"-->
+<!--        layout="prev, pager, next"-->
+<!--        :page-size="limit"-->
+<!--        :total="total" />-->
+<!--    </template>-->
+<!--    <el-empty v-else description="暂无评论哦" />-->
   </el-drawer>
 </template>
 <script setup lang="ts">
@@ -43,6 +91,8 @@ import CommentItem from "@/components/commentItem.vue";
 import useProxy from "@/hooks/useProxy";
 import usePagination from "@/hooks/usePagination";
 import {onUnmounted, reactive, ref, watch} from "vue";
+import {ajaxRequest} from "@/utils";
+import Skeleton from "@/components/skeleton.vue";
 
 const props = defineProps<{
   drawer: boolean
@@ -57,6 +107,7 @@ const emits = defineEmits([
 ])
 const comments = reactive<any>([])
 const drawer = ref<boolean>(props.drawer)
+const status = ref<'1'|'2'|'3'>('1')
 const proxy = useProxy()
 
 const closeEvent = () => {
@@ -64,9 +115,15 @@ const closeEvent = () => {
 }
 
 const getCommentData = async (e: number) => {
-  let data: any = await props.getData(e)
-  for(let item of data.data) {
-    comments.push(item)
+  status.value = '1'
+  let data: any = await ajaxRequest(props.getData, e)
+  if(!data.status || data.data.length === 0) {
+    status.value = '3'
+  } else {
+    status.value = '2'
+    for(let item of data.data) {
+      comments.push(item)
+    }
   }
   total.value = data.count
   limit.value = data.limit

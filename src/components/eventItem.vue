@@ -96,6 +96,7 @@ import CommentInput from "@/components/commentInput.vue";
 import {getComment as getCommentData} from "@/network/event"
 import usePagination from "@/hooks/usePagination";
 import Skeleton from "@/components/skeleton.vue";
+import {ajaxRequest} from "@/utils";
 
 interface EventInt {
   chart_id: string
@@ -138,7 +139,7 @@ const toDetail = () => {
  */
 const getData = async () => {
   status.value = '1'
-  let data: any = await getCommentData({
+  let data: any = await ajaxRequest(getCommentData, {
     event_id: props.event_id,
     offset: offset.value
   })

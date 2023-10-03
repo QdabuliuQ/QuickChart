@@ -106,10 +106,11 @@ import {getEvents} from "@/network/event";
 import useProxy from "@/hooks/useProxy";
 import {EventInt} from "@/types/common";
 import eventItem from "@/components/eventItem.vue"
-import {getInfo} from "@/utils";
+import {ajaxRequest, getInfo} from "@/utils";
 import {useCheckState} from "@/hooks/useCheckState";
 import usePagination from "@/hooks/usePagination";
 import skeleton from "@/components/skeleton.vue"
+import {getChart} from "@/network/chart";
 
 const items = reactive<ListInt[]>(list)
 const active = ref<number>(0)
@@ -121,7 +122,7 @@ const proxy = useProxy()
 const getData = async () => {
   status.value = '1'
   window.scrollTo(0, 0)
-  let data: any = await getEvents({
+  let data = await ajaxRequest(getEvents, {
     offset: offset.value,
     type: (active.value).toString()
   })
@@ -140,6 +141,14 @@ const getData = async () => {
 }
 let [limit, total, offset, changeEvent]: any = usePagination(getData)
 getData()
+
+
+// ajaxRequest(getEvents, [
+//   {
+//     offset: offset.value,
+//     type: (active.value).toString()
+//   }
+// ]).then(res => console.log(res))
 
 const toLogin = () => {
   let {check} = (useCheckState() as any)

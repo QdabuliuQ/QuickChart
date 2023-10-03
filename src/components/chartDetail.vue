@@ -39,31 +39,9 @@
   <share-chart-dialog
     v-model:visible="shareVisible"
     @share-event="shareEvent" />
-  <el-dialog
-    v-model="visible"
-    title="保存图表"
-    width="30%"
-    @close="formRef.resetFields()"
-  >
-    <el-form
-      ref="formRef"
-      :model="form"
-      :rules="rules"
-      :label-position="'top'"
-    >
-      <el-form-item prop="name" label="图表名称">
-        <el-input v-model="form.name" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="visible = false">取消</el-button>
-        <el-button type="primary" @click="saveChart">
-          保存
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+  <save-chart-dialog
+    v-model:visible="visible"
+    @save-chart="saveChart" />
 </template>
 <script setup lang="ts">
 import {reactive, ref, defineProps, withDefaults, watch, onUnmounted} from "vue";
@@ -87,6 +65,7 @@ import {postEvent} from "@/network/event";
 import ShareChartDialog from "@/components/shareChartDialog.vue";
 import InfoPanel from "@/components/infoPanel.vue";
 import CommentDrawer from "@/components/commentDrawer.vue";
+import SaveChartDialog from "@/components/saveChartDialog.vue";
 
 const router = useRouter()
 const props = withDefaults(defineProps<{
@@ -182,11 +161,6 @@ const saveChart = async () => {
     let data: any = await postChart(formData)
     if(!data.status) {
       save_loading.close()
-      return proxy.$notice({
-        type: 'error',
-        message: data.msg,
-        position: 'top-left'
-      })
     }
     proxy.$notice({
       type: 'success',

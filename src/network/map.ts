@@ -80,3 +80,14 @@ export function putChart(data: FormData) {
     data
   })
 }
+
+export function postPraise(data: {
+  map_id: string
+  state: string
+}) {
+  return ajax({
+    url: "/map/praise",
+    method: 'post',
+    data
+  })
+}

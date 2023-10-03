@@ -58,7 +58,7 @@
 </template>
 <script setup lang="ts">
 import {nextTick, reactive, ref} from "vue";
-import {getInfo} from "@/utils";
+import {ajaxRequest, getInfo} from "@/utils";
 import {getUserEvent} from "@/network/event";
 import useProxy from "@/hooks/useProxy";
 import {EventInt} from "@/types/common";
@@ -74,11 +74,8 @@ const events = reactive<EventInt[]>([])
 
 const getData = async () => {
   window.scrollTo(0, 0)
-  // nextTick(() => {
-  //   proxy.$Bus.emit("infoPageScrollToTop")
-  // })
   status.value = '1'
-  let data: any = await getUserEvent({
+  let data: any = await ajaxRequest(getUserEvent, {
     user_id: info.user_id,
     offset: offset.value
   })

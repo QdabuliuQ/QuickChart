@@ -28,7 +28,7 @@
           :user_id="'null'"/>
       </template>
       <template v-slot:content>
-        <div v-if="charts.length" class="chartContainer">
+        <div class="chartContainer">
           <chart-item
             v-for="(item,idx) in charts"
             :key="item.chart_id ? item.chart_id : item.map_id"
@@ -68,6 +68,8 @@ import useProxy from "@/hooks/useProxy";
 import ChartItem from "./components/chartItem.vue";
 import {useRouter} from "vue-router";
 import Skeleton from "@/components/skeleton.vue";
+import {logger} from "html2canvas/dist/types/core/__mocks__/logger";
+import {ajaxRequest} from "@/utils";
 
 const router = useRouter()
 const charts = reactive<{
@@ -93,11 +95,11 @@ const getData = async () => {
   status.value = '1'
   let data: any = null
   if (type.value === "chart") {
-    data = await getChart({
+    data = await ajaxRequest(getChart, {
       offset: offset.value
     })
   } else {
-    data = await getMap({
+    data = await ajaxRequest(getMap, {
       offset: offset.value
     })
   }
@@ -131,11 +133,6 @@ const blurEvent = (newName: string, chart_id: string) => {
       })
     }
     if (!data.status) {
-      proxy.$notice({
-        type: 'error',
-        message: data.msg,
-        position: 'top-left'
-      })
       reject(false)
       return
     }
@@ -190,7 +187,6 @@ const toggleType = (_type: "chart" | "map") => {
   if (_type !== type.value) {
     offset.value = 1
     type.value = _type
-    charts.length = 0
     getData()
   }
 }
