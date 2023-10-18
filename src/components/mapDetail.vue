@@ -30,7 +30,11 @@
     </div>
     <comment-drawer
       v-model:drawer="showDrawer"
-      :chart_id="props.map_id as string"/>
+      :chart_id="props.map_id as string"
+      :delete-comment="_deleteComment"
+      :praise-comment="_praiseComment"
+      :get-data="_getComment"
+      :post-comment="_postComment"/>
     <save-chart-dialog v-model:visible="visible" @save-chart="saveChart" />
     <share-chart-dialog v-model:visible="shareVisible" @share-event="shareEvent" />
   </div>
@@ -43,7 +47,7 @@ import {ElLoading} from "element-plus";
 import useCommonStore from "@/store/common";
 import useProxy from "@/hooks/useProxy";
 import {base64ToFile, setImageOption} from "@/utils";
-import {postChart, postPraise, putChart} from "@/network/map";
+import {deleteComment, getComment, postChart, postComment, postPraise, putChart, postPraiseComment} from "@/network/map";
 import {postEvent} from "@/network/event";
 import ShareChartDialog from "@/components/shareChartDialog.vue";
 import InfoPanel from "@/components/infoPanel.vue";
@@ -179,6 +183,33 @@ const toUpdate = async () => {
     })
   }
   save_loading.close()
+}
+
+const _getComment = async (e: number) => {  // 获取评论
+  return await getComment({
+    offset: e,
+    map_id: props.map_id as string
+  })
+}
+const _postComment = async (data: {  // 发表评论
+  chart_id: string
+  content: string
+}) => {  // 发表评论
+  return await postComment({
+    map_id: data.chart_id,
+    content: data.content
+  })
+}
+const _deleteComment = async (data: {  // 删除评论
+  comment_id: string
+}) => {
+  return await deleteComment(data)
+}
+const _praiseComment = async (info: any) => {  // 点赞评论
+  return await postPraiseComment({
+    comment_id: info.comment_id as string,
+    type: info.is_praise == '1' ? '0' : '1'
+  })
 }
 
 let stop1 = watch(() => props.is_praise, (newVal: number) => {

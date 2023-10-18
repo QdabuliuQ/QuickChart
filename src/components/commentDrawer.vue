@@ -29,7 +29,7 @@
           v-for="(item, idx) in comments"
           :key="item.comment_id"
           :comment_id="item.comment_id"
-          :id="item.chart_id"
+          :id="item.chart_id ? item.chart_id : item.map_id"
           :idx="idx as number"
           :user_id="item.user_id"
           :user_pic="item.user_pic"
@@ -55,34 +55,6 @@
         <el-empty description="暂无评论哦" />
       </template>
     </skeleton>
-<!--    <template v-if="comments.length">-->
-<!--      <comment-item-->
-<!--        v-for="(item, idx) in comments"-->
-<!--        :key="item.comment_id"-->
-<!--        :comment_id="item.comment_id"-->
-<!--        :id="item.chart_id"-->
-<!--        :idx="idx as number"-->
-<!--        :user_id="item.user_id"-->
-<!--        :user_pic="item.user_pic"-->
-<!--        :nickname="item.nickname"-->
-<!--        :time="item.time"-->
-<!--        :self="item.self"-->
-<!--        :content="item.content"-->
-<!--        :is_praise="item.is_praise"-->
-<!--        :praise_count="item.praise_count"-->
-<!--        @delete="deleteEvent"-->
-<!--        @praise="praiseEvent"/>-->
-<!--      <el-pagination-->
-<!--        @current-change="changeEvent"-->
-<!--        hide-on-single-page-->
-<!--        class="paginationClass"-->
-<!--        background-->
-<!--        v-model:current-page="offset"-->
-<!--        layout="prev, pager, next"-->
-<!--        :page-size="limit"-->
-<!--        :total="total" />-->
-<!--    </template>-->
-<!--    <el-empty v-else description="暂无评论哦" />-->
   </el-drawer>
 </template>
 <script setup lang="ts">

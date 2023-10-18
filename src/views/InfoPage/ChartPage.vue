@@ -68,7 +68,6 @@ import useProxy from "@/hooks/useProxy";
 import ChartItem from "./components/chartItem.vue";
 import {useRouter} from "vue-router";
 import Skeleton from "@/components/skeleton.vue";
-import {logger} from "html2canvas/dist/types/core/__mocks__/logger";
 import {ajaxRequest} from "@/utils";
 
 const router = useRouter()

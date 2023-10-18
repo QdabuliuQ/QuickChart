@@ -11,7 +11,7 @@
       {{props.content}}
     </div>
     <div class="commentData">
-      <div @click="praiseEvent" :class="[props.is_praise == '1' ? 'active' : '', 'dataItem']">
+      <div v-login="praiseEvent" :class="[props.is_praise == '1' ? 'active' : '', 'dataItem']">
         <i class="iconfont i_praise"></i>
         {{props.praise_count ? props.praise_count : '点赞'}}
       </div>

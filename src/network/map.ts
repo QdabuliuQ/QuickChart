@@ -81,13 +81,56 @@ export function putChart(data: FormData) {
   })
 }
 
-export function postPraise(data: {
+export function postPraise(data: {  // 点赞图表
   map_id: string
   state: string
 }) {
   return ajax({
     url: "/map/praise",
     method: 'post',
+    data
+  })
+}
+
+export function postComment(data: {  // 发表评论
+  map_id: string
+  content: string
+}) {
+  return ajax({
+    url: "/map/comment",
+    method: "post",
+    data
+  })
+}
+
+export function getComment(params: {  // 获取评论
+  map_id: string
+  offset: number
+}) {
+  return ajax({
+    url: "/map/comment",
+    method: "get",
+    params
+  })
+}
+
+export function deleteComment(data: {  // 删除评论
+  comment_id: string
+}) {
+  return ajax({
+    url: "/map/comment",
+    method: "delete",
+    data
+  })
+}
+
+export function postPraiseComment(data: {
+  comment_id: string
+  type: '1'|'0'
+}) {
+  return ajax({
+    url: "/map/praiseComment",
+    method: "post",
     data
   })
 }

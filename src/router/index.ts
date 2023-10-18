@@ -14,7 +14,7 @@ const Modify_MapPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/v
 const CommunityPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/CommunityPage/CommunityPage.vue')
 const EventPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/EventPage.vue')
 const MapPanel = () => import(/* webpackChunkName:"MapChunk" */ '@/views/MapPanel/MapPanel.vue')
-
+const ScreenPage = () => import(/* webpackChunkName:"ScreenChunk" */ '@/views/ScreenPage/ScreenPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/index' },
@@ -98,6 +98,14 @@ const routes: Array<RouteRecordRaw> = [
           }
         ]
       },
+      {
+        path: 'screen',
+        name: "ScreenPage",
+        meta: {
+          typeIndex: 2,
+        },
+        component: ScreenPage,
+      }
     ]
   },
   {

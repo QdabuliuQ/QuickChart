@@ -9,6 +9,10 @@
         <i class="iconfont i_map"></i>
         <span>地图</span>
       </div>
+      <div @click="toggle('screen', 2)" :class="[type == 2 ? 'active': '', 'typeItem']">
+        <i class="iconfont i_screen"></i>
+        <span>大屏</span>
+      </div>
     </div>
     <div class="menu">
       <el-popover
@@ -33,12 +37,12 @@
 
 <script setup lang="ts">
 import {
+  onUnmounted,
   reactive,
   ref
 } from 'vue'
 import {useRouter} from "vue-router";
 import useProxy from "@/hooks/useProxy";
-import {useLogin} from "@/hooks/useLogin";
 import {useCheckState} from "@/hooks/useCheckState";
 import {getInfo} from "@/utils";
 import menuList from "@/components/menuList.vue";
@@ -70,8 +74,10 @@ const initInfo = () => {
 }
 initInfo()
 
-proxy.$Bus.on('logined', () => {
-  initInfo()
+proxy.$Bus.on('logined', initInfo)
+
+onUnmounted(() => {
+  proxy.$Bus.off("logined", initInfo)
 })
 </script>
 

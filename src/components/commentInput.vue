@@ -1,6 +1,13 @@
 <template>
   <div :class="[isFocus ? 'commentInputActive' : '', 'commentInput']">
-    <textarea v-model="comment" maxlength="150" @focus="isFocus = true" @blur="blurEvent" placeholder="快来发布评论吧~~~"></textarea>
+    <textarea
+      @keyup.enter="send"
+      ref="textareaRef"
+      v-model="comment"
+      maxlength="150"
+      @focus="isFocus = true"
+      @blur="blurEvent"
+      placeholder="快来发布评论吧~~~"></textarea>
     <div @click="send" class="send">发布</div>
   </div>
 </template>
@@ -14,6 +21,7 @@ const props = defineProps<{
 }>()
 const comment = ref<string>('')
 const isFocus = ref<boolean>(false)
+const textareaRef = ref<HTMLTextAreaElement>()
 const proxy = useProxy()
 
 const blurEvent = () => {
@@ -26,6 +34,7 @@ const send = () => {
     proxy.$notice(getMessageOption('success','发表评论成功'))
     comment.value = ''
     isFocus.value = false
+    textareaRef.value?.blur()
   }, () => {
     proxy.$notice(getMessageOption('error','发表评论失败'))
   })
