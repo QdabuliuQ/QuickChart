@@ -1,6 +1,7 @@
 const path = require("path")
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 module.exports = {
+  publicPath: '/',
   // 配置less文件  ~@/assets/css/base.less 文件配置全局变量
   css: {
     loaderOptions: {
@@ -46,8 +47,6 @@ module.exports = {
             .use(HardSourceWebpackPlugin);
         }
       )
-
-
   },
   parallel: false, // 打包报错的配置
 };

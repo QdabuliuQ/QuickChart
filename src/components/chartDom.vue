@@ -208,6 +208,7 @@ const initChart = () => {
 
 onMounted(() => {
   initChart()
+  console.log(chartDomRef)
 });
 
 onUnmounted(() => {

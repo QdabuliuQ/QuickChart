@@ -6,11 +6,11 @@
           <input
             @change="changeEvent"
             accept=".xls,.xlsx"
-            ref="uploadExecelInputRef"
+            ref="uploadExcelInputRef"
             style="display: none"
             type="file"
           />
-          <el-button @click="uploadExecelInputRef.click()" color="#626aef">
+          <el-button @click="uploadExcelInputRef.click()" color="#626aef">
             <template #icon>
               <i class="iconfont i_upload"></i>
             </template>
@@ -67,7 +67,7 @@ let conveyData: any, combineData: any, createInitiativeData: any;
 const proxy = useProxy()
 const common = useCommonStore()
 const worker = proxy.$worker
-const uploadExecelInputRef = ref();
+const uploadExcelInputRef = ref();
 const loading = ref<boolean>(props.loading)
 
 const setExcelData = () => {
@@ -80,7 +80,7 @@ const setExcelData = () => {
 };
 
 const changeEvent = (e: any) => {
-  let file = uploadExecelInputRef.value.files[0];
+  let file = uploadExcelInputRef.value.files[0];
   if (fileType(file.name) == "excel") {
     importFile(file, (workbook) => {
       sheetObj.loadData(stox(workbook));

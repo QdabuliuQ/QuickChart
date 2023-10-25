@@ -85,6 +85,7 @@ onUnmounted(() => {
 .ChartType {
   width: 60px;
   height: 100%;
+  min-width: 60px;
   background-color: @navColor;
   box-sizing: border-box;
   padding: 30px 0;

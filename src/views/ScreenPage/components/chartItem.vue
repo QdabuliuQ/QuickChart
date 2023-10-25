@@ -24,11 +24,20 @@
             </div>
           </template>
           <template v-slot:content>
-            <div class="item" v-for="item in itemlist" :key="item.cover">
+            <div @click="itemClick(item, type)" class="item" v-for="item in itemlist" :key="item.cover">
               <div class="mask">插入图表</div>
               <el-image style="width: 100%; aspect-ratio: 2/1.3" :src="item.cover" fit="cover" />
               <div class="name">{{item.name}}</div>
             </div>
+            <el-pagination
+              class="paginationClass"
+              v-model:current-page="offset"
+              hide-on-single-page
+              background
+              layout="prev, pager, next"
+              :page-size="limit"
+              :total="count"
+              @current-change="currentChange"/>
           </template>
           <template v-slot:empty>
             <el-empty description="暂无图表"/>
@@ -40,11 +49,12 @@
 </template>
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 import {getChart} from "@/network/chart";
 import {getChart as getMap} from "@/network/map"
 import Skeleton from "@/components/skeleton.vue";
 import {ajaxRequest} from "@/utils";
+import useProxy from "@/hooks/useProxy";
 
 type TYPE = "chart" | "map"
 type STATUS = '1'|'2'|'3'
@@ -57,11 +67,20 @@ const typeRef = ref<HTMLDivElement>()
 const itemlist = reactive<{
   cover: string
   name: string
+  [propName: string]: any
 }[]>([])
 const type = ref<TYPE>("chart")
 
+const proxy = useProxy()
 const status = ref<STATUS>('1')
 const offset = ref<number>(1)
+const limit = ref<number>(15)
+const count = ref<number>(0)
+const currentChange = (e: number) => {
+  offset.value = e
+  itemlist.length = 0
+  getData()
+}
 const getData = async () => {
   let res: any = null
   status.value = '1'
@@ -81,11 +100,10 @@ const getData = async () => {
   }
   if(res.status) {
     for(let item of res.data) {
-      itemlist.push({
-        cover: item.cover,
-        name: item.name
-      })
+      itemlist.push(item)
     }
+    count.value = res.count
+    limit.value = res.limit
   }
 }
 getData()
@@ -96,12 +114,27 @@ const toggleType = (t: TYPE) => {
   getData()
 }
 
-onMounted(() => {
+const resizeEvent = () => {
   height.value =
     document.documentElement.clientHeight -
     titleRef.value!.offsetHeight -
     5 - typeRef.value!.offsetHeight - 10 +
     "px";
+}
+
+const itemClick = (info: any, type: TYPE) => {
+  proxy.$Bus.emit("chartSelect", Object.assign(info, {
+    type
+  }))
+}
+
+onMounted(() => {
+  resizeEvent()
+  proxy.$Bus.on("resize", resizeEvent)
+})
+
+onUnmounted(() => {
+  proxy.$Bus.off("resize", resizeEvent)
 })
 
 </script>
