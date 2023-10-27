@@ -1,22 +1,20 @@
 <template>
   <div class="seriesItem">
-    <div class="itemTitle">{{ title }}</div>
+    <div class="itemTitle">
+      <span v-if="props.title !== 'slot'">{{ props.title }}</span>
+      <slot v-else name="title"></slot>
+    </div>
     <div class="optionOperation">
       <slot></slot>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
-import { defineComponent } from 'vue'
-export default defineComponent({
-  name: 'seriesItem',
-  props: ['title'],
-  setup() {
-    return {
-    }
-  }
-})
+<script setup lang="ts">
+interface IProps {
+  title: string
+}
+const props = defineProps<IProps>()
 </script>
 
 <style lang='less'>

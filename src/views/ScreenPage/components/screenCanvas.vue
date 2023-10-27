@@ -6,30 +6,6 @@
     <div class="mainCanvas">
       <drag-items v-model:options="options">
       </drag-items>
-<!--      <moveItem :style="item.style" v-for="item in items">-->
-<!--        <template v-slot:default="{ setSlotRef }">-->
-<!--          <img-->
-<!--            v-if="item.type === 'chart'"-->
-<!--            :src="(item as IChart).cover"-->
-<!--            :ref="(el)=>setSlotRef(el)"/>-->
-<!--          <span-->
-<!--            v-else-if="item.type === 'text'"-->
-<!--            style="display: inline-block"-->
-<!--            :ref="(el)=>setSlotRef(el)"-->
-<!--          >{{ (item as IText).content }}</span>-->
-<!--        </template>-->
-<!--      </moveItem>-->
-<!--      <moveItem :style="item.style" v-for="item in items">-->
-<!--        <template v-slot:default>-->
-<!--          <img-->
-<!--            v-if="item.type === 'chart'"-->
-<!--            :src="(item as IChart).cover"/>-->
-<!--          <span-->
-<!--            v-else-if="item.type === 'text'"-->
-<!--            style="display: inline-block"-->
-<!--          >{{ (item as IText).content }}</span>-->
-<!--        </template>-->
-<!--      </moveItem>-->
     </div>
   </div>
 </template>
@@ -72,7 +48,7 @@ const proxy = useProxy()
 
 const items = reactive<(IText | IChart)[]>([])
 
-const chartSelect = (info: any) => {
+const chartInsert = (info: any) => {
   let chart: IChart = {
     style: {
       width: '200px',
@@ -84,13 +60,22 @@ const chartSelect = (info: any) => {
   }
   options.push(chart)
 }
+const chartChange = ({info, idx}: any) => {
+  options[idx].style = {
+    width: info.width + 'px',
+    height: info.height + 'px',
+    transform: `translate(${info.x}px, ${info.y}px) rotate(${info.d}deg) scale(${info.sx ? info.sx : 1}, ${info.sy ? info.sy : 1})`
+  }
+}
 
 onMounted(() => {
-  proxy.$Bus.on("chartSelect", chartSelect)
+  proxy.$Bus.on("chartSelect", chartInsert)
+  proxy.$Bus.on("chartChange", chartChange)
 })
 
 onUnmounted(() => {
-  proxy.$Bus.off("chartSelect", chartSelect)
+  proxy.$Bus.off("chartSelect", chartInsert)
+  proxy.$Bus.off("chartChange", chartChange)
 })
 
 </script>

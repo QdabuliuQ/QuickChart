@@ -4,7 +4,7 @@
       <img
         :class="['dragItem', 'item_' + idx]"
         v-if="item.type === 'chart'"
-        @click="itemClick"
+        @click="itemClick(idx, $event)"
         :style="{
           width: item.style.width,
           height: item.style.height,
@@ -14,12 +14,14 @@
       <span
         :class="['dragItem', 'item_' + idx]"
         v-else-if="item.type === 'text'"
-        @click="itemClick"
+        @click="itemClick(idx, $event)"
         style="display: inline-block"
       >{{ (item as IText).content }}</span>
     </template>
     <Moveable
       :target="target"
+      :ables="[Deleteable]"
+      :props="({ deleteable: true })"
       :draggable="true"
       :scalable="true"
       :rotatable="true"
@@ -69,8 +71,10 @@ const emits = defineEmits([
   "update:options"
 ])
 
+const proxy = useProxy()
 const props = defineProps<IProps>()
 const target = ref<HTMLElement | null>(null)
+const targetIdx = ref<number>(-1)
 const bounds = {
   left: 0,
   top: 0,
@@ -80,47 +84,112 @@ const bounds = {
 }
 const elementGuidelines = reactive<Array<string>>([])
 
+let timer: any = null
 const onRender = (e: any) => {
   e.target.style.cssText += e.cssText;
+  if (timer) clearTimeout(timer)
+  timer = setTimeout(() => {
+    let i = 0
+    let styleInfo: {
+      [propName: string]: any
+    } = {
+      style: {}
+    }
+    while (e.target.style[i]) {
+      styleInfo.style[e.target.style[i]] = e.target.style[e.target.style[i]]
+      i++
+    }
+    proxy.$Bus.emit("updateStyle", styleInfo)
+  }, 500)
 }
 
-const itemClick = (e: any) => {
+const itemClick = (idx: number, e: any) => {
   e.stopPropagation()
-  target.value = e.target
+  if (target.value) updateElementStyle(target.value, targetIdx.value)
+  nextTick(() => {
+    targetIdx.value = idx
+    target.value = e.target
+    proxy.$Bus.emit("selectItem", {
+      info: JSON.parse(JSON.stringify(props.options[idx])),
+      idx
+    })
+  })
+}
+
+const updateElementStyle = (target: HTMLElement, idx: number) => {
+  if (idx <= -1 || !target) return
+  let styles = target.style.cssText.replace(/\s/g, '').split(";").filter(item => Boolean(item))
+  let styleInfo: {
+    [propName: string]: any
+  } = {}
+  for (let item of styles) {
+    let [key, val] = item.split(":")
+    styleInfo[key] = val
+  }
+  props.options[idx].style = styleInfo as any
+  emits("update:options", props.options)
 }
 
 const cancelClickEvent = (e: any) => {
   let doms = document.getElementsByClassName("dragItem")
-  for(let i = 0; i < doms.length; i ++) {
-    if (doms[i] == target.value) {
-      let styles = (target.value as HTMLElement).style.cssText.replace(/\s/g, '').split(";").filter(item => Boolean(item))
-      console.log(styles)
-      let styleInfo: {
-        [propName: string]: any
-      } = {}
-      for(let item of styles) {
-        let [key, val] = item.split(":")
-        styleInfo[key] = val
-      }
-      props.options[i].style = styleInfo as any
-      emits("update:options", props.options)
-      break
-    }
-  }
+  if (doms) updateElementStyle(target.value as HTMLElement, targetIdx.value)
   target.value = null
+  targetIdx.value = -1
 }
 
 const setElementGuidelines = () => {
   elementGuidelines.length = 0
-  for(let i = 0; i < props.options.length; i ++) {
-    elementGuidelines.push('.item_' + i)
+  for (let i = 0; i < props.options.length; i++) {
+    elementGuidelines.push('.dragItem')
+  }
+}
+
+const deleteChart = (idx: number) => {
+  props.options.splice(targetIdx.value, 1)
+  emits("update:options", props.options)
+  targetIdx.value = -1
+  target.value = null
+}
+
+const Deleteable = {
+  name: "deleteable",
+  props: [],
+  events: [],
+  render(moveable: any, React: any) {
+    const rect = moveable.getRect();
+    const {pos1, pos2, pos4} = moveable.state;
+    const EditableViewer = moveable.useCSS("div", `
+     {
+         position: absolute;
+         left: 0px;
+         top: 0px;
+         will-change: transform;
+         transform-origin: 0px 0px;
+     }
+         `);
+    return React.createElement(EditableViewer, {
+      key: "dimension-viewer",
+      className: "moveable-dimension",
+      style: {
+        position: "absolute",
+        left: `${rect.width / 2}px`,
+        top: `${rect.height + 10}px`,
+        color: "#ff4242",
+        fontSize: "13px",
+        willChange: "transform",
+        transform: `translate(-50%, 0px)`
+      }
+    }, [
+      React.createElement("i", {
+        className: "iconfont i_close",
+        onClick: () => deleteChart(targetIdx.value)
+      }),
+    ]);
   }
 }
 
 watch(() => props.options, () => {
-  nextTick(() => {
-    setElementGuidelines()
-  })
+  setElementGuidelines()
 }, {
   deep: true,
   immediate: true
@@ -128,10 +197,13 @@ watch(() => props.options, () => {
 
 onMounted(() => {
   document.documentElement.addEventListener("click", cancelClickEvent)
+
+  proxy.$Bus.on("deleteChart", deleteChart)
 })
 
 onUnmounted(() => {
   document.documentElement.removeEventListener("click", cancelClickEvent)
+  proxy.$Bus.off("deleteChart", deleteChart)
 })
 
 </script>
@@ -140,6 +212,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   position: relative;
+
   .dragItem {
     position: absolute;
   }
