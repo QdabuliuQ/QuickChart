@@ -34,15 +34,7 @@ interface IChart extends IShape {
   cover: string
 }
 
-const options = reactive<Array<any>>([{
-  style: {
-    width: '200px',
-    height: "130px",
-    transform: `translate(100px, 100px) rotate(0deg)`
-  },
-  cover: 'http://127.0.0.1:3031/chartCover/type9/VY4RV4HY39MNEQUXHRIB.octet-stream',
-  type: "chart",
-}])
+const options = reactive<Array<any>>([])
 const props = defineProps<IProps>()
 const proxy = useProxy()
 

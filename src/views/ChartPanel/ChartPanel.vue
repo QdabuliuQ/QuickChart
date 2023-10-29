@@ -5,6 +5,7 @@
         <chart-detail
           :loading="chart_loading"
           :detail-type="detailType"
+          :info-panel="false"
           :type="type" />
       </div>
       <div class="rightParamsContainer">

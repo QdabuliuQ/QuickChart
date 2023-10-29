@@ -89,7 +89,8 @@ const initData = (data: any) => {
   info['sy'] = sy ? sy : 1
 }
 
-watch(() => props.info, () => {
+let stop = watch(() => props.info, () => {
+  if (JSON.stringify(props.info) === '{}') return
   initData(props.info)
 }, {
   deep: true
@@ -106,6 +107,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   proxy.$Bus.off("updateStyle", initData)
+  stop()
 })
 
 </script>

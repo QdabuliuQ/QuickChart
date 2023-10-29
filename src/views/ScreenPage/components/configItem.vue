@@ -1,11 +1,9 @@
 <template>
   <div class="configItem">
     <el-scrollbar :height="height + 'px'">
-      <div v-if="info && info.type" class="container">
-        <chart-config v-if="info.type === 'chart'" :idx="idx" :info="info" />
-      </div>
-      <div style="display: flex; align-items: center; justify-content: center; height: 100vh" v-else>
-        <el-empty :image-size="120" description="请选择图表" />
+      <div class="container">
+        <chart-config v-if="type === 'item' && info.type === 'chart'" :idx="idx" :info="info" />
+        <canvas-config v-else />
       </div>
     </el-scrollbar>
   </div>
@@ -14,15 +12,26 @@
 import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref} from "vue";
 import {useWatchResize} from "@/hooks/useWatchResize";
-import chartConfig from "./chartConfig.vue"
+import ChartConfig from "./chartConfig.vue"
+import CanvasConfig from "./canvasConfig.vue"
 
 const proxy = useProxy()
+const type = ref<"item" | "global">('global')
 const height = ref<number>(0)
 let info = reactive<any>({})
 const idx = ref<number>(-1)
 const selectItemEvent = (e: any) => {
-  info = Object.assign(info, e.info)
-  idx.value = e.idx
+  if(e) {
+    info = Object.assign(info, e.info)
+    idx.value = e.idx
+    type.value = 'item'
+  } else {
+    for(let key in info) {
+      delete info[key]
+    }
+    type.value = 'global'
+    console.log(type.value)
+  }
 }
 
 useWatchResize(() => {

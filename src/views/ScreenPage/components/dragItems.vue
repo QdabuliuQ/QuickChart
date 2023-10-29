@@ -128,6 +128,7 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
   }
   props.options[idx].style = styleInfo as any
   emits("update:options", props.options)
+  proxy.$Bus.emit("selectItem", null)
 }
 
 const cancelClickEvent = (e: any) => {
@@ -137,18 +138,19 @@ const cancelClickEvent = (e: any) => {
   targetIdx.value = -1
 }
 
-const setElementGuidelines = () => {
+const setElementGuidelines = () => {  // 设置元素引导线
   elementGuidelines.length = 0
   for (let i = 0; i < props.options.length; i++) {
-    elementGuidelines.push('.dragItem')
+    elementGuidelines.push('.item_' + i)
   }
 }
 
-const deleteChart = (idx: number) => {
-  props.options.splice(targetIdx.value, 1)
-  emits("update:options", props.options)
-  targetIdx.value = -1
-  target.value = null
+const deleteChart = (idx: number) => {  // 删除图表回调
+  props.options.splice(targetIdx.value, 1)  // 删除配置对象
+  emits("update:options", props.options)  // 更新
+  targetIdx.value = -1  // 选中索引设置为 -1
+  target.value = null  // 选中元素设置为 null
+  proxy.$Bus.emit("selectItem", null)  // 关闭右侧选项卡
 }
 
 const Deleteable = {
@@ -157,7 +159,6 @@ const Deleteable = {
   events: [],
   render(moveable: any, React: any) {
     const rect = moveable.getRect();
-    const {pos1, pos2, pos4} = moveable.state;
     const EditableViewer = moveable.useCSS("div", `
      {
          position: absolute;
@@ -188,7 +189,7 @@ const Deleteable = {
   }
 }
 
-watch(() => props.options, () => {
+let stop = watch(() => props.options, () => {
   setElementGuidelines()
 }, {
   deep: true,
@@ -197,13 +198,14 @@ watch(() => props.options, () => {
 
 onMounted(() => {
   document.documentElement.addEventListener("click", cancelClickEvent)
-
   proxy.$Bus.on("deleteChart", deleteChart)
 })
 
 onUnmounted(() => {
   document.documentElement.removeEventListener("click", cancelClickEvent)
   proxy.$Bus.off("deleteChart", deleteChart)
+
+  stop()
 })
 
 </script>
