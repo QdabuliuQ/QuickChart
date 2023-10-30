@@ -4,8 +4,8 @@
       <i class="iconfont i_text"></i>
       文本
     </div>
-    <div class="funcItem" title="插入文本">
-      <i class="iconfont i_text"></i>
+    <div class="funcItem" title="插入图形">
+      <i class="iconfont i_shape"></i>
       图形
     </div>
     <el-popover

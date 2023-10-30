@@ -28,12 +28,15 @@ type Text = {
     color: string;
   } & IStyle
 }
+type BgType = "color" | "image"
 type ElementType = Chart | Map | Text
 type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : never 
 interface IConfig {
   canvas: {
-    bgType: "color" | "image";
+    bgType: BgType;
     background: string;
+    fontSize: string
+    color: string
   };
   elements: Array<ElementTypeProperties<"chart"|"map"|"text">>;
 }
@@ -42,6 +45,8 @@ let config: IConfig = {
   canvas: {
     bgType: "color",
     background: "#fff",
+    fontSize: '14px',
+    color: '#000'
   },
   elements: [
     {

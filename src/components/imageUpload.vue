@@ -64,7 +64,6 @@ const fileUpload = async (e: Event) => {
           type: 'error',
           position: 'top-left'
         })
-        console.log(data, "-----")
         emits("imageChange", data.url)
       } else {
         const reader = new FileReader();
