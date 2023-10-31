@@ -1,19 +1,19 @@
 <template>
   <div class="chartConfig">
     <div class="cover">
-      <img :src="props.info.cover"/>
+      <img :src="(props.info as Chart).cover"/>
     </div>
     <div class="title">
       参数配置
     </div>
-    <template v-if="JSON.stringify(info) !== '{}'">
+    <template v-if="JSON.stringify(props.info) !== '{}'">
       <series-item title="slot">
         <template #title>
           <i class="iconfont i_width"></i>
           <span>宽度</span>
         </template>
         <div class="data">
-          {{info.width}}px
+          {{props.info.style.width}}px
         </div>
       </series-item>
       <series-item title="slot">
@@ -21,42 +21,42 @@
           <i class="iconfont i_height"></i>
           <span>高度</span>
         </template>
-        <div class="data">{{info.height}}px</div>
+        <div class="data">{{props.info.style.height}}px</div>
       </series-item>
       <series-item title="slot">
         <template #title>
           <i class="iconfont i_rotate"></i>
           <span>旋转角度</span>
         </template>
-        <div class="data">{{info.d}}°</div>
+        <div class="data">{{props.info.style.rotate}}°</div>
       </series-item>
       <series-item title="slot">
         <template #title>
           <i class="iconfont i_move"></i>
           <span>X轴偏移</span>
         </template>
-        <div class="data">{{info.x}}px</div>
+        <div class="data">{{props.info.style.translateX}}px</div>
       </series-item>
       <series-item title="slot">
         <template #title>
           <i class="iconfont i_move"></i>
           <span>Y轴偏移</span>
         </template>
-        <div class="data">{{info.y}}px</div>
+        <div class="data">{{props.info.style.translateY}}px</div>
       </series-item>
       <series-item title="slot">
         <template #title>
           <i class="iconfont i_scale"></i>
           <span>X轴缩放</span>
         </template>
-        <div class="data">{{info.sx}}</div>
+        <div class="data">{{props.info.style.scaleX}}</div>
       </series-item>
       <series-item title="slot">
         <template #title>
           <i class="iconfont i_scale"></i>
           <span>Y轴缩放</span>
         </template>
-        <div class="data">{{info.sy}}</div>
+        <div class="data">{{props.info.style.scaleY}}</div>
       </series-item>
       <delete-btn @btn-click="deleteEvent" label="删除图表" />
     </template>
@@ -64,51 +64,21 @@
 </template>
 <script setup lang="ts">
 import SeriesItem from "@/components/seriesItem.vue";
-import {onMounted, onUnmounted, reactive, watch} from "vue";
-import {debounce} from "@/utils";
 import useProxy from "@/hooks/useProxy";
 import DeleteBtn from "@/views/ScreenPage/components/deleteBtn.vue";
+import useCommonStore from "@/store/common";
+import {Chart, Elements, ElementTypeProperties} from "@/types/common";
 
 interface IProps {
-  info: any
-  idx: number
+  info: ElementTypeProperties<Elements>
 }
 
 const props = defineProps<IProps>()
 const proxy = useProxy()
-const info = reactive<any>({})
-
-const initData = (data: any) => {
-  info['width'] = data.style.width ? parseFloat(data.style.width) : 0
-  info['height'] = data.style.height ? parseFloat(data.style.height) : 0
-  let [x,y,d,sx,sy] = data.style['transform'] ? data.style['transform'].match(/\d+(\.\d+)?/g).map((item: string) => parseFloat(item)) : [0,0,0,1,1]
-  info['x'] = x ? x : 0
-  info['y'] = y ? y : 0
-  info['d'] = d ? d : 0
-  info['sx'] = sx ? sx : 1
-  info['sy'] = sy ? sy : 1
-}
-
-let stop = watch(() => props.info, () => {
-  if (JSON.stringify(props.info) === '{}') return
-  initData(props.info)
-}, {
-  deep: true
-})
-
+const common = useCommonStore()
 const deleteEvent = () => {  // 删除图表
-  proxy.$Bus.emit("deleteChart", props.idx)
+  proxy.$Bus.emit("deleteChart", common.curElementIdx)
 }
-
-onMounted(() => {
-  initData(props.info)
-  proxy.$Bus.on("updateStyle", initData)
-})
-
-onUnmounted(() => {
-  proxy.$Bus.off("updateStyle", initData)
-  stop()
-})
 
 </script>
 <style lang="less">

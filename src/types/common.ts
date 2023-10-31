@@ -60,3 +60,47 @@ export interface ResponseInt {
   data?: any
   [props: string]: any
 }
+
+export type Elements = "chart"|"map"|"text"
+export interface IStyle {
+  width: number;
+  height: number;
+  translateX: number;
+  translateY: number;
+  scaleX: number;
+  scaleY: number;
+  rotate: number;
+}
+export type Chart = {
+  type: 'chart'
+  cover: string
+  option: string
+  style: IStyle
+}
+export type Map = {
+  type: 'map'
+  cover: string
+  option: string
+  style: IStyle
+}
+export type Text = {
+  type: 'text'
+  content: string
+  style: {
+    fontSize: number;
+    fontWeight: string;
+    color: string;
+  } & IStyle
+}
+export type BgType = "color" | "image"
+export type ElementType = Chart | Map | Text
+export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : never
+export interface IConfig {
+  canvas: {
+    bgType: BgType;
+    background: string;
+    fontSize: number
+    color: string
+  };
+  elements: Array<ElementTypeProperties<Elements>>;
+}

@@ -136,24 +136,32 @@ import { getChart as getMap } from "@/network/map";
 import { ajaxRequest } from "@/utils";
 import Skeleton from "@/components/skeleton.vue";
 import useProxy from "@/hooks/useProxy";
+import useCommonStore from "@/store/common";
 
+type STATUS = '1' | '2'| '3'
 interface IItem {
   cover: string;
   name: string;
   [propName: string]: any;
+}
+interface IInfo {
+  status: STATUS
+  offset: number
+  limit: number
+  count: number
 }
 const proxy = useProxy()
 const chartPopoverRef = ref()
 const mapPopoverRef = ref()
 const chartList = reactive<IItem[]>([]);
 const mapList = reactive<IItem[]>([]);
-const chartInfo = reactive({
+const chartInfo = reactive<IInfo>({
   status: "1",
   offset: 1,
   limit: 15,
   count: 0,
 });
-const mapInfo = reactive({
+const mapInfo = reactive<IInfo>({
   status: "1",
   offset: 1,
   limit: 15,
@@ -212,15 +220,30 @@ const mapCurrentChange = (e: number) => {
   getData();
 };
 
+const common = useCommonStore()
 const itemClick = (info: any, _type: "chart" | "map") => {
   if (type.value === 'chart') {
     chartPopoverRef.value.hide()
   } else {
     mapPopoverRef.value.hide()
   }
-  proxy.$Bus.emit("chartSelect", Object.assign(info, {
-    _type
-  }))
+  common.addScreenOptionOfElements({
+    type: "chart",
+    cover: info.cover,
+    option: "",
+    style: {
+      width: 200,
+      height: 130,
+      translateX: 0,
+      translateY: 0,
+      scaleX: 1,
+      scaleY: 1,
+      rotate: 0,
+    },
+  })
+  // proxy.$Bus.emit("chartSelect", Object.assign(info, {
+  //   _type
+  // }))
 }
 
 const funcClick = (_type: "chart" | "map") => {

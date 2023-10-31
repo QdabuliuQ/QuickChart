@@ -1,22 +1,22 @@
 <template>
   <div class="dragItems">
-    <template v-for="(item, idx) in props.options">
+    <template v-for="(item, idx) in elements">
       <img
         :class="['dragItem', 'item_' + idx]"
         v-if="item.type === 'chart'"
-        @click="itemClick(idx, $event)"
+        @click="itemClick(idx as number, $event)"
         :style="{
-          width: item.style.width,
-          height: item.style.height,
-          transform: item.style.transform
+          width: item.style.width + 'px',
+          height: item.style.height + 'px',
+          transform: `translate(${item.style.translateX}px, (${item.style.translateY}px) rotate(${item.style.rotate}deg) scale(${item.style.scaleX}, ${item.style.scaleY})`
         }"
-        :src="(item as IChart).cover"/>
+        :src="item.cover"/>
       <span
         :class="['dragItem', 'item_' + idx]"
         v-else-if="item.type === 'text'"
-        @click="itemClick(idx, $event)"
+        @click="itemClick(idx as number, $event)"
         style="display: inline-block"
-      >{{ (item as IText).content }}</span>
+      >{{ item.content }}</span>
     </template>
     <Moveable
       :target="target"
@@ -42,37 +42,19 @@
 <script setup lang="ts">
 import Moveable from "vue3-moveable";
 import useProxy from "@/hooks/useProxy";
-import {nextTick, onMounted, onUnmounted, reactive, ref, watch} from "vue";
-
-interface IStyle {
-  width: string
-  height: string
-  transform: string
-}
-
-interface IShape {
-  style: IStyle
-  type: "text" | "chart"
-}
-
-interface IText extends IShape {
-  content: string
-}
-
-interface IChart extends IShape {
-  cover: string
-}
-
-interface IProps {
-  options: Array<IChart | IText>
-}
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import useCommonStore from "@/store/common";
+import {Elements, ElementTypeProperties, IStyle} from "@/types/common";
 
 const emits = defineEmits([
   "update:options"
 ])
 
 const proxy = useProxy()
-const props = defineProps<IProps>()
+// const props = defineProps<IProps>()
+const common = useCommonStore()
+const elements = reactive<Array<ElementTypeProperties<Elements>>>(common.getScreenOptionOfElements)
+console.log(elements)
 const target = ref<HTMLElement | null>(null)
 const targetIdx = ref<number>(-1)
 const bounds = {
@@ -84,50 +66,43 @@ const bounds = {
 }
 const elementGuidelines = reactive<Array<string>>([])
 
+let style: any = null
 let timer: any = null
 const onRender = (e: any) => {
   e.target.style.cssText += e.cssText;
-  if (timer) clearTimeout(timer)
-  timer = setTimeout(() => {
-    let i = 0
-    let styleInfo: {
-      [propName: string]: any
-    } = {
-      style: {}
-    }
-    while (e.target.style[i]) {
-      styleInfo.style[e.target.style[i]] = e.target.style[e.target.style[i]]
-      i++
-    }
-    proxy.$Bus.emit("updateStyle", styleInfo)
-  }, 500)
 }
 
 const itemClick = (idx: number, e: any) => {
   e.stopPropagation()
   if (target.value) updateElementStyle(target.value, targetIdx.value)
-  nextTick(() => {
-    targetIdx.value = idx
-    target.value = e.target
-    proxy.$Bus.emit("selectItem", {
-      info: JSON.parse(JSON.stringify(props.options[idx])),
-      idx
-    })
-  })
+  targetIdx.value = idx
+  target.value = e.target
+  common.updateCurElementIdx(idx)
 }
 
 const updateElementStyle = (target: HTMLElement, idx: number) => {
   if (idx <= -1 || !target) return
-  let styles = target.style.cssText.replace(/\s/g, '').split(";").filter(item => Boolean(item))
+  let i = 0
   let styleInfo: {
     [propName: string]: any
-  } = {}
-  for (let item of styles) {
-    let [key, val] = item.split(":")
-    styleInfo[key] = val
+  } = {
   }
-  props.options[idx].style = styleInfo as any
-  emits("update:options", props.options)
+  while (target.style[i]) {
+    styleInfo[target.style[i]] = target.style[target.style[i] as any]
+    i++
+  }
+  let [x,y,d,sx,sy] = styleInfo['transform'] ? styleInfo['transform'].match(/\d+(\.\d+)?/g).map((item: string) => parseFloat(item)) : [0,0,0,1,1]
+  let info: IStyle = {
+    width: styleInfo.width ? parseFloat(styleInfo.width) : 0,
+    height: styleInfo.height ? parseFloat(styleInfo.height) : 0,
+    translateX: x ? x : 0,
+    translateY: y ? y : 0,
+    rotate: d ? d : 0,
+    scaleX: sx ? sx : 1,
+    scaleY: sy ? sy : 1
+  }
+  elements[targetIdx.value].style = info
+  common.updateScreenOptionOfElementStyle(info, targetIdx.value)
   proxy.$Bus.emit("selectItem", null)
 }
 
@@ -140,17 +115,17 @@ const cancelClickEvent = (e: any) => {
 
 const setElementGuidelines = () => {  // 设置元素引导线
   elementGuidelines.length = 0
-  for (let i = 0; i < props.options.length; i++) {
+  for (let i = 0; i < elements.length; i++) {
     elementGuidelines.push('.item_' + i)
   }
 }
 
-const deleteChart = (idx: number) => {  // 删除图表回调
-  props.options.splice(targetIdx.value, 1)  // 删除配置对象
-  emits("update:options", props.options)  // 更新
+const deleteChart = () => {  // 删除图表回调
+  common.deleteScreenOptionOfElements(targetIdx.value)
+  elements.splice(targetIdx.value)
   targetIdx.value = -1  // 选中索引设置为 -1
   target.value = null  // 选中元素设置为 null
-  proxy.$Bus.emit("selectItem", null)  // 关闭右侧选项卡
+  common.updateCurElementIdx(-1)
 }
 
 const Deleteable = {
@@ -183,13 +158,13 @@ const Deleteable = {
     }, [
       React.createElement("i", {
         className: "iconfont i_close",
-        onClick: () => deleteChart(targetIdx.value)
+        onClick: () => deleteChart()
       }),
     ]);
   }
 }
 
-let stop = watch(() => props.options, () => {
+let stop = watch(() => elements, () => {
   setElementGuidelines()
 }, {
   deep: true,
