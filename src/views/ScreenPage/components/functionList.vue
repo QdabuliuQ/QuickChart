@@ -1,5 +1,13 @@
 <template>
   <div class="functionList">
+    <div class="funcItem" title="保存图表">
+      <i class="iconfont i_save"></i>
+      保存
+    </div>
+    <div class="funcItem" title="另存图表">
+      <i class="iconfont i_save1"></i>
+      另存
+    </div>
     <div class="funcItem" title="插入文本">
       <i class="iconfont i_text"></i>
       文本

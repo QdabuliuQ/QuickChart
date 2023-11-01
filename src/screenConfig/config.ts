@@ -3,9 +3,11 @@ import {IConfig} from "@/types/common";
 let config: IConfig = {
   canvas: {
     bgType: "color",
-    background: "#fff",
+    bgColor: "#fff",
+    bgImage: "",
     fontSize: 14,
-    color: '#000'
+    color: '#000',
+    fontWeight: 'normal'
   },
   elements: [
     {

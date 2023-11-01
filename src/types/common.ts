@@ -98,9 +98,11 @@ export type ElementTypeProperties<T extends ElementType['type']> = T extends 'ch
 export interface IConfig {
   canvas: {
     bgType: BgType;
-    background: string;
+    bgImage: string
+    bgColor: string;
     fontSize: number
     color: string
+    fontWeight: string
   };
   elements: Array<ElementTypeProperties<Elements>>;
 }

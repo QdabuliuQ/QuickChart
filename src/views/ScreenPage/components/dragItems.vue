@@ -1,6 +1,6 @@
 <template>
   <div class="dragItems">
-    <template v-for="(item, idx) in elements">
+    <template v-for="(item, idx) in common.screenOption.elements">
       <img
         :class="['dragItem', 'item_' + idx]"
         v-if="item.type === 'chart'"
@@ -44,19 +44,15 @@ import Moveable from "vue3-moveable";
 import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import useCommonStore from "@/store/common";
-import {Elements, ElementTypeProperties, IStyle} from "@/types/common";
+import {IStyle} from "@/types/common";
 
 const emits = defineEmits([
   "update:options"
 ])
 
 const proxy = useProxy()
-// const props = defineProps<IProps>()
 const common = useCommonStore()
-const elements = reactive<Array<ElementTypeProperties<Elements>>>(common.getScreenOptionOfElements)
-console.log(elements)
 const target = ref<HTMLElement | null>(null)
-const targetIdx = ref<number>(-1)
 const bounds = {
   left: 0,
   top: 0,
@@ -66,16 +62,13 @@ const bounds = {
 }
 const elementGuidelines = reactive<Array<string>>([])
 
-let style: any = null
-let timer: any = null
 const onRender = (e: any) => {
   e.target.style.cssText += e.cssText;
 }
 
 const itemClick = (idx: number, e: any) => {
   e.stopPropagation()
-  if (target.value) updateElementStyle(target.value, targetIdx.value)
-  targetIdx.value = idx
+  if (target.value) updateElementStyle(target.value, idx)
   target.value = e.target
   common.updateCurElementIdx(idx)
 }
@@ -101,29 +94,27 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     scaleX: sx ? sx : 1,
     scaleY: sy ? sy : 1
   }
-  elements[targetIdx.value].style = info
-  common.updateScreenOptionOfElementStyle(info, targetIdx.value)
+  // elements[idx].style = info
+  common.updateScreenOptionOfElementStyle(info, idx)
   proxy.$Bus.emit("selectItem", null)
 }
 
 const cancelClickEvent = (e: any) => {
   let doms = document.getElementsByClassName("dragItem")
-  if (doms) updateElementStyle(target.value as HTMLElement, targetIdx.value)
+  if (doms) updateElementStyle(target.value as HTMLElement, common.getCurElementIdx)
   target.value = null
-  targetIdx.value = -1
+  common.updateCurElementIdx(-1)
 }
 
 const setElementGuidelines = () => {  // 设置元素引导线
   elementGuidelines.length = 0
-  for (let i = 0; i < elements.length; i++) {
+  for (let i = 0; i < common.screenOption.elements.length; i++) {
     elementGuidelines.push('.item_' + i)
   }
 }
 
 const deleteChart = () => {  // 删除图表回调
-  common.deleteScreenOptionOfElements(targetIdx.value)
-  elements.splice(targetIdx.value)
-  targetIdx.value = -1  // 选中索引设置为 -1
+  common.deleteScreenOptionOfElements(common.getCurElementIdx)
   target.value = null  // 选中元素设置为 null
   common.updateCurElementIdx(-1)
 }
@@ -164,7 +155,7 @@ const Deleteable = {
   }
 }
 
-let stop = watch(() => elements, () => {
+let stop = watch(() => common.screenOption.elements, () => {
   setElementGuidelines()
 }, {
   deep: true,
