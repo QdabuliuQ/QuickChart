@@ -14,6 +14,7 @@ let config: IConfig = {
       type: "chart",
       cover: 'http://127.0.0.1:3031/chartCover/type9/VY4RV4HY39MNEQUXHRIB.octet-stream',
       option: "",
+      isLock: false,
       style: {
         width: 200,
         height: 130,
@@ -22,12 +23,14 @@ let config: IConfig = {
         scaleX: 1,
         scaleY: 1,
         rotate: 0,
+        zIndex: 1,
       },
     },
     {
       type: "chart",
       cover: 'http://127.0.0.1:3031/chartCover/type2/3SXRWEO3SMYOMGB1Q1N0.octet-stream',
       option: "",
+      isLock: true,
       style: {
         width: 200,
         height: 130,
@@ -36,6 +39,7 @@ let config: IConfig = {
         scaleX: 1,
         scaleY: 1,
         rotate: 0,
+        zIndex: 1,
       },
     },
   ],

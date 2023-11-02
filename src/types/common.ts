@@ -70,21 +70,25 @@ export interface IStyle {
   scaleX: number;
   scaleY: number;
   rotate: number;
+  zIndex: number
 }
 export type Chart = {
   type: 'chart'
+  isLock: boolean
   cover: string
   option: string
   style: IStyle
 }
 export type Map = {
   type: 'map'
+  isLock: boolean
   cover: string
   option: string
   style: IStyle
 }
 export type Text = {
   type: 'text'
+  isLock: boolean
   content: string
   style: {
     fontSize: number;

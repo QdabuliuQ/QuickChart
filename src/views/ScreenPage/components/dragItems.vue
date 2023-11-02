@@ -8,7 +8,8 @@
         :style="{
           width: item.style.width + 'px',
           height: item.style.height + 'px',
-          transform: `translate(${item.style.translateX}px, (${item.style.translateY}px) rotate(${item.style.rotate}deg) scale(${item.style.scaleX}, ${item.style.scaleY})`
+          transform: `translate(${item.style.translateX}px, (${item.style.translateY}px) rotate(${item.style.rotate}deg) scale(${item.style.scaleX}, ${item.style.scaleY})`,
+          zIndex: item.style.zIndex
         }"
         :src="item.cover"/>
       <span
@@ -68,9 +69,13 @@ const onRender = (e: any) => {
 
 const itemClick = (idx: number, e: any) => {
   e.stopPropagation()
-  if (target.value) updateElementStyle(target.value, idx)
-  target.value = e.target
-  common.updateCurElementIdx(idx)
+  if (target.value) updateElementStyle(target.value, common.getCurElementIdx)
+  common.updateCurElementIdx(idx)  // 设置选中元素索引值
+  if (common.getScreenOptionOfElements[idx].isLock) {
+    target.value = null  // 清空
+  } else {
+    target.value = e.target  // 设置为选定的元素
+  }
 }
 
 const updateElementStyle = (target: HTMLElement, idx: number) => {
@@ -92,8 +97,10 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     translateY: y ? y : 0,
     rotate: d ? d : 0,
     scaleX: sx ? sx : 1,
-    scaleY: sy ? sy : 1
+    scaleY: sy ? sy : 1,
+    zIndex: parseInt(styleInfo['z-index'])
   }
+  console.log(info, idx)
   // elements[idx].style = info
   common.updateScreenOptionOfElementStyle(info, idx)
   proxy.$Bus.emit("selectItem", null)
@@ -163,14 +170,13 @@ let stop = watch(() => common.screenOption.elements, () => {
 })
 
 onMounted(() => {
-  document.documentElement.addEventListener("click", cancelClickEvent)
+  document.getElementsByClassName('mainCanvas')[0].addEventListener("click", cancelClickEvent)
   proxy.$Bus.on("deleteChart", deleteChart)
 })
 
 onUnmounted(() => {
-  document.documentElement.removeEventListener("click", cancelClickEvent)
+  document.getElementsByClassName('mainCanvas')[0].removeEventListener("click", cancelClickEvent)
   proxy.$Bus.off("deleteChart", deleteChart)
-
   stop()
 })
 

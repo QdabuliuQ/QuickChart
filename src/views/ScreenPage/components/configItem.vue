@@ -10,32 +10,16 @@
 </template>
 <script setup lang="ts">
 import useProxy from "@/hooks/useProxy";
-import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 import {useWatchResize} from "@/hooks/useWatchResize";
 import ChartConfig from "./chartConfig.vue"
 import CanvasConfig from "./canvasConfig.vue"
 import useCommonStore from "@/store/common";
 
 const proxy = useProxy()
-// const type = ref<"item" | "global">('global')
 const height = ref<number>(0)
-// let info = reactive<any>({})
-// const idx = ref<number>(-1)
 
 const common = useCommonStore()
-console.log(common)
-// const stop = watch(() => common.curElementIdx, (i: number) => {
-//   if (i === -1) {
-//     for(let key in info) {
-//       delete info[key]
-//     }
-//     type.value = 'global'
-//   } else {
-//     info = Object.assign(info, common.getScreenOptionOfElements[i])
-//     idx.value = i
-//     type.value = 'item'
-//   }
-// })
 
 useWatchResize(() => {
   height.value = document.documentElement.clientHeight
@@ -43,9 +27,6 @@ useWatchResize(() => {
 
 onMounted(() => {
   height.value = document.documentElement.clientHeight
-})
-onUnmounted(() => {
-  // stop()
 })
 </script>
 <style lang="less">

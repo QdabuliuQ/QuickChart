@@ -1,8 +1,6 @@
 <template>
   <div class="canvasConfig">
-    <div class="title">
-      画布样式
-    </div>
+    <config-title title="画布样式" />
     <series-item title="背景类型">
       <el-select v-model="canvas.bgType" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
         <el-option key="color" label="颜色" value="color" />
@@ -20,6 +18,7 @@
     <series-item v-show="canvas.bgType === 'color'" title="背景颜色">
       <el-color-picker size="small" v-model="canvas.bgColor" show-alpha />
     </series-item>
+    <config-title title="全局字体样式" />
     <series-item title="字体大小">
       <el-input-number
         size="small"
@@ -47,6 +46,7 @@ import SeriesItem from "@/components/seriesItem.vue";
 import ImageUpload from "@/components/imageUpload.vue";
 import useCommonStore from "@/store/common";
 import {debounce} from "@/utils";
+import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
 
 const common = useCommonStore();
 const canvas = reactive(common.getScreenOptionOfCanvas)
@@ -65,25 +65,6 @@ onUnmounted(() => {
 
 <style lang='less'>
 .canvasConfig {
-  .title {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 10px 0;
-    text-align: center;
-    position: relative;
-    color: @theme;
-
-    &:after {
-      position: absolute;
-      content: '';
-      width: 70px;
-      height: 2px;
-      background-color: @theme;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
   .seriesItem {
     .el-color-picker {
       width: 100%;
