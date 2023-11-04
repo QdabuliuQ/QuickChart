@@ -67,8 +67,6 @@ export interface IStyle {
   height: number;
   translateX: number;
   translateY: number;
-  scaleX: number;
-  scaleY: number;
   rotate: number;
   zIndex: number
 }
@@ -94,6 +92,7 @@ export type Text = {
     fontSize: number;
     fontWeight: string;
     color: string;
+    textAlign: "left" | "right" | "center"
   } & IStyle
 }
 export type BgType = "color" | "image"

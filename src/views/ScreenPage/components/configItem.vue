@@ -2,7 +2,8 @@
   <div class="configItem">
     <el-scrollbar :height="height + 'px'">
       <div class="container">
-        <chart-config v-if="common.getCurElementIdx !== -1 && common.screenOption.elements[common.curElementIdx].type === 'chart'" :info="common.screenOption.elements[common.curElementIdx]" />
+        <chart-config v-if="common.getCurElementIdx !== -1 && common.screenOption.elements[common.curElementIdx].type === 'chart'"/>
+        <text-config v-else-if="common.getCurElementIdx !== -1 && common.screenOption.elements[common.curElementIdx].type === 'text'" />
         <canvas-config v-else />
       </div>
     </el-scrollbar>
@@ -15,6 +16,7 @@ import {useWatchResize} from "@/hooks/useWatchResize";
 import ChartConfig from "./chartConfig.vue"
 import CanvasConfig from "./canvasConfig.vue"
 import useCommonStore from "@/store/common";
+import TextConfig from "@/views/ScreenPage/components/textConfig.vue";
 
 const proxy = useProxy()
 const height = ref<number>(0)

@@ -5,57 +5,7 @@
         <img :src="info.cover"/>
       </div>
       <config-title title="图表参数" />
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_width"></i>
-          <span>宽度</span>
-        </template>
-        <div class="data">
-          {{info.style.width}}px
-        </div>
-      </series-item>
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_height"></i>
-          <span>高度</span>
-        </template>
-        <div class="data">{{info.style.height}}px</div>
-      </series-item>
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_rotate"></i>
-          <span>旋转角度</span>
-        </template>
-        <div class="data">{{info.style.rotate}}°</div>
-      </series-item>
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_move"></i>
-          <span>X轴偏移</span>
-        </template>
-        <div class="data">{{info.style.translateX}}px</div>
-      </series-item>
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_move"></i>
-          <span>Y轴偏移</span>
-        </template>
-        <div class="data">{{info.style.translateY}}px</div>
-      </series-item>
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_scale"></i>
-          <span>X轴缩放</span>
-        </template>
-        <div class="data">{{info.style.scaleX}}</div>
-      </series-item>
-      <series-item title="slot">
-        <template #title>
-          <i class="iconfont i_scale"></i>
-          <span>Y轴缩放</span>
-        </template>
-        <div class="data">{{info.style.scaleY}}</div>
-      </series-item>
+      <common-config :info="info" />
       <config-title title="图表配置" />
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
@@ -74,12 +24,8 @@ import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
 import SeriesItem from "@/components/seriesItem.vue";
 import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
+import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 
-interface IProps {
-  info: ElementTypeProperties<Elements>
-}
-
-const props = defineProps<IProps>()
 const proxy = useProxy()
 const common = useCommonStore()
 const idx = ref<number>(-1)
@@ -128,48 +74,6 @@ onUnmounted(() => {
       height: 100%;
       object-fit: cover;
       vertical-align: middle;
-    }
-  }
-
-  .title {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 10px 0;
-    text-align: center;
-    position: relative;
-    color: @theme;
-
-    &:after {
-      position: absolute;
-      content: '';
-      width: 70px;
-      height: 2px;
-      background-color: @theme;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-  .seriesItem {
-    padding: 8px 0;
-    .itemTitle {
-      top: 0;
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      letter-spacing: 1px;
-    }
-    .iconfont {
-      font-size: 14px;
-      margin-right: 7px;
-    }
-    .data {
-      font-weight: bold;
-      color: @theme;
-      font-size: 14px;
-    }
-    .optionOperation {
-      width: 50%;
     }
   }
 }

@@ -20,28 +20,27 @@ let config: IConfig = {
         height: 130,
         translateX: 0,
         translateY: 0,
-        scaleX: 1,
-        scaleY: 1,
         rotate: 0,
         zIndex: 1,
       },
     },
     {
-      type: "chart",
-      cover: 'http://127.0.0.1:3031/chartCover/type2/3SXRWEO3SMYOMGB1Q1N0.octet-stream',
-      option: "",
-      isLock: true,
+      type: "text",
+      content: "ahjhh",
+      isLock: false,
       style: {
+        fontSize: 14,
+        fontWeight: 'normal',
+        color: '#000',
         width: 200,
         height: 130,
-        translateX: 0,
-        translateY: 0,
-        scaleX: 1,
-        scaleY: 1,
+        translateX: 100,
+        translateY: 100,
         rotate: 0,
         zIndex: 1,
+        textAlign: "center"
       },
-    },
+    }
   ],
 };
 
