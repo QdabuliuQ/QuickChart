@@ -41,14 +41,14 @@ const lockClick = () => {
 let stop = watch(() => common.curElementIdx, () => {
   if (common.getCurElementIdx !== -1 && common.getScreenOptionOfElements[common.getCurElementIdx].type === 'chart') {
     idx.value = common.getCurElementIdx
-    info.value = common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>
+    info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>))
   }
 }, {
   deep: true,
   immediate: true
 })
 let stop2 = watch(() => info, debounce(() => {
-  common.updateScreenOptionOfElementStyle(info.value!.style, idx.value)
+  common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true
 })

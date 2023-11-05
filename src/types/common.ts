@@ -92,7 +92,14 @@ export type Text = {
     fontSize: number;
     fontWeight: string;
     color: string;
-    textAlign: "left" | "right" | "center"
+    textAlign: "left" | "right" | "center";
+    letterSpacing: number
+    fontStyle: "normal" | "italic"
+    lineHeight: number
+    textDecorationLine: "none"|"underline"|"overline"|"line-through"
+    textDecorationColor: string
+    textDecorationStyle: "solid"|"double"|"dotted"|"dashed"|"wavy"
+    backgroundColor: string
   } & IStyle
 }
 export type BgType = "color" | "image"
@@ -106,6 +113,8 @@ export interface IConfig {
     fontSize: number
     color: string
     fontWeight: string
+    backgroundSize: "cover" | "contain"
+    backgroundRepeat: "no-repeat" | "repeat"
   };
   elements: Array<ElementTypeProperties<Elements>>;
 }

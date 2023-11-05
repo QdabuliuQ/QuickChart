@@ -49,6 +49,12 @@ useWatchResize((h: number) => {
 .ScreenPage {
   height: 100%;
   display: flex;
-
+  .el-color-picker {
+    width: 100%;
+    .el-color-picker__trigger {
+      width: 100%;
+      height: 25px;
+    }
+  }
 }
 </style>

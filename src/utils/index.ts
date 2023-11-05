@@ -19,7 +19,7 @@ cwIDAQAB
 export const debounce = (func: Function, time: number = 200, immediate = false) => {
   let timer: number | null = null;
   return (...args: any) => {
-    if (timer) clearInterval(timer)
+    if (timer) clearTimeout(timer)
     if (immediate) {
       if (!timer) func.apply(this, args);
       timer = window.setTimeout(() => {

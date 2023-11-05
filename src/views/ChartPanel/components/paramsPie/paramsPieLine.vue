@@ -1,26 +1,6 @@
 <template>
   <div class="paramsPieLine">
     <option-items :config="config" />
-<!--    <seriesItem title="引导线显示">-->
-<!--      <el-switch size="small" v-model="lineConfig.show" />-->
-<!--    </seriesItem>-->
-<!--    <seriesItem title="线段1长度">-->
-<!--      <el-input-number size="small" :max="100" :min="1" v-model="lineConfig.length" />-->
-<!--    </seriesItem>-->
-<!--    <seriesItem title="线段2长度">-->
-<!--      <el-input-number size="small" :max="100" :min="1" v-model="lineConfig.length2" />-->
-<!--    </seriesItem>-->
-<!--    <seriesItem title="平滑">-->
-<!--      <el-switch size="small" v-model="lineConfig.smooth" />-->
-<!--    </seriesItem>-->
-<!--    <seriesItem title="线段宽度">-->
-<!--      <el-input-number size="small" :max="100" :min="1" v-model="lineConfig.lineStyle.width" />-->
-<!--    </seriesItem>-->
-<!--    <seriesItem title="线段类型">-->
-<!--      <el-select popper-class="paramsSelectPopperClass" v-model="lineConfig.lineStyle.type" placeholder="请选择" size="small">-->
-<!--        <el-option v-for="item in borderType" :key="item.value" :label="item.label" :value="item.value" />-->
-<!--      </el-select>-->
-<!--    </seriesItem>-->
   </div>
 </template>
 

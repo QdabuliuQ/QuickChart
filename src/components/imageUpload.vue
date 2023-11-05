@@ -105,6 +105,7 @@ const fileUpload = async (e: Event) => {
 }
 
 .imageUpload {
+  padding: 5px 0;
   .el-link {
     margin-left: 10px;
     font-size: 12px;

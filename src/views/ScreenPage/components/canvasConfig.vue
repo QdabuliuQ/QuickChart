@@ -15,27 +15,21 @@
         :imgType="'url'"
         :imgSize="2000"/>
     </series-item>
+    <series-item v-show="canvas.bgType === 'image'" title="图片覆盖">
+      <el-select v-model="canvas.backgroundSize" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
+        <el-option key="cover" label="覆盖" value="cover" />
+        <el-option key="contain" label="包含" value="contain" />
+        <el-option key="100% 100%" label="填充" value="100% 100%" />
+      </el-select>
+    </series-item>
+    <series-item v-show="canvas.bgType === 'image'" title="图片重复">
+      <el-select v-model="canvas.backgroundRepeat" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
+        <el-option key="no-repeat" label="不重复" value="no-repeat" />
+        <el-option key="repeat" label="重复" value="repeat" />
+      </el-select>
+    </series-item>
     <series-item v-show="canvas.bgType === 'color'" title="背景颜色">
       <el-color-picker size="small" v-model="canvas.bgColor" show-alpha />
-    </series-item>
-    <config-title title="全局字体样式" />
-    <series-item title="字体大小">
-      <el-input-number
-        size="small"
-        :max="200"
-        :min="1"
-        v-model="canvas.fontSize" />
-    </series-item>
-    <series-item title="字体颜色">
-      <el-color-picker size="small" v-model="canvas.color" show-alpha />
-    </series-item>
-    <series-item title="字体粗细">
-      <el-select v-model="canvas.fontWeight" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
-        <el-option key="lighter" label="lighter" value="lighter" />
-        <el-option key="normal" label="normal" value="normal" />
-        <el-option key="bold" label="bold" value="bold" />
-        <el-option key="bolder" label="bolder" value="bolder" />
-      </el-select>
     </series-item>
   </div>
 </template>
@@ -49,11 +43,11 @@ import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
 
 const common = useCommonStore();
-const canvas = reactive(common.getScreenOptionOfCanvas)
+const canvas = reactive(JSON.parse(JSON.stringify(common.getScreenOptionOfCanvas)))
 
 let stop = watch(() => canvas, debounce(() => {
   common.updateScreenOptionOfCanvas(JSON.parse(JSON.stringify(canvas)))
-}), {
+}, 400), {
   deep: true
 })
 
@@ -66,6 +60,7 @@ onUnmounted(() => {
 <style lang='less'>
 .canvasConfig {
   .seriesItem {
+    align-items: center;
     .el-color-picker {
       width: 100%;
       .el-color-picker__trigger {

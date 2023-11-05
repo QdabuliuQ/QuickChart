@@ -7,9 +7,11 @@
       <div
         class="mainCanvas"
         :style="{
-        [common.screenOption.canvas.bgType === 'color' ? 'background' : 'background-image']: common.screenOption.canvas.bgType === 'color' ? common.screenOption.canvas.bgColor : `url(${common.screenOption.canvas.bgImage})`,
-        fontSize: common.screenOption.canvas.fontSize,
-        color: common.screenOption.canvas.color,
+        [common.screenOption.canvas.bgType === 'color' ? 'background' : 'background-image']: common.getScreenOptionOfCanvas.bgType === 'color' ? common.getScreenOptionOfCanvas.bgColor : `url(${common.screenOption.canvas.bgImage})`,
+        fontSize: common.getScreenOptionOfCanvas.fontSize,
+        color: common.getScreenOptionOfCanvas.color,
+        backgroundRepeat: common.getScreenOptionOfCanvas.backgroundRepeat,
+        backgroundSize: common.getScreenOptionOfCanvas.backgroundSize
       }"
       >
         <drag-items />

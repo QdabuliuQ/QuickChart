@@ -1,5 +1,7 @@
 <template>
-  <div class="dragItems">
+  <div
+    class="dragItems"
+  >
     <template v-for="(item, idx) in common.screenOption.elements">
       <img
         :class="['dragItem', 'item_' + idx]"
@@ -26,7 +28,13 @@
           fontSize: item.style.fontSize + 'px',
           fontWeight: item.style.fontWeight,
           color: item.style.color,
-          textAlign: item.style.textAlign
+          textAlign: item.style.textAlign,
+          fontStyle: item.style.fontStyle,
+          letterSpacing: item.style.letterSpacing + 'px',
+          lineHeight: item.style.lineHeight + 'px',
+          textDecorationLine: item.style.textDecorationLine,
+          textDecorationColor: item.style.textDecorationColor,
+          textDecorationStyle: item.style.textDecorationStyle,
         }"
         @mouseenter="enterElement(idx as number)"
         @mouseleave="leaveElement"
@@ -35,6 +43,9 @@
           class="textInfo"
           contenteditable="true"
           @click.stop="null"
+          :style="{
+            backgroundColor: item.style.backgroundColor
+          }"
         >{{ item.content }}</span>
       </div>
     </template>
@@ -70,10 +81,6 @@ import useCommonStore from "@/store/common";
 import {IStyle} from "@/types/common";
 import {debounce} from "@/utils";
 
-const emits = defineEmits([
-  "update:options"
-])
-
 const proxy = useProxy()
 const common = useCommonStore()
 const target = ref<HTMLElement | null>(null)
@@ -87,9 +94,6 @@ const bounds = {
 const elementGuidelines = reactive<Array<string>>([])
 
 const editable = ref<boolean>(false)
-const editText = (e: any) => {
-  editable.value = true
-}
 
 const enterElement = (idx: number) => {
   if (common.getScreenOptionOfElements[idx].isLock) document.documentElement.style.cursor = 'url('+require('../../../assets/image/lock.png')+'),pointer'
@@ -123,7 +127,6 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     styleInfo[target.style[i]] = target.style[target.style[i] as any]
     i++
   }
-  console.log(styleInfo)
   let [x,y,d] = styleInfo['transform'] ? styleInfo['transform'].match(/\d+(\.\d+)?/g).map((item: string) => parseFloat(item)) : [0,0,0,1,1]
   let info: IStyle = {
     width: styleInfo.width ? parseFloat(styleInfo.width) : 0,
@@ -133,9 +136,22 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     rotate: d ? d : 0,
     zIndex: parseInt(styleInfo['z-index'])
   }
-  // elements[idx].style = info
+  if (common.getScreenOptionOfElements[idx].type === 'text') {
+    setStyle(styleInfo, info)
+  }
   common.updateScreenOptionOfElementStyle(info, idx)
-  proxy.$Bus.emit("selectItem", null)
+}
+
+const isVisited = new Set(['transform', 'width', 'height', 'z-index'])
+const setStyle = (styleInfo: any, info: any) => {
+  for(let key in styleInfo) {
+    if (!styleInfo.hasOwnProperty(key) || isVisited.has(key)) continue
+    let _key = key
+    if(/-\w/.test(key)) {
+      key = key.replace(/-\w/, (char: string) => char[1].toUpperCase())
+    }
+    info[key] = /\d+px/.test(styleInfo[_key]) ? parseInt(styleInfo[_key]) : styleInfo[_key]
+  }
 }
 
 const cancelClickEvent = (e: any) => {
@@ -168,6 +184,7 @@ const dragEnd = debounce(() => {
 const onRotate = dragEnd  // 旋转
 const onResize = dragEnd  // 缩放
 
+let closeImg = require("@/assets/image/close.png")
 const Deleteable = {
   name: "deleteable",
   props: [],
@@ -196,8 +213,13 @@ const Deleteable = {
         transform: `translate(-50%, 0px)`
       }
     }, [
-      React.createElement("i", {
-        className: "iconfont i_close",
+      React.createElement("img", {
+        src: closeImg,
+        style: {
+          width: '21px',
+          height: '21px',
+          cursor: 'pointer'
+        },
         onClick: () => deleteChart()
       }),
     ]);
@@ -239,6 +261,7 @@ onUnmounted(() => {
   }
   .dragItem {
     position: absolute;
+    overflow: hidden;
     .textInfo {
       word-break: break-all;
     }

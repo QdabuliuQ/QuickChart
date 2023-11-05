@@ -7,7 +7,9 @@ let config: IConfig = {
     bgImage: "",
     fontSize: 14,
     color: '#000',
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover"
   },
   elements: [
     {
@@ -38,7 +40,14 @@ let config: IConfig = {
         translateY: 100,
         rotate: 0,
         zIndex: 1,
-        textAlign: "center"
+        textAlign: "center",
+        letterSpacing: 0,
+        fontStyle: "normal",
+        lineHeight: 16,
+        textDecorationLine: "none",
+        textDecorationColor: "#000",
+        textDecorationStyle: "solid",
+        backgroundColor: 'rgba(0,0,0,0)'
       },
     }
   ],
