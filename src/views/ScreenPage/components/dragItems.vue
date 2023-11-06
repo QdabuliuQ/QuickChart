@@ -48,6 +48,35 @@
           }"
         >{{ item.content }}</span>
       </div>
+      <div
+        @click="itemClick(idx as number, $event)"
+        :class="['dragItem', 'item_' + idx]"
+        v-else-if="item.type === 'shape'"
+        :style="{
+          width: item.style.width + 'px',
+          height: item.style.height + 'px',
+          transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
+          zIndex: item.style.zIndex
+        }"
+      >
+        <svg
+          width="100%"
+          height="100%"
+        >
+          <g :transform="`scale(${item.style.width / 200}, ${item.style.height / 200}) translate(0,0) matrix(1,0,0,1,0,0)`">
+            <path
+              class="outlined"
+              vector-effect="non-scaling-stroke"
+              stroke-linecap="butt"
+              stroke-miterlimit="8"
+              :fill="item.style.fill"
+              :stroke="item.style.stroke"
+              :stroke-width="item.style.strokeWidth"
+              :d="item.path"
+            ></path>
+          </g>
+        </svg>
+      </div>
     </template>
     <Moveable
       :target="target"
@@ -76,9 +105,9 @@
 <script setup lang="ts">
 import Moveable from "vue3-moveable";
 import useProxy from "@/hooks/useProxy";
-import {nextTick, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import useCommonStore from "@/store/common";
-import {IStyle} from "@/types/common";
+import {IStyle} from "@/types/screen";
 import {debounce} from "@/utils";
 
 const proxy = useProxy()
@@ -113,7 +142,7 @@ const itemClick = (idx: number, e: any) => {
   if (common.getScreenOptionOfElements[idx].isLock) {
     target.value = null  // 清空
   } else {
-    target.value = e.target  // 设置为选定的元素
+    target.value = e.currentTarget  // 设置为选定的元素
   }
 }
 
@@ -144,11 +173,12 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
 
 const isVisited = new Set(['transform', 'width', 'height', 'z-index'])
 const setStyle = (styleInfo: any, info: any) => {
+  console.log(styleInfo)
   for(let key in styleInfo) {
     if (!styleInfo.hasOwnProperty(key) || isVisited.has(key)) continue
     let _key = key
     if(/-\w/.test(key)) {
-      key = key.replace(/-\w/, (char: string) => char[1].toUpperCase())
+      key = key.replace(/-\w/g, (char: string) => char[1].toUpperCase())
     }
     info[key] = /\d+px/.test(styleInfo[_key]) ? parseInt(styleInfo[_key]) : styleInfo[_key]
   }

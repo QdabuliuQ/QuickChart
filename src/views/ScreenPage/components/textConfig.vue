@@ -88,7 +88,7 @@
 </template>
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
-import {ElementTypeProperties, Text} from "@/types/common";
+import {ElementTypeProperties, Text} from "@/types/screen";
 import useCommonStore from "@/store/common";
 import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 import ConfigTitle from "./configTitle.vue";

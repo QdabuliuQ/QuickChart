@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
 import useCommonStore from "@/store/common";
-import {Chart, Elements, ElementTypeProperties} from "@/types/common";
+import {Chart, Elements, ElementTypeProperties} from "@/types/screen";
 import useProxy from "@/hooks/useProxy";
 import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";

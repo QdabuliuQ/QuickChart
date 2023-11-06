@@ -41,7 +41,7 @@
 </template>
 <script setup lang="ts">
 import SeriesItem from "@/components/seriesItem.vue";
-import {Elements, ElementTypeProperties} from "@/types/common";
+import {Elements, ElementTypeProperties} from "@/types/screen";
 
 interface IProps {
   info: ElementTypeProperties<Elements>

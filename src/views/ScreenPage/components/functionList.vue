@@ -12,10 +12,23 @@
       <i class="iconfont i_text"></i>
       文本
     </div>
-    <div class="funcItem" title="插入图形">
-      <i class="iconfont i_shape"></i>
-      图形
-    </div>
+    <el-popover
+      ref='chartPopoverRef'
+      popper-class="functionListPopoverClass"
+      placement="right-start"
+      trigger="click"
+      :hide-after="0"
+    >
+      <el-scrollbar height="500px">
+        <shape-list @shape-click="shapeClick" />
+      </el-scrollbar>
+      <template #reference>
+        <div class="funcItem" title="插入图形">
+          <i class="iconfont i_shape"></i>
+          图形
+        </div>
+      </template>
+    </el-popover>
     <el-popover
       ref='chartPopoverRef'
       popper-class="functionListPopoverClass"
@@ -145,6 +158,8 @@ import { ajaxRequest } from "@/utils";
 import Skeleton from "@/components/skeleton.vue";
 import useProxy from "@/hooks/useProxy";
 import useCommonStore from "@/store/common";
+import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
+import {ShapePoolItem} from "@/assets/js/shape";
 
 type STATUS = '1' | '2'| '3'
 interface IItem {
@@ -249,9 +264,6 @@ const itemClick = (info: any, _type: "chart" | "map") => {
       rotate: 0,
     },
   })
-  // proxy.$Bus.emit("chartSelect", Object.assign(info, {
-  //   _type
-  // }))
 }
 
 const funcClick = (_type: "chart" | "map") => {
@@ -262,6 +274,10 @@ const funcClick = (_type: "chart" | "map") => {
     getData();
   }
 };
+
+const shapeClick = (shape: ShapePoolItem & {idx: number}) => {
+  console.log(shape)
+}
 </script>
 
 <style lang="less">
