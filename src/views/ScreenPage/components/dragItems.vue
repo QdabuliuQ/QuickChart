@@ -56,7 +56,8 @@
           width: item.style.width + 'px',
           height: item.style.height + 'px',
           transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
-          zIndex: item.style.zIndex
+          zIndex: item.style.zIndex,
+          filter: `drop-shadow(${item.style.shadowColor} ${item.style.shadowX}px ${item.style.shadowY}px ${item.style.shadowBlur}px)`
         }"
       >
         <svg
@@ -167,13 +168,14 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
   }
   if (common.getScreenOptionOfElements[idx].type === 'text') {
     setStyle(styleInfo, info)
+  } else if(common.getScreenOptionOfElements[idx].type === 'shape') {
+    setShapeStyle(info, idx)
   }
   common.updateScreenOptionOfElementStyle(info, idx)
 }
 
 const isVisited = new Set(['transform', 'width', 'height', 'z-index'])
 const setStyle = (styleInfo: any, info: any) => {
-  console.log(styleInfo)
   for(let key in styleInfo) {
     if (!styleInfo.hasOwnProperty(key) || isVisited.has(key)) continue
     let _key = key
@@ -182,6 +184,18 @@ const setStyle = (styleInfo: any, info: any) => {
     }
     info[key] = /\d+px/.test(styleInfo[_key]) ? parseInt(styleInfo[_key]) : styleInfo[_key]
   }
+}
+const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
+  const rootDom = document.getElementsByClassName("dragItem")[idx] as HTMLElement
+  const pathDom: HTMLElement = rootDom.childNodes[0].childNodes[0].childNodes[0] as HTMLElement
+  let [shadowX, shadowY, shadowBlur] = (rootDom.style.filter.match(/\d+px/g) as any).map((item: string) => parseInt(item))
+  info['shadowX'] = shadowX
+  info['shadowY'] = shadowY
+  info['shadowBlur'] = shadowBlur
+  info['fill'] = pathDom.getAttribute("fill")
+  info['stroke'] = pathDom.getAttribute("stroke")
+  info['strokeWidth'] = pathDom.getAttribute("stroke-width")
+  info['shadowColor'] = rootDom.style.filter.substring(rootDom.style.filter.indexOf('(')+1, rootDom.style.filter.length-2).split(" ")[0]
 }
 
 const cancelClickEvent = (e: any) => {

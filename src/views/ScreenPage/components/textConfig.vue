@@ -2,7 +2,7 @@
   <div class="textConfig">
     <template v-if="info">
       <config-title title="文本参数" />
-      <common-config :info="info" />
+      <common-config :info="baseInfo" />
       <config-title title="文本配置" />
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
@@ -87,7 +87,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {ElementTypeProperties, Text} from "@/types/screen";
 import useCommonStore from "@/store/common";
 import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
@@ -99,24 +99,23 @@ let info = ref<Text | null>(null)
 const idx = ref<number>(-1)
 
 const common = useCommonStore()
-let stop = watch(() => common.curElementIdx, () => {
-  if (common.getCurElementIdx !== -1 && common.getScreenOptionOfElements[common.getCurElementIdx].type === 'text') {
-    idx.value = common.getCurElementIdx
-    info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>))
-  }
-}, {
-  deep: true,
-  immediate: true
-})
-let stop2 = watch(() => info, debounce(() => {
-  common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style)), idx.value)
+const baseInfo = common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>
+const updateInfo = () => {
+  idx.value = common.getCurElementIdx
+  info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>))
+}
+let stop = watch(() => info, debounce(() => {
+  common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true
 })
 
+onMounted(() => {
+  updateInfo()
+})
+
 onUnmounted(() => {
   stop()
-  stop2()
 })
 </script>
 <style lang="less">

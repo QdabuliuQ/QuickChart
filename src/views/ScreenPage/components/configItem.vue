@@ -2,8 +2,11 @@
   <div class="configItem">
     <el-scrollbar :height="height + 'px'">
       <div class="container">
-        <chart-config v-if="common.getCurElementIdx !== -1 && common.screenOption.elements[common.curElementIdx].type === 'chart'"/>
-        <text-config v-else-if="common.getCurElementIdx !== -1 && common.screenOption.elements[common.curElementIdx].type === 'text'" />
+        <template v-if="common.getCurElementIdx !== -1">
+          <chart-config v-if="common.getScreenOptionOfElements[common.curElementIdx].type === 'chart'"/>
+          <text-config v-else-if="common.getScreenOptionOfElements[common.curElementIdx].type === 'text'" />
+          <shape-config v-else-if="common.getScreenOptionOfElements[common.curElementIdx].type === 'shape'" />
+        </template>
         <canvas-config v-else />
       </div>
     </el-scrollbar>
@@ -17,6 +20,7 @@ import ChartConfig from "./chartConfig.vue"
 import CanvasConfig from "./canvasConfig.vue"
 import useCommonStore from "@/store/common";
 import TextConfig from "@/views/ScreenPage/components/textConfig.vue";
+import ShapeConfig from "@/views/ScreenPage/components/shapeConfig.vue";
 
 const proxy = useProxy()
 const height = ref<number>(0)

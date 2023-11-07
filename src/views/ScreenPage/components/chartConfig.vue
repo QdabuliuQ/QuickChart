@@ -5,7 +5,7 @@
         <img :src="info.cover"/>
       </div>
       <config-title title="图表参数" />
-      <common-config :info="info" />
+      <common-config :info="baseInfo" />
       <config-title title="图表配置" />
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
@@ -16,7 +16,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import useCommonStore from "@/store/common";
 import {Chart, Elements, ElementTypeProperties} from "@/types/screen";
 import useProxy from "@/hooks/useProxy";
@@ -28,6 +28,7 @@ import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 
 const proxy = useProxy()
 const common = useCommonStore()
+const baseInfo = common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>
 const idx = ref<number>(-1)
 let info = ref<Chart | null>(null)
 const deleteEvent = () => {  // 删除图表
@@ -38,24 +39,22 @@ const lockClick = () => {
   common.updateScreenOptionOfElements(info.value)
 }
 
-let stop = watch(() => common.curElementIdx, () => {
-  if (common.getCurElementIdx !== -1 && common.getScreenOptionOfElements[common.getCurElementIdx].type === 'chart') {
-    idx.value = common.getCurElementIdx
-    info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>))
-  }
-}, {
-  deep: true,
-  immediate: true
-})
-let stop2 = watch(() => info, debounce(() => {
+const updateInfo = () => {
+  idx.value = common.getCurElementIdx
+  info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>))
+}
+let stop = watch(() => info, debounce(() => {
   common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true
 })
 
+onMounted(() => {
+  updateInfo()
+})
+
 onUnmounted(() => {
   stop()
-  stop2()
 })
 
 </script>

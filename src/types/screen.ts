@@ -15,7 +15,10 @@ export type Shape = {
     fill: string
     stroke: string
     strokeWidth: number
-    // filter: string
+    shadowColor: string
+    shadowX: number
+    shadowY: number
+    shadowBlur: number
   } & IStyle
 }
 export type Chart = {
