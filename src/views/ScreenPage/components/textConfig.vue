@@ -94,6 +94,7 @@ import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 import ConfigTitle from "./configTitle.vue";
 import SeriesItem from "@/components/seriesItem.vue";
 import {debounce} from "@/utils";
+import {setCommonStyle} from "@/utils/screenUtil";
 
 let info = ref<Text | null>(null)
 const idx = ref<number>(-1)
@@ -105,6 +106,7 @@ const updateInfo = () => {
   info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>))
 }
 let stop = watch(() => info, debounce(() => {
+  setCommonStyle(baseInfo, info)
   common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true

@@ -25,6 +25,7 @@ import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
 import SeriesItem from "@/components/seriesItem.vue";
 import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
 import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
+import {setCommonStyle} from "@/utils/screenUtil";
 
 const proxy = useProxy()
 const common = useCommonStore()
@@ -44,6 +45,7 @@ const updateInfo = () => {
   info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>))
 }
 let stop = watch(() => info, debounce(() => {
+  setCommonStyle(baseInfo, info)
   common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true

@@ -194,7 +194,7 @@ const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
   info['shadowBlur'] = shadowBlur
   info['fill'] = pathDom.getAttribute("fill")
   info['stroke'] = pathDom.getAttribute("stroke")
-  info['strokeWidth'] = pathDom.getAttribute("stroke-width")
+  info['strokeWidth'] = parseInt(pathDom.getAttribute("stroke-width") as string)
   info['shadowColor'] = rootDom.style.filter.substring(rootDom.style.filter.indexOf('(')+1, rootDom.style.filter.length-2).split(" ")[0]
 }
 
@@ -221,6 +221,7 @@ const deleteChart = () => {  // 删除图表回调
 // 停止拖动
 const dragEnd = debounce(() => {
   if (target.value) {
+    console.log("end")
     // 更新元素样式
     updateElementStyle(target.value as HTMLElement, common.getCurElementIdx)
   }
