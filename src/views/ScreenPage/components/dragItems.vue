@@ -2,7 +2,7 @@
   <div
     class="dragItems"
   >
-    <template v-for="(item, idx) in common.screenOption.elements">
+    <template v-for="(item, idx) in screen.screenOption.elements">
       <img
         :class="['dragItem', 'item_' + idx]"
         v-if="item.type === 'chart'"
@@ -64,7 +64,7 @@
           width="100%"
           height="100%"
         >
-          <g :transform="`scale(${item.style.width / 200}, ${item.style.height / 200}) translate(0,0) matrix(1,0,0,1,0,0)`">
+          <g :transform="`scale(${item.style.width / item.viewBox[0]}, ${item.style.height / item.viewBox[1]}) translate(0,0) matrix(1,0,0,1,0,0)`">
             <path
               class="outlined"
               vector-effect="non-scaling-stroke"
@@ -107,12 +107,12 @@
 import Moveable from "vue3-moveable";
 import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {IStyle} from "@/types/screen";
 import {debounce} from "@/utils";
 
 const proxy = useProxy()
-const common = useCommonStore()
+const {screen} = useStore()
 const target = ref<HTMLElement | null>(null)
 const bounds = {
   left: 0,
@@ -126,7 +126,7 @@ const elementGuidelines = reactive<Array<string>>([])
 const editable = ref<boolean>(false)
 
 const enterElement = (idx: number) => {
-  if (common.getScreenOptionOfElements[idx].isLock) document.documentElement.style.cursor = 'url('+require('../../../assets/image/lock.png')+'),pointer'
+  if (screen.getScreenOptionOfElements[idx].isLock) document.documentElement.style.cursor = 'url('+require('../../../assets/image/lock.png')+'),pointer'
 }
 const leaveElement = () => {
   document.documentElement.style.cursor = 'default'
@@ -138,9 +138,9 @@ const onRender = (e: any) => {
 
 const itemClick = (idx: number, e: any) => {
   e.stopPropagation()
-  if (target.value) updateElementStyle(target.value, common.getCurElementIdx)
-  common.updateCurElementIdx(idx)  // 设置选中元素索引值
-  if (common.getScreenOptionOfElements[idx].isLock) {
+  if (target.value) updateElementStyle(target.value, screen.getCurElementIdx)
+  screen.updateCurElementIdx(idx)  // 设置选中元素索引值
+  if (screen.getScreenOptionOfElements[idx].isLock) {
     target.value = null  // 清空
   } else {
     target.value = e.currentTarget  // 设置为选定的元素
@@ -166,12 +166,12 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     rotate: d ? d : 0,
     zIndex: parseInt(styleInfo['z-index'])
   }
-  if (common.getScreenOptionOfElements[idx].type === 'text') {
+  if (screen.getScreenOptionOfElements[idx].type === 'text') {
     setStyle(styleInfo, info)
-  } else if(common.getScreenOptionOfElements[idx].type === 'shape') {
+  } else if(screen.getScreenOptionOfElements[idx].type === 'shape') {
     setShapeStyle(info, idx)
   }
-  common.updateScreenOptionOfElementStyle(info, idx)
+  screen.updateScreenOptionOfElementStyle(info, idx)
 }
 
 const isVisited = new Set(['transform', 'width', 'height', 'z-index'])
@@ -195,27 +195,27 @@ const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
   info['fill'] = pathDom.getAttribute("fill")
   info['stroke'] = pathDom.getAttribute("stroke")
   info['strokeWidth'] = parseInt(pathDom.getAttribute("stroke-width") as string)
-  info['shadowColor'] = rootDom.style.filter.substring(rootDom.style.filter.indexOf('(')+1, rootDom.style.filter.length-2).split(" ")[0]
+  info['shadowColor'] = rootDom.style.filter.substring(rootDom.style.filter.indexOf('(')+1, rootDom.style.filter.indexOf(')')+1)
 }
 
 const cancelClickEvent = (e: any) => {
-  if (target.value) updateElementStyle(target.value as HTMLElement, common.getCurElementIdx)
+  if (target.value) updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
   target.value = null
   editable.value = false
-  common.updateCurElementIdx(-1)
+  screen.updateCurElementIdx(-1)
 }
 
 const setElementGuidelines = () => {  // 设置元素引导线
   elementGuidelines.length = 0
-  for (let i = 0; i < common.screenOption.elements.length; i++) {
+  for (let i = 0; i < screen.screenOption.elements.length; i++) {
     elementGuidelines.push('.item_' + i)
   }
 }
 
 const deleteChart = () => {  // 删除图表回调
-  common.deleteScreenOptionOfElements(common.getCurElementIdx)
+  screen.deleteScreenOptionOfElements(screen.getCurElementIdx)
   target.value = null  // 选中元素设置为 null
-  common.updateCurElementIdx(-1)
+  screen.updateCurElementIdx(-1)
 }
 
 // 停止拖动
@@ -223,7 +223,7 @@ const dragEnd = debounce(() => {
   if (target.value) {
     console.log("end")
     // 更新元素样式
-    updateElementStyle(target.value as HTMLElement, common.getCurElementIdx)
+    updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
   }
 }, 500)
 const onRotate = dragEnd  // 旋转
@@ -271,7 +271,7 @@ const Deleteable = {
   }
 }
 
-let stop = watch(() => common.screenOption.elements, () => {
+let stop = watch(() => screen.screenOption.elements, () => {
   setElementGuidelines()
 }, {
   deep: true,

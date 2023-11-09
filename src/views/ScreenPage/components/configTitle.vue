@@ -13,7 +13,7 @@ const props = defineProps<IProps>()
 .configTitle {
   font-size: 14px;
   font-weight: bold;
-  margin: 10px 0;
+  padding: 10px 0;
   text-align: center;
   position: relative;
   color: @theme;
@@ -24,7 +24,7 @@ const props = defineProps<IProps>()
     width: 70px;
     height: 2px;
     background-color: @theme;
-    bottom: -5px;
+    bottom: 3px;
     left: 50%;
     transform: translateX(-50%);
   }

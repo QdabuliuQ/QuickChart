@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {ElementTypeProperties, Text} from "@/types/screen";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 import ConfigTitle from "./configTitle.vue";
 import SeriesItem from "@/components/seriesItem.vue";
@@ -99,17 +99,23 @@ import {setCommonStyle} from "@/utils/screenUtil";
 let info = ref<Text | null>(null)
 const idx = ref<number>(-1)
 
-const common = useCommonStore()
-const baseInfo = common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>
+const {screen} = useStore()
+const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>)
 const updateInfo = () => {
-  idx.value = common.getCurElementIdx
-  info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>))
+  if (screen.getCurElementIdx !== -1) {
+    idx.value = screen.getCurElementIdx
+    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>))
+  }
 }
 let stop = watch(() => info, debounce(() => {
   setCommonStyle(baseInfo, info)
-  common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
+  screen.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true
+})
+let stop2 = watch(() => screen.curElementIdx, () => {
+  baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
+  updateInfo()
 })
 
 onMounted(() => {
@@ -118,6 +124,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   stop()
+  stop2()
 })
 </script>
 <style lang="less">

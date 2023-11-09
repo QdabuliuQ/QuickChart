@@ -38,12 +38,12 @@ import EmptyTip from "@/components/emptyTip.vue";
 import {getChartDetail, getCityJSON} from "@/network/map"
 import {useRoute} from "vue-router";
 import {createImage, deepCopy} from "@/utils";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import ChartData from "@/components/chartData.vue";
 import MapDetail from "@/components/mapDetail.vue";
 import ChartParams from "@/components/chartParams.vue";
 
-const common: any = useCommonStore();
+const common: any = useStore();
 const route = useRoute()
 const { id } = route.params
 let JSONData: any = null

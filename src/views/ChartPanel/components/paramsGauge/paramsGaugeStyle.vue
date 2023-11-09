@@ -8,13 +8,13 @@ import {reactive} from 'vue';
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
 import {common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const series = _common.option.series
 const config = reactive<ConfigInt>({
   centerX: {

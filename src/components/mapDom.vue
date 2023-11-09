@@ -13,12 +13,12 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref} from "vue";
 import useProxy from "@/hooks/useProxy";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {downloadFile, generateMapCode, htmlDownload} from "@/utils";
 import {useRoute} from "vue-router";
 import {oss} from "@/network";
 
-const common: any = useCommonStore()
+const common: any = useStore()
 const route = useRoute()
 const proxy = useProxy()
 const width = ref<number>(700)

@@ -12,12 +12,12 @@ import {
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
 import {common, label} from '@/chartConfig/opname';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 import {align, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 console.log(_common.option.series[0].label)
 const config = reactive<ConfigInt>({
   show: {

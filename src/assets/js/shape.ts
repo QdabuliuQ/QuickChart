@@ -1,6 +1,5 @@
 import { ShapeListItem, ShapePathFormulasKeys } from "@/types/shape"
 
-
 export const SHAPE_LIST: ShapeListItem[] = [
   {
     type: '矩形',

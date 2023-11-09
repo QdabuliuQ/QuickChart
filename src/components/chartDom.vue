@@ -18,7 +18,7 @@ import {
   ref,
   onUnmounted,
 } from "vue";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
 import {deepCopy, htmlDownload, setImageOption} from '@/utils/index'
 
@@ -33,7 +33,7 @@ interface comInitData {
 }
 // let chart_i: any = null
 const chart_i = ref<any>(null)
-const common: any = useCommonStore();
+const common: any = useStore();
 const proxy = useProxy()
 const chartDomRef = ref();
 const data: comInitData = reactive({

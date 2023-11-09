@@ -7,14 +7,14 @@
 <script setup lang='ts'>
 import { ComponentInternalInstance, getCurrentInstance, reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue'
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import { fontFamily, fontWeight, fontStyle, borderType, position, ListInt } from "@/chartConfig/constant";
 import { ConfigInt } from '@/types/common';
 import { debounce } from '@/utils';
 
 const { appContext } = getCurrentInstance() as ComponentInternalInstance;
 const proxy = appContext.config.globalProperties;
-const common: any = useCommonStore();
+const common: any = useStore();
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',

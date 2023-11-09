@@ -3,6 +3,37 @@
     <template v-if="info">
       <config-title title="图形参数" />
       <common-config :info="baseInfo" />
+      <config-title title="替换图形" />
+      <el-scrollbar height="200px">
+        <div class="shapeContainer">
+          <div v-for="item in SHAPE_LIST" :key="info.type" class="shapeGroup">
+            <svg
+              @click="svgClick(s.path, s.viewBox)"
+              v-for="(s,i) in item.children"
+              :key="s.path"
+              overflow="visible"
+              width="18"
+              height="18"
+            >
+              <g
+                :transform="`scale(${18 / s.viewBox[0]}, ${18 / s.viewBox[1]}) translate(0,0) matrix(1,0,0,1,0,0)`"
+              >
+                <path
+                  class="shape-path"
+                  :class="{ 'outlined': s.outlined }"
+                  vector-effect="non-scaling-stroke"
+                  stroke-linecap="butt"
+                  stroke-miterlimit="8"
+                  :fill="s.outlined ? '#999' : 'transparent'"
+                  :stroke="s.outlined ? 'transparent' : '#999'"
+                  stroke-width="2"
+                  :d="s.path"
+                ></path>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </el-scrollbar>
       <config-title title="图形配置" />
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
@@ -33,29 +64,40 @@
 </template>
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref, watch} from "vue";
-import CommonConfig from "./commonConfig.vue";
 import {ElementTypeProperties, Shape} from "@/types/screen";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
-import {debounce} from "@/utils";
 import SeriesItem from "@/components/seriesItem.vue";
+import CommonConfig from "./commonConfig.vue";
+import {debounce} from "@/utils";
 import {setCommonStyle} from "@/utils/screenUtil";
+import {SHAPE_LIST} from "@/assets/js/shape"
 
 let info = ref<Shape | null>(null)
 const idx = ref<number>(-1)
-const common = useCommonStore()
-const baseInfo = common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'text'>
+const {screen} = useStore()
+const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>)
 
 const updateInfo = () => {
-  idx.value = common.getCurElementIdx
-  info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'shape'>))
+  if (screen.getCurElementIdx !== -1) {
+    idx.value = screen.getCurElementIdx
+    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[idx.value] as ElementTypeProperties<'shape'>))
+  }
+}
+
+const svgClick = (path: string, viewBox: [number, number]) => {
+  screen.updateElementOfShapePath(path, viewBox, screen.getCurElementIdx)
 }
 
 let stop = watch(() => info, debounce(() => {
   setCommonStyle(baseInfo, info)
-  common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style)), idx.value)
+  screen.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style)), idx.value)
 }), {
   deep: true
+})
+let stop2 = watch(() => screen.curElementIdx, () => {
+  baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
+  updateInfo()
 })
 
 onMounted(() => {
@@ -63,9 +105,37 @@ onMounted(() => {
 })
 onUnmounted(() => {
   stop()
+  stop2()
 })
 
 </script>
 <style lang="less">
-
+.shapeConfig {
+  .el-scrollbar {
+    margin-top: 10px;
+    background-color: #494949;
+    border-radius: 10px;
+    overflow: hidden;
+    .shapeContainer {
+      padding: 15px 10px;
+      .shapeGroup {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 15px;
+        &:not(:last-child) {
+          margin-bottom: 20px;
+        }
+        svg {
+          cursor: pointer;
+          path {
+            transition: .2s all linear;
+          }
+          &:hover path{
+            stroke: @theme;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

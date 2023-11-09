@@ -41,9 +41,9 @@ import {useRouter} from "vue-router";
 import {getChartDetail, getComment} from "@/network/chart";
 import useProxy from "@/hooks/useProxy";
 import {createImage, deepCopy} from "@/utils";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 
-const common: any = useCommonStore();
+const common: any = useStore();
 const proxy = useProxy()
 const router = useRouter()
 const { id } = router.currentRoute.value.params  // 获取图表ID

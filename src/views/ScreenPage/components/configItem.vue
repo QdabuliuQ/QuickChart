@@ -2,10 +2,10 @@
   <div class="configItem">
     <el-scrollbar :height="height + 'px'">
       <div class="container">
-        <template v-if="common.getCurElementIdx !== -1">
-          <chart-config v-if="common.getScreenOptionOfElements[common.curElementIdx].type === 'chart'"/>
-          <text-config v-else-if="common.getScreenOptionOfElements[common.curElementIdx].type === 'text'" />
-          <shape-config v-else-if="common.getScreenOptionOfElements[common.curElementIdx].type === 'shape'" />
+        <template v-if="screen.getCurElementIdx !== -1">
+          <chart-config v-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'chart'"/>
+          <text-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'text'" />
+          <shape-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'shape'" />
         </template>
         <canvas-config v-else />
       </div>
@@ -18,14 +18,14 @@ import {onMounted, ref} from "vue";
 import {useWatchResize} from "@/hooks/useWatchResize";
 import ChartConfig from "./chartConfig.vue"
 import CanvasConfig from "./canvasConfig.vue"
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import TextConfig from "@/views/ScreenPage/components/textConfig.vue";
 import ShapeConfig from "@/views/ScreenPage/components/shapeConfig.vue";
 
 const proxy = useProxy()
 const height = ref<number>(0)
 
-const common = useCommonStore()
+const {screen} = useStore()
 
 useWatchResize(() => {
   height.value = document.documentElement.clientHeight

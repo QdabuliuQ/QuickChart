@@ -35,18 +35,18 @@
 </template>
 
 <script setup lang='ts'>
-import {onUnmounted, reactive, ref, watch} from "vue";
+import {onUnmounted, reactive, watch} from "vue";
 import SeriesItem from "@/components/seriesItem.vue";
 import ImageUpload from "@/components/imageUpload.vue";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
 
-const common = useCommonStore();
-const canvas = reactive(JSON.parse(JSON.stringify(common.getScreenOptionOfCanvas)))
+const {screen} = useStore();
+const canvas = reactive(JSON.parse(JSON.stringify(screen.getScreenOptionOfCanvas)))
 
 let stop = watch(() => canvas, debounce(() => {
-  common.updateScreenOptionOfCanvas(JSON.parse(JSON.stringify(canvas)))
+  screen.updateScreenOptionOfCanvas(JSON.parse(JSON.stringify(canvas)))
 }, 400), {
   deep: true
 })

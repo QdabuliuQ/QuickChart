@@ -7,20 +7,19 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, onUnmounted, reactive, ref} from "vue";
-import ChartItem from "./components/chartItem.vue"
+import {nextTick, onMounted, ref} from "vue";
 import FunctionList from "./components//functionList"
 import ScreenCanvas from "./components/screenCanvas.vue";
 import ConfigItem from "./components/configItem.vue";
 import useProxy from "@/hooks/useProxy";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {useWatchResize} from "@/hooks/useWatchResize";
 
 const width = ref<number>(0)
 const height = ref<number>(0)
 const functionListRef = ref<HTMLElement>()
 const configItemRef = ref<HTMLElement>()
-const common = useCommonStore();
+const {screen} = useStore();
 const option = ref<any>(null)
 const proxy = useProxy()
 
@@ -30,7 +29,7 @@ const getWidth = () => {
 
 onMounted(async () => {
   let { default: res } = await import("@/screenConfig/config.ts")
-  common.initScreenOption(res)
+  screen.initScreenOption(res)
   option.value = res
   nextTick(() => {
     width.value = getWidth()

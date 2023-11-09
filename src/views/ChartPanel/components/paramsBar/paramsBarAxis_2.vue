@@ -30,7 +30,7 @@
 <script setup lang='ts'>
 import { reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import useProxy from '@/hooks/useProxy';
 import { ConfigInt } from '@/types/common';
 import { debounce, getConfigValue } from '@/utils';
@@ -50,7 +50,7 @@ import { debounce, getConfigValue } from '@/utils';
 //   setup() {
 //     let timer: any = null
 //     const _this: any = getCurrentInstance();
-//     const common: any = useCommonStore();
+//     const common: any = useStore();
 //     const data: comInitData = reactive({
 //       max: 5,
 //       startAngle: 0

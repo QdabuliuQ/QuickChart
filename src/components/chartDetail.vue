@@ -85,7 +85,7 @@ import {
   postPraiseComment,
   putChart,
 } from "@/network/chart";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import { postEvent } from "@/network/event";
 import ShareChartDialog from "@/components/shareChartDialog.vue";
 import InfoPanel from "@/components/infoPanel.vue";
@@ -123,7 +123,7 @@ const props = withDefaults(
     getData: () => {},
   }
 );
-const common: any = useCommonStore();
+const common: any = useStore();
 const proxy = useProxy();
 const is_praise = ref<number>(props.is_praise);
 const praise_count = ref<number>(props.praise_count);

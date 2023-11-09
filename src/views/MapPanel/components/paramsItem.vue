@@ -8,12 +8,12 @@ import OptionItems from "@/components/optionItems.vue";
 import {reactive} from "vue";
 import {ConfigInt} from "@/types/common";
 import {common} from "@/chartConfig/opname";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {borderType} from "@/chartConfig/constant";
 import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const itemStyle = _common.option.series[0].itemStyle
 const config = reactive<ConfigInt>({
   areaColor: {

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
 import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import {deepCopy} from "@/utils";
@@ -50,7 +50,7 @@ import ChartParams from "@/components/chartParams.vue";
 import ChartData from "@/components/chartData.vue";
 import EmptyTip from "@/components/emptyTip.vue";
 
-const common: any = useCommonStore();
+const common: any = useStore();
 const proxy = useProxy()
 const router = useRouter()
 

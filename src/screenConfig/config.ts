@@ -15,12 +15,13 @@ let config: IConfig = {
     {
       type: "shape",
       isLock: false,
+      viewBox: [200, 200],
       path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 Z',
       style: {
         fill: "#f8b557",
         stroke: "rgba(0,0,0,0)",
         strokeWidth: 0,
-        shadowColor: "rgba(0,0,0,1)",
+        shadowColor: "rgba(0,0,0,0)",
         shadowX: 0,
         shadowY: 0,
         shadowBlur: 5,

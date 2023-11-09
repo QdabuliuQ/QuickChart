@@ -7,14 +7,14 @@
 <script setup lang='ts'>
 import { ComponentInternalInstance, getCurrentInstance, reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue'
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import useProxy from '@/hooks/useProxy';
 import { borderType, ListInt } from "@/chartConfig/constant";
 import { ConfigInt } from '@/types/common';
 import { debounce } from '@/utils';
 
 const proxy = useProxy()
-const common: any = useCommonStore();
+const common: any = useStore();
 const config = reactive<ConfigInt>({
   showBackground: {
     type: 'switch',

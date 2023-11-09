@@ -12,10 +12,10 @@ import {
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
 import { common } from '@/chartConfig/opname';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import {createImage, debounce, getConfigValue} from "@/utils";
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const proxy = useProxy()
 
 const config = reactive<ConfigInt>({

@@ -1,20 +1,19 @@
-import { defineStore } from 'pinia'
+import {defineStore} from "pinia";
+import {IConfig} from "@/types/screen";
+export interface IStore {
+  screenOption: IConfig | null
+  curElementIdx: number
+}
 
-export default defineStore('common', {
-  state: () => {
+const useScreenStore = defineStore('screen', {
+  state: (): IStore => {
     return {
-      tmp_option: null,
-      option: null,
-      chartConfig: null,  
-      defaultOption: null,  // 默认配置
-      mapJSON: null,  // 地图JSON
-      type: '',
       screenOption: null,  // 大屏配置
       curElementIdx: -1,  //
     }
   },
 
-  getters: {  // 获取数据
+  getters: {
     getScreenOption(state: any) {
       return state.screenOption
     },
@@ -53,6 +52,13 @@ export default defineStore('common', {
     },
     updateCurElementIdx(idx: number) {
       this.curElementIdx = idx
+    },
+    updateElementOfShapePath(path: string, viewBox: [number, number], i: number) {
+      if (this.screenOption['elements'].length <= i && this.screenOption['elements'].type !== 'shape') return
+      this.screenOption['elements'][i].path = path
+      this.screenOption['elements'][i].viewBox = viewBox
     }
   }
-});
+})
+
+export default useScreenStore

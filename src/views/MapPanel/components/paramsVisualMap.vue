@@ -16,7 +16,7 @@ import SeriesItem from "@/components/seriesItem.vue";
 import ColorPanel from "@/components/colorsPanel.vue"
 import {ConfigInt} from "@/types/common";
 import {common} from "@/chartConfig/opname";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {fontFamily, fontStyle, fontWeight, orient} from "@/chartConfig/constant";
 import useProxy from "@/hooks/useProxy";
 import useWatchData from "@/hooks/useWatchData";
@@ -33,7 +33,7 @@ import PiecesOption from "@/views/MapPanel/components/piecesOption.vue";
 // ])
 
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const visualMap = _common.option.visualMap
 let colors = null
 if (visualMap.color) {

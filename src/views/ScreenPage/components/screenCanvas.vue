@@ -7,11 +7,11 @@
       <div
         class="mainCanvas"
         :style="{
-        [common.screenOption.canvas.bgType === 'color' ? 'background' : 'background-image']: common.getScreenOptionOfCanvas.bgType === 'color' ? common.getScreenOptionOfCanvas.bgColor : `url(${common.screenOption.canvas.bgImage})`,
-        fontSize: common.getScreenOptionOfCanvas.fontSize,
-        color: common.getScreenOptionOfCanvas.color,
-        backgroundRepeat: common.getScreenOptionOfCanvas.backgroundRepeat,
-        backgroundSize: common.getScreenOptionOfCanvas.backgroundSize
+        [screen.screenOption!.canvas.bgType === 'color' ? 'background' : 'background-image']: screen.getScreenOptionOfCanvas.bgType === 'color' ? screen.getScreenOptionOfCanvas.bgColor : `url(${screen.screenOption.canvas.bgImage})`,
+        fontSize: screen.getScreenOptionOfCanvas.fontSize,
+        color: screen.getScreenOptionOfCanvas.color,
+        backgroundRepeat: screen.getScreenOptionOfCanvas.backgroundRepeat,
+        backgroundSize: screen.getScreenOptionOfCanvas.backgroundSize
       }"
       >
         <drag-items />
@@ -22,14 +22,14 @@
 </template>
 <script setup lang="ts">
 import DragItems from "./dragItems.vue";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 interface IProps {
   width: string
   height: string
 }
 
 const props = defineProps<IProps>()
-const common = useCommonStore()
+const {screen}: any = useStore()
 
 </script>
 <style lang="less">

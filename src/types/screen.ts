@@ -11,6 +11,7 @@ export type Shape = {
   type: 'shape',
   isLock: boolean
   path: string
+  viewBox: [number, number]
   style: {
     fill: string
     stroke: string

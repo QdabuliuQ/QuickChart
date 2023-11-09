@@ -10,13 +10,13 @@
 import { reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import { ConfigInt } from '@/types/common';
 import { common, label } from '@/chartConfig/opname';
 import {borderType, fontFamily, fontStyle, fontWeight, position, symbol} from "@/chartConfig/constant";
 import {debounce, getConfigValue} from "@/utils";
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 
 const config = reactive<ConfigInt>({
   symbol: {

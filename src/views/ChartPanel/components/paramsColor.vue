@@ -14,9 +14,9 @@ import {
 } from "vue";
 import useProxy from "@/hooks/useProxy";
 import colorPanel from "@/components/colorsPanel.vue"
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const colors = reactive<string[]>(_common.option.color)
 
 const colorChange = (colors: string[]) => {

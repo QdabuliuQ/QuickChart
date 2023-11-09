@@ -14,13 +14,13 @@ import colorPanel from "@/components/colorsPanel.vue"
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
 import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const series: any = _common.option.series
 const seriesItemStyle = series.itemStyle
 const colors = reactive<string[]>([])

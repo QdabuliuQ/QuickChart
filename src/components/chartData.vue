@@ -51,7 +51,7 @@ Spreadsheet.locale("zh-cn", zhCN);
 import {fileType} from "@/utils/fileType";
 import {exportFile, importFile, stox} from "@/utils/excelOpe";
 import useProxy from "@/hooks/useProxy";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {deepCopy} from "@/utils";
 
 const props = defineProps<{
@@ -65,7 +65,7 @@ let excelData: any, originData: any;
 let sheetObj: any;
 let conveyData: any, combineData: any, createInitiativeData: any;
 const proxy = useProxy()
-const common = useCommonStore()
+const common = useStore()
 const worker = proxy.$worker
 const uploadExcelInputRef = ref();
 const loading = ref<boolean>(props.loading)

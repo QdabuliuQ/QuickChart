@@ -29,13 +29,13 @@ import {
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
 import { common, label } from '@/chartConfig/opname';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import graphicComItem from "@/components/graphicComItem.vue"
 import { ElMessageBox } from "element-plus";
 import {createImage} from "@/utils";
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const drawer = ref<boolean>(false)
 let config = reactive<ConfigInt[]>([])
 const activeIdx = ref<number>(0)

@@ -17,8 +17,8 @@
 </template>
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref, watch} from "vue";
-import useCommonStore from "@/store/common";
-import {Chart, Elements, ElementTypeProperties} from "@/types/screen";
+import useStore from "@/store";
+import {Chart, ElementTypeProperties} from "@/types/screen";
 import useProxy from "@/hooks/useProxy";
 import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
@@ -28,27 +28,33 @@ import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 import {setCommonStyle} from "@/utils/screenUtil";
 
 const proxy = useProxy()
-const common = useCommonStore()
-const baseInfo = common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>
+const {screen} = useStore()
+const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'chart'>)
 const idx = ref<number>(-1)
 let info = ref<Chart | null>(null)
 const deleteEvent = () => {  // 删除图表
-  proxy.$Bus.emit("deleteChart", common.curElementIdx)
+  proxy.$Bus.emit("deleteChart", screen.curElementIdx)
 }
 const lockClick = () => {
   info.value!.isLock = !info.value!.isLock
-  common.updateScreenOptionOfElements(info.value)
+  screen.updateScreenOptionOfElements(info.value)
 }
 
 const updateInfo = () => {
-  idx.value = common.getCurElementIdx
-  info.value = JSON.parse(JSON.stringify(common.getScreenOptionOfElements[common.getCurElementIdx] as ElementTypeProperties<'chart'>))
+  if (screen.getCurElementIdx !== -1) {
+    idx.value = screen.getCurElementIdx
+    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'chart'>))
+  }
 }
 let stop = watch(() => info, debounce(() => {
   setCommonStyle(baseInfo, info)
-  common.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
+  screen.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
 }), {
   deep: true
+})
+let stop2 = watch(() => screen.curElementIdx, () => {
+  baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
+  updateInfo()
 })
 
 onMounted(() => {
@@ -57,6 +63,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   stop()
+  stop2()
 })
 
 </script>

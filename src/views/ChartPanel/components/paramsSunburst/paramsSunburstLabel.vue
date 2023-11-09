@@ -9,13 +9,13 @@ import {reactive} from 'vue';
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
 import {getConfigValue} from '@/utils';
 import {align, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const seriesLabel = _common.option.series.label
 const config = reactive<ConfigInt>({
   show: {

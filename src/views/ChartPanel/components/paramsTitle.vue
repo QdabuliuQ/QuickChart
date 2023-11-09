@@ -13,12 +13,12 @@ import {
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
 import { common, label } from '@/chartConfig/opname';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {fontWeight, textAlign} from "@/chartConfig/constant";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const config = reactive<ConfigInt>({
   text: {
     type: 'input_text',

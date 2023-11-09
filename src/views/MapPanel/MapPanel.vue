@@ -40,7 +40,7 @@
 </template>
 <script setup lang="ts">
 import {nextTick, ref} from "vue";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {onBeforeRouteUpdate, useRouter} from "vue-router";
 import {getCityJSON} from "@/network/map";
 import {deepCopy} from "@/utils";
@@ -49,7 +49,7 @@ import MapDetail from "@/components/mapDetail.vue";
 import ChartParams from "@/components/chartParams.vue";
 import ChartData from "@/components/chartData.vue";
 
-const common: any = useCommonStore();
+const common: any = useStore();
 const router = useRouter()
 let {
   id,

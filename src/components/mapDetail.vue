@@ -44,7 +44,7 @@
 import {onUnmounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import {ElLoading} from "element-plus";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
 import {base64ToFile, setImageOption} from "@/utils";
 import {deleteComment, getComment, postChart, postComment, postPraise, putChart, postPraiseComment} from "@/network/map";
@@ -78,7 +78,7 @@ const props = withDefaults(defineProps<{
 })
 
 const router = useRouter()
-const common = useCommonStore()
+const common = useStore()
 const chartDomRef = ref()
 const shareVisible = ref<boolean>(false)
 const showDrawer = ref<boolean>(false)

@@ -74,14 +74,14 @@
 import {onMounted, defineProps, reactive, ref, markRaw, watch, onUnmounted} from "vue";
 import Loading from "@/components/loading.vue";
 import useProxy from "@/hooks/useProxy";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 
 const props = defineProps<{
   image: string
   loading: boolean
 }>()
 
-const common: any = useCommonStore();
+const common: any = useStore();
 const proxy = useProxy()
 const height = ref<string>('0px')
 const activeIndex = ref<string>()

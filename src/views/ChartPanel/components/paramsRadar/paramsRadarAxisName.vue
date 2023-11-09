@@ -8,7 +8,7 @@
 import { reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
-import use_commonStore from "@/store/common";
+import use_commonStore from "@/store";
 import { ConfigInt } from '@/types/common';
 import { common, label } from '@/chartConfig/opname';
 import { debounce, getConfigValue } from '@/utils';

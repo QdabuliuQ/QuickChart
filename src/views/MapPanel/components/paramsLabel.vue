@@ -10,11 +10,11 @@ import {ConfigInt} from "@/types/common";
 import {common} from "@/chartConfig/opname";
 import {borderType, fontFamily, fontStyle, fontWeight, position} from "@/chartConfig/constant";
 
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const label = _common.option.series[0].label
 const config = reactive<ConfigInt>({
   show: {

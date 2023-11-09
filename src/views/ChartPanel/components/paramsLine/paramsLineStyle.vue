@@ -8,14 +8,14 @@
 <script setup lang='ts'>
 import { reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import { ConfigInt } from '@/types/common';
 import useProxy from '@/hooks/useProxy';
 import { symbol, borderType } from '@/chartConfig/constant'
 import { debounce, getConfigValue } from '@/utils';
 
 const proxy = useProxy()
-const common: any = useCommonStore()
+const common: any = useStore()
 const config = reactive<ConfigInt>({
   showSymbol: {
     type: 'switch',

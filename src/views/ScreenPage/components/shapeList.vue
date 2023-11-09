@@ -32,8 +32,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import {SHAPE_LIST, ShapePoolItem} from "@/assets/js/shape"
-
+import {SHAPE_LIST} from "@/assets/js/shape"
+import {ShapePoolItem} from "@/types/shape";
 const emits = defineEmits([
   'shapeClick'
 ])

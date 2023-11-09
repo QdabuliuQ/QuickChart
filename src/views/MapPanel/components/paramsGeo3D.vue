@@ -6,13 +6,13 @@
 <script setup lang="ts">
 import {reactive} from "vue";
 import {ConfigInt} from "@/types/common";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import OptionItems from "@/components/optionItems.vue";
 import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 import {fontFamily} from "@/chartConfig/constant";
 
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const series = _common.option.series[0]
 const config = reactive<ConfigInt>({
   regionHeight: {

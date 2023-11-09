@@ -8,13 +8,13 @@
 import { reactive, watch } from 'vue';
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import { ConfigInt } from '@/types/common';
 import { candlestick_itemStyle } from '@/chartConfig/opname';
 import { debounce, getConfigValue } from '@/utils';
 
 const proxy = useProxy()
-const common: any = useCommonStore()
+const common: any = useStore()
 const config = reactive<ConfigInt>({
   color: {
     type: 'color_picker',

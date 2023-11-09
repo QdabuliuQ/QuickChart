@@ -13,7 +13,7 @@
       文本
     </div>
     <el-popover
-      ref='chartPopoverRef'
+      ref='shapePopoverRef'
       popper-class="functionListPopoverClass"
       placement="right-start"
       trigger="click"
@@ -157,9 +157,9 @@ import { getChart as getMap } from "@/network/map";
 import { ajaxRequest } from "@/utils";
 import Skeleton from "@/components/skeleton.vue";
 import useProxy from "@/hooks/useProxy";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
-import {ShapePoolItem} from "@/assets/js/shape";
+import {ShapePoolItem} from "@/types/shape";
 
 type STATUS = '1' | '2'| '3'
 interface IItem {
@@ -176,6 +176,7 @@ interface IInfo {
 const proxy = useProxy()
 const chartPopoverRef = ref()
 const mapPopoverRef = ref()
+const shapePopoverRef = ref()
 const chartList = reactive<IItem[]>([]);
 const mapList = reactive<IItem[]>([]);
 const chartInfo = reactive<IInfo>({
@@ -243,14 +244,14 @@ const mapCurrentChange = (e: number) => {
   getData();
 };
 
-const common = useCommonStore()
+const {screen} = useStore()
 const itemClick = (info: any, _type: "chart" | "map") => {
   if (type.value === 'chart') {
     chartPopoverRef.value.hide()
   } else {
     mapPopoverRef.value.hide()
   }
-  common.addScreenOptionOfElements({
+  screen.addScreenOptionOfElements({
     type: "chart",
     cover: info.cover,
     option: "",
@@ -276,7 +277,28 @@ const funcClick = (_type: "chart" | "map") => {
 };
 
 const shapeClick = (shape: ShapePoolItem & {idx: number}) => {
-  console.log(shape)
+  screen.addScreenOptionOfElements({
+    type: "shape",
+    isLock: false,
+    viewBox: shape.viewBox,
+    path: shape.path,
+    style: {
+      fill: "#f8b557",
+      stroke: "rgba(0,0,0,0)",
+      strokeWidth: 0,
+      shadowColor: "rgba(0,0,0,0)",
+      shadowX: 0,
+      shadowY: 0,
+      shadowBlur: 5,
+      width: 50,
+      height: 50,
+      translateX: 0,
+      translateY: 0,
+      rotate: 0,
+      zIndex: 1,
+    }
+  })
+  shapePopoverRef.value.hide()
 }
 </script>
 

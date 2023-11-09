@@ -1,4 +1,4 @@
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
@@ -6,7 +6,7 @@ import graphicOption from "@/chartConfig/commonParams/graphic"
 import colorOption from "@/chartConfig/commonParams/color";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import {chartPath} from "@/chartConfig/constant";
-const common: any = useCommonStore()
+const common: any = useStore()
 
 export default () => {
   return [

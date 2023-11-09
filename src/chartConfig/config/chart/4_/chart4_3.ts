@@ -1,4 +1,4 @@
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import titleOption from "@/chartConfig/commonParams/title";
 import canvasOption from "@/chartConfig/commonParams/canvas";
 import gridOption from "@/chartConfig/commonParams/grid";
@@ -11,7 +11,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 
 
-const common: any = useCommonStore()
+const common: any = useStore()
 const axisData = [
   '12a', '1a', '2a', '3a', '4a', '5a', '6a',
   '7a', '8a', '9a', '10a', '11a',

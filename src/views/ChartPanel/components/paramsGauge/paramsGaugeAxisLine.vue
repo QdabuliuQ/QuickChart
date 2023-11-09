@@ -13,13 +13,13 @@ import seriesItem from "@/components/seriesItem.vue";
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
 import {common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const seriesAxisLine = _common.option.series.axisLine
 const colors = reactive([...seriesAxisLine.lineStyle.color.map((item: any) => item[1])])
 const config = reactive<ConfigInt>({

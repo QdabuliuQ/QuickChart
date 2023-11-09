@@ -7,7 +7,7 @@
 import {reactive} from 'vue';
 import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
-import useCommonStore from "@/store/common";
+import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
 import {label, common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
@@ -15,7 +15,7 @@ import {fontFamily, fontStyle, fontWeight, position} from "@/chartConfig/constan
 import useWatchData from "@/hooks/useWatchData";
 
 const proxy = useProxy()
-const _common: any = useCommonStore()
+const _common: any = useStore()
 const seriesLabel = _common.option.series.label
 const config = reactive<ConfigInt>({
   show: {
