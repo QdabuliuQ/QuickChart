@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_yt0rd3hexg.woff2?t=1698931758106') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3670180_yt0rd3hexg.woff?t=1698931758106') format('woff'),
-  url('//at.alicdn.com/t/c/font_3670180_yt0rd3hexg.ttf?t=1698931758106') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_cm5hrpm4qz.woff2?t=1699618876524') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3670180_cm5hrpm4qz.woff?t=1699618876524') format('woff'),
+  url('//at.alicdn.com/t/c/font_3670180_cm5hrpm4qz.ttf?t=1699618876524') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,18 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_delete_2:before {
+  content: "\e629";
+}
+
+.i_paste:before {
+  content: "\e63f";
+}
+
+.i_cut:before {
+  content: "\e620";
 }
 
 .i_zIndex:before {
@@ -353,16 +365,12 @@
   content: "\e67c";
 }
 
-.i_upload:before {
+.i_top:before {
   content: "\e665";
 }
 
-.i_download:before {
+.i_down:before {
   content: "\e66b";
-}
-
-.i_delete_2:before {
-  content: "\e8c1";
 }
 
 .i_edit:before {

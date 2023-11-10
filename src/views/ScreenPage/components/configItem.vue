@@ -2,7 +2,7 @@
   <div class="configItem">
     <el-scrollbar :height="height + 'px'">
       <div class="container">
-        <template v-if="screen.getCurElementIdx !== -1">
+        <template v-if="screen.getCurElementIdx !== -1 && !screen.getScreenOptionOfElements[screen.curElementIdx].isLock">
           <chart-config v-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'chart'"/>
           <text-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'text'" />
           <shape-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'shape'" />

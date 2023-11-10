@@ -57,6 +57,10 @@ const useScreenStore = defineStore('screen', {
       if (this.screenOption['elements'].length <= i && this.screenOption['elements'].type !== 'shape') return
       this.screenOption['elements'][i].path = path
       this.screenOption['elements'][i].viewBox = viewBox
+    },
+    updateElementOfItem(i: number, key: string, val: any) {
+      if (this.screenOption['elements'].length <= i) return
+      this.screenOption['elements'][i][key] = val
     }
   }
 })

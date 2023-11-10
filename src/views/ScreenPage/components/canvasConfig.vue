@@ -61,6 +61,9 @@ onUnmounted(() => {
 .canvasConfig {
   .seriesItem {
     align-items: center;
+    .itemTitle {
+      top: 0 !important;
+    }
     .el-color-picker {
       width: 100%;
       .el-color-picker__trigger {

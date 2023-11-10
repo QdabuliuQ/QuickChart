@@ -1,8 +1,10 @@
 <template>
-  <div
-    class="dragItems"
-  >
-    <template v-for="(item, idx) in screen.screenOption.elements">
+  <div class="dragItems">
+    <context-menu
+      :menu="item.isLock ? lockMenu : unlockMenu"
+      @select="(info: any) => selectElement(info, idx)"
+      v-for="(item, idx) in screen.screenOption.elements"
+    >
       <img
         :class="['dragItem', 'item_' + idx]"
         v-if="item.type === 'chart'"
@@ -13,8 +15,6 @@
           transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
           zIndex: item.style.zIndex
         }"
-        @mouseenter="enterElement(idx as number)"
-        @mouseleave="leaveElement"
         :src="item.cover"/>
       <div
         :class="['dragItem', 'item_' + idx]"
@@ -36,12 +36,10 @@
           textDecorationColor: item.style.textDecorationColor,
           textDecorationStyle: item.style.textDecorationStyle,
         }"
-        @mouseenter="enterElement(idx as number)"
-        @mouseleave="leaveElement"
       >
         <span
           class="textInfo"
-          contenteditable="true"
+          :contenteditable="!item.isLock"
           @click.stop="null"
           :style="{
             backgroundColor: item.style.backgroundColor
@@ -78,7 +76,7 @@
           </g>
         </svg>
       </div>
-    </template>
+    </context-menu>
     <Moveable
       :target="target"
       :ables="[Deleteable]"
@@ -101,15 +99,17 @@
       @resize="onResize"
     />
   </div>
-
 </template>
 <script setup lang="ts">
 import Moveable from "vue3-moveable";
 import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import useStore from "@/store";
-import {IStyle} from "@/types/screen";
+import {ElementTypeProperties, IStyle} from "@/types/screen";
 import {debounce} from "@/utils";
+import ContextMenu from "@/components/contextMenu.vue";
+import {useCopyElement} from "@/hooks/useCopyElement";
+import {cutElement, lockElement, unlockElement} from "@/utils/screenUtil";
 
 const proxy = useProxy()
 const {screen} = useStore()
@@ -122,28 +122,72 @@ const bounds = {
   position: "css",
 }
 const elementGuidelines = reactive<Array<string>>([])
+const unlockMenu = [
+  {
+    label: '复制',
+    icon: "i_copy"
+  },
+  {
+    label: '剪切',
+    icon: "i_cut"
+  },
+  {
+    label: '上移一层',
+    icon: "i_top"
+  },
+  {
+    label: '下移一层',
+    icon: "i_down"
+  },
+  {
+    label: '锁定',
+    icon: "i_lock"
+  },
+  {
+    label: '删除',
+    icon: "i_delete_2"
+  }
+]
+const lockMenu = [
+  {
+    label: '解锁',
+    icon: "i_unlock"
+  },
+]
 
-const editable = ref<boolean>(false)
-
-const enterElement = (idx: number) => {
-  if (screen.getScreenOptionOfElements[idx].isLock) document.documentElement.style.cursor = 'url('+require('../../../assets/image/lock.png')+'),pointer'
-}
-const leaveElement = () => {
-  document.documentElement.style.cursor = 'default'
-}
 
 const onRender = (e: any) => {
   e.target.style.cssText += e.cssText;
 }
 
+let [element, getElementByNewPoint] = useCopyElement()
+const selectElement = (info: any, idx: number) => {
+  switch (info.label) {
+    case '剪切':
+      (element as any).value = screen.getScreenOptionOfElements[idx]
+      cutElement(idx)
+      target.value = null
+      break
+    case '复制':
+      (element as any).value = screen.getScreenOptionOfElements[idx]
+      break
+    case '锁定':
+      lockElement(idx)
+      target.value = null
+      break
+    case '解锁':
+      unlockElement(idx)
+  }
+}
+
 const itemClick = (idx: number, e: any) => {
   e.stopPropagation()
   if (target.value) updateElementStyle(target.value, screen.getCurElementIdx)
-  screen.updateCurElementIdx(idx)  // 设置选中元素索引值
   if (screen.getScreenOptionOfElements[idx].isLock) {
     target.value = null  // 清空
   } else {
     target.value = e.currentTarget  // 设置为选定的元素
+    screen.updateCurElementIdx(idx)  // 设置选中元素索引值
   }
 }
 
@@ -201,7 +245,6 @@ const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
 const cancelClickEvent = (e: any) => {
   if (target.value) updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
   target.value = null
-  editable.value = false
   screen.updateCurElementIdx(-1)
 }
 
@@ -219,13 +262,18 @@ const deleteChart = () => {  // 删除图表回调
 }
 
 // 停止拖动
-const dragEnd = debounce(() => {
+const dragEnd = () => {
   if (target.value) {
-    console.log("end")
     // 更新元素样式
     updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
   }
-}, 500)
+}
+// const dragEnd = debounce(() => {
+//   if (target.value) {
+//     // 更新元素样式
+//     updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
+//   }
+// }, 500)
 const onRotate = dragEnd  // 旋转
 const onResize = dragEnd  // 缩放
 

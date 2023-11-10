@@ -8,7 +8,7 @@
       <i class="iconfont i_save1"></i>
       另存
     </div>
-    <div class="funcItem" title="插入文本">
+    <div @click="textClick" class="funcItem" title="插入文本">
       <i class="iconfont i_text"></i>
       文本
     </div>
@@ -36,7 +36,7 @@
       trigger="click"
       :hide-after="0"
     >
-      <el-scrollbar height="500px">
+      <el-scrollbar height="400px">
         <skeleton
           :count="4"
           :status="chartInfo.status"
@@ -95,7 +95,7 @@
       trigger="click"
       :hide-after="0"
     >
-      <el-scrollbar height="500px">
+      <el-scrollbar height="400px">
         <skeleton
           :count="4"
           :status="mapInfo.status"
@@ -160,6 +160,7 @@ import useProxy from "@/hooks/useProxy";
 import useStore from "@/store";
 import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
 import {ShapePoolItem} from "@/types/shape";
+import {getShapeConfig, getTextConfig} from "@/utils/screenUtil";
 
 type STATUS = '1' | '2'| '3'
 interface IItem {
@@ -211,8 +212,9 @@ const getData = async () => {
       offset: mapInfo.offset,
     });
   }
-  if (!res.status || res.data.length == 0) {
+  if (!res || !res.status || res.data.length == 0) {
     type.value === "chart" ? (chartInfo.status = "3") : (mapInfo.status = "3");
+    return
   } else {
     type.value === "chart" ? (chartInfo.status = "2") : (mapInfo.status = "2");
   }
@@ -252,9 +254,9 @@ const itemClick = (info: any, _type: "chart" | "map") => {
     mapPopoverRef.value.hide()
   }
   screen.addScreenOptionOfElements({
-    type: "chart",
+    type: _type,
     cover: info.cover,
-    option: "",
+    option: info.option,
     style: {
       width: 200,
       height: 130,
@@ -276,28 +278,14 @@ const funcClick = (_type: "chart" | "map") => {
   }
 };
 
-const shapeClick = (shape: ShapePoolItem & {idx: number}) => {
-  screen.addScreenOptionOfElements({
-    type: "shape",
-    isLock: false,
+const textClick = () => {  // 插入文本
+  screen.addScreenOptionOfElements(getTextConfig())
+}
+const shapeClick = (shape: ShapePoolItem & {idx: number}) => {  // 插入图形
+  screen.addScreenOptionOfElements(getShapeConfig({
     viewBox: shape.viewBox,
     path: shape.path,
-    style: {
-      fill: "#f8b557",
-      stroke: "rgba(0,0,0,0)",
-      strokeWidth: 0,
-      shadowColor: "rgba(0,0,0,0)",
-      shadowX: 0,
-      shadowY: 0,
-      shadowBlur: 5,
-      width: 50,
-      height: 50,
-      translateX: 0,
-      translateY: 0,
-      rotate: 0,
-      zIndex: 1,
-    }
-  })
+  } as any))
   shapePopoverRef.value.hide()
 }
 </script>
@@ -309,6 +297,9 @@ const shapeClick = (shape: ShapePoolItem & {idx: number}) => {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
+    width: 500px;
+  }
+  .el-empty {
     width: 500px;
   }
   .functionListChartContainer {
