@@ -7,6 +7,7 @@ export default function (containerRef: any) {
   const handleContextMenu = (e: any) => {
     e.preventDefault(); // 阻止浏览器的默认行为
     e.stopPropagation(); // 阻止冒泡
+    console.log(e, "e")
     showMenu.value = true;
     x.value = e.clientX;
     y.value = e.clientY;

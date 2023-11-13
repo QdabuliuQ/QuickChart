@@ -8,6 +8,11 @@
       <i class="iconfont i_save1"></i>
       另存
     </div>
+    <div @click="imgClick" class="funcItem" title="插入图片">
+      <i class="iconfont i_img"></i>
+      图片
+    </div>
+    <input @change="selectFile" style="display: none" accept=".jpg,.png,.jpeg" type="file" ref="inputRef">
     <div @click="textClick" class="funcItem" title="插入文本">
       <i class="iconfont i_text"></i>
       文本
@@ -151,16 +156,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { getChart } from "@/network/chart";
 import { getChart as getMap } from "@/network/map";
-import { ajaxRequest } from "@/utils";
+import {ajaxRequest, fileType} from "@/utils";
 import Skeleton from "@/components/skeleton.vue";
 import useProxy from "@/hooks/useProxy";
 import useStore from "@/store";
 import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
 import {ShapePoolItem} from "@/types/shape";
-import {getShapeConfig, getTextConfig} from "@/utils/screenUtil";
+import {getImageConfig, getShapeConfig, getTextConfig} from "@/utils/screenUtil";
 
 type STATUS = '1' | '2'| '3'
 interface IItem {
@@ -175,6 +180,7 @@ interface IInfo {
   count: number
 }
 const proxy = useProxy()
+const inputRef = ref()
 const chartPopoverRef = ref()
 const mapPopoverRef = ref()
 const shapePopoverRef = ref()
@@ -287,6 +293,37 @@ const shapeClick = (shape: ShapePoolItem & {idx: number}) => {  // 插入图形
     path: shape.path,
   } as any))
   shapePopoverRef.value.hide()
+}
+const imgClick = () => {
+  inputRef.value.click()
+}
+const selectFile = () => {
+  let img = (inputRef.value as any).files[0]
+  if (fileType(img.name) == 'image') {
+    if (img.size / 1024 > 1000) {
+      proxy.$notice({
+        type: 'error',
+        message: '图片大小不能超过1M',
+        position: 'top-left'
+      })
+    } else {
+      let reader = new FileReader();
+      reader.readAsDataURL(img);
+      reader.onload = function (e: any) {
+        let p = getImageConfig({
+          url: e.target.result,
+          file: img
+        })
+        screen.addScreenOptionOfElements(p)
+      };
+    }
+  } else {
+    proxy.$notice({
+      type: 'error',
+      message: '请上传图片(jpg/png/jpeg)',
+      position: 'top-left'
+    })
+  }
 }
 </script>
 

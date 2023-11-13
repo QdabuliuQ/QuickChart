@@ -13,6 +13,27 @@ let config: IConfig = {
   },
   elements: [
     {
+      type: "image",
+      isLock: false,
+      url: '',
+      file: '',
+      style: {
+        width: 200,
+        height: 130,
+        translateX: 0,
+        translateY: 0,
+        rotate: 0,
+        zIndex: 1,
+        borderColor: 'rgba(0,0,0,0)',
+        borderWidth: 0,
+        borderType: 'none',
+        shadowColor: "rgba(0,0,0,0)",
+        shadowX: 0,
+        shadowY: 0,
+        shadowBlur: 0,
+      }
+    },
+    {
       type: "shape",
       isLock: false,
       viewBox: [200, 200],
@@ -24,7 +45,7 @@ let config: IConfig = {
         shadowColor: "rgba(0,0,0,0)",
         shadowX: 0,
         shadowY: 0,
-        shadowBlur: 5,
+        shadowBlur: 0,
         width: 200,
         height: 130,
         translateX: 0,

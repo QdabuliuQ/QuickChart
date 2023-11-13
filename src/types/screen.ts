@@ -1,4 +1,6 @@
-export type Elements = "chart"|"map"|"text"|"shape"
+import {BorderType} from "@/types/element";
+
+export type Elements = "chart"|"map"|"text"|"shape"|"image"
 export interface IStyle {
   width: number;
   height: number;
@@ -6,6 +8,21 @@ export interface IStyle {
   translateY: number;
   rotate: number;
   zIndex: number
+}
+export type Image = {
+  type: 'image',
+  isLock: boolean
+  url: string
+  file: any
+  style: {
+    borderWidth: number
+    borderType: BorderType
+    borderColor: string
+    shadowX: number
+    shadowY: number
+    shadowBlur: number
+    shadowColor: string
+  } & IStyle
 }
 export type Shape = {
   type: 'shape',
@@ -55,8 +72,8 @@ export type Text = {
   } & IStyle
 }
 export type BgType = "color" | "image"
-export type ElementType = Chart | Map | Text | Shape
-export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : T extends 'shape' ? Shape : never
+export type ElementType = Chart | Map | Text | Shape | Image
+export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : T extends 'shape' ? Shape : T extends 'image' ? Image : never
 export interface IConfig {
   canvas: {
     bgType: BgType;

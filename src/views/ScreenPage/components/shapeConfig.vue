@@ -59,6 +59,7 @@
       <series-item title="边框宽度">
         <el-input-number :min="0" :max="100" size="small" v-model="info.style.strokeWidth" />
       </series-item>
+      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
     </template>
   </div>
 </template>
@@ -72,6 +73,8 @@ import CommonConfig from "./commonConfig.vue";
 import {debounce} from "@/utils";
 import {setCommonStyle} from "@/utils/screenUtil";
 import {SHAPE_LIST} from "@/assets/js/shape"
+import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
+import useProxy from "@/hooks/useProxy";
 
 let info = ref<Shape | null>(null)
 const idx = ref<number>(-1)
@@ -99,6 +102,11 @@ let stop2 = watch(() => screen.curElementIdx, () => {
   baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
   updateInfo()
 })
+
+const proxy = useProxy()
+const deleteEvent = () => {  // 删除图表
+  proxy.$Bus.emit("deleteChart", screen.curElementIdx)
+}
 
 onMounted(() => {
   updateInfo()

@@ -83,6 +83,7 @@
       <series-item title="背景颜色">
         <el-color-picker size="small" v-model="info.style.backgroundColor" show-alpha />
       </series-item>
+      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
     </template>
   </div>
 </template>
@@ -95,6 +96,8 @@ import ConfigTitle from "./configTitle.vue";
 import SeriesItem from "@/components/seriesItem.vue";
 import {debounce} from "@/utils";
 import {setCommonStyle} from "@/utils/screenUtil";
+import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
+import useProxy from "@/hooks/useProxy";
 
 let info = ref<Text | null>(null)
 const idx = ref<number>(-1)
@@ -117,6 +120,11 @@ let stop2 = watch(() => screen.curElementIdx, () => {
   baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
   updateInfo()
 })
+
+const proxy = useProxy()
+const deleteEvent = () => {  // 删除图表
+  proxy.$Bus.emit("deleteChart", screen.curElementIdx)
+}
 
 onMounted(() => {
   updateInfo()

@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" @click.stop>
+  <div ref="containerRef" class="cccc" @click.stop>
     <slot></slot>
     <!-- 通过 Teleport 将菜单传送到 body 中  -->
     <Teleport to="body">
@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<{
 })
 const emits = defineEmits(['select'])
 const handleClick = (item: any) => {
-  emits('select', item)
+  emits('select', Object.assign(item, {idx: props.idx}))
 }
 </script>
 <style lang="less">

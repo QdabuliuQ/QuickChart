@@ -11,7 +11,6 @@
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
       </series-item>
       <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
-      <config-btn @btn-click="lockClick" :bg-color="info.isLock ? '#79d321' : '#9c9c9c'" :icon="info.isLock ? 'i_unlock' : 'i_lock'" :label="info.isLock ? '解锁图表' : '锁定图表'" />
     </template>
   </div>
 </template>
@@ -35,10 +34,6 @@ let info = ref<Chart | null>(null)
 const deleteEvent = () => {  // 删除图表
   proxy.$Bus.emit("deleteChart", screen.curElementIdx)
 }
-const lockClick = () => {
-  info.value!.isLock = !info.value!.isLock
-  screen.updateScreenOptionOfElements(info.value)
-}
 
 const updateInfo = () => {
   if (screen.getCurElementIdx !== -1) {
@@ -48,7 +43,7 @@ const updateInfo = () => {
 }
 let stop = watch(() => info, debounce(() => {
   setCommonStyle(baseInfo, info)
-  screen.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
+  screen.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style)), idx.value)
 }), {
   deep: true
 })

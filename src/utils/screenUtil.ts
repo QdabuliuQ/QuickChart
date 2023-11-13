@@ -82,6 +82,33 @@ export const getShapeConfig = (config?: ElementTypeProperties<"shape">) => {
   }
   return originConfig
 }
+export function getImageConfig(config?: any) {
+  let originConfig: ElementTypeProperties<'image'> = {
+    type: "image",
+    isLock: false,
+    url: '',
+    file: '',
+    style: {
+      width: 200,
+      height: 130,
+      translateX: 200,
+      translateY: 200,
+      rotate: 0,
+      zIndex: 1,
+      borderColor: 'rgba(0,0,0,0)',
+      borderWidth: 0,
+      borderType: 'none',
+      shadowColor: "rgba(0,0,0,0)",
+      shadowX: 0,
+      shadowY: 0,
+      shadowBlur: 0,
+    }
+  }
+  if (config) {
+    resetConfig(originConfig, config)
+  }
+  return originConfig
+}
 
 export function cutElement(i: number) {
   screen.deleteScreenOptionOfElements(i)

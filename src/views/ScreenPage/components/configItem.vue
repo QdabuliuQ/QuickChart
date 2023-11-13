@@ -6,6 +6,7 @@
           <chart-config v-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'chart'"/>
           <text-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'text'" />
           <shape-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'shape'" />
+          <image-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'image'" />
         </template>
         <canvas-config v-else />
       </div>
@@ -21,6 +22,7 @@ import CanvasConfig from "./canvasConfig.vue"
 import useStore from "@/store";
 import TextConfig from "@/views/ScreenPage/components/textConfig.vue";
 import ShapeConfig from "@/views/ScreenPage/components/shapeConfig.vue";
+import ImageConfig from "@/views/ScreenPage/components/imageConfig.vue";
 
 const proxy = useProxy()
 const height = ref<number>(0)

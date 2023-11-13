@@ -2,7 +2,7 @@
   <div class="dragItems">
     <context-menu
       :menu="item.isLock ? lockMenu : unlockMenu"
-      @select="(info: any) => selectElement(info, idx)"
+      @select="(info: any) => selectElement(info, idx as number)"
       v-for="(item, idx) in screen.screenOption.elements"
     >
       <img
@@ -76,6 +76,20 @@
           </g>
         </svg>
       </div>
+      <img
+        :class="['imgElement', 'dragItem', 'item_' + idx]"
+        v-else-if="item.type === 'image'"
+        @click="itemClick(idx as number, $event)"
+        :style="{
+          width: item.style.width + 'px',
+          height: item.style.height + 'px',
+          transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
+          zIndex: item.style.zIndex,
+          border: `${item.style.borderWidth}px ${item.style.borderType} ${item.style.borderColor}`,
+          boxShadow: `${item.style.shadowX}px ${item.style.shadowY}px ${item.style.shadowBlur}px ${item.style.shadowColor}`
+        }"
+        :src="item.url"
+      />
     </context-menu>
     <Moveable
       :target="target"
@@ -177,6 +191,9 @@ const selectElement = (info: any, idx: number) => {
       break
     case '解锁':
       unlockElement(idx)
+      break
+    case '删除':
+      deleteChart(idx)
   }
 }
 
@@ -214,6 +231,8 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     setStyle(styleInfo, info)
   } else if(screen.getScreenOptionOfElements[idx].type === 'shape') {
     setShapeStyle(info, idx)
+  } else if (screen.getScreenOptionOfElements[idx].type === 'image') {
+    setImageStyle(info, idx)
   }
   screen.updateScreenOptionOfElementStyle(info, idx)
 }
@@ -236,10 +255,27 @@ const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
   info['shadowX'] = shadowX
   info['shadowY'] = shadowY
   info['shadowBlur'] = shadowBlur
+  info['shadowColor'] = rootDom.style.filter.substring(rootDom.style.filter.indexOf('(')+1, rootDom.style.filter.indexOf(')')+1)
   info['fill'] = pathDom.getAttribute("fill")
   info['stroke'] = pathDom.getAttribute("stroke")
   info['strokeWidth'] = parseInt(pathDom.getAttribute("stroke-width") as string)
-  info['shadowColor'] = rootDom.style.filter.substring(rootDom.style.filter.indexOf('(')+1, rootDom.style.filter.indexOf(')')+1)
+
+}
+const setImageStyle = (info: any, idx: number) => {
+  const dom = document.getElementsByClassName("dragItem")[idx] as HTMLElement
+  let style: any = dom.style
+  let i: number = style.boxShadow.indexOf(')')+1
+  let shadowColor = style.boxShadow.substring(0, i)
+  let shadowStyle = style.boxShadow.substring(i+1)
+  let [shadowX, shadowY, shadowBlur] = shadowStyle.split(" ")
+  info['shadowX'] = parseInt(shadowX)
+  info['shadowY'] = parseInt(shadowY)
+  info['shadowBlur'] = parseInt(shadowBlur)
+  info['shadowColor'] = shadowColor;
+  info['borderWidth'] = parseInt(style.borderWidth)
+  info['borderType'] = style.borderStyle
+  info['borderColor'] = style.borderColor
+  console.log("info", info)
 }
 
 const cancelClickEvent = (e: any) => {
@@ -255,25 +291,20 @@ const setElementGuidelines = () => {  // 设置元素引导线
   }
 }
 
-const deleteChart = () => {  // 删除图表回调
-  screen.deleteScreenOptionOfElements(screen.getCurElementIdx)
+const deleteChart = (idx: number = screen.getCurElementIdx) => {  // 删除图表回调
+  screen.deleteScreenOptionOfElements(idx)
   target.value = null  // 选中元素设置为 null
   screen.updateCurElementIdx(-1)
 }
 
 // 停止拖动
-const dragEnd = () => {
+const dragEnd = debounce(() => {
   if (target.value) {
     // 更新元素样式
     updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
   }
-}
-// const dragEnd = debounce(() => {
-//   if (target.value) {
-//     // 更新元素样式
-//     updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
-//   }
-// }, 500)
+}, 50)
+
 const onRotate = dragEnd  // 旋转
 const onResize = dragEnd  // 缩放
 
@@ -313,7 +344,7 @@ const Deleteable = {
           height: '21px',
           cursor: 'pointer'
         },
-        onClick: () => deleteChart()
+        onClick: () => deleteChart(screen.getCurElementIdx)
       }),
     ]);
   }
@@ -351,6 +382,9 @@ onUnmounted(() => {
 
   [contenteditable]:focus {
     outline: 1px solid @theme;
+  }
+  .imgElement {
+    -webkit-user-drag: none;
   }
   .dragItem {
     position: absolute;
