@@ -119,7 +119,7 @@ import Moveable from "vue3-moveable";
 import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import useStore from "@/store";
-import {ElementTypeProperties, IStyle} from "@/types/screen";
+import {IStyle} from "@/types/screen";
 import {debounce} from "@/utils";
 import ContextMenu from "@/components/contextMenu.vue";
 import {useCopyElement} from "@/hooks/useCopyElement";

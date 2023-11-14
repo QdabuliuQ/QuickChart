@@ -32,6 +32,9 @@ const useScreenStore = defineStore('screen', {
     initScreenOption(data: any) {
       this.screenOption = data
     },
+    updateScreenOptionOfCanvasByKey(key: string, val: any) {
+      this.screenOption['canvas'][key] = val
+    },
     updateScreenOptionOfCanvas(data: any) {
       this.screenOption['canvas'] = data
     },

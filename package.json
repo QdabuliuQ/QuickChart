@@ -15,6 +15,7 @@
   "dependencies": {
     "@highlightjs/vue-plugin": "^2.1.0",
     "axios": "^1.4.0",
+    "canvg": "^1.5.3",
     "core-js": "^3.6.5",
     "echarts": "^4.1.0",
     "echarts-gl": "^1.1.0",
@@ -29,7 +30,6 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vue3-moveable": "^0.26.2",
-    "vue3-selecto": "^1.12.0",
     "vuex": "^4.0.0-0",
     "x-data-spreadsheet": "^1.1.9",
     "xlsx": "^0.18.5"

@@ -152,6 +152,31 @@
         </div>
       </template>
     </el-popover>
+    <el-popover
+      ref="exportPopoverRef"
+      popper-class="functionListPopoverClass"
+      placement="right-start"
+      trigger="click"
+      :hide-after="0"
+    >
+      <div class="typeContainer">
+        <div @click="exportClick('html')" class="typeItem">
+          <img src="@/assets/image/html.svg" />
+          HTML文件
+        </div>
+        <div @click="exportClick('image')" class="typeItem">
+          <img src="@/assets/image/image.svg" />
+          PNG图片
+        </div>
+      </div>
+      <template #reference>
+        <div class="funcItem" title="导出内容">
+          <i class="iconfont i_export"></i>
+          导出
+        </div>
+      </template>
+    </el-popover>
+
   </div>
 </template>
 
@@ -181,6 +206,7 @@ interface IInfo {
 }
 const proxy = useProxy()
 const inputRef = ref()
+const exportPopoverRef = ref()
 const chartPopoverRef = ref()
 const mapPopoverRef = ref()
 const shapePopoverRef = ref()
@@ -325,11 +351,44 @@ const selectFile = () => {
     })
   }
 }
+
+const exportClick = (type: string) => {
+  switch (type) {
+    case 'html':
+      break
+    case 'image':
+      proxy.$Bus.emit("exportImage")
+      break
+  }
+  exportPopoverRef.value.hide()
+}
+
 </script>
 
 <style lang="less">
 .functionListPopoverClass {
   width: auto !important;
+  .typeContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+    .typeItem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 10px;
+      img {
+        width: 50px;
+        margin-bottom: 10px;
+      }
+      &:hover {
+        background-color: #ffffff17;
+      }
+    }
+  }
   .skeleton_loading {
     display: grid;
     grid-template-columns: 1fr 1fr;

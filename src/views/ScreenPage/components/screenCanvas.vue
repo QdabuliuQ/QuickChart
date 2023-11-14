@@ -21,8 +21,11 @@
   </div>
 </template>
 <script setup lang="ts">
+import html2canvas from 'html2canvas';
 import DragItems from "./dragItems.vue";
 import useStore from "@/store";
+import useProxy from "@/hooks/useProxy";
+import {onUnmounted} from "vue";
 interface IProps {
   width: string
   height: string
@@ -30,6 +33,26 @@ interface IProps {
 
 const props = defineProps<IProps>()
 const {screen}: any = useStore()
+
+const proxy = useProxy()
+
+const exportImage = () => {
+  html2canvas(document.getElementsByClassName('mainCanvas')[0] as HTMLElement, {
+    scale: 1,
+    logging:false,
+    useCORS:true
+  }).then(canvas => {
+    let img = document.createElement('a');
+    img.href = canvas.toDataURL("image/png")
+    img.download = 'quickchart.png';
+    img.click();
+  })
+}
+proxy.$Bus.on("exportImage", exportImage)
+
+onUnmounted(() => {
+  proxy.$Bus.off("exportImage", exportImage)
+})
 
 </script>
 <style lang="less">

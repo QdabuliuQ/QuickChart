@@ -4,6 +4,7 @@ let config: IConfig = {
   canvas: {
     bgType: "color",
     bgColor: "#fff",
+    file: null,
     bgImage: "",
     fontSize: 14,
     color: '#000',

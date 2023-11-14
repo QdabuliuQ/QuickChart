@@ -10,7 +10,7 @@ import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
 import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
-import {createImage, getConfigValue} from '@/utils';
+import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()

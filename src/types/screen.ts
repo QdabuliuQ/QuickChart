@@ -78,6 +78,7 @@ export interface IConfig {
   canvas: {
     bgType: BgType;
     bgImage: string
+    file: any
     bgColor: string;
     fontSize: number
     color: string

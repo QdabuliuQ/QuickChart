@@ -70,7 +70,10 @@ const fileUpload = async (e: Event) => {
         reader.readAsDataURL(img);
         reader.onload = function (ev: any) {
           // base64码
-          emits("imageChange", ev.target.result)
+          emits("imageChange", {
+            base64: ev.target.result,
+            file: img
+          })
         }
       }
     }
