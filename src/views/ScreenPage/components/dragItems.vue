@@ -1,5 +1,5 @@
 <template>
-  <div class="dragItems">
+  <div id="dragElement" class="dragItems">
     <context-menu
       :menu="item.isLock ? lockMenu : unlockMenu"
       @select="(info: any) => selectElement(info, idx as number)"

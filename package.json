@@ -15,8 +15,9 @@
   "dependencies": {
     "@highlightjs/vue-plugin": "^2.1.0",
     "axios": "^1.4.0",
-    "canvg": "^1.5.3",
+    "canvg": "^4.0.1",
     "core-js": "^3.6.5",
+    "dom-to-image": "^2.6.0",
     "echarts": "^4.1.0",
     "echarts-gl": "^1.1.0",
     "element-plus": "^2.2.17",

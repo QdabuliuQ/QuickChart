@@ -14,18 +14,22 @@
         backgroundSize: screen.getScreenOptionOfCanvas.backgroundSize
       }"
       >
-        <drag-items />
+        <drag-items/>
       </div>
     </div>
 
   </div>
 </template>
 <script setup lang="ts">
+import domtoimage from 'dom-to-image';
+import {Canvg} from "canvg";
 import html2canvas from 'html2canvas';
 import DragItems from "./dragItems.vue";
 import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
 import {onUnmounted} from "vue";
+import {postScreenImage} from "@/network/screen";
+
 interface IProps {
   width: string
   height: string
@@ -36,17 +40,17 @@ const {screen}: any = useStore()
 
 const proxy = useProxy()
 
-const exportImage = () => {
-  html2canvas(document.getElementsByClassName('mainCanvas')[0] as HTMLElement, {
-    scale: 1,
-    logging:false,
-    useCORS:true
-  }).then(canvas => {
-    let img = document.createElement('a');
-    img.href = canvas.toDataURL("image/png")
-    img.download = 'quickchart.png';
-    img.click();
-  })
+const exportImage = async () => {
+
+  domtoimage.toPng(document.getElementById("dragElement"), {})
+    .then(function (dataUrl: any) {
+      let link = document.createElement('a');
+      link.download = 'quickchart.jpeg';
+      link.href = dataUrl;
+      link.click();
+    }).catch(function (error: any) {
+    console.error('oops, something went wrong!', error);
+  });
 }
 proxy.$Bus.on("exportImage", exportImage)
 
@@ -60,6 +64,7 @@ onUnmounted(() => {
   flex: 1;
   overflow: scroll;
   .scrollContainer();
+
   .opacityBg {
     width: 870px;
     height: 550px;
@@ -68,6 +73,7 @@ onUnmounted(() => {
     background-repeat: repeat;
     background-size: cover;
   }
+
   .mainCanvas {
     width: 100%;
     height: 100%;
