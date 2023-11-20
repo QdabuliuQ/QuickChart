@@ -8,7 +8,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/assets/less/elementStyle.less'
-import { ElNotification } from 'element-plus'
+import { ElNotification, ElLoading } from 'element-plus'
 // echart图表库
 import * as echarts from 'echarts'
 import "echarts-gl" //3D地图插件
@@ -24,6 +24,7 @@ import Worker from "worker-loader!@/workers/worker";
 
 const app = createApp(App)
 app.config.globalProperties.$notice = ElNotification;
+app.config.globalProperties.$loading = ElLoading
 app.config.globalProperties.$Bus = Mitt;
 app.config.globalProperties.$echarts = echarts // 全局挂载echarts
 app.config.globalProperties.$moment = moment

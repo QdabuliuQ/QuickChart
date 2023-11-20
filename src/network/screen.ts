@@ -1,10 +1,15 @@
 import ajax from "@/network/index";
 
 export function postScreenImage(data: {
-  screen_id: string
+  option: any
+  width: string
+  height: string
+  c_width: string
+  c_height: string
+  type: string
 }) {
   return ajax({
-    url: "/ge/screenImage",
+    url: "/sc/screenImage",
     method: "post",
     data
   })

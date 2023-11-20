@@ -4,10 +4,11 @@
       :menu="item.isLock ? lockMenu : unlockMenu"
       @select="(info: any) => selectElement(info, idx as number)"
       v-for="(item, idx) in screen.screenOption.elements"
+      :key="item.id"
     >
       <img
-        :class="['dragItem', 'item_' + idx]"
-        v-if="item.type === 'chart'"
+        :class="['dragItem', 'item_' + item.id]"
+        v-if="item.type === 'chart' || item.type === 'map'"
         @click="itemClick(idx as number, $event)"
         :style="{
           width: item.style.width + 'px',
@@ -17,7 +18,7 @@
         }"
         :src="item.cover"/>
       <div
-        :class="['dragItem', 'item_' + idx]"
+        :class="['dragItem', 'item_' + item.id]"
         v-else-if="item.type === 'text'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -48,7 +49,7 @@
       </div>
       <div
         @click="itemClick(idx as number, $event)"
-        :class="['dragItem', 'item_' + idx]"
+        :class="['dragItem', 'item_' + item.id]"
         v-else-if="item.type === 'shape'"
         :style="{
           width: item.style.width + 'px',
@@ -77,7 +78,7 @@
         </svg>
       </div>
       <img
-        :class="['imgElement', 'dragItem', 'item_' + idx]"
+        :class="['imgElement', 'dragItem', 'item_' + item.id]"
         v-else-if="item.type === 'image'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -287,7 +288,7 @@ const cancelClickEvent = (e: any) => {
 const setElementGuidelines = () => {  // 设置元素引导线
   elementGuidelines.length = 0
   for (let i = 0; i < screen.screenOption.elements.length; i++) {
-    elementGuidelines.push('.item_' + i)
+    elementGuidelines.push('.item_' + screen.screenOption.elements[i].id)
   }
 }
 

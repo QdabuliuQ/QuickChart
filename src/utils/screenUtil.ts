@@ -1,5 +1,6 @@
 import {Elements, ElementTypeProperties} from "@/types/screen";
 import useStore from "@/store";
+import {uuid} from "@/utils/index";
 
 const {screen} = useStore()
 export function setCommonStyle(baseInfo: any, info: any) {
@@ -26,6 +27,7 @@ function resetConfig<T extends Elements>(originConfig: ElementTypeProperties<T>,
 }
 export function getTextConfig(config?: ElementTypeProperties<"text">) {
   let originConfig: ElementTypeProperties<'text'> = {
+    id: uuid(6, 36),
     type: "text",
     content: "插入文本内容",
     isLock: false,
@@ -57,6 +59,7 @@ export function getTextConfig(config?: ElementTypeProperties<"text">) {
 
 export const getShapeConfig = (config?: ElementTypeProperties<"shape">) => {
   let originConfig: ElementTypeProperties<'shape'> = {
+    id: uuid(6, 36),
     type: "shape",
     isLock: false,
     viewBox: [200, 200],
@@ -84,6 +87,7 @@ export const getShapeConfig = (config?: ElementTypeProperties<"shape">) => {
 }
 export function getImageConfig(config?: any) {
   let originConfig: ElementTypeProperties<'image'> = {
+    id: uuid(6, 36),
     type: "image",
     isLock: false,
     url: '',

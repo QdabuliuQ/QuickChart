@@ -10,6 +10,7 @@ export interface IStyle {
   zIndex: number
 }
 export type Image = {
+  id: string
   type: 'image',
   isLock: boolean
   url: string
@@ -25,6 +26,7 @@ export type Image = {
   } & IStyle
 }
 export type Shape = {
+  id: string
   type: 'shape',
   isLock: boolean
   path: string
@@ -40,6 +42,7 @@ export type Shape = {
   } & IStyle
 }
 export type Chart = {
+  id: string
   type: 'chart'
   isLock: boolean
   cover: string
@@ -47,6 +50,7 @@ export type Chart = {
   style: IStyle
 }
 export type Map = {
+  id: string
   type: 'map'
   isLock: boolean
   cover: string
@@ -54,6 +58,7 @@ export type Map = {
   style: IStyle
 }
 export type Text = {
+  id: string
   type: 'text'
   isLock: boolean
   content: string
