@@ -45,7 +45,9 @@
           :style="{
             backgroundColor: item.style.backgroundColor
           }"
-        >{{ item.content }}</span>
+          v-html="item.content"
+          @input="item.content = $event.target.innerHTML"
+        ></span>
       </div>
       <div
         @click="itemClick(idx as number, $event)"
@@ -65,7 +67,6 @@
         >
           <g :transform="`scale(${item.style.width / item.viewBox[0]}, ${item.style.height / item.viewBox[1]}) translate(0,0) matrix(1,0,0,1,0,0)`">
             <path
-              class="outlined"
               vector-effect="non-scaling-stroke"
               stroke-linecap="butt"
               stroke-miterlimit="8"
