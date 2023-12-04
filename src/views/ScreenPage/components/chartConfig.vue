@@ -26,6 +26,9 @@ import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
 import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
 import {setCommonStyle} from "@/utils/screenUtil";
 
+const props = defineProps<{
+  id: string
+}>()
 const proxy = useProxy()
 const {screen} = useStore()
 const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'chart'>)
@@ -47,9 +50,11 @@ let stop = watch(() => info, debounce(() => {
 }), {
   deep: true
 })
-let stop2 = watch(() => screen.curElementIdx, () => {
-  baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
-  updateInfo()
+let stop2 = watch(() => screen.curElementIdx, (newVal: number) => {
+  if (newVal !== -1 && screen.getScreenOptionOfElements[newVal].id === props.id) {
+    baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
+    updateInfo()
+  }
 })
 
 onMounted(() => {

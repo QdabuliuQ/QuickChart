@@ -55,7 +55,6 @@ import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
 
 const {screen}: any = useStore();
-console.log(screen)
 const canvas = reactive(JSON.parse(JSON.stringify(screen.getScreenOptionOfCanvas)))
 const colors = [
   ['#73d4f7','#56b2f8','#3a90f9','#1d6df9','#004bfa'],
@@ -72,10 +71,8 @@ let stop = watch(() => canvas, debounce(() => {
 })
 
 const imageChange = (e: any) => {
-  console.log("run")
   screen.updateScreenOptionOfCanvasByKey('bgImage', e.base64)
   screen.updateScreenOptionOfCanvasByKey('file', e.file)
-  console.log(screen)
 }
 
 onUnmounted(() => {

@@ -54,7 +54,6 @@ let {
   idx,
   deleteEvent
 } = useElementConfig<Image>()
-console.log(info)
 
 // const {screen} = useStore()
 // const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'image'>)

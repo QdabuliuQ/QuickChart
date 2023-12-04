@@ -345,7 +345,7 @@ const itemClick = (info: any, _type: "chart" | "map") => {
   } else {
     mapPopoverRef.value.hide()
   }
-  screen.addScreenOptionOfElements({
+  let option: {[propName: string]: any} = {
     id: uuid(6, 36),
     type: _type,
     cover: info.cover,
@@ -360,7 +360,10 @@ const itemClick = (info: any, _type: "chart" | "map") => {
       rotate: 0,
       zIndex: 0,
     },
-  })
+  }
+  if (_type === 'map') option['adcode'] = info.adcode
+  console.log(option)
+  screen.addScreenOptionOfElements(option)
 }
 
 const funcClick = (_type: "chart" | "map") => {

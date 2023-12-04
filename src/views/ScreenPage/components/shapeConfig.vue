@@ -67,15 +67,18 @@
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {ElementTypeProperties, Shape} from "@/types/screen";
 import useStore from "@/store";
-import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
-import SeriesItem from "@/components/seriesItem.vue";
-import CommonConfig from "./commonConfig.vue";
+import useProxy from "@/hooks/useProxy";
 import {debounce} from "@/utils";
 import {setCommonStyle} from "@/utils/screenUtil";
 import {SHAPE_LIST} from "@/assets/js/shape"
 import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
-import useProxy from "@/hooks/useProxy";
+import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
+import SeriesItem from "@/components/seriesItem.vue";
+import CommonConfig from "./commonConfig.vue";
 
+const props = defineProps<{
+  id: string
+}>()
 let info = ref<Shape | null>(null)
 const idx = ref<number>(-1)
 const {screen} = useStore()
@@ -98,9 +101,11 @@ let stop = watch(() => info, debounce(() => {
 }), {
   deep: true
 })
-let stop2 = watch(() => screen.curElementIdx, () => {
-  baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
-  updateInfo()
+let stop2 = watch(() => screen.curElementIdx, (newVal: number) => {
+  if (newVal !== -1 && screen.getScreenOptionOfElements[newVal].id === props.id) {
+    baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
+    updateInfo()
+  }
 })
 
 const proxy = useProxy()
@@ -110,10 +115,12 @@ const deleteEvent = () => {  // 删除图表
 
 onMounted(() => {
   updateInfo()
+  console.log("挂载")
 })
 onUnmounted(() => {
   stop()
   stop2()
+  console.log("卸载")
 })
 
 </script>

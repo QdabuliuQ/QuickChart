@@ -56,6 +56,7 @@ export type Map = {
   cover: string
   option: string
   style: IStyle
+  adcode: string
 }
 export type Text = {
   id: string

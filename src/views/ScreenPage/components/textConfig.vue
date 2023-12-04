@@ -99,6 +99,9 @@ import {setCommonStyle} from "@/utils/screenUtil";
 import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
 import useProxy from "@/hooks/useProxy";
 
+const props = defineProps<{
+  id: string
+}>()
 let info = ref<Text | null>(null)
 const idx = ref<number>(-1)
 
@@ -116,9 +119,11 @@ let stop = watch(() => info, debounce(() => {
 }), {
   deep: true
 })
-let stop2 = watch(() => screen.curElementIdx, () => {
-  baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
-  updateInfo()
+let stop2 = watch(() => screen.curElementIdx, (newVal: number) => {
+  if (newVal !== -1 && screen.getScreenOptionOfElements[newVal].id === props.id) {
+    baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
+    updateInfo()
+  }
 })
 
 const proxy = useProxy()

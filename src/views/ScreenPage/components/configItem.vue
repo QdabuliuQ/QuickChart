@@ -2,32 +2,46 @@
   <div class="configItem">
     <el-scrollbar :height="height + 'px'">
       <div class="container">
-        <template v-if="screen.getCurElementIdx !== -1 && !screen.getScreenOptionOfElements[screen.curElementIdx].isLock">
-          <chart-config v-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'chart'"/>
-          <text-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'text'" />
-          <shape-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'shape'" />
-          <image-config v-else-if="screen.getScreenOptionOfElements[screen.curElementIdx].type === 'image'" />
-        </template>
-        <canvas-config v-else />
+        <keep-alive>
+          <component
+            :key="screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id"
+            :id="screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id"
+            :is="componentsMap.get(screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id)"></component>
+        </keep-alive>
       </div>
     </el-scrollbar>
   </div>
 </template>
 <script setup lang="ts">
 import useProxy from "@/hooks/useProxy";
-import {onMounted, ref} from "vue";
+import {markRaw, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useWatchResize} from "@/hooks/useWatchResize";
-import ChartConfig from "./chartConfig.vue"
-import CanvasConfig from "./canvasConfig.vue"
+// import CanvasConfig from "./canvasConfig.vue"
+// import ChartConfig from "./chartConfig.vue"
+// import TextConfig from "./textConfig.vue";
+// import ShapeConfig from "./shapeConfig.vue";
+// import ImageConfig from "./imageConfig.vue";
 import useStore from "@/store";
-import TextConfig from "@/views/ScreenPage/components/textConfig.vue";
-import ShapeConfig from "@/views/ScreenPage/components/shapeConfig.vue";
-import ImageConfig from "@/views/ScreenPage/components/imageConfig.vue";
 
 const proxy = useProxy()
 const height = ref<number>(0)
+const componentsMap = reactive(new Map<string, any>())
 
 const {screen} = useStore()
+let stop = watch(() => screen.getCurElementIdx, async (newVal: number) => {
+  if (newVal === -1) {
+    !componentsMap.has("default") && componentsMap.set("default", markRaw((await import(`./canvasConfig.vue`)).default))
+    return
+  }
+  const type: string = screen.getScreenOptionOfElements[screen.curElementIdx].type
+  const id: string = screen.getScreenOptionOfElements[screen.curElementIdx].id
+  console.log(id)
+  if (!componentsMap.has(id)) {
+    componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
+  }
+}, {
+  immediate: true
+})
 
 useWatchResize(() => {
   height.value = document.documentElement.clientHeight
@@ -35,6 +49,10 @@ useWatchResize(() => {
 
 onMounted(() => {
   height.value = document.documentElement.clientHeight
+})
+
+onUnmounted(() => {
+  stop()
 })
 </script>
 <style lang="less">

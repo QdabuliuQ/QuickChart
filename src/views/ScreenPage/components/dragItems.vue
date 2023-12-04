@@ -40,14 +40,15 @@
       >
         <span
           class="textInfo"
-          :contenteditable="!item.isLock"
-          @click.stop="null"
+          contenteditable="true"
+          @dblclick="(e: any) => e.target.focus()"
           :style="{
             backgroundColor: item.style.backgroundColor
           }"
-          v-html="item.content"
           @input="item.content = $event.target.innerHTML"
-        ></span>
+        >
+          {{ item.content }}
+        </span>
       </div>
       <div
         @click="itemClick(idx as number, $event)"
@@ -109,10 +110,12 @@
       :elementSnapDirections='{"top":true,"left":true,"bottom":true,"right":true,"center":true,"middle":true}'
       :elementGuidelines="elementGuidelines"
       :bounds="bounds"
+      :dragFocusedInput="screen.getCurElementIdx === -1 ? false : screen.getScreenOptionOfElements[screen.getCurElementIdx].type === 'text'"
       @render="onRender"
       @drag-end="dragEnd"
       @rotate="onRotate"
       @resize="onResize"
+      @click.stop
     />
   </div>
 </template>
