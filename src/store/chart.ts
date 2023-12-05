@@ -30,6 +30,21 @@ const useChartStore = defineStore('chart', {
     getType(state: any) {
       return state.type
     }
+  },
+
+  actions: {
+    setOption(option: any) {
+      this.option = option
+    },
+    setChartConfig(config: any) {
+      this.chartConfig = config
+    },
+    setDefaultOption(option: any) {
+      this.defaultOption = option
+    },
+    setType(type: 'chart'|'map') {
+      this.type = type
+    }
   }
 })
 

@@ -15,8 +15,8 @@ import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesSplitLine = _common.option.series.splitLine
+const {chart}: any = useStore()
+const seriesSplitLine = chart.getOption.series.splitLine
 // show: true,
 //   length: 10,
 //   : 10,
@@ -95,7 +95,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.splitLine = getConfigValue(config)
   return series
 }

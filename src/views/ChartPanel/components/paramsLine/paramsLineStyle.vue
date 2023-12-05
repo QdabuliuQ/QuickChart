@@ -15,31 +15,31 @@ import { symbol, borderType } from '@/chartConfig/constant'
 import { debounce, getConfigValue } from '@/utils';
 
 const proxy = useProxy()
-const common: any = useStore()
+const {chart}: any = useStore()
 const config = reactive<ConfigInt>({
   showSymbol: {
     type: 'switch',
     title: '显示图形',
-    value: common.option.series[0].showSymbol
+    value: chart.getOption.series[0].showSymbol
   },
   symbol: {
     type: 'select',
     title: '标记图形',
     options: symbol,
-    value: common.option.series[0].symbol
+    value: chart.getOption.series[0].symbol
   },
   symbolSize: {
     type: 'input_number',
     title: '图形大小',
     max: 50,
-    value: common.option.series[0].symbolSize
+    value: chart.getOption.series[0].symbolSize
   },
   symbolRotate: {
     type: 'input_number',
     title: '图形旋转',
     max: 360,
     min: -360,
-    value: common.option.series[0].symbolRotate
+    value: chart.getOption.series[0].symbolRotate
   },
 })
 const lineConfig = reactive<ConfigInt>({
@@ -47,51 +47,51 @@ const lineConfig = reactive<ConfigInt>({
     type: 'input_number',
     max: 30, 
     title: '线段宽度',
-    value: common.option.series[0].lineStyle.width
+    value: chart.getOption.series[0].lineStyle.width
   },
   type: {
     type: 'select',
     title: '线段类型',
     options: borderType,
-    value: common.option.series[0].lineStyle.type
+    value: chart.getOption.series[0].lineStyle.type
   },
   shadowBlur: {
     type: 'input_number',
     title: '阴影模糊',
     max: 100,
-    value: common.option.series[0].lineStyle.shadowBlur
+    value: chart.getOption.series[0].lineStyle.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
     title: '阴影颜色',
     max: 100,
-    value: common.option.series[0].lineStyle.shadowColor
+    value: chart.getOption.series[0].lineStyle.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
     title: '阴影偏移X',
     max: 500,
     min: -500,
-    value: common.option.series[0].lineStyle.shadowOffsetX
+    value: chart.getOption.series[0].lineStyle.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
     title: '阴影偏移Y',
     max: 500,
     min: -500,
-    value: common.option.series[0].lineStyle.shadowOffsetY
+    value: chart.getOption.series[0].lineStyle.shadowOffsetY
   },
   opacity: {
     type: 'input_number',
     title: '透明度',
     max: 1,
     step: 0.1,
-    value: common.option.series[0].lineStyle.opacity
+    value: chart.getOption.series[0].lineStyle.opacity
   },
 })
 
 const getData = () => {
-  let s = common.option.series
+  let s = chart.getOption.series
   for(let i = 0; i < s.length; i ++) {
     for(let k in s[i]) {
       if(typeof s[i][k] == 'object' || !config[k]) continue
@@ -102,7 +102,7 @@ const getData = () => {
 }
 
 const getLineData = () => {
-  let s = common.option.series
+  let s = chart.getOption.series
   let option = getConfigValue(lineConfig)
   for(let i = 0; i < s.length; i ++) {
     s[i].lineStyle = option

@@ -43,14 +43,14 @@
 import {onUnmounted, ref, watch} from "vue";
 import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
-import {onBeforeRouteUpdate, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {deepCopy} from "@/utils";
 import ChartDetail from "@/components/chartDetail.vue";
 import ChartParams from "@/components/chartParams.vue";
 import ChartData from "@/components/chartData.vue";
 import EmptyTip from "@/components/emptyTip.vue";
 
-const common: any = useStore();
+const {chart}: any = useStore();
 const proxy = useProxy()
 const router = useRouter()
 
@@ -82,12 +82,11 @@ const getConfig = async () => {
       chartConfig.push(item);
     }
   }
-  common.$patch((state: any) => {
-    state.option = tmpOption;
-    state.chartConfig = chartConfig;
-    state.defaultOption = deepCopy(tmpOption);
-    state.type = 'chart'
-  });
+  chart.setOption(tmpOption)
+  chart.setChartConfig(chartConfig)
+  chart.setDefaultOption(deepCopy(tmpOption))
+  chart.setType('chart')
+
   chart_loading.value = false
   setTimeout(() => {
     params_loading.value = false

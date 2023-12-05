@@ -11,7 +11,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const series_label = bar_series_label({
   'position': 'insideBottomRight',
   'formatter': null
@@ -117,7 +117,7 @@ export default () => {
 
 export function combineOption(data: any) {
   let series = data.seriesData
-  let dataset = common.option.dataset
+  let dataset = chart.getOption.dataset
   dataset.source = data.datasetData
   return {
     series,

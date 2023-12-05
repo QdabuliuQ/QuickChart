@@ -18,77 +18,77 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 import {borderType, symbol} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   symbol: {
     type: 'select',
     title: common.symbol,
     options: symbol,
-    value: _common.option.series[0].symbol
+    value: chart.getOption.series[0].symbol
   },
   color: {
     type: 'color_picker',
     title: common.color,
-    value: _common.option.series[0].color
+    value: chart.getOption.series[0].color
   }
 })
-if(typeof _common.option.series[0].symbolSize == 'number') {
+if(typeof chart.getOption.series[0].symbolSize == 'number') {
   config.symbolSize = {
     type: 'input_number',
     title: common.symbolSize,
     max: 100,
-    value: _common.option.series[0].symbolSize
+    value: chart.getOption.series[0].symbolSize
   }
 }
 const itemStyleConfig = reactive<ConfigInt>({
   borderColor: {
     type: 'color_picker',
     title: common.borderColor,
-    value: _common.option.series[0].itemStyle.borderColor
+    value: chart.getOption.series[0].itemStyle.borderColor
   },
   borderWidth: {
     type: 'input_number',
     title: common.borderWidth,
     max: 50,
-    value: _common.option.series[0].itemStyle.borderWidth
+    value: chart.getOption.series[0].itemStyle.borderWidth
   },
   borderType: {
     type: 'select',
     title: common.borderType,
     options: borderType,
-    value: _common.option.series[0].itemStyle.borderType
+    value: chart.getOption.series[0].itemStyle.borderType
   },
   shadowBlur: {
     type: 'input_number',
     title: common.shadowBlur,
     max: 50,
-    value: _common.option.series[0].itemStyle.shadowBlur
+    value: chart.getOption.series[0].itemStyle.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
     title: common.shadowColor,
     max: 50,
-    value: _common.option.series[0].itemStyle.shadowColor
+    value: chart.getOption.series[0].itemStyle.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
     title: common.shadowOffsetX,
     max: 500,
     min: -500,
-    value: _common.option.series[0].itemStyle.shadowOffsetX
+    value: chart.getOption.series[0].itemStyle.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
     title: common.shadowOffsetY,
     max: 500,
     min: -500,
-    value: _common.option.series[0].itemStyle.shadowOffsetY
+    value: chart.getOption.series[0].itemStyle.shadowOffsetY
   },
 })
 
 const getData = (type: string) => {
-  let series = _common.option.series
+  let series = chart.getOption.series
   if(type == 'config') {
     const options = getConfigValue(config)
     for(let item of series) {

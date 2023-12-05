@@ -14,55 +14,55 @@ import { radar } from '@/chartConfig/opname';
 import { debounce } from '@/utils';
 import { shape } from "@/chartConfig/constant";
 const proxy = useProxy()
-const common: any = useStore()
+const {chart}: any = useStore()
 const config = reactive<ConfigInt>({
   shape: {
     type: 'select',
     title: radar.shape,
     options: shape,
-    value: common.option.radar.shape
+    value: chart.getOption.radar.shape
   },
   nameGap: {
     type: 'input_number',
     title: radar.nameGap,
-    value: common.option.radar.nameGap,
+    value: chart.getOption.radar.nameGap,
     max: 500,
   },
   splitNumber: {
     type: 'input_number',
     title: radar.splitNumber,
-    value: common.option.radar.splitNumber,
+    value: chart.getOption.radar.splitNumber,
     max: 100,
   },
   centerX: {
     type: 'input_number',
     title: radar.centerX,
-    value: parseFloat(common.option.radar.center[0]),
+    value: parseFloat(chart.getOption.radar.center[0]),
     max: 100,
   },
   centerY: {
     type: 'input_number',
     title: radar.centerY,
-    value: parseFloat(common.option.radar.center[1]),
+    value: parseFloat(chart.getOption.radar.center[1]),
     max: 100,
   },
   radius: {
     type: 'input_number',
     title: radar.radius,
-    value: parseFloat(common.option.radar.radius),
+    value: parseFloat(chart.getOption.radar.radius),
     max: 100,
   },
   startAngle: {
     type: 'input_number',
     title: radar.startAngle,
-    value: common.option.radar.startAngle,
+    value: chart.getOption.radar.startAngle,
     max: 360,
     min: -360
   },
 })
 
 const getData = () => {
-  let radar = common.option.radar
+  let radar = chart.getOption.radar
   for(let key in config) {
     if(key == 'centerX') {
       radar.center[0] = config[key].value + '%'

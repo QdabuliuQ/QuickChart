@@ -8,7 +8,7 @@ import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const data = pointData_2;
 
 export default () => {
@@ -132,7 +132,7 @@ export const createExcelData = (config: any) => {
 }
 
 export function combineOption(data: any) {
-  let dataset = common.option.dataset
+  let dataset = chart.getOption.dataset
   dataset.source = data.datasetData
   return {
     dataset

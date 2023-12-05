@@ -14,8 +14,8 @@ import {getConfigValue} from '@/utils';
 import { fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesDetail = _common.option.series.detail
+const {chart}: any = useStore()
+const seriesDetail = chart.getOption.series.detail
 
 const config = reactive<ConfigInt>({
   show: {
@@ -62,7 +62,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   option.offsetCenter = [option.offsetX, option.offsetY]
   delete option.offsetX

@@ -14,8 +14,8 @@ import {common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesLine = _common.option.series.lineStyle
+const {chart}: any = useStore()
+const seriesLine = chart.getOption.series.lineStyle
 const config = reactive<ConfigInt>({
   colorType: {
     type: 'select',
@@ -85,7 +85,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   option.color = option.colorType != 'source' && option.colorType != 'target' && option.colorType != 'gradient' ? option.color : option.colorType
   delete option.colorType

@@ -19,88 +19,88 @@ const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.radar.axisName.show
+    value: chart.getOption.radar.axisName.show
   },
   color: {
     type: 'color_picker',
     title: label.color,
-    value: _common.option.radar.axisName.color
+    value: chart.getOption.radar.axisName.color
   },
   fontStyle: {
     type: 'select',
     title: label.fontStyle,
     options: fontStyle,
-    value: _common.option.radar.axisName.fontStyle
+    value: chart.getOption.radar.axisName.fontStyle
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.radar.axisName.fontWeight
+    value: chart.getOption.radar.axisName.fontWeight
   },
   fontFamily: {
     type: 'select',
     title: label.fontFamily,
     options: fontFamily,
-    value: _common.option.radar.axisName.fontFamily
+    value: chart.getOption.radar.axisName.fontFamily
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 100,
-    value: _common.option.radar.axisName.fontSize
+    value: chart.getOption.radar.axisName.fontSize
   },
   backgroundColor: {
     type: 'color_picker',
     title: label.backgroundColor,
-    value: _common.option.radar.axisName.backgroundColor
+    value: chart.getOption.radar.axisName.backgroundColor
   },
   textBorderColor: {
     type: 'color_picker',
     title: label.textBorderColor,
-    value: _common.option.radar.axisName.textBorderColor
+    value: chart.getOption.radar.axisName.textBorderColor
   },
   textBorderWidth: {
     type: 'input_number',
     title: label.textBorderWidth,
     max: 100,
-    value: _common.option.radar.axisName.textBorderWidth
+    value: chart.getOption.radar.axisName.textBorderWidth
   },
   textBorderType: {
     type: 'select',
     title: label.textBorderColor,
     options: borderType,
-    value: _common.option.radar.axisName.textBorderType
+    value: chart.getOption.radar.axisName.textBorderType
   },
   textShadowColor: {
     type: 'color_picker',
     title: label.textShadowColor,
-    value: _common.option.radar.axisName.textShadowColor
+    value: chart.getOption.radar.axisName.textShadowColor
   },
   textShadowBlur: {
     type: 'input_number',
     title: label.textShadowBlur,
     max: 50,
-    value: _common.option.radar.axisName.textShadowBlur
+    value: chart.getOption.radar.axisName.textShadowBlur
   },
   textShadowOffsetX: {
     type: 'input_number',
     title: label.textShadowOffsetX,
     max: 500,
     min: -500,
-    value: _common.option.radar.axisName.textShadowOffsetX
+    value: chart.getOption.radar.axisName.textShadowOffsetX
   },
   textShadowOffsetY: {
     type: 'input_number',
     title: label.textShadowOffsetY,
     max: 500,
     min: -500,
-    value: _common.option.radar.axisName.textShadowOffsetY
+    value: chart.getOption.radar.axisName.textShadowOffsetY
   },
 })
 
 const getData = () => {
-  let radar = _common.option.radar
+  let radar = chart.getOption.radar
   radar.axisName = getConfigValue(config)
   return radar
 }

@@ -7,7 +7,7 @@ import graphicOption from "@/chartConfig/commonParams/graphic";
 import {sunburst_series, sunburst_series_itemStyle, sunburst_series_label} from "@/chartConfig/option";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -103,7 +103,7 @@ export default () => {
       opName: 'sunburstStyle',
       chartOption: false,
       menuOption: true,
-      icon: 'i_sunburst_chart',
+      icon: 'i_sunburst',
       componentPath: chartPath + 'paramsSunburst/paramsSunburstStyle'
     },
     {
@@ -126,7 +126,7 @@ export default () => {
 }
 
 export function combineOption(datas: any) {
-  let series = common.option.series
+  let series = chart.getOption.series
   series.data = datas.data
   return {
     series

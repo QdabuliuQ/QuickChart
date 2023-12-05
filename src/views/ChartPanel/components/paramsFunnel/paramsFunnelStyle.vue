@@ -16,8 +16,8 @@ import {getConfigValue} from '@/utils';
 import {align, orient} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const series = _common.option.series
+const {chart}: any = useStore()
+const series = chart.getOption.series
 const config = reactive<ConfigInt>({
   min: {
     type: 'input_number',
@@ -114,7 +114,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   for (let key in option) {
     series[key] = option[key]

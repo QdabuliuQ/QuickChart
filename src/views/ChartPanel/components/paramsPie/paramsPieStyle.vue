@@ -17,46 +17,46 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   offsetX: {
     type: 'input_number',
     title: common.offsetX + '(%)',
     max: 100,
-    value: parseInt(_common.option.series[0].center[0])
+    value: parseInt(chart.getOption.series[0].center[0])
   },
   offsetY: {
     type: 'input_number',
     title: common.offsetY + '(%)',
     max: 100,
-    value: parseInt(_common.option.series[0].center[1])
+    value: parseInt(chart.getOption.series[0].center[1])
   }
 })
-if(Array.isArray(_common.option.series[0].radius)) {
+if(Array.isArray(chart.getOption.series[0].radius)) {
   config.innerSize = {
     type: 'input_number',
     title: '内圈大小(%)',
     max: 100,
-    value: parseInt(_common.option.series[0].radius[0])
+    value: parseInt(chart.getOption.series[0].radius[0])
   }
   config.outerSize = {
     type: 'input_number',
     title: '外圈大小(%)',
     max: 100,
-    value: parseInt(_common.option.series[0].radius[1])
+    value: parseInt(chart.getOption.series[0].radius[1])
   }
 } else {
   config.size = {
     type: 'input_number',
     title: '圈大小(%)',
     max: 100,
-    value: parseInt(_common.option.series[0].radius)
+    value: parseInt(chart.getOption.series[0].radius)
   }
 }
 
 const getData = () => {
-  let series = _common.option.series
+  let series = chart.getOption.series
   const option = getConfigValue(config)
   for(let item of series) {
     if(option.innerSize) {

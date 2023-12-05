@@ -8,7 +8,7 @@ import {bar_series_label} from "@/chartConfig/option";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -131,7 +131,7 @@ export default () => {
 
 
 export function combineOption(data: any) {
-  let dataset = common.option.dataset
+  let dataset = chart.getOption.dataset
   dataset.source = data.datasetData
   return {
     dataset

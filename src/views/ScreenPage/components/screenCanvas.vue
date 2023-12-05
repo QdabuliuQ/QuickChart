@@ -3,30 +3,34 @@
     width: props.width,
     height: props.height,
   }" class="screenCanvas">
-    <div class="opacityBg">
-      <div
-        class="mainCanvas"
-        :style="{
+    <context-menu
+      @contextmenu="contextmenu"
+      @select="selectItem"
+      :menu="menu">
+      <div class="opacityBg">
+        <div
+          class="mainCanvas"
+          :style="{
         [screen.screenOption!.canvas.bgType === 'color' ? 'background' : 'background-image']: screen.getScreenOptionOfCanvas.bgType === 'color' ? screen.getScreenOptionOfCanvas.bgColor : `url(${screen.screenOption.canvas.bgImage})`,
         fontSize: screen.getScreenOptionOfCanvas.fontSize,
         color: screen.getScreenOptionOfCanvas.color,
         backgroundRepeat: screen.getScreenOptionOfCanvas.backgroundRepeat,
         backgroundSize: screen.getScreenOptionOfCanvas.backgroundSize
       }"
-      >
-        <drag-items/>
+        >
+          <drag-items/>
+        </div>
       </div>
-    </div>
+    </context-menu>
   </div>
 </template>
 <script setup lang="ts">
-import domtoimage from 'dom-to-image';
-import html2canvas from 'html2canvas';
-import DragItems from "./dragItems.vue";
 import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
 import {onUnmounted} from "vue";
 import {postScreenImage} from "@/network/screen";
+import ContextMenu from "@/components/contextMenu.vue";
+import DragItems from "./dragItems.vue";
 
 interface IProps {
   width: string
@@ -35,10 +39,15 @@ interface IProps {
 
 const props = defineProps<IProps>()
 const {screen}: any = useStore()
+const menu = [
+  {
+    label: '粘贴',
+    icon: "i_paste"
+  },
+]
 
 const proxy = useProxy()
 const exportImage = async ({size, type}: any) => {
-  console.log(size, type)
   let loading = proxy.$loading({
     lock: true,
     text: "正在导出图片，请稍后...",
@@ -53,7 +62,7 @@ const exportImage = async ({size, type}: any) => {
     type
   })
   loading.close()
-  if(res.status) {
+  if (res.status) {
     let link = document.createElement("a")
     link.href = res.img
     link.download = `screen.${type}`;
@@ -67,6 +76,26 @@ const exportImage = async ({size, type}: any) => {
 }
 proxy.$Bus.on("exportImage", exportImage)
 
+const selectItem = ({label}: {label: string}) => {
+  switch (label) {
+    case '粘贴':
+      if (screen.getTmpElement) {
+        let element = screen.getTmpElement
+        element.style.translateX = lastPoint[0]
+        element.style.translateY = lastPoint[1]
+        screen.addScreenOptionOfElements(element)
+        screen.setTmpElement(null)  // 清空粘贴的元素
+      }
+      break;
+  }
+}
+
+const lastPoint: [number, number] = [0, 0]
+const contextmenu = (point: [number, number]) => {
+  lastPoint[0] = point[0]
+  lastPoint[1] = point[1]
+}
+
 onUnmounted(() => {
   proxy.$Bus.off("exportImage", exportImage)
 })
@@ -77,6 +106,7 @@ onUnmounted(() => {
   flex: 1;
   overflow: scroll;
   .scrollContainer();
+
   .opacityBg {
     width: 1070px;
     height: 652px;
@@ -85,6 +115,7 @@ onUnmounted(() => {
     background-repeat: repeat;
     background-size: cover;
   }
+
   .mainCanvas {
     width: 100%;
     height: 100%;

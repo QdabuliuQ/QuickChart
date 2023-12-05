@@ -17,52 +17,52 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 import {borderType} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.series[0].labelLine.show
+    value: chart.getOption.series[0].labelLine.show
   },
   length2: {
     type: 'input_number',
     title: '线段2长度',
     max: 500,
-    value: _common.option.series[0].labelLine.length2
+    value: chart.getOption.series[0].labelLine.length2
   },
   color: {
     type: 'color_picker',
     title: common.color,
     prefixs: ['lineStyle'],
-    value: _common.option.series[0].labelLine.lineStyle.color
+    value: chart.getOption.series[0].labelLine.lineStyle.color
   },
   type: {
     type: 'select',
     title: '线段' + common.type,
     options: borderType,
     prefixs: ['lineStyle'],
-    value: _common.option.series[0].labelLine.lineStyle.type
+    value: chart.getOption.series[0].labelLine.lineStyle.type
   },
   width: {
     type: 'input_number',
     title: '线段' + common.width,
     max: 50,
     prefixs: ['lineStyle'],
-    value: _common.option.series[0].labelLine.lineStyle.width
+    value: chart.getOption.series[0].labelLine.lineStyle.width
   },
 })
-if (_common.option.series[0].labelLine.length) {
+if (chart.getOption.series[0].labelLine.length) {
   config['length'] = {
     type: 'input_number',
     title: '线段1长度',
     max: 500,
-    value: _common.option.series[0].labelLine.length
+    value: chart.getOption.series[0].labelLine.length
   }
 }
 
 const getData = () => {
-  let series = _common.option.series
+  let series = chart.getOption.series
   const option = getConfigValue(config)
   for(let item of series) {
     Object.assign(item.labelLine, option)

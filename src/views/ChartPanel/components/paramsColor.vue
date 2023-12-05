@@ -16,8 +16,8 @@ import useProxy from "@/hooks/useProxy";
 import colorPanel from "@/components/colorsPanel.vue"
 import useStore from "@/store";
 const proxy = useProxy()
-const _common: any = useStore()
-const colors = reactive<string[]>(_common.option.color)
+const {chart}: any = useStore()
+const colors = reactive<string[]>(chart.getOption.color)
 
 const colorChange = (colors: string[]) => {
   proxy.$Bus.emit("optionChange", {

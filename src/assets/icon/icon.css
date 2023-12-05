@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3670180 */
-  src: url('//at.alicdn.com/t/c/font_3670180_lmydnyynt8.woff2?t=1699970793714') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3670180_lmydnyynt8.woff?t=1699970793714') format('woff'),
-  url('//at.alicdn.com/t/c/font_3670180_lmydnyynt8.ttf?t=1699970793714') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3670180_7kuqa1iz99d.woff2?t=1701782935159') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3670180_7kuqa1iz99d.woff?t=1701782935159') format('woff'),
+  url('//at.alicdn.com/t/c/font_3670180_7kuqa1iz99d.ttf?t=1701782935159') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,42 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.i_copy:before {
+  content: "\e63e";
+}
+
+.i_sunburst:before {
+  content: "\ecc0";
+}
+
+.i_loudoutu:before {
+  content: "\e74e";
+}
+
+.i_sankey:before {
+  content: "\e62f";
+}
+
+.i_radar:before {
+  content: "\e64b";
+}
+
+.i_kline:before {
+  content: "\e675";
+}
+
+.i_point:before {
+  content: "\e62c";
+}
+
+.i_upload:before {
+  content: "\e81d";
+}
+
+.i_download:before {
+  content: "\e86f";
 }
 
 .i_export:before {
@@ -113,10 +149,6 @@
   content: "\e684";
 }
 
-.i_copy:before {
-  content: "\e616";
-}
-
 .i_rename:before {
   content: "\e63a";
 }
@@ -181,10 +213,6 @@
   content: "\e843";
 }
 
-.i_sunburst_chart:before {
-  content: "\e618";
-}
-
 .i_pointer:before {
   content: "\e642";
 }
@@ -205,20 +233,8 @@
   content: "\e63b";
 }
 
-.i_funnel_chart:before {
-  content: "\e6e9";
-}
-
-.i_sankey_line:before {
-  content: "\e78b";
-}
-
 .i_rect:before {
   content: "\e64a";
-}
-
-.i_sankey_chart:before {
-  content: "\e67f";
 }
 
 .i_html:before {
@@ -277,10 +293,6 @@
   content: "\e62d";
 }
 
-.i_radar_chart:before {
-  content: "\e613";
-}
-
 .i_kline_chart:before {
   content: "\e60e";
 }
@@ -295,10 +307,6 @@
 
 .i_angleAxis:before {
   content: "\e628";
-}
-
-.i_point:before {
-  content: "\e605";
 }
 
 .i_point_chart:before {

@@ -14,8 +14,8 @@ import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesPointer = _common.option.series.pointer
+const {chart}: any = useStore()
+const seriesPointer = chart.getOption.series.pointer
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
@@ -110,7 +110,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   option.offsetCenter = [option.offsetY, option.offsetX]
   console.log(option)

@@ -14,8 +14,8 @@ import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesAxisTick = _common.option.series.axisTick
+const {chart}: any = useStore()
+const seriesAxisTick = chart.getOption.series.axisTick
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
@@ -89,7 +89,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.axisTick = getConfigValue(config)
   return series
 }

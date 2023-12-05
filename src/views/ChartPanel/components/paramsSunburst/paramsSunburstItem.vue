@@ -20,8 +20,8 @@ import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const series: any = _common.option.series
+const {chart}: any = useStore()
+const series: any = chart.getOption.series
 const seriesItemStyle = series.itemStyle
 const colors = reactive<string[]>([])
 if(series.levels) {
@@ -80,7 +80,7 @@ const config = reactive<ConfigInt>({
 })
 
 const colorChange = (colors: string) => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   let levels: {
     [props: string]: any
   }[] = [
@@ -100,7 +100,7 @@ const colorChange = (colors: string) => {
 }
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.itemStyle = getConfigValue(config)
   return series
 }

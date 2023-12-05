@@ -16,77 +16,77 @@ import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.grid.show
+    value: chart.getOption.grid.show
   },
   left: {
     type: 'input_number',
     title: common.left + '(%)',
     max: 100,
-    value: parseInt(_common.option.grid.left)
+    value: parseInt(chart.getOption.grid.left)
   },
   top: {
     type: 'input_number',
     title: common.top + '(%)',
     max: 100,
-    value: parseInt(_common.option.grid.top)
+    value: parseInt(chart.getOption.grid.top)
   },
   right: {
     type: 'input_number',
     title: common.right + '(%)',
     max: 100,
-    value: parseInt(_common.option.grid.right)
+    value: parseInt(chart.getOption.grid.right)
   },
   bottom: {
     type: 'input_number',
     title: common.bottom + '(%)',
     max: 100,
-    value: parseInt(_common.option.grid.bottom)
+    value: parseInt(chart.getOption.grid.bottom)
   },
   backgroundColor: {
     type: 'color_picker',
     title: common.backgroundColor,
-    value: _common.option.grid.backgroundColor
+    value: chart.getOption.grid.backgroundColor
   },
   borderColor: {
     type: 'color_picker',
     title: common.borderColor,
-    value: _common.option.grid.borderColor
+    value: chart.getOption.grid.borderColor
   },
   borderWidth: {
     type: 'input_number',
     title: common.borderWidth,
     max: 100,
-    value: _common.option.grid.borderWidth
+    value: chart.getOption.grid.borderWidth
   },
   shadowBlur: {
     type: 'input_number',
     title: common.shadowBlur,
     max: 100,
-    value: _common.option.grid.shadowBlur
+    value: chart.getOption.grid.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
     title: common.shadowColor,
-    value: _common.option.grid.shadowColor
+    value: chart.getOption.grid.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
     title: common.shadowOffsetX,
     max: 500,
     min: -500,
-    value: _common.option.grid.shadowOffsetX
+    value: chart.getOption.grid.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
     title: common.shadowOffsetY,
     max: 500,
     min: -500,
-    value: _common.option.grid.shadowOffsetY
+    value: chart.getOption.grid.shadowOffsetY
   },
 })
 

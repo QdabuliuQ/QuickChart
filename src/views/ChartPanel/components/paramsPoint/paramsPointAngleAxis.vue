@@ -17,46 +17,46 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 import {borderType} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.angleAxis.splitLine.show
+    value: chart.getOption.angleAxis.splitLine.show
   },
   color: {
     type: 'color_picker',
     title: common.color,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.color
+    value: chart.getOption.angleAxis.splitLine.lineStyle.color
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 50,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.width
+    value: chart.getOption.angleAxis.splitLine.lineStyle.width
   },
   type: {
     type: 'select',
     title: '线段' + common.type,
     prefixs: ['lineStyle'],
     options: borderType,
-    value: _common.option.angleAxis.splitLine.lineStyle.type
+    value: chart.getOption.angleAxis.splitLine.lineStyle.type
   },
   shadowBlur: {
     type: 'input_number',
     title: common.shadowBlur,
     max: 50,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.shadowBlur
+    value: chart.getOption.angleAxis.splitLine.lineStyle.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
     title: common.shadowColor,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.shadowColor
+    value: chart.getOption.angleAxis.splitLine.lineStyle.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
@@ -64,7 +64,7 @@ const config = reactive<ConfigInt>({
     prefixs: ['lineStyle'],
     max: 500,
     min: -500,
-    value: _common.option.angleAxis.splitLine.lineStyle.shadowOffsetX
+    value: chart.getOption.angleAxis.splitLine.lineStyle.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
@@ -72,7 +72,7 @@ const config = reactive<ConfigInt>({
     prefixs: ['lineStyle'],
     max: 500,
     min: -500,
-    value: _common.option.angleAxis.splitLine.lineStyle.shadowOffsetY
+    value: chart.getOption.angleAxis.splitLine.lineStyle.shadowOffsetY
   },
   opacity: {
     type: 'input_number',
@@ -80,12 +80,12 @@ const config = reactive<ConfigInt>({
     prefixs: ['lineStyle'],
     max: 1,
     step: .1,
-    value: _common.option.angleAxis.splitLine.lineStyle.opacity
+    value: chart.getOption.angleAxis.splitLine.lineStyle.opacity
   },
 })
 
 const getData = () => {
-  let angleAxis = _common.option.angleAxis
+  let angleAxis = chart.getOption.angleAxis
   angleAxis.splitLine = getConfigValue(config)
   return angleAxis
 }

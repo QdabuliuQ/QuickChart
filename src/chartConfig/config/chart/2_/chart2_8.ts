@@ -10,7 +10,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 
 const getOption = () => {
 
@@ -145,8 +145,8 @@ const getOption = () => {
 export default getOption
 
 export function combineOption(data: any) {
-  let series = common.option.series
-  let dataset = common.option.dataset
+  let series = chart.getOption.series
+  let dataset = chart.getOption.dataset
   series = data.seriesData
   dataset.source = data.datasetData
   return {

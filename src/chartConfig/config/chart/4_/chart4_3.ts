@@ -11,7 +11,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const axisData = [
   '12a', '1a', '2a', '3a', '4a', '5a', '6a',
   '7a', '8a', '9a', '10a', '11a',
@@ -161,9 +161,9 @@ export const createExcelData = (config: any) => {
 }
 
 export function combineOption(data: any) {
-  let angleAxis = common.option.angleAxis
-  let radiusAxis = common.option.radiusAxis
-  let dataset = common.option.dataset
+  let angleAxis = chart.getOption.angleAxis
+  let radiusAxis = chart.getOption.radiusAxis
+  let dataset = chart.getOption.dataset
 
   angleAxis.data = data.angleAxisData
   radiusAxis.data = data.radiusAxisData

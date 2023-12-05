@@ -15,39 +15,39 @@ import {common} from "@/chartConfig/opname";
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.angleAxis.axisTick.show
+    value: chart.getOption.angleAxis.axisTick.show
   },
   color: {
     type: 'color_picker',
     title: common.color,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.axisTick.lineStyle.color
+    value: chart.getOption.angleAxis.axisTick.lineStyle.color
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 100,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.axisTick.lineStyle.width
+    value: chart.getOption.angleAxis.axisTick.lineStyle.width
   },
   length: {
     type: 'input_number',
     title: '线段长度',
     max: 200,
-    value: _common.option.angleAxis.axisTick.length
+    value: chart.getOption.angleAxis.axisTick.length
   },
   type: {
     type: 'select',
     title: '线段' + common.type,
     options: borderType,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.axisTick.lineStyle.type
+    value: chart.getOption.angleAxis.axisTick.lineStyle.type
   },
   opacity: {
     type: 'input_number',
@@ -55,12 +55,12 @@ const config = reactive<ConfigInt>({
     max: 1,
     step: .1,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.axisTick.lineStyle.opacity
+    value: chart.getOption.angleAxis.axisTick.lineStyle.opacity
   },
 })
 
 const getData = () => {
-  const angleAxis = _common.option.angleAxis
+  const angleAxis = chart.getOption.angleAxis
   angleAxis.axisTick = getConfigValue(config)
   console.log(angleAxis)
   return angleAxis

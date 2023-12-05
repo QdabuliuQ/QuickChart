@@ -13,7 +13,7 @@ export interface ListInt {
 const list: ListInt[] = [
   {
     type: '线形图',
-    icon: 'i_line_chart',
+    icon: 'i_line',
     id: 1,
     show: false,
     charts: [
@@ -62,7 +62,7 @@ const list: ListInt[] = [
   {
     type: '柱状图',
     id: 2,
-    icon: 'i_bar_chart',
+    icon: 'i_bar',
     show: false,
     charts: [
       {
@@ -110,7 +110,7 @@ const list: ListInt[] = [
   {
     type: '饼图',
     id: 3,
-    icon: 'i_pie_chart',
+    icon: 'i_pie',
     show: false,
     charts: [
       {
@@ -138,7 +138,7 @@ const list: ListInt[] = [
   {
     type: '散点图',
     id: 4,
-    icon: 'i_point_chart',
+    icon: 'i_point',
     show: false,
     charts: [
       {
@@ -171,7 +171,7 @@ const list: ListInt[] = [
   {
     type: 'K线图',
     id: 5,
-    icon: 'i_kline_chart',
+    icon: 'i_kline',
     show: false,
     charts: [
       {
@@ -184,7 +184,7 @@ const list: ListInt[] = [
   {
     type: '雷达图',
     id: 6,
-    icon: 'i_radar_chart',
+    icon: 'i_radar',
     show: false,
     charts: [
       {
@@ -197,7 +197,7 @@ const list: ListInt[] = [
   {
     type: '桑基图',
     id: 7,
-    icon: 'i_sankey_chart',
+    icon: 'i_sankey',
     show: false,
     charts: [
       {
@@ -215,7 +215,7 @@ const list: ListInt[] = [
   {
     type: '漏斗图',
     id: 8,
-    icon: 'i_funnel_chart',
+    icon: 'i_funnel',
     show: false,
     charts: [
       {
@@ -251,7 +251,7 @@ const list: ListInt[] = [
   {
     type: '旭日图',
     id: 10,
-    icon: 'i_sunburst_chart',
+    icon: 'i_sunburst',
     show: false,
     charts: [
       {

@@ -15,8 +15,8 @@ import {getConfigValue} from '@/utils';
 import {align, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesLabel = _common.option.series.label
+const {chart}: any = useStore()
+const seriesLabel = chart.getOption.series.label
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
@@ -83,7 +83,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   if(option.rotate == 'custom') {
     option.rotate = option.rotate1

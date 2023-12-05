@@ -12,8 +12,8 @@ import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 import {fontFamily} from "@/chartConfig/constant";
 
-const _common: any = useStore()
-const series = _common.option.series[0]
+const {chart}: any = useStore()
+const series = chart.getOption.series[0]
 const config = reactive<ConfigInt>({
   regionHeight: {
     type: "input_number",
@@ -70,7 +70,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   Object.assign(series[0], getConfigValue(config))
   return series
 }

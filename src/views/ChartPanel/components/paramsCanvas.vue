@@ -15,19 +15,19 @@ import { common } from '@/chartConfig/opname';
 import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import {createImage, debounce, getConfigValue} from "@/utils";
-const _common: any = useStore()
+const {chart}: any = useStore()
 const proxy = useProxy()
 
 const config = reactive<ConfigInt>({
   backgroundColor: {
     type: 'color_picker',
     title: common.backgroundColor,
-    value: typeof _common.option.backgroundColor === 'object' ? '' : _common.option.backgroundColor
+    value: typeof chart.getOption.backgroundColor === 'object' ? '' : chart.getOption.backgroundColor
   },
   bgImage: {
     type: 'imgload',
     title: '背景图片',
-    value: typeof _common.option.backgroundColor === 'object' ? _common.option.backgroundColor.url : ''
+    value: typeof chart.getOption.backgroundColor === 'object' ? chart.getOption.backgroundColor.url : ''
   }
 })
 
@@ -62,6 +62,9 @@ watch(() => config, debounce(() => {
   .image {
     cursor: pointer;
     margin-top: 5px;
+  }
+  .imageUpload {
+    padding: 0;
   }
 }
 </style>

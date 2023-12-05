@@ -14,70 +14,70 @@ import { candlestick_itemStyle } from '@/chartConfig/opname';
 import { debounce, getConfigValue } from '@/utils';
 
 const proxy = useProxy()
-const common: any = useStore()
+const {chart}: any = useStore()
 const config = reactive<ConfigInt>({
   color: {
     type: 'color_picker',
     title: candlestick_itemStyle.color,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.color
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.color
   },
   color0: {
     type: 'color_picker',
     title: candlestick_itemStyle.color0,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.color0
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.color0
   },
   borderColor: {
     type: 'color_picker',
     title: candlestick_itemStyle.borderColor,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.borderColor
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.borderColor
   },
   borderColor0: {
     type: 'color_picker',
     title: candlestick_itemStyle.borderColor0,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.borderColor0
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.borderColor0
   },
   borderWidth: {
     type: 'input_number',
     title: candlestick_itemStyle.borderWidth,
     max: 50,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.borderWidth
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.borderWidth
   },
   shadowBlur: {
     type: 'input_number',
     max: 50,
     title: candlestick_itemStyle.shadowBlur,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.shadowBlur
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
     title: candlestick_itemStyle.shadowColor,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.shadowColor
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
     min: -500,
     max: 500,
     title: candlestick_itemStyle.shadowOffsetX,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.shadowOffsetX
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
     min: -500,
     max: 500,
     title: candlestick_itemStyle.shadowOffsetY,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.shadowOffsetY
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.shadowOffsetY
   },
   opacity: {
     type: 'input_number',
     max: 1,
     step: .1,
     title: candlestick_itemStyle.opacity,
-    value: !common.option.series.length ? '' : common.option.series[0].itemStyle.opacity
+    value: !chart.getOption.series.length ? '' : chart.getOption.series[0].itemStyle.opacity
   },
 })
 
 const getData = () => {
-  let s = common.option.series
+  let s = chart.getOption.series
   let option = getConfigValue(config)
   for(let i = 0; i < s.length; i ++) {
     s[i].itemStyle = option

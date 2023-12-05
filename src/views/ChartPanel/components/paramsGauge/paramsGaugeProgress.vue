@@ -14,8 +14,8 @@ import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesProgress = _common.option.series.progress
+const {chart}: any = useStore()
+const seriesProgress = chart.getOption.series.progress
 
 const config = reactive<ConfigInt>({
   show: {
@@ -82,7 +82,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.progress = getConfigValue(config)
   return series
 }

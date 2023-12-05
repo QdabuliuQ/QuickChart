@@ -65,7 +65,7 @@ let excelData: any, originData: any;
 let sheetObj: any;
 let conveyData: any, combineData: any, createInitiativeData: any;
 const proxy = useProxy()
-const common = useStore()
+const {chart}: any = useStore()
 const worker = proxy.$worker
 const uploadExcelInputRef = ref();
 const loading = ref<boolean>(props.loading)
@@ -73,7 +73,7 @@ const loading = ref<boolean>(props.loading)
 const setExcelData = () => {
   worker.postMessage({
     data: JSON.stringify(sheetObj.getData()[0].rows),
-    options: JSON.stringify(common.option),
+    options: JSON.stringify(chart.getOption),
     handle: conveyData.toString(),
     type: 'edit'
   })
@@ -176,7 +176,7 @@ const initData = () => {
         timer = setTimeout(() => {
           worker.postMessage({
             data: JSON.stringify(res.rows),
-            options: JSON.stringify(common.option),
+            options: JSON.stringify(chart.getOption),
             handle: conveyData.toString(),
             type: 'edit'
           })
@@ -201,11 +201,11 @@ const initHandleFun = () => {
     createExcelData,
     conveyExcelData,
     combineOption
-  } = require(`@/chartConfig/config/${common.type}/${props.type}_/${common.type}${props.detail_type}`)
+  } = require(`@/chartConfig/config/${chart.getType}/${props.type}_/${chart.getType}${props.detail_type}`)
   createInitiativeData = createExcelData;
   conveyData = conveyExcelData;
   combineData = combineOption
-  excelData = createInitiativeData(common.option)
+  excelData = createInitiativeData(chart.getOption)
   originData = deepCopy(excelData)
   initData()
 }

@@ -17,49 +17,49 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 import {borderType, fontFamily, fontStyle, fontWeight, position} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.series[0].labelLine.show
+    value: chart.getOption.series[0].labelLine.show
   },
   length: {
     type: 'input_number',
     title: '线段1长度',
     max: 500,
-    value: _common.option.series[0].labelLine.length
+    value: chart.getOption.series[0].labelLine.length
   },
   length2: {
     type: 'input_number',
     title: '线段2长度',
     max: 500,
-    value: _common.option.series[0].labelLine.length2
+    value: chart.getOption.series[0].labelLine.length2
   },
   smooth: {
     type: 'switch',
     title: '平滑',
-    value: _common.option.series[0].labelLine.smooth
+    value: chart.getOption.series[0].labelLine.smooth
   },
   width: {
     type: 'input_number',
     title: '线段' + common.width,
     max: 50,
     prefixs: ['lineStyle'],
-    value: _common.option.series[0].labelLine.lineStyle.width
+    value: chart.getOption.series[0].labelLine.lineStyle.width
   },
   type: {
     type: 'select',
     title: '线段' + common.type,
     options: borderType,
     prefixs: ['lineStyle'],
-    value: _common.option.series[0].labelLine.lineStyle.type
+    value: chart.getOption.series[0].labelLine.lineStyle.type
   }
 })
 
 const getData = () => {
-  let series = _common.option.series
+  let series = chart.getOption.series
   const option = getConfigValue(config)
   for(let item of series) {
     item.labelLine = option
@@ -104,7 +104,7 @@ watch(() => config, debounce(() => {
 //   setup() {
 //     const { appContext } = getCurrentInstance() as ComponentInternalInstance;
 //     const proxy = appContext.config.globalProperties;
-//     const common: any = useStore()
+//     const {chart}: any = useStore()
 //     let cbEvent: Function | null = null
 //     const data: comInitData = reactive({
 //       lineConfig: {
@@ -125,7 +125,7 @@ watch(() => config, debounce(() => {
 //         length2,
 //         smooth,
 //         lineStyle
-//       } = common.option.series[0].labelLine
+//       } = chart.getOption.series[0].labelLine
 //       data.lineConfig.show = show
 //       data.lineConfig.length = length
 //       data.lineConfig.length2 = length2
@@ -133,7 +133,7 @@ watch(() => config, debounce(() => {
 //       data.lineConfig.lineStyle = lineStyle
 //
 //       cbEvent = debounce(() => {
-//         let s = common.option.series
+//         let s = chart.getOption.series
 //         s[0].labelLine = data.lineConfig
 //         proxy.$Bus.emit("optionChange", {
 //           series: s,

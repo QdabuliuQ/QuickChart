@@ -115,7 +115,8 @@ export function getImageConfig(config?: any) {
 }
 
 export function cutElement(i: number) {
-  screen.deleteScreenOptionOfElements(i)
+  screen.setTmpElement(screen.deleteScreenOptionOfElements(i)[0])
+  console.log(screen.getTmpElement)
 }
 export function lockElement(i: number) {
   screen.updateElementOfItem(i, 'isLock', true)

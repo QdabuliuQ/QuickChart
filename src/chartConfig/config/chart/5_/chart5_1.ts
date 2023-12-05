@@ -9,7 +9,7 @@ import { kline_series_itemstyle } from '@/chartConfig/option';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -88,14 +88,14 @@ export default () => {
       chartOption: false,
       menuOption: true,
       uniqueOption: true,
-      icon: 'i_kline_chart',
+      icon: 'i_kline',
       componentPath: chartPath + "paramsKLine/paramsKLineStyle",
     },
   ]
 }
 
 export function combineOption(data: any) {
-  let dataset = common.option.dataset
+  let dataset = chart.getOption.dataset
   let series = data.seriesData
   dataset.source = data.datasetData
   return {

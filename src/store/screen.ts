@@ -1,20 +1,25 @@
 import {defineStore} from "pinia";
-import {IConfig} from "@/types/screen";
+import {Elements, ElementTypeProperties, IConfig} from "@/types/screen";
 export interface IStore {
   screenOption: IConfig | null
   curElementIdx: number
+  tmpElement: IConfig | null
 }
 
 const useScreenStore = defineStore('screen', {
   state: (): IStore => {
     return {
       screenOption: null,  // 大屏配置
-      curElementIdx: -1,  //
+      curElementIdx: -1,  // 选择元素索引
+      tmpElement: null
     }
   },
 
   getters: {
-    getScreenOption(state: any) {
+    getTmpElement(state: any): IConfig | null {
+      return state.tmpElement
+    },
+    getScreenOption(state: any): IConfig | null {
       return state.screenOption
     },
     getScreenOptionOfElements(state: any) {
@@ -29,6 +34,9 @@ const useScreenStore = defineStore('screen', {
   },
 
   actions: {
+    setTmpElement(element: IConfig | null) {
+      this.tmpElement = element
+    },
     initScreenOption(data: any) {
       this.screenOption = data
     },
@@ -46,12 +54,12 @@ const useScreenStore = defineStore('screen', {
       if(idx < 0 || idx >= this.screenOption['elements'].length) return
       this.screenOption['elements'][idx]['style'] = style
     },
-    addScreenOptionOfElements(data: any) {
+    addScreenOptionOfElements(data: ElementTypeProperties<Elements>) {
       this.screenOption['elements'].push(data)
     },
     deleteScreenOptionOfElements(idx: number) {
       if(this.screenOption['elements'].length <= idx) return
-      this.screenOption['elements'].splice(idx, 1)
+      return this.screenOption['elements'].splice(idx, 1)
     },
     updateCurElementIdx(idx: number) {
       this.curElementIdx = idx

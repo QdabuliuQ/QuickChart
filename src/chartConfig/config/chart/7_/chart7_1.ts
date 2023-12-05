@@ -13,7 +13,7 @@ import {
 } from "@/chartConfig/option";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -101,7 +101,7 @@ export default () => {
       opName: 'sankeyStyle',
       chartOption: false,
       menuOption: true,
-      icon: 'i_sankey_chart',
+      icon: 'i_sankey',
       componentPath: chartPath + 'paramsSankey/paramsSankeyStyle',
     },
     {
@@ -125,14 +125,14 @@ export default () => {
       opName: 'lineStyle',
       chartOption: false,
       menuOption: true,
-      icon: 'i_sankey_line',
+      icon: 'i_sankey',
       componentPath: chartPath + 'paramsSankey/paramsSankeyLine',
     },
   ]
 }
 
 export function combineOption(data: any) {
-  let series = common.option.series
+  let series = chart.getOption.series
   series.data = data.data
   series.links = data.linksData
   return {

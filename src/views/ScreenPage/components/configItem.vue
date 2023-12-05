@@ -35,9 +35,9 @@ let stop = watch(() => screen.getCurElementIdx, async (newVal: number) => {
   }
   const type: string = screen.getScreenOptionOfElements[screen.curElementIdx].type
   const id: string = screen.getScreenOptionOfElements[screen.curElementIdx].id
-  console.log(id)
+
   if (!componentsMap.has(id)) {
-    componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
+    componentsMap.set(id, markRaw((await import(`./${type === 'map' ? 'chart' : type}Config.vue`)).default))
   }
 }, {
   immediate: true

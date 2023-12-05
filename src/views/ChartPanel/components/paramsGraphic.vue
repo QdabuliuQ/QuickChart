@@ -35,13 +35,13 @@ import graphicComItem from "@/components/graphicComItem.vue"
 import { ElMessageBox } from "element-plus";
 import {createImage} from "@/utils";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 const drawer = ref<boolean>(false)
 let config = reactive<ConfigInt[]>([])
 const activeIdx = ref<number>(0)
 
 const drawerOpen = () => {
-  getConfigs(_common.option.graphic)
+  getConfigs(chart.getOption.graphic)
 }
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('是否保存当前的图形组件？', '提示', {

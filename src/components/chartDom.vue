@@ -21,6 +21,7 @@ import {
 import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
 import {deepCopy, htmlDownload, setImageOption} from '@/utils/index'
+import {snapshotElement} from "@/utils/snapshotUntils";
 
 interface comInitData {
   options: any;
@@ -33,7 +34,7 @@ interface comInitData {
 }
 // let chart_i: any = null
 const chart_i = ref<any>(null)
-const common: any = useStore();
+const {chart}: any = useStore();
 const proxy = useProxy()
 const chartDomRef = ref();
 const data: comInitData = reactive({
@@ -119,12 +120,10 @@ chart.setOption(option);  //设置option`
 };
 const initChart = () => {
   let chartInstance = proxy.$echarts.init(chartDomRef.value);
-  // chart_i = chartInstance
   chart_i.value = chartInstance
-  chartInstance.setOption(common.option);
-
-  data.option = common.option;
-  data.code = common.option;
+  chartInstance.setOption(chart.getOption);
+  data.option = chart.getOption;
+  data.code = chart.getOption;
 
   // 监听图表配置变化
   proxy.$Bus.on("optionChange", (e: any) => {
@@ -136,22 +135,18 @@ const initChart = () => {
       }
     }
     chartInstance.setOption(data.option, true);
-    common.$patch((state: any) => {
-      state.option = data.option;
-    });
+    chart.setOption(data.option)
   });
 
   // 监听图表数据变化
   proxy.$Bus.on("dataChange", (e: any) => {
-    let piniaOption = common.option
+    let piniaOption = chart.getOption
     for (let key in e) {
       piniaOption[key] = e[key]
     }
     chartInstance.setOption(piniaOption, true);
     // 修改pinia数据
-    common.$patch((state: any) => {
-      state.option = piniaOption
-    });
+    chart.setOption(piniaOption)
   });
 
   // 监听图表画布配置变化
@@ -169,9 +164,7 @@ const initChart = () => {
       });
     }
     // 修改pinia数据
-    common.$patch((state: any) => {
-      state.option = data.option
-    });
+    chart.setOption(data.option)
   });
 
   // 生成代码
@@ -181,12 +174,23 @@ const initChart = () => {
   });
 
   // 下载图表
-  proxy.$Bus.on("downloadChart", (type: string) => {
+  proxy.$Bus.on("downloadChart", async (type: string) => {
     if (type == 'png') {
-      let res = chartInstance.getDataURL({
-        pixelRatio: 2,
-      });
-      downloadFile("chart.png", res);
+      snapshotElement(document.getElementById('chartDom') as HTMLDivElement, 'base64').then((res) => {
+        downloadFile("chart.png", res);
+        proxy.$notice({
+          message: '下载图片成功',
+          type: 'success',
+          position: 'top-left'
+        })
+      }).catch(() => {
+        proxy.$notice({
+          message: '生成图片失败',
+          type: 'error',
+          position: 'top-left'
+        })
+      })
+
     } else {
       // 生成html字符串 并且下载
       htmlDownload(getHTML(getCode('js')))
@@ -195,13 +199,14 @@ const initChart = () => {
 
   // 重置数据
   proxy.$Bus.on("resetChartData", () => {
-    let option = deepCopy(common.defaultOption)
+    let option = deepCopy(chart.getDefaultOption)
     data.option = option
-    common.$patch((state: any) => {
-      state.option = option
-    });
+    chart.setOption(option)
+    // common.$patch((state: any) => {
+    //   state.option = option
+    // });
     setTimeout(() => {
-      chartInstance.setOption(common.option, true);
+      chartInstance.setOption(chart.getOption, true);
     }, 0);
   });
 }

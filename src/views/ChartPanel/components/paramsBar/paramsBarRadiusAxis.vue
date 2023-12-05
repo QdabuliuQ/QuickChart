@@ -23,45 +23,45 @@ import {common, label} from "@/chartConfig/opname";
 import {borderType, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   max: {
     type: 'input_number',
     title: '刻度最大值',
-    value: _common.option.radiusAxis.max
+    value: chart.getOption.radiusAxis.max
   },
   splitNumber: {
     type: 'input_number',
     title: '分割段数',
-    value: _common.option.radiusAxis.splitNumber
+    value: chart.getOption.radiusAxis.splitNumber
   }
 })
 const axisLineConfig = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.radiusAxis.axisLine.show
+    value: chart.getOption.radiusAxis.axisLine.show
   },
   color: {
     type: 'color_picker',
     title: common.color,
     prefixs: ['lineStyle'],
-    value: _common.option.radiusAxis.axisLine.lineStyle.color
+    value: chart.getOption.radiusAxis.axisLine.lineStyle.color
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 100,
     prefixs: ['lineStyle'],
-    value: _common.option.radiusAxis.axisLine.lineStyle.width
+    value: chart.getOption.radiusAxis.axisLine.lineStyle.width
   },
   type: {
     type: 'select',
     title: common.type,
     options: borderType,
     prefixs: ['lineStyle'],
-    value: _common.option.radiusAxis.axisLine.lineStyle.type
+    value: chart.getOption.radiusAxis.axisLine.lineStyle.type
   },
   opacity: {
     type: 'input_number',
@@ -69,61 +69,61 @@ const axisLineConfig = reactive<ConfigInt>({
     max: 1,
     step: .1,
     prefixs: ['lineStyle'],
-    value: _common.option.radiusAxis.axisLine.lineStyle.opacity
+    value: chart.getOption.radiusAxis.axisLine.lineStyle.opacity
   },
 })
 const axisLabelConfig = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.radiusAxis.axisLabel.show
+    value: chart.getOption.radiusAxis.axisLabel.show
   },
   rotate: {
     type: 'input_number',
     title: common.rotate,
     max: 360,
     min: -360,
-    value: _common.option.radiusAxis.axisLabel.rotate
+    value: chart.getOption.radiusAxis.axisLabel.rotate
   },
   margin: {
     type: 'input_number',
     title: common.margin,
     max: 500,
-    value: _common.option.radiusAxis.axisLabel.margin
+    value: chart.getOption.radiusAxis.axisLabel.margin
   },
   color: {
     type: 'color_picker',
     title: common.color,
-    value: _common.option.radiusAxis.axisLabel.color
+    value: chart.getOption.radiusAxis.axisLabel.color
   },
   fontStyle: {
     type: 'select',
     title: label.fontStyle,
     options: fontStyle,
-    value: _common.option.radiusAxis.axisLabel.fontStyle
+    value: chart.getOption.radiusAxis.axisLabel.fontStyle
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.radiusAxis.axisLabel.fontWeight
+    value: chart.getOption.radiusAxis.axisLabel.fontWeight
   },
   fontFamily: {
     type: 'select',
     title: label.fontFamily,
     options: fontFamily,
-    value: _common.option.radiusAxis.axisLabel.fontFamily
+    value: chart.getOption.radiusAxis.axisLabel.fontFamily
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 100,
-    value: _common.option.radiusAxis.axisLabel.fontSize
+    value: chart.getOption.radiusAxis.axisLabel.fontSize
   },
 })
 
 const getData = (type?: string) => {
-  const radiusAxis = _common.option.radiusAxis
+  const radiusAxis = chart.getOption.radiusAxis
   if(type == 'config') {
     const option = getConfigValue(config)
     for(let key in option) {

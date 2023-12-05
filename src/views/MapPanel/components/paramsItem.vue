@@ -13,8 +13,8 @@ import {borderType} from "@/chartConfig/constant";
 import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 
-const _common: any = useStore()
-const itemStyle = _common.option.series[0].itemStyle
+const {chart}: any = useStore()
+const itemStyle = chart.getOption.series[0].itemStyle
 const config = reactive<ConfigInt>({
   areaColor: {
     type: 'color_picker',
@@ -65,7 +65,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series[0].itemStyle = getConfigValue(config)
   return series
 }

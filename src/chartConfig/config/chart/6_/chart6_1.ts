@@ -6,7 +6,7 @@ import graphicOption from "@/chartConfig/commonParams/graphic"
 import colorOption from "@/chartConfig/commonParams/color";
 import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import {chartPath} from "@/chartConfig/constant";
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -183,7 +183,7 @@ export default () => {
       chartOption: false,
       menuOption: true,
       uniqueOption: true,
-      icon: 'i_radar_chart',
+      icon: 'i_radar',
       componentPath: chartPath + "paramsRadar/paramsRadarStyle",
     },
     {
@@ -253,9 +253,9 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let dataset = common.option.dataset
-  let radar = common.option.radar
-  let series = common.option.series
+  let dataset = chart.getOption.dataset
+  let radar = chart.getOption.radar
+  let series = chart.getOption.series
 
   dataset.source = data.datasetData
   radar.indicator = data.indicatorData

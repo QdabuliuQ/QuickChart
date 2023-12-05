@@ -17,55 +17,55 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils"
 import {orient, symbol} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.legend.show
+    value: chart.getOption.legend.show
   },
   icon: {
     type: 'select',
     title: '图形图标',
     options: symbol,
-    value: _common.option.legend.icon
+    value: chart.getOption.legend.icon
   },
   left: {
     type: 'input_number',
     title: common.left + '(%)',
-    value: parseInt(_common.option.legend.left),
+    value: parseInt(chart.getOption.legend.left),
     max: 100,
   },
   top: {
     type: 'input_number',
     title: common.top + '(%)',
-    value: parseInt(_common.option.legend.top),
+    value: parseInt(chart.getOption.legend.top),
     max: 100,
   },
   itemGap: {
     type: 'input_number',
     title: '图例间隔',
     max: 200,
-    value: _common.option.legend.itemGap
+    value: chart.getOption.legend.itemGap
   },
   itemWidth: {
     type: 'input_number',
     title: common.width ,
-    value: parseInt(_common.option.legend.itemWidth),
+    value: parseInt(chart.getOption.legend.itemWidth),
     max: 100,
   },
   itemHeight: {
     type: 'input_number',
     title: common.height,
-    value: parseInt(_common.option.legend.itemHeight),
+    value: parseInt(chart.getOption.legend.itemHeight),
     max: 100,
   },
   orient: {
     type: 'select',
     title: common.orient,
     options: orient,
-    value: _common.option.legend.orient
+    value: chart.getOption.legend.orient
   }
 })
 

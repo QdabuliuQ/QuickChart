@@ -18,65 +18,65 @@ import {fontWeight, textAlign} from "@/chartConfig/constant";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 
-const _common: any = useStore()
+const {chart}: any = useStore()
 const config = reactive<ConfigInt>({
   text: {
     type: 'input_text',
     title: '文本标题',
-    value: _common.option.title.text,
+    value: chart.getOption.title.text,
   },
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.title.show
+    value: chart.getOption.title.show
   },
   textAlign: {
     type: 'select',
     title: '对齐方式',
     options: textAlign,
-    value: _common.option.title.textAlign
+    value: chart.getOption.title.textAlign
   },
   left: {
     type: 'input_number',
     title: common.left + '(%)',
     max: 100,
-    value: parseInt(_common.option.title.left)
+    value: parseInt(chart.getOption.title.left)
   },
   top: {
     type: 'input_number',
     title: common.top + '(%)',
     max: 100,
-    value: parseInt(_common.option.title.top)
+    value: parseInt(chart.getOption.title.top)
   },
   backgroundColor: {
     type: 'color_picker',
     title: common.backgroundColor,
-    value: _common.option.title.backgroudColor
+    value: chart.getOption.title.backgroudColor
   },
 })
 const textStyleConfig = reactive<ConfigInt>({
   color: {
     type: 'color_picker',
     title: label.color,
-    value: _common.option.title.textStyle.color
+    value: chart.getOption.title.textStyle.color
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.title.textStyle.fontWeight
+    value: chart.getOption.title.textStyle.fontWeight
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 100,
-    value: _common.option.title.textStyle.fontSize
+    value: chart.getOption.title.textStyle.fontSize
   },
 })
 const proxy = useProxy()
 
 const getData = (type: string) => {
-  let title = _common.option.title
+  let title = chart.getOption.title
   if(type == 'title') {
     const option = getConfigValue(config)
     for(let key in option) {
@@ -99,7 +99,7 @@ watch(() => config, debounce(() => {
   deep: true
 })
 watch(() => textStyleConfig, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
+  proxy.$Bus.emit(" ", {
     title: getData('textStyle'),
   });
 }, 500), {

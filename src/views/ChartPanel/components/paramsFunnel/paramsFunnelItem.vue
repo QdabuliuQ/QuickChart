@@ -16,8 +16,8 @@ import {getConfigValue} from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesItem = _common.option.series.itemStyle
+const {chart}: any = useStore()
+const seriesItem = chart.getOption.series.itemStyle
 const config = reactive<ConfigInt>({
   borderColor: {
     type: 'color_picker',
@@ -70,7 +70,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.itemStyle = getConfigValue(config)
   return series
 }

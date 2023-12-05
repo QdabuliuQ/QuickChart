@@ -14,101 +14,101 @@ import { label, common } from '@/chartConfig/opname';
 import { debounce, getConfigValue } from '@/utils';
 import {borderType, fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.radar.axisLabel.show
+    value: chart.getOption.radar.axisLabel.show
   },
   rotate: {
     type: 'input_number',
     title: label.rotate,
     max: 360,
     min: -360,
-    value: _common.option.radar.axisLabel.rotate
+    value: chart.getOption.radar.axisLabel.rotate
   },
   margin: {
     type: 'input_number',
     title: label.margin,
     max: 100,
-    value: _common.option.radar.axisLabel.margin
+    value: chart.getOption.radar.axisLabel.margin
   },
   color: {
     type: 'color_picker',
     title: label.color,
-    value: _common.option.radar.axisLabel.color
+    value: chart.getOption.radar.axisLabel.color
   },
   fontStyle: {
     type: 'select',
     title: label.fontStyle,
     options: fontStyle,
-    value: _common.option.radar.axisLabel.fontStyle
+    value: chart.getOption.radar.axisLabel.fontStyle
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.radar.axisLabel.fontWeight
+    value: chart.getOption.radar.axisLabel.fontWeight
   },
   fontFamily: {
     type: 'select',
     title: label.fontFamily,
     options: fontFamily,
-    value: _common.option.radar.axisLabel.fontFamily
+    value: chart.getOption.radar.axisLabel.fontFamily
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 100,
-    value: _common.option.radar.axisLabel.fontSize
+    value: chart.getOption.radar.axisLabel.fontSize
   },
   borderColor: {
     type: 'color_picker',
     title: label.borderColor,
-    value: _common.option.radar.axisLabel.borderColor
+    value: chart.getOption.radar.axisLabel.borderColor
   },
   borderWidth: {
     type: 'input_number',
     title: label.borderWidth,
     max: 100,
-    value: _common.option.radar.axisLabel.borderWidth
+    value: chart.getOption.radar.axisLabel.borderWidth
   },
   borderType: {
     type: 'select',
     title: label.borderType,
     options: borderType,
-    value: _common.option.radar.axisLabel.borderType
+    value: chart.getOption.radar.axisLabel.borderType
   },
   shadowColor: {
     type: 'color_picker',
     title: label.shadowColor,
-    value: _common.option.radar.axisLabel.shadowColor
+    value: chart.getOption.radar.axisLabel.shadowColor
   },
   shadowBlur: {
     type: 'input_number',
     title: label.shadowBlur,
     max: 100,
-    value: _common.option.radar.axisLabel.shadowBlur
+    value: chart.getOption.radar.axisLabel.shadowBlur
   },
   shadowOffsetX: {
     type: 'input_number',
     title: label.shadowOffsetX,
     max: 500,
     min: -500,
-    value: _common.option.radar.axisLabel.shadowOffsetX
+    value: chart.getOption.radar.axisLabel.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
     title: label.shadowOffsetY,
     max: 500,
     min: -500,
-    value: _common.option.radar.axisLabel.shadowOffsetY
+    value: chart.getOption.radar.axisLabel.shadowOffsetY
   },
 })
 
 const getData = () => {
-  let radar = _common.option.radar
+  let radar = chart.getOption.radar
   radar.axisLabel = getConfigValue(config)
   return radar
 }

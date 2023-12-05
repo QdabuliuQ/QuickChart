@@ -11,7 +11,7 @@ import { line_series, line_series_label } from "@/chartConfig/option";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const lineSeriesOption = line_series({
   'symbolSize': 10,
   'symbol': 'circle',
@@ -131,7 +131,7 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let dataset = common.option.dataset
+  let dataset = chart.getOption.dataset
   dataset.source = data.datasetData
   return {
     dataset,

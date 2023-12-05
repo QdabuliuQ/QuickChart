@@ -33,8 +33,8 @@ import PiecesOption from "@/views/MapPanel/components/piecesOption.vue";
 // ])
 
 const proxy = useProxy()
-const _common: any = useStore()
-const visualMap = _common.option.visualMap
+const {chart}: any = useStore()
+const visualMap = chart.getOption.visualMap
 let colors = null
 if (visualMap.color) {
   colors = reactive(visualMap.color)
@@ -162,7 +162,7 @@ const piecesDelete = (idx: number) => {
 }
 
 const colorChange = (colors: string[]) => {
-  let visualMap = _common.option.visualMap
+  let visualMap = chart.getOption.visualMap
   visualMap.color = colors
   proxy.$Bus.emit("optionChange", {
     visualMap
@@ -170,7 +170,7 @@ const colorChange = (colors: string[]) => {
 }
 
 const piecesChange = (pieces: any[]) => {
-  let visualMap = _common.option.visualMap
+  let visualMap = chart.getOption.visualMap
   visualMap.pieces = pieces
   proxy.$Bus.emit("optionChange", {
     visualMap
@@ -178,7 +178,7 @@ const piecesChange = (pieces: any[]) => {
 }
 
 const getData = () => {
-  let visualMap = _common.option.visualMap
+  let visualMap = chart.getOption.visualMap
   let option = getConfigValue(config)
   option['text'] = [option['text1'], option['text2']]
   delete option['text1']

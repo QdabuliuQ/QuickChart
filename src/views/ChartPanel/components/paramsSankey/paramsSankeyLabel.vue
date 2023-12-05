@@ -15,8 +15,8 @@ import {fontFamily, fontStyle, fontWeight, position} from "@/chartConfig/constan
 import useWatchData from "@/hooks/useWatchData";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesLabel = _common.option.series.label
+const {chart}: any = useStore()
+const seriesLabel = chart.getOption.series.label
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
@@ -82,7 +82,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   for (let key in option) {
     if (key == 'offsetX' || key == 'offsetY') {

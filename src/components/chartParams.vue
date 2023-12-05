@@ -81,7 +81,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const common: any = useStore();
+const {chart}: any = useStore();
 const proxy = useProxy()
 const height = ref<string>('0px')
 const activeIndex = ref<string>()
@@ -90,7 +90,7 @@ const icon_loading = ref<boolean>(false)
 const options = reactive<Array<any>>([])
 const key = ref<number>(0)
 const initOptions = () => {
-  options.push(...common.chartConfig)
+  options.push(...chart.getChartConfig)
 }
 
 const toggleItem = (e: string, p: string) => {
@@ -225,7 +225,7 @@ onUnmounted(() => {``
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 10px 12px 12px;
+        padding: 10px 10px 14px 12px;
         font-size: 13px;
         transition: 0.1s all linear;
         border-bottom: 1px solid #565656;

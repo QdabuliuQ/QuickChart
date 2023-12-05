@@ -12,6 +12,7 @@
               <i style="margin-right: 8px;" :class="['iconfont', item.icon]"></i>
               {{ item.type }}
               <i
+                style="color: rgb(127 127 127)"
                 :class="['iconfont more', item.show ? 'rotateIcon' : '', 'i_hide']"
               ></i>
             </div>
@@ -100,12 +101,11 @@ onUnmounted(() => {
         cursor: pointer;
         font-size: 13px;
         color: #e0e0e0;
-        font-weight: bold;
         display: flex;
         align-items: center;
         position: relative;
         box-sizing: border-box;
-        border-bottom: 1px solid #555;
+        border-bottom: 1px solid #4c4c4c;
         .more {
           position: absolute;
           right: 5px;

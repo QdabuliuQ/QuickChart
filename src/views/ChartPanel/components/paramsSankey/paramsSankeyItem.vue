@@ -14,8 +14,8 @@ import { getConfigValue } from '@/utils';
 import {borderType} from "@/chartConfig/constant";
 import useWatchData from "@/hooks/useWatchData";
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesItemStyle = _common.option.series.itemStyle
+const {chart}: any = useStore()
+const seriesItemStyle = chart.getOption.series.itemStyle
 const config = reactive<ConfigInt>({
   borderWidth: {
     type: 'input_number',
@@ -67,7 +67,7 @@ const config = reactive<ConfigInt>({
   },
 })
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.itemStyle = getConfigValue(config)
   return series
 }

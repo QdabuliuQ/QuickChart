@@ -125,7 +125,7 @@ import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import useStore from "@/store";
 import {IStyle} from "@/types/screen";
-import {debounce} from "@/utils";
+import {debounce, deepCopy} from "@/utils";
 import ContextMenu from "@/components/contextMenu.vue";
 import {useCopyElement} from "@/hooks/useCopyElement";
 import {cutElement, lockElement, unlockElement} from "@/utils/screenUtil";
@@ -179,16 +179,14 @@ const onRender = (e: any) => {
   e.target.style.cssText += e.cssText;
 }
 
-let [element, getElementByNewPoint] = useCopyElement()
 const selectElement = (info: any, idx: number) => {
   switch (info.label) {
     case '剪切':
-      (element as any).value = screen.getScreenOptionOfElements[idx]
       cutElement(idx)
       target.value = null
       break
     case '复制':
-      (element as any).value = screen.getScreenOptionOfElements[idx]
+      screen.setTmpElement(deepCopy(screen.getScreenOptionOfElements[idx]))
       break
     case '锁定':
       lockElement(idx)
@@ -368,7 +366,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  document.getElementsByClassName('mainCanvas')[0].removeEventListener("click", cancelClickEvent)
+  document.getElementsByClassName('mainCanvas')[0]?.removeEventListener("click", cancelClickEvent)
   proxy.$Bus.off("deleteChart", deleteChart)
   stop()
 })

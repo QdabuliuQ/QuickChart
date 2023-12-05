@@ -17,42 +17,42 @@ import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
 import {fontFamily, fontStyle, fontWeight, position} from "@/chartConfig/constant";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.series[0].label.show
+    value: chart.getOption.series[0].label.show
   },
   color: {
     type: 'color_picker',
     title: label.color,
-    value: _common.option.series[0].label.color
+    value: chart.getOption.series[0].label.color
   },
   fontStyle: {
     type: 'select',
     title: label.fontStyle,
     options: fontStyle,
-    value: _common.option.series[0].label.fontStyle
+    value: chart.getOption.series[0].label.fontStyle
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.series[0].label.fontWeight
+    value: chart.getOption.series[0].label.fontWeight
   },
   fontFamily: {
     type: 'select',
     title: label.fontFamily,
     options: fontFamily,
-    value: _common.option.series[0].label.fontFamily
+    value: chart.getOption.series[0].label.fontFamily
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 100,
-    value: _common.option.series[0].label.fontSize
+    value: chart.getOption.series[0].label.fontSize
   },
   position: {
     type: 'select',
@@ -71,12 +71,12 @@ const config = reactive<ConfigInt>({
         value: 'center'
       },
     ],
-    value: _common.option.series[0].label.position
+    value: chart.getOption.series[0].label.position
   }
 })
 
 const getData = () => {
-  let series = _common.option.series
+  let series = chart.getOption.series
   const option = getConfigValue(config)
   for(let item of series) {
     item.label = option

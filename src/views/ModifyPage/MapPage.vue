@@ -43,7 +43,7 @@ import ChartData from "@/components/chartData.vue";
 import MapDetail from "@/components/mapDetail.vue";
 import ChartParams from "@/components/chartParams.vue";
 
-const common: any = useStore();
+const {chart}: any = useStore();
 const route = useRoute()
 const { id } = route.params
 let JSONData: any = null

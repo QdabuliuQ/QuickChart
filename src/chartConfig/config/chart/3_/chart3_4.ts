@@ -9,7 +9,7 @@ import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -99,7 +99,7 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let series = common.option.series
+  let series = chart.getOption.series
   series[0].data = data.seriesData
   return {
     series

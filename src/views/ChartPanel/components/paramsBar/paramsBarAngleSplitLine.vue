@@ -15,33 +15,33 @@ import {common} from "@/chartConfig/opname";
 import {borderType} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.angleAxis.splitLine.show
+    value: chart.getOption.angleAxis.splitLine.show
   },
   color: {
     type: 'color_picker',
     title: common.color,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.color
+    value: chart.getOption.angleAxis.splitLine.lineStyle.color
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 100,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.width
+    value: chart.getOption.angleAxis.splitLine.lineStyle.width
   },
   type: {
     type: 'select',
     title: '线段' + common.type,
     options: borderType,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.type
+    value: chart.getOption.angleAxis.splitLine.lineStyle.type
   },
   opacity: {
     type: 'input_number',
@@ -49,12 +49,12 @@ const config = reactive<ConfigInt>({
     max: 1,
     step: .1,
     prefixs: ['lineStyle'],
-    value: _common.option.angleAxis.splitLine.lineStyle.opacity
+    value: chart.getOption.angleAxis.splitLine.lineStyle.opacity
   },
 })
 
 const getData = () => {
-  const angleAxis = _common.option.angleAxis
+  const angleAxis = chart.getOption.angleAxis
   angleAxis.splitLine = getConfigValue(config)
   return angleAxis
 }

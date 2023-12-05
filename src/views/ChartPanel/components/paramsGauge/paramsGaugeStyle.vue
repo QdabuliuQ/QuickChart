@@ -14,8 +14,8 @@ import {common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useStore()
-const series = _common.option.series
+const {chart}: any = useStore()
+const series = chart.getOption.series
 const config = reactive<ConfigInt>({
   centerX: {
     type: 'input_number',
@@ -80,7 +80,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   option['center'] = [option.centerX, option.centerY]
   delete option.centerX

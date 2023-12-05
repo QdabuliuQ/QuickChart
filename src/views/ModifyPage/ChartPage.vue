@@ -43,7 +43,7 @@ import useProxy from "@/hooks/useProxy";
 import {createImage, deepCopy} from "@/utils";
 import useStore from "@/store";
 
-const common: any = useStore();
+const {chart}: any = useStore();
 const proxy = useProxy()
 const router = useRouter()
 const { id } = router.currentRoute.value.params  // 获取图表ID

@@ -14,8 +14,8 @@ import {getConfigValue} from '@/utils';
 import {fontFamily, fontStyle, fontWeight} from "@/chartConfig/constant";
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesAxisLabel = _common.option.series.axisLabel
+const {chart}: any = useStore()
+const seriesAxisLabel = chart.getOption.series.axisLabel
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
@@ -54,7 +54,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.axisLabel = getConfigValue(config)
   return series
 }

@@ -13,8 +13,8 @@ import {ConfigInt} from '@/types/common';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useStore()
-const series = _common.option.series
+const {chart}: any = useStore()
+const series = chart.getOption.series
 const config = reactive<ConfigInt>({
   sort: {
     type: 'select',
@@ -57,7 +57,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  let series = _common.option.series
+  let series = chart.getOption.series
   const option = getConfigValue(config)
   option['radius'] = [option.innerSize, option.outerSize]
   delete option.innerSize

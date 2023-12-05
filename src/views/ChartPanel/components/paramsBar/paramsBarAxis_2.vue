@@ -50,14 +50,14 @@ import { debounce, getConfigValue } from '@/utils';
 //   setup() {
 //     let timer: any = null
 //     const _this: any = getCurrentInstance();
-//     const common: any = useStore();
+//     const {chart}: any = useStore();
 //     const data: comInitData = reactive({
 //       max: 5,
 //       startAngle: 0
 //     })
 //
-//     data.max = common.option.angleAxis.max
-//     data.startAngle = common.option.angleAxis.startAngle
+//     data.max = chart.getOption.angleAxis.max
+//     data.startAngle = chart.getOption.angleAxis.startAngle
 //
 //     const handleChange = () => {
 //       if(timer) clearTimeout(timer)

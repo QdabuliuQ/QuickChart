@@ -8,7 +8,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const series_label = bar_series_label({
   'position': 'middle',
 })
@@ -59,7 +59,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_radiusAxis',
-      componentPath: 'paramsBar/paramsBarRadiusAxis.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarRadiusAxis',
       defaultOption: {
         radiusAxis: {
           max: 5,
@@ -124,7 +124,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_circle',
-      componentPath: 'paramsBar/paramsBarAngleAxisLine.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarAngleAxisLine',
     },
     {
       name: '坐标轴刻度',
@@ -133,7 +133,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_tick',
-      componentPath: 'paramsBar/paramsBarAngleAxisTick.vue',
+      componentPath: chartPath +  'paramsBar/paramsBarAngleAxisTick',
     },
     {
       name: '坐标轴分割线',
@@ -142,7 +142,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_sline',
-      componentPath: chartPath + 'paramsBar/paramsBarAngleSplitLine.vue',
+      componentPath: chartPath + 'paramsBar/paramsBarAngleSplitLine',
     },
     {
       name: '文本样式',
@@ -157,7 +157,7 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let dataset = common.option.dataset
+  let dataset = chart.getOption.dataset
   dataset.source = data.datasetData
   return {
     dataset,
@@ -185,7 +185,7 @@ export const conveyExcelData = (rows: any) => {
       if (!rows[key].cells[0] || !rows[key].cells[1]) break
       datas.datasetData.push([
         rows[key].cells[0].text,
-        rows[key].cells[1].text
+        parseFloat(rows[key].cells[1].text)
       ])
     } else break
   }

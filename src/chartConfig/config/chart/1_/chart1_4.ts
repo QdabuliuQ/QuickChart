@@ -10,8 +10,9 @@ import { conveyToExcel } from "@/chartConfig/conveyUtils/conveyData";
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
+import {combineOption as _combineOption} from "@/chartConfig/config/chart/1_/chart1_1";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const lineSeriesOption = line_series(), lineSeriesLabelOption = line_series_label()
 const getOption = () => {
   return [
@@ -151,16 +152,17 @@ const getOption = () => {
 }
 export default getOption
 
-export function combineOption(data: any) {
-  let dataset = common.option.dataset
-  let series = common.option.series
-  dataset.source = data.datasetData
-  series = data.seriesData
-  return {
-    dataset,
-    series
-  }
-}
+// export function combineOption(data: any) {
+//   let dataset = chart.getOption.dataset
+//   let series = data.seriesData
+//   dataset.source = data.datasetData
+//   return {
+//     dataset,
+//     series
+//   }
+// }
+
+export const combineOption = _combineOption
 
 export const createExcelData = (config: any) => {
   return conveyToExcel([

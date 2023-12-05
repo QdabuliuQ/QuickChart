@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" class="cccc" @click.stop>
+  <div ref="containerRef" @click.stop>
     <slot></slot>
     <!-- 通过 Teleport 将菜单传送到 body 中  -->
     <Teleport to="body">
@@ -25,7 +25,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onBeforeUnmount, onMounted, onUnmounted, ref} from 'vue';
 import useContextMenu from '@/hooks/useContextMenu';
 const containerRef = ref(null);
 const { x, y, showMenu } = useContextMenu(containerRef);
@@ -45,10 +45,21 @@ const props = withDefaults(defineProps<{
   borderColor: 'transparent',
   width: 150
 })
-const emits = defineEmits(['select'])
+const emits = defineEmits(['select', 'contextmenu'])
 const handleClick = (item: any) => {
   emits('select', Object.assign(item, {idx: props.idx}))
 }
+const contextmenuEvent = (e: any) => {
+  emits('contextmenu', [e.layerX, e.layerY])
+}
+onMounted(() => {
+  (containerRef.value as unknown as HTMLDivElement).addEventListener("contextmenu", contextmenuEvent);
+})
+
+onBeforeUnmount(() => {
+  (containerRef.value as unknown as HTMLDivElement).removeEventListener("contextmenu", contextmenuEvent);
+})
+
 </script>
 <style lang="less">
 .context-menu {

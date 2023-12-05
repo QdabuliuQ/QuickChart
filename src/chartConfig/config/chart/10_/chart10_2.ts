@@ -10,7 +10,7 @@ import {
   conveyExcelData as _conveyExcelData
 } from './chart10_1'
 import {chartPath} from "@/chartConfig/constant";
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -136,7 +136,7 @@ export default () => {
       opName: 'sunburstStyle',
       chartOption: false,
       menuOption: true,
-      icon: 'i_sunburst_chart',
+      icon: 'i_sunburst',
       componentPath: chartPath + 'paramsSunburst/paramsSunburstStyle'
     },
     {
@@ -159,7 +159,7 @@ export default () => {
 }
 
 export function combineOption(datas: any) {
-  let series = common.option.series
+  let series = chart.getOption.series
   series.data = datas.data
   return {
     series

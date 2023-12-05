@@ -19,8 +19,8 @@ import {common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useStore()
-const seriesAxisLine = _common.option.series.axisLine
+const {chart}: any = useStore()
+const seriesAxisLine = chart.getOption.series.axisLine
 const colors = reactive([...seriesAxisLine.lineStyle.color.map((item: any) => item[1])])
 const config = reactive<ConfigInt>({
   show: {
@@ -83,7 +83,7 @@ const colorConfig = (colors: string[]): [][] => {
 }
 
 const colorChange = (_colors: string[]) => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   if(_colors.length) {
     // let cnt = colors.length
     // let p = 1 / cnt
@@ -100,7 +100,7 @@ const colorChange = (_colors: string[]) => {
   });
 }
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   series.axisLine = getConfigValue(config)
   series.axisLine.lineStyle.color = colorConfig(colors)
   console.log(series.axisLine)

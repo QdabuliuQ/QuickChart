@@ -49,7 +49,7 @@ import MapDetail from "@/components/mapDetail.vue";
 import ChartParams from "@/components/chartParams.vue";
 import ChartData from "@/components/chartData.vue";
 
-const common: any = useStore();
+const {chart}: any = useStore();
 const router = useRouter()
 let {
   id,

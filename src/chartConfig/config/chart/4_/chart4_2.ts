@@ -8,7 +8,7 @@ import { conveyToExcel } from '@/chartConfig/conveyUtils/conveyData';
 import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
-const common: any = useStore()
+const {chart}: any = useStore()
 const xData = [
   '12a', '1a', '2a', '3a', '4a', '5a', '6a',
   '7a', '8a', '9a', '10a', '11a',
@@ -145,9 +145,9 @@ export const createExcelData = (config: any) => {
 }
 
 export function combineOption(data: any) {
-  let xAxis = common.option.xAxis
-  let yAxis = common.option.yAxis
-  let series = common.option.series
+  let xAxis = chart.getOption.xAxis
+  let yAxis = chart.getOption.yAxis
+  let series = chart.getOption.series
 
   xAxis[0].data = data.xAxisData
   yAxis[0].data = data.yAxisData

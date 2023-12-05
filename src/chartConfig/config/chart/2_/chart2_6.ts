@@ -7,7 +7,7 @@ import colorOption from "@/chartConfig/commonParams/color";
 import graphicOption from "@/chartConfig/commonParams/graphic";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -84,8 +84,8 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let radiusAxis = common.option.radiusAxis
-  let series = common.option.series
+  let radiusAxis = chart.getOption.radiusAxis
+  let series = chart.getOption.series
   series.data = data.seriesData
   radiusAxis.data = data.radiusAxisData
   return {

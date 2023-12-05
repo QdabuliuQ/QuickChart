@@ -1,5 +1,5 @@
 <template>
-  <loading v-if="props.loading" text="加载图表中..." />
+  <loading v-if="props.loading" text="加载图表中..."/>
   <div v-else class="chartDetail">
     <div class="chartContainer">
       <div class="scrollContainer">
@@ -9,7 +9,8 @@
           class="backBtn"
           type="info"
         >
-          <i class="iconfont i_exit"></i>返回</el-button
+          <i class="iconfont i_exit"></i>返回
+        </el-button
         >
         <div class="btnList">
           <el-button v-login="() => (visible = true)" type="primary">
@@ -40,7 +41,7 @@
           :praise-event="praiseEvent"
           @showDrawer="show = true"
         />
-        <chart-dom ref="chartDomRef" :key="key" />
+        <chart-dom ref="chartDomRef" :key="key"/>
       </div>
     </div>
   </div>
@@ -57,9 +58,9 @@
     v-model:visible="shareVisible"
     @share-event="shareEvent"
   />
-  <save-chart-dialog 
-    v-model:visible="visible" 
-    @save-chart="saveChart" />
+  <save-chart-dialog
+    v-model:visible="visible"
+    @save-chart="saveChart"/>
 </template>
 <script setup lang="ts">
 import {
@@ -70,12 +71,13 @@ import {
   watch,
   onUnmounted,
 } from "vue";
-import { useRouter } from "vue-router";
-import { setImageOption } from "@/utils";
+import {useRouter} from "vue-router";
+import {setImageOption} from "@/utils";
+import html2canvas from 'html2canvas'
 import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
 import ChartDom from "@/components/chartDom.vue";
-import { ElLoading, FormInstance, FormRules } from "element-plus";
+import {ElLoading, FormInstance, FormRules} from "element-plus";
 import {
   deleteComment,
   getComment,
@@ -86,11 +88,12 @@ import {
   putChart,
 } from "@/network/chart";
 import useStore from "@/store";
-import { postEvent } from "@/network/event";
+import {postEvent} from "@/network/event";
 import ShareChartDialog from "@/components/shareChartDialog.vue";
 import InfoPanel from "@/components/infoPanel.vue";
 import CommentDrawer from "@/components/commentDrawer.vue";
 import SaveChartDialog from "@/components/saveChartDialog.vue";
+import {snapshotElement} from "@/utils/snapshotUntils";
 
 const router = useRouter();
 const props = withDefaults(
@@ -120,10 +123,11 @@ const props = withDefaults(
     share: false,
     chart_id: "",
     infoPanel: false,
-    getData: () => {},
+    getData: () => {
+    },
   }
 );
-const common: any = useStore();
+const {chart}: any = useStore();
 const proxy = useProxy();
 const is_praise = ref<number>(props.is_praise);
 const praise_count = ref<number>(props.praise_count);
@@ -140,8 +144,8 @@ const form = reactive({
 });
 const rules = reactive<FormRules>({
   name: [
-    { required: true, message: "图表名称不能为空", trigger: "blur" },
-    { max: 15, message: "图表名称不能超过15个字符", trigger: "blur" },
+    {required: true, message: "图表名称不能为空", trigger: "blur"},
+    {max: 15, message: "图表名称不能超过15个字符", trigger: "blur"},
   ],
 });
 
@@ -156,19 +160,7 @@ const praiseEvent = (is_praise: string): Promise<boolean> => {
   });
 };
 
-// todo 修改
-const base64ToFile = (): File => {
-  let base64 = chartDomRef.value.chartInstance.getDataURL({
-    pixelRatio: 1,
-  });
-  let binary = atob(base64.split(",")[1]);
-  let array = [];
-  for (let i = 0; i < binary.length; i++) {
-    array.push(binary.charCodeAt(i));
-  }
-  let blob = new Blob([new Uint8Array(array)], { type: "image/png" });
-  return new File([blob], Date.now() + ".png");
-};
+
 const saveChart = async (name: string) => {
   save_loading = ElLoading.service({
     lock: true,
@@ -176,24 +168,34 @@ const saveChart = async (name: string) => {
     background: "rgba(0, 0, 0, 0.7)",
   });
 
-  let cover = base64ToFile();
-  const formData = new FormData();
-  formData.append("cover", cover);
-  formData.append("name", name);
-  formData.append("type", props.detailType);
-  formData.append("option", setImageOption(common.option));
+  snapshotElement(document.getElementById('chartDom') as HTMLDivElement, 'file').then(async (cover) => {
+    const formData = new FormData();
+    console.log(cover)
+    formData.append("cover", cover);
+    formData.append("name", name);
+    formData.append("type", props.detailType);
+    formData.append("option", setImageOption(chart.getOption));
 
-  let data: any = await postChart(formData);
-  if (!data.status) {
+    let data: any = await postChart(formData);
+    if (!data.status) {
+      throw new Error()
+    }
+    proxy.$notice({
+      type: "success",
+      message: data.msg,
+      position: "top-left",
+    });
+
+  }).catch(() => {
+    proxy.$notice({
+      type: "error",
+      message: '生成图片失败',
+      position: "top-left",
+    });
+  }).finally(() => {
     save_loading.close();
-  }
-  proxy.$notice({
-    type: "success",
-    message: data.msg,
-    position: "top-left",
-  });
-  save_loading.close();
-  visible.value = false;
+    visible.value = false;
+  })
 };
 
 const toUpdate = async () => {
@@ -202,28 +204,31 @@ const toUpdate = async () => {
     text: "加载中",
     background: "rgba(0, 0, 0, 0.7)",
   });
-  let cover = base64ToFile();
-  const formData = new FormData();
-  formData.append("cover", cover);
-  formData.append("chart_id", props.chart_id);
-  formData.append("option", setImageOption(common.option));
-
-  let data: any = await putChart(formData);
-
-  if (!data.status) {
+  snapshotElement(document.getElementById('chartDom') as HTMLDivElement, 'file').then(async (res) => {
+    const formData = new FormData();
+    formData.append("cover", res);
+    formData.append("chart_id", props.chart_id);
+    formData.append("option", setImageOption(chart.getOption));
+    let data: any = await putChart(formData);
+    if (!data.status) {
+      throw new Error()
+    } else {
+      proxy.$notice({
+        type: "success",
+        message: data.msg,
+        position: "top-left",
+      });
+    }
+  }).catch(() => {
     proxy.$notice({
       type: "error",
-      message: data.msg,
+      message: '生成图片失败',
       position: "top-left",
     });
-  } else {
-    proxy.$notice({
-      type: "success",
-      message: data.msg,
-      position: "top-left",
-    });
-  }
-  save_loading.close();
+  }).finally(() => {
+    save_loading.close();
+  })
+
 };
 
 const shareEvent = async (content: string) => {
@@ -288,8 +293,10 @@ onUnmounted(() => {
 .chartDetail {
   width: 100%;
   height: 100%;
+
   .chartContainer {
     height: 100%;
+
     .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
       white-space: nowrap;
       display: inline-block;
@@ -300,40 +307,49 @@ onUnmounted(() => {
       align-items: center;
       justify-content: center;
     }
+
     .scrollContainer {
       width: 100%;
       height: 100%;
       overflow: auto;
       position: relative;
+
       .backBtn {
         position: absolute;
         top: 8px;
         left: 8px;
+
         .iconfont {
           font-size: 14px;
           margin-right: 5px;
         }
       }
+
       .scrollContainer();
+
       .btnList {
         position: absolute;
         top: 8px;
         right: 8px;
         z-index: 2;
+
         .iconfont {
           margin-right: 5px;
           font-size: 14px;
         }
+
         .shareBtn {
           &:hover {
             border: 1px solid #555bca;
             background-color: #555bca;
           }
+
           &:focus {
             border: 1px solid #555bca;
             background-color: #555bca;
           }
         }
+
         .el-button-style();
       }
     }

@@ -78,7 +78,7 @@ const props = withDefaults(defineProps<{
 })
 
 const router = useRouter()
-const common = useStore()
+const {chart}: any = useStore()
 const chartDomRef = ref()
 const shareVisible = ref<boolean>(false)
 const showDrawer = ref<boolean>(false)
@@ -104,7 +104,7 @@ const saveChart = async (name: string) => {
   formData.append("cover", cover);
   formData.append("name", name);
   formData.append("type", props.detailType);
-  formData.append("option", setImageOption(common.option));
+  formData.append("option", setImageOption(chart.getOption));
   formData.append("adcode", props.adcode)
   let data: any = await postChart(formData)
   if(!data.status) {
@@ -167,7 +167,7 @@ const toUpdate = async () => {
   const formData = new FormData();
   formData.append("cover", cover);
   formData.append("map_id", props.map_id as string);
-  formData.append("option", setImageOption(common.option));
+  formData.append("option", setImageOption(chart.getOption));
   let data: any = await putChart(formData)
   if(!data.status) {
     proxy.$notice({

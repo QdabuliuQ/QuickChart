@@ -15,7 +15,7 @@ import {
 } from "@/chartConfig/option";
 import {chartPath} from "@/chartConfig/constant";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 
 export default () => {
   return [
@@ -124,7 +124,7 @@ export default () => {
 }
 
 export function combineOption(data: any) {
-  let series = common.option.series
+  let series = chart.getOption.series
   series.data = data.data
   return {
     series

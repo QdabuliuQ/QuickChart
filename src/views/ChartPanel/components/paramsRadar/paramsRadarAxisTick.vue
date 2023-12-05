@@ -14,67 +14,67 @@ import { label, common } from '@/chartConfig/opname';
 import { debounce, getConfigValue } from '@/utils';
 import { borderType } from '@/chartConfig/constant';
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.radar.axisTick.show
+    value: chart.getOption.radar.axisTick.show
   },
   color: {
     type: 'color_picker',
     title: common.color,
-    value: _common.option.radar.axisTick.lineStyle.color
+    value: chart.getOption.radar.axisTick.lineStyle.color
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 100,
-    value: _common.option.radar.axisTick.lineStyle.width
+    value: chart.getOption.radar.axisTick.lineStyle.width
   },
   type: {
     type: 'select',
     title: '线段' + common.type,
     options: borderType,
-    value: _common.option.radar.axisTick.lineStyle.type
+    value: chart.getOption.radar.axisTick.lineStyle.type
   },
   shadowBlur: {
     type: 'input_number',
     title: common.shadowBlur,
     max: 100,
-    value: _common.option.radar.axisTick.lineStyle.shadowBlur
+    value: chart.getOption.radar.axisTick.lineStyle.shadowBlur
   },
   shadowColor: {
     type: 'color_picker',
     title: label.shadowColor,
-    value: _common.option.radar.axisTick.lineStyle.shadowColor
+    value: chart.getOption.radar.axisTick.lineStyle.shadowColor
   },
   shadowOffsetX: {
     type: 'input_number',
     title: label.shadowOffsetX,
     max: 500,
     min: -500,
-    value: _common.option.radar.axisTick.lineStyle.shadowOffsetX
+    value: chart.getOption.radar.axisTick.lineStyle.shadowOffsetX
   },
   shadowOffsetY: {
     type: 'input_number',
     title: label.shadowOffsetY,
     max: 500,
     min: -500,
-    value: _common.option.radar.axisTick.lineStyle.shadowOffsetY
+    value: chart.getOption.radar.axisTick.lineStyle.shadowOffsetY
   },
   opacity: {
     type: 'input_number',
     title: common.opacity,
     max: 1,
     step: .1,
-    value: _common.option.radar.axisTick.lineStyle.opacity
+    value: chart.getOption.radar.axisTick.lineStyle.opacity
   },
 })
 
 const getData = () => {
-  let radar = _common.option.radar
+  let radar = chart.getOption.radar
   const option = getConfigValue(config)
   radar.axisTick.show = option.show
   delete option.show

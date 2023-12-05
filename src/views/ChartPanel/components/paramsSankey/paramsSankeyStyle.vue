@@ -15,7 +15,7 @@ import {common} from '@/chartConfig/opname';
 import {getConfigValue} from '@/utils';
 
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   left: {
@@ -23,40 +23,40 @@ const config = reactive<ConfigInt>({
     title: common.left + '(%)',
     max: 100,
     unit: '%',
-    value: parseInt(_common.option.series.left)
+    value: parseInt(chart.getOption.series.left)
   },
   top: {
     type: 'input_number',
     title: common.top + '(%)',
     max: 100,
     unit: '%',
-    value: parseInt(_common.option.series.top)
+    value: parseInt(chart.getOption.series.top)
   },
   right: {
     type: 'input_number',
     title: common.right + '(%)',
     max: 100,
     unit: '%',
-    value: parseInt(_common.option.series.right)
+    value: parseInt(chart.getOption.series.right)
   },
   bottom: {
     type: 'input_number',
     title: common.bottom + '(%)',
     max: 100,
     unit: '%',
-    value: parseInt(_common.option.series.bottom)
+    value: parseInt(chart.getOption.series.bottom)
   },
   nodeWidth: {
     type: 'input_number',
     title: '组件' + common.width,
     max: 500,
-    value: _common.option.series.nodeWidth
+    value: chart.getOption.series.nodeWidth
   },
   nodeGap: {
     type: 'input_number',
     title: '组件间距',
     max: 500,
-    value: _common.option.series.nodeGap
+    value: chart.getOption.series.nodeGap
   },
   nodeAlign: {
     type: 'select',
@@ -75,7 +75,7 @@ const config = reactive<ConfigInt>({
         value: 'right'
       }
     ],
-    value: _common.option.series.nodeAlign
+    value: chart.getOption.series.nodeAlign
   },
   orient: {
     type: 'select',
@@ -90,12 +90,12 @@ const config = reactive<ConfigInt>({
         value: 'vertical'
       }
     ],
-    value: _common.option.series.orient
+    value: chart.getOption.series.orient
   },
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   for (let key in option) {
     series[key] = option[key]

@@ -14,8 +14,8 @@ import useStore from "@/store";
 import useWatchData from "@/hooks/useWatchData";
 import {getConfigValue} from "@/utils";
 
-const _common: any = useStore()
-const label = _common.option.series[0].label
+const {chart}: any = useStore()
+const label = chart.getOption.series[0].label
 const config = reactive<ConfigInt>({
   show: {
     type: "switch",
@@ -90,7 +90,7 @@ const config = reactive<ConfigInt>({
 })
 
 const getData = () => {
-  const series = _common.option.series
+  const series = chart.getOption.series
   const option = getConfigValue(config)
   option.offset = [option.offsetX, option.offsetY]
   delete option.offsetX

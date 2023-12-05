@@ -18,7 +18,7 @@ import {downloadFile, generateMapCode, htmlDownload} from "@/utils";
 import {useRoute} from "vue-router";
 import {oss} from "@/network";
 
-const common: any = useStore()
+const {chart}: any = useStore()
 const route = useRoute()
 const proxy = useProxy()
 const width = ref<number>(700)
@@ -44,9 +44,7 @@ const optionChange = (e: any) => {
   }
   // chartInstance.setOption(option, true);
   chartInstance.setOption(option);
-  common.$patch((state: any) => {
-    state.option = option;
-  });
+  chart.setOption(option)
 }
 const canvasChange = (e: any) => {
   if (e.hasOwnProperty('backgroundColor')) {
@@ -62,9 +60,7 @@ const canvasChange = (e: any) => {
     });
   }
   // 修改pinia数据
-  common.$patch((state: any) => {
-    state.option = option
-  });
+  chart.setOption(option)
 }
 const downloadChart = (type: string) => {
   if (type == 'png') {
@@ -75,7 +71,7 @@ const downloadChart = (type: string) => {
   } else {
     // 生成html字符串
     const html = generateMapCode(
-      common.option,
+      chart.getOption,
       width.value,
       height.value,
       route.params.adcode as string
@@ -84,20 +80,21 @@ const downloadChart = (type: string) => {
   }
 }
 const dataChange = (e: any) => {
-  let piniaOption = common.option
+  let piniaOption = chart.getOption
   for (let key in e) {
     piniaOption[key] = e[key]
   }
   chartInstance.setOption(piniaOption, true);
   // 修改pinia数据
-  common.$patch((state: any) => {
-    state.option = piniaOption
-  });
+  chart.setOption(piniaOption)
+  // common.$patch((state: any) => {
+  //   state.option = piniaOption
+  // });
 }
 
 const createCode = (type: string) => {
 
-  const jData = JSON.stringify(common.option, null, 4);
+  const jData = JSON.stringify(chart.getOption, null, 4);
   const option = jData.replace(/"(\w+)":/g, "$1:");
   if (type === "js") {
     code.value = `// mapJson url: ${oss}/map/cityJSON?adcode=${route.params.adcode}
@@ -114,9 +111,9 @@ const initChart = () => {
   chartInstance = proxy.$echarts.init((mapDomRef.value) as HTMLElement);
   chart_i.value = chartInstance
   chartInstance.clear()
-  proxy.$echarts.registerMap('map', common.mapJSON);
-  chartInstance.setOption(common.option);
-  option = common.option;
+  proxy.$echarts.registerMap('map', chart.getMapJson);
+  chartInstance.setOption(chart.getOption);
+  option = chart.getOption;
 
   proxy.$Bus.on("optionChange", optionChange);  // 监听图表配置变化
   proxy.$Bus.on("canvasChange", canvasChange);  // 修改画布

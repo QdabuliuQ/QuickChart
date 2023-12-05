@@ -31,13 +31,13 @@ import optionItems from '@/components/optionItems.vue';
 import {borderType, fontFamily, fontStyle, fontWeight, locationType} from "@/chartConfig/constant";
 import {debounce, getConfigValue} from "@/utils";
 const proxy = useProxy()
-const _common: any = useStore()
+const {chart}: any = useStore()
 
 const config = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.yAxis[0].show
+    value: chart.getOption.yAxis[0].show
   },
   position: {
     type: 'select',
@@ -52,23 +52,23 @@ const config = reactive<ConfigInt>({
         label: '右侧'
       },
     ],
-    value: _common.option.yAxis[0].position
+    value: chart.getOption.yAxis[0].position
   },
   inverse: {
     type: 'switch',
     title: '轴翻转',
-    value: _common.option.yAxis[0].inverse
+    value: chart.getOption.yAxis[0].inverse
   },
   offset: {
     type: 'input_number',
     title: '文本' + common.offset,
     max: 100,
-    value: _common.option.yAxis[0].offset
+    value: chart.getOption.yAxis[0].offset
   },
   name: {
     type: 'input_text',
     title: '轴名称',
-    value: _common.option.yAxis[0].name
+    value: chart.getOption.yAxis[0].name
   },
   nameLocation: {
     type: 'select',
@@ -87,161 +87,161 @@ const config = reactive<ConfigInt>({
         value: 'start',
       },
     ],
-    value: _common.option.yAxis[0].nameLocation
+    value: chart.getOption.yAxis[0].nameLocation
   },
   nameGap: {
     type: 'input_number',
     title: '轴名称间距',
     max: 100,
-    value: _common.option.yAxis[0].nameGap
+    value: chart.getOption.yAxis[0].nameGap
   },
   nameRotate: {
     type: 'input_number',
     title: '轴名称旋转',
     max: 360,
     min: -360,
-    value: _common.option.yAxis[0].nameRotate
+    value: chart.getOption.yAxis[0].nameRotate
   }
 })
 const textStyleConfig = reactive<ConfigInt>({
   color: {
     type: 'color_picker',
     title: common.color,
-    value: _common.option.yAxis[0].nameTextStyle.color,
+    value: chart.getOption.yAxis[0].nameTextStyle.color,
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.yAxis[0].nameTextStyle.fontWeight
+    value: chart.getOption.yAxis[0].nameTextStyle.fontWeight
   },
   fontFamily: {
     type: 'select',
     title: label.fontFamily,
     options: fontFamily,
-    value: _common.option.yAxis[0].nameTextStyle.fontFamily
+    value: chart.getOption.yAxis[0].nameTextStyle.fontFamily
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 50,
-    value: _common.option.yAxis[0].nameTextStyle.fontSize
+    value: chart.getOption.yAxis[0].nameTextStyle.fontSize
   },
 })
 const axisLineConfig = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.yAxis[0].axisLine.show,
+    value: chart.getOption.yAxis[0].axisLine.show,
   },
   color: {
     type: 'color_picker',
     title: common.color,
-    value: _common.option.yAxis[0].axisLine.lineStyle.color,
+    value: chart.getOption.yAxis[0].axisLine.lineStyle.color,
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 50,
-    value: _common.option.yAxis[0].axisLine.lineStyle.width,
+    value: chart.getOption.yAxis[0].axisLine.lineStyle.width,
   },
   type: {
     type: 'select',
     title: '线段'+common.type,
     options: borderType,
-    value: _common.option.yAxis[0].axisLine.lineStyle.type
+    value: chart.getOption.yAxis[0].axisLine.lineStyle.type
   },
   opacity: {
     type: 'input_number',
     title: common.opacity,
     max: 1,
     step: .1,
-    value: _common.option.yAxis[0].axisLine.lineStyle.opacity,
+    value: chart.getOption.yAxis[0].axisLine.lineStyle.opacity,
   },
 })
 const axisTickConfig = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.yAxis[0].axisTick.show,
+    value: chart.getOption.yAxis[0].axisTick.show,
   },
   color: {
     type: 'color_picker',
     title: common.color,
-    value: _common.option.yAxis[0].axisTick.lineStyle.color,
+    value: chart.getOption.yAxis[0].axisTick.lineStyle.color,
   },
   width: {
     type: 'input_number',
     title: common.width,
     max: 50,
-    value: _common.option.yAxis[0].axisTick.lineStyle.width,
+    value: chart.getOption.yAxis[0].axisTick.lineStyle.width,
   },
   type: {
     type: 'select',
     title: '线段'+common.type,
     options: borderType,
-    value: _common.option.yAxis[0].axisTick.lineStyle.type
+    value: chart.getOption.yAxis[0].axisTick.lineStyle.type
   },
   opacity: {
     type: 'input_number',
     title: common.opacity,
     max: 1,
     step: .1,
-    value: _common.option.yAxis[0].axisTick.lineStyle.opacity,
+    value: chart.getOption.yAxis[0].axisTick.lineStyle.opacity,
   },
 })
 const axisLabelConfig = reactive<ConfigInt>({
   show: {
     type: 'switch',
     title: common.show,
-    value: _common.option.yAxis[0].axisLabel.show
+    value: chart.getOption.yAxis[0].axisLabel.show
   },
   rotate: {
     type: 'input_number',
     title: label.rotate,
     max: 360,
     min: -360,
-    value: _common.option.yAxis[0].axisLabel.rotate
+    value: chart.getOption.yAxis[0].axisLabel.rotate
   },
   margin: {
     type: 'input_number',
     title: '外边距',
     max: 100,
-    value: _common.option.yAxis[0].axisLabel.margin
+    value: chart.getOption.yAxis[0].axisLabel.margin
   },
   color: {
     type: 'color_picker',
     title: label.color,
-    value: _common.option.yAxis[0].axisLabel.color
+    value: chart.getOption.yAxis[0].axisLabel.color
   },
   fontStyle: {
     type: 'select',
     title: label.fontStyle,
     options: fontStyle,
-    value: _common.option.yAxis[0].axisLabel.fontStyle
+    value: chart.getOption.yAxis[0].axisLabel.fontStyle
   },
   fontWeight: {
     type: 'select',
     title: label.fontWeight,
     options: fontWeight,
-    value: _common.option.yAxis[0].axisLabel.fontWeight
+    value: chart.getOption.yAxis[0].axisLabel.fontWeight
   },
   fontFamily: {
     type: 'select',
     title: label.fontFamily,
     options: fontFamily,
-    value: _common.option.yAxis[0].axisLabel.fontFamily
+    value: chart.getOption.yAxis[0].axisLabel.fontFamily
   },
   fontSize: {
     type: 'input_number',
     title: label.fontSize,
     max: 100,
-    value: _common.option.yAxis[0].axisLabel.fontSize
+    value: chart.getOption.yAxis[0].axisLabel.fontSize
   },
 })
 
 const getData = (type: string) => {
-  let yAxis = _common.option.yAxis
+  let yAxis = chart.getOption.yAxis
   if(type == 'config') {
     const option = getConfigValue(config)
     for(let key in option) {
