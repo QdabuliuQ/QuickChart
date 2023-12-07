@@ -10,16 +10,27 @@ import {
   reactive
 } from "vue";
 import useProxy from "@/hooks/useProxy";
-import {ConfigInt} from "@/types/common";
 import { common } from '@/chartConfig/opname';
 import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
-import {debounce, getConfigValue} from "@/utils"
+import { getConfigValue} from "@/utils"
 import {orient, symbol} from "@/chartConfig/constant";
+import {IOption } from "@/types/option";
+import useWatchData from "@/hooks/useWatchData";
 const proxy = useProxy()
 const {chart}: any = useStore()
 
-const config = reactive<ConfigInt>({
+interface IConfig {
+  show:  IOption<'switch'>
+  icon:  IOption<'select'>
+  left: IOption<'input_number'>
+  top: IOption<'input_number'>
+  itemGap: IOption<'input_number'>
+  itemWidth: IOption<'input_number'>
+  itemHeight: IOption<'input_number'>
+  orient: IOption<'select'>
+}
+const config = reactive<IConfig>({
   show: {
     type: 'switch',
     title: common.show,
@@ -75,13 +86,8 @@ const getData = () => {
   legend.top = legend.top + '%'
   return legend
 }
-watch(() => config, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    legend: getData(),
-  });
-}, 500), {
-  deep: true
-})
+
+useWatchData(config, 'legend', getData)
 </script>
 
 <style lang='less'>

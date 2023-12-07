@@ -30,10 +30,22 @@ import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue';
 import {borderType, fontFamily, fontStyle, fontWeight, locationType} from "@/chartConfig/constant";
 import {debounce, getConfigValue} from "@/utils";
+import {IOption} from "@/types/option";
+import useWatchData from "@/hooks/useWatchData";
 const proxy = useProxy()
 const {chart}: any = useStore()
 
-const config = reactive<ConfigInt>({
+interface IConfig {
+  show: IOption<'switch'>
+  position: IOption<'select'>
+  inverse: IOption<'switch'>
+  offset: IOption<'input_number'>
+  name: IOption<'input_text'>
+  nameLocation: IOption<'select'>
+  nameGap: IOption<'input_number'>
+  nameRotate: IOption<'input_number'>
+}
+const config = reactive<IConfig>({
   show: {
     type: 'switch',
     title: common.show,
@@ -103,7 +115,14 @@ const config = reactive<ConfigInt>({
     value: chart.getOption.yAxis[0].nameRotate
   }
 })
-const textStyleConfig = reactive<ConfigInt>({
+
+interface ITextStyleConfig {
+  color: IOption<'color_picker'>
+  fontWeight: IOption<'select'>
+  fontFamily: IOption<'select'>
+  fontSize: IOption<'input_number'>
+}
+const textStyleConfig = reactive<ITextStyleConfig>({
   color: {
     type: 'color_picker',
     title: common.color,
@@ -128,7 +147,15 @@ const textStyleConfig = reactive<ConfigInt>({
     value: chart.getOption.yAxis[0].nameTextStyle.fontSize
   },
 })
-const axisLineConfig = reactive<ConfigInt>({
+
+interface IAxisConfig {
+  show: IOption<'switch'>
+  color: IOption<'color_picker'>
+  width: IOption<'input_number'>
+  type: IOption<'select'>
+  opacity: IOption<'input_number'>
+}
+const axisLineConfig = reactive<IAxisConfig>({
   show: {
     type: 'switch',
     title: common.show,
@@ -159,7 +186,7 @@ const axisLineConfig = reactive<ConfigInt>({
     value: chart.getOption.yAxis[0].axisLine.lineStyle.opacity,
   },
 })
-const axisTickConfig = reactive<ConfigInt>({
+const axisTickConfig = reactive<IAxisConfig>({
   show: {
     type: 'switch',
     title: common.show,
@@ -190,7 +217,18 @@ const axisTickConfig = reactive<ConfigInt>({
     value: chart.getOption.yAxis[0].axisTick.lineStyle.opacity,
   },
 })
-const axisLabelConfig = reactive<ConfigInt>({
+
+interface IAxisLabelConfig {
+  show: IOption<'switch'>
+  rotate: IOption<'input_number'>
+  margin: IOption<'input_number'>
+  color: IOption<'color_picker'>
+  fontStyle: IOption<'select'>
+  fontWeight: IOption<'select'>
+  fontFamily: IOption<'select'>
+  fontSize: IOption<'input_number'>
+}
+const axisLabelConfig = reactive<IAxisLabelConfig>({
   show: {
     type: 'switch',
     title: common.show,
@@ -264,41 +302,12 @@ const getData = (type: string) => {
   }
   return yAxis
 }
-watch(() => config, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    yAxis: getData('config'),
-  });
-}, 500), {
-  deep: true
-})
-watch(() => textStyleConfig, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    yAxis: getData('textStyleConfig'),
-  });
-}, 500), {
-  deep: true
-})
-watch(() => axisLineConfig, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    yAxis: getData('axisLineConfig'),
-  });
-}, 500), {
-  deep: true
-})
-watch(() => axisTickConfig, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    yAxis: getData('axisTickConfig'),
-  });
-}, 500), {
-  deep: true
-})
-watch(() => axisLabelConfig, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    yAxis: getData('axisLabelConfig'),
-  });
-}, 500), {
-  deep: true
-})
+
+useWatchData(config, 'yAxis', () => getData('config'))
+useWatchData(textStyleConfig, 'yAxis', () => getData('textStyleConfig'))
+useWatchData(axisLineConfig, 'yAxis', () => getData('axisLineConfig'))
+useWatchData(axisTickConfig, 'yAxis', () => getData('axisTickConfig'))
+useWatchData(axisLabelConfig, 'yAxis', () => getData('axisLabelConfig'))
 </script>
 <style lang="less">
 .paramsYAxis {

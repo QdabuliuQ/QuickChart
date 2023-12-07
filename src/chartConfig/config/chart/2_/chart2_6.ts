@@ -54,7 +54,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_angle',
-      componentPath: chartPath + 'paramsBar/paramsBarAxis_2',
+      componentPath: chartPath + 'paramsBar/paramsBarAxis',
       defaultOption: {
         angleAxis: {
           clockwise: false,

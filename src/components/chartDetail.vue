@@ -81,7 +81,7 @@ import {ElLoading, FormInstance, FormRules} from "element-plus";
 import {
   deleteComment,
   getComment,
-  postChart,
+  postChart, postChartImage,
   postComment,
   postPraise,
   postPraiseComment,
@@ -135,7 +135,6 @@ const visible = ref<boolean>(false);
 const shareVisible = ref<boolean>(false);
 const key = ref<number>(0);
 const show = ref<boolean>(false);
-const formRef = ref<FormInstance>();
 const chartDomRef = ref();
 
 let save_loading: any = null;
@@ -168,15 +167,11 @@ const saveChart = async (name: string) => {
     background: "rgba(0, 0, 0, 0.7)",
   });
 
-  snapshotElement(document.getElementById('chartDom') as HTMLDivElement, 'file').then(async (cover) => {
-    const formData = new FormData();
-    console.log(cover)
-    formData.append("cover", cover);
-    formData.append("name", name);
-    formData.append("type", props.detailType);
-    formData.append("option", setImageOption(chart.getOption));
-
-    let data: any = await postChart(formData);
+  postChart({
+    name,
+    option: JSON.stringify(chart.getOption),
+    type: props.detailType
+  }).then((data: any) => {
     if (!data.status) {
       throw new Error()
     }
@@ -185,11 +180,10 @@ const saveChart = async (name: string) => {
       message: data.msg,
       position: "top-left",
     });
-
-  }).catch(() => {
+  }).catch((err) => {
     proxy.$notice({
       type: "error",
-      message: '生成图片失败',
+      message: '保存图片失败',
       position: "top-left",
     });
   }).finally(() => {
@@ -204,12 +198,10 @@ const toUpdate = async () => {
     text: "加载中",
     background: "rgba(0, 0, 0, 0.7)",
   });
-  snapshotElement(document.getElementById('chartDom') as HTMLDivElement, 'file').then(async (res) => {
-    const formData = new FormData();
-    formData.append("cover", res);
-    formData.append("chart_id", props.chart_id);
-    formData.append("option", setImageOption(chart.getOption));
-    let data: any = await putChart(formData);
+  putChart({
+    chart_id: proxy.chart_id,
+    option: JSON.stringify(chart.getOption)
+  }).then((data: any) => {
     if (!data.status) {
       throw new Error()
     } else {
@@ -228,7 +220,6 @@ const toUpdate = async () => {
   }).finally(() => {
     save_loading.close();
   })
-
 };
 
 const shareEvent = async (content: string) => {

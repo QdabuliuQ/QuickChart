@@ -4,7 +4,11 @@ import ajax, {upload} from "@/network/index";
  * 保存图表
  * @param data
  */
-export function postChart(data: FormData) {
+export function postChart(data: {
+  name: string
+  option: string
+  type: string
+}) {
   return ajax({
     url: '/qc/chart',
     method: 'post',
@@ -77,7 +81,10 @@ export function getChartDetail(params: {
  * 修改图表
  * @param data
  */
-export function putChart(data: FormData) {
+export function putChart(data: {
+  chart_id: string
+  option: string
+}) {
   return ajax({
     url: '/qc/chart',
     method: 'put',
@@ -158,6 +165,16 @@ export function postPraiseComment(data: {
 }) {
   return ajax({
     url: '/qc/praiseComment',
+    method: 'post',
+    data
+  })
+}
+
+export function postChartImage(data: {
+  option: string
+}) {
+  return ajax({
+    url: '/img/chartImage',
     method: 'post',
     data
   })

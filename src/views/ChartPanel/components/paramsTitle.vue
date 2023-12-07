@@ -17,9 +17,20 @@ import useStore from "@/store";
 import {fontWeight, textAlign} from "@/chartConfig/constant";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
+import {IOption, TSelectOption} from "@/types/option";
+import useWatchData from "@/hooks/useWatchData";
 
 const {chart}: any = useStore()
-const config = reactive<ConfigInt>({
+
+interface IConfig {
+  text: IOption<'input_text'>
+  show: IOption<'switch'>
+  textAlign: IOption<'select'>
+  left: IOption<'input_number'>
+  top: IOption<'input_number'>
+  backgroundColor: IOption<'color_picker'>
+}
+const config = reactive<IConfig>({
   text: {
     type: 'input_text',
     title: '文本标题',
@@ -54,7 +65,13 @@ const config = reactive<ConfigInt>({
     value: chart.getOption.title.backgroudColor
   },
 })
-const textStyleConfig = reactive<ConfigInt>({
+
+interface ITextStyleConfig {
+  color: IOption<'color_picker'>
+  fontWeight: IOption<'select'>
+  fontSize: IOption<'input_number'>
+}
+const textStyleConfig = reactive<ITextStyleConfig>({
   color: {
     type: 'color_picker',
     title: label.color,
@@ -91,18 +108,7 @@ const getData = (type: string) => {
   }
   return title
 }
-watch(() => config, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    title: getData('title'),
-  });
-}, 500), {
-  deep: true
-})
-watch(() => textStyleConfig, debounce(() => {
-  proxy.$Bus.emit(" ", {
-    title: getData('textStyle'),
-  });
-}, 500), {
-  deep: true
-})
+
+useWatchData(config, 'title', () => getData('title'))
+useWatchData(textStyleConfig, 'title', () => getData('textStyle'))
 </script>

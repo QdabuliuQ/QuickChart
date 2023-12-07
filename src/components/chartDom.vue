@@ -7,7 +7,7 @@
     <div ref="chartDomRef" id="chartDom"></div>
   </div>
   <el-dialog class="codeDialogClass" v-model="data.codeDialog" title="代码配置" width="50%">
-    <highlightjs class="language-javascript" language="javascript" :code="data.code" />
+    <highlightjs class="language-javascript" language="javascript" :code="data.code"/>
   </el-dialog>
 </template>
 
@@ -20,8 +20,9 @@ import {
 } from "vue";
 import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
-import {deepCopy, htmlDownload, setImageOption} from '@/utils/index'
-import {snapshotElement} from "@/utils/snapshotUntils";
+import {deepCopy, htmlDownload} from '@/utils/index'
+import {postChartImage} from "@/network/chart";
+import {ElLoading} from "element-plus";
 
 interface comInitData {
   options: any;
@@ -32,6 +33,7 @@ interface comInitData {
   code: string;
   option: any;
 }
+
 // let chart_i: any = null
 const chart_i = ref<any>(null)
 const {chart}: any = useStore();
@@ -52,7 +54,7 @@ defineExpose({
 })
 
 const getHTML = (jsCode: string) => {
-      return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -105,8 +107,7 @@ const base64ToBlob = (code: string) => {
   return new Blob([uInt8Array], {type: contentType});
 };
 const getCode = (type: string) => {
-  // let _option: any = deepCopy(data.option)
-  let _option = setImageOption(data.option, false)
+  let _option: any = deepCopy(data.option)
   let jdata: any = JSON.stringify(_option, null, 4);
   const optionCode = jdata.replace(/"(\w+)":/g, "$1:");
   if (type == 'js') {
@@ -173,27 +174,38 @@ const initChart = () => {
     data.codeDialog = true;
   });
 
+  let save_loading: any = null
   // 下载图表
   proxy.$Bus.on("downloadChart", async (type: string) => {
+    save_loading = ElLoading.service({
+      lock: true,
+      text: "加载中",
+      background: "rgba(0, 0, 0, 0.7)",
+    });
     if (type == 'png') {
-      snapshotElement(document.getElementById('chartDom') as HTMLDivElement, 'base64').then((res) => {
-        downloadFile("chart.png", res);
+      postChartImage({  // 发起接口请求 传递 option 给后端动态生成
+        option: JSON.stringify(chart.getOption)
+      }).then((res: any) => {
+        if (!res.status) throw new Error()
+        downloadFile("chart.png", res.img);
         proxy.$notice({
-          message: '下载图片成功',
-          type: 'success',
-          position: 'top-left'
-        })
-      }).catch(() => {
+          type: "success",
+          message: res.msg,
+          position: "top-left",
+        });
+      }).catch((err) => {
         proxy.$notice({
+          type: "error",
           message: '生成图片失败',
-          type: 'error',
-          position: 'top-left'
-        })
+          position: "top-left",
+        });
+      }).finally(() => {
+        save_loading.close();
       })
-
     } else {
       // 生成html字符串 并且下载
       htmlDownload(getHTML(getCode('js')))
+      save_loading.close();
     }
   });
 
@@ -202,9 +214,6 @@ const initChart = () => {
     let option = deepCopy(chart.getDefaultOption)
     data.option = option
     chart.setOption(option)
-    // common.$patch((state: any) => {
-    //   state.option = option
-    // });
     setTimeout(() => {
       chartInstance.setOption(chart.getOption, true);
     }, 0);
@@ -213,7 +222,6 @@ const initChart = () => {
 
 onMounted(() => {
   initChart()
-  console.log(chartDomRef)
 });
 
 onUnmounted(() => {
@@ -239,6 +247,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
 }
+
 .transparentBg {
   background-image: url("../assets/image/bg.jpg");
   background-size: cover;

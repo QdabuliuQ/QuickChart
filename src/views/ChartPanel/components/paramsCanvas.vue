@@ -7,7 +7,7 @@
 <script setup lang='ts'>
 import {
   watch,
-  reactive
+  reactive, onUnmounted
 } from "vue";
 import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
@@ -15,10 +15,17 @@ import { common } from '@/chartConfig/opname';
 import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import {createImage, debounce, getConfigValue} from "@/utils";
+import {IOption, TOption} from "@/types/option";
+import {oss} from "@/network";
+import useWatchData from "@/hooks/useWatchData";
 const {chart}: any = useStore()
 const proxy = useProxy()
 
-const config = reactive<ConfigInt>({
+interface IConfig {
+  backgroundColor: IOption<'color_picker'>
+  bgImage: IOption<'imgload'>
+}
+const config = reactive<IConfig>({
   backgroundColor: {
     type: 'color_picker',
     title: common.backgroundColor,
@@ -26,8 +33,10 @@ const config = reactive<ConfigInt>({
   },
   bgImage: {
     type: 'imgload',
+    imgType: 'url',
     title: '背景图片',
-    value: typeof chart.getOption.backgroundColor === 'object' ? chart.getOption.backgroundColor.url : ''
+    value: typeof chart.getOption.backgroundColor === 'object' ? chart.getOption.backgroundColor.image : '',
+    url: `${oss}/upload/chartImage`
   }
 })
 
@@ -35,20 +44,15 @@ const getData = () => {
   const option = getConfigValue(config)
   if(option.bgImage) {
     return {
-      image: createImage(option.bgImage),
-      url: option.bgImage,
+      image: option.bgImage,
       repeat: 'repeat',
     }
   } else {
-    delete option.bgImage
-    return option
+    return option.backgroundColor
   }
 }
-watch(() => config, debounce(() => {
-  proxy.$Bus.emit("canvasChange", getData());
-}, 500), {
-  deep: true
-})
+
+useWatchData(config, 'backgroundColor', getData)
 </script>
 
 <style lang='less'>

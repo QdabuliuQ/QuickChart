@@ -9,7 +9,7 @@ export function snapshotElement<T extends 'base64' | 'file'>(el: HTMLElement, ty
   return new Promise((resolve, reject) => {
     try {
       html2canvas(document.getElementById('chartDom') as HTMLDivElement, {
-        useCORS: true,
+        // useCORS: true,
         allowTaint: true,
       }).then((canvas) => {
         const link = canvas.toDataURL("image/jpg");

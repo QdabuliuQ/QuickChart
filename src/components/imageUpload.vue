@@ -1,6 +1,6 @@
 <template>
   <div class="imageUpload">
-    <div v-if="props.image">
+    <div style="padding: 2px 0" v-if="props.value">
       <el-link @click="dialogVisible = true" type="primary">查看</el-link>
       <el-link @click="deleteImage" type="danger">删除</el-link>
     </div>
@@ -15,24 +15,26 @@
     </div>
     <el-dialog class="imagePreviewDialog" v-model="dialogVisible">
       <div class="imageContainer">
-        <img w-full :src="props.image"/>
+        <img w-full :src="props.value"/>
       </div>
     </el-dialog>
   </div>
 </template>
 <script setup lang="ts">
-import {defineProps, ref} from "vue";
+import { ref} from "vue";
 import {fileType} from "@/utils";
 import useProxy from "@/hooks/useProxy";
-import {graphicUpload} from "@/network/chart";
+import axios from "axios";
 
 const proxy = useProxy()
-const props = defineProps<{
-  image: string
-  imgType: string
+
+interface IProps {
+  value: string
+  imgType: 'base64' | 'url'
+  url: string
   imgSize: number
-}>()
-console.log(props.image)
+}
+const props = defineProps<IProps>()
 const emits = defineEmits([
   "imageChange",
   "deleteImage"
@@ -45,8 +47,9 @@ const uploadEvent = () => {
 const deleteImage = () => {
   emits('deleteImage')
 }
-const fileUpload = async (e: Event) => {
+const fileUpload = async () => {
   let img = (inputRef.value as any).files[0]
+
   if (fileType(img.name) == 'image') {
     if (img.size / 1024 > props.imgSize) {
       proxy.$notice({
@@ -56,9 +59,14 @@ const fileUpload = async (e: Event) => {
       })
     } else {
       if (props.imgType === 'url') {
+
         let formData = new FormData()
         formData.append('image', img)
-        let {data}: any = await graphicUpload(formData)
+        let {data} = await axios.post((props.url as string), formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         if (!data.status) return proxy.$notice({
           message: data.msg,
           type: 'error',

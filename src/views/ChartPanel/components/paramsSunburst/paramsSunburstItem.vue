@@ -28,7 +28,6 @@ if(series.levels) {
   for(let i = 1; i < series.levels.length; i ++) {
     colors.push(series.levels[i].itemStyle.color)
   }
-  console.log(colors)
 }
 const config = reactive<ConfigInt>({
   borderColor: {

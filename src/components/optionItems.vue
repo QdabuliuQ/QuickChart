@@ -9,13 +9,14 @@
         placeholder="请选择" size="small">
         <el-option v-for="prop in item.options" :key="prop.value" :label="prop.label" :value="prop.value" />
       </el-select>
-      <el-input v-else-if="item.type == 'input_text'" maxlength="20" size="small" v-model="item.value" />
-      <imageUpload
+      <el-input v-else-if="item.type == 'input_text'" :maxlength="item.max ? item.max : 20" size="small" v-model="item.value" />
+      <image-upload
         v-else-if="item.type == 'imgload'"
         @deleteImage="() => item.value = ''"
         @imageChange="(e: any) => item.value = e"
-        :image="item.value"
+        :value="item.value"
         :imgType="item.imgType ? item.imgType : 'url'"
+        :url="item.url"
         :imgSize="item.imgSize ? item.imgSize : 100"/>
     </seriesItem>
   </div>
@@ -25,11 +26,11 @@
 import { defineProps } from 'vue'
 import seriesItem from "@/components/seriesItem.vue";
 import imageUpload from './imageUpload.vue'
-import { ConfigInt } from '@/types/common';
 import { common } from "@/chartConfig/opname";
+import {IOption, TOption} from "@/types/option";
 
 interface PropsInt {
-  config: ConfigInt
+  config: any
 }
 const { config } = defineProps<PropsInt>()
 </script>

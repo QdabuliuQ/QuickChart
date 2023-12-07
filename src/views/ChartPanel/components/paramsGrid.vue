@@ -15,9 +15,25 @@ import { common } from '@/chartConfig/opname';
 import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import {debounce, getConfigValue} from "@/utils";
+import {IOption} from "@/types/option";
+import useWatchData from "@/hooks/useWatchData";
 const proxy = useProxy()
 const {chart}: any = useStore()
-const config = reactive<ConfigInt>({
+interface IConfig {
+  'show': IOption<'switch'>
+  'left': IOption<'input_number'>
+  'top': IOption<'input_number'>
+  'right': IOption<'input_number'>
+  'bottom': IOption<'input_number'>
+  'backgroundColor': IOption<'color_picker'>
+  'borderColor': IOption<'color_picker'>
+  'borderWidth': IOption<'input_number'>
+  'shadowBlur': IOption<'input_number'>
+  'shadowColor': IOption<'color_picker'>
+  'shadowOffsetX': IOption<'input_number'>
+  'shadowOffsetY': IOption<'input_number'>
+}
+const config = reactive<IConfig>({
   show: {
     type: 'switch',
     title: common.show,
@@ -98,13 +114,8 @@ const getData = () => {
   grid.bottom = grid.bottom + '%'
   return grid
 }
-watch(() => config, debounce(() => {
-  proxy.$Bus.emit("optionChange", {
-    grid: getData(),
-  });
-}, 500), {
-  deep: true
-})
+
+useWatchData(config, 'grid', getData)
 </script>
 
 <style lang='less'>

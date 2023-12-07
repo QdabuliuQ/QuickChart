@@ -33,11 +33,15 @@ import useStore from "@/store";
 import optionItems from '@/components/optionItems.vue'
 import graphicComItem from "@/components/graphicComItem.vue"
 import { ElMessageBox } from "element-plus";
-import {createImage} from "@/utils";
+import {IOption, TOption} from "@/types/option";
+import {oss} from "@/network";
+
 const proxy = useProxy()
 const {chart}: any = useStore()
 const drawer = ref<boolean>(false)
-let config = reactive<ConfigInt[]>([])
+let config = reactive<{
+  [propName: string]: IOption<TOption>
+}[]>([])
 const activeIdx = ref<number>(0)
 
 const drawerOpen = () => {
@@ -74,11 +78,7 @@ const conveyConfigToOption = (config: ConfigInt[]): any[] => {
         if(key == 'left' || key == 'top') {
           p[key] = item[key]["value"] + '%'
         } else {
-          if(key === 'image') {
-            p[key] = createImage(item[key]["value"])
-            p['url'] = item[key]["value"]
-          }
-          else p[key] = item[key]["value"]
+          p[key] = item[key]["value"]
         }
       } else {
         if(key == 'left' || key == 'top') {
@@ -162,9 +162,10 @@ const getConfigs = (options: any[]) => {
         image: {
           type: 'imgload',
           title: '图片上传',
-          value: item.style.image ? item.style.url : '',
+          value: item.style.image,
           attr: 'style',
-          imgType: "url"
+          imgType: "url",
+          url: `${oss}/upload/graphic`
         },
         left: {
           type: 'input_number',
@@ -204,7 +205,9 @@ const getConfigs = (options: any[]) => {
   }
 }
 
-const getDefaultConfig = (type: string): ConfigInt => {
+const getDefaultConfig = (type: string): {
+  [propName: string]: IOption<TOption>
+} => {
   switch (type) {
     case 'text':
       return {
@@ -258,7 +261,9 @@ const getDefaultConfig = (type: string): ConfigInt => {
           type: 'imgload',
           title: '图片上传',
           value: '',
-          attr: 'style'
+          attr: 'style',
+          imgType: 'url',
+          url: `${oss}/upload/graphic`
         },
         left: {
           type: 'input_number',
