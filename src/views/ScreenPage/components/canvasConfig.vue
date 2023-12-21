@@ -11,9 +11,10 @@
       <image-upload
         @deleteImage="() => screen.updateScreenOptionOfCanvasByKey('bgImage', '')"
         @imageChange="imageChange"
-        :image="screen.getScreenOptionOfCanvas.bgImage"
+        :value="screen.getScreenOptionOfCanvas.bgImage"
         :imgType="'base64'"
-        :imgSize="2000"/>
+        :imgSize="2000"
+        :url="`${oss}/upload/chartImage`" />
     </series-item>
     <series-item v-show="screen.getScreenOptionOfCanvas.bgType === 'image'" title="图片覆盖">
       <el-select v-model="screen.getScreenOptionOfCanvas.backgroundSize" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
@@ -31,9 +32,9 @@
     <series-item v-show="screen.getScreenOptionOfCanvas.bgType === 'color'" title="背景颜色">
       <el-color-picker size="small" v-model="screen.getScreenOptionOfCanvas.bgColor" show-alpha />
     </series-item>
-    <div v-show="screen.getScreenOptionOfCanvas.bgType === 'color'" class="colorPanel">
+    <div @click="selectColor" v-show="screen.getScreenOptionOfCanvas.bgType === 'color'" class="colorPanel">
       <div :key="idx" v-for="(item,idx) in colors" class="colorItems">
-        <div class="item" v-for="c in item" :key="c" :style="{
+        <div :data-color="c" class="item" v-for="c in item" :key="c" :style="{
           backgroundColor: c
         }"></div>
       </div>
@@ -53,6 +54,7 @@ import ImageUpload from "@/components/imageUpload.vue";
 import useStore from "@/store";
 import {debounce} from "@/utils";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
+import {oss} from "@/network";
 
 const {screen}: any = useStore();
 const canvas = reactive(JSON.parse(JSON.stringify(screen.getScreenOptionOfCanvas)))
@@ -73,6 +75,12 @@ let stop = watch(() => canvas, debounce(() => {
 const imageChange = (e: any) => {
   screen.updateScreenOptionOfCanvasByKey('bgImage', e.base64)
   screen.updateScreenOptionOfCanvasByKey('file', e.file)
+}
+
+const selectColor = (e: Event) => {
+  if ((e.srcElement as any).dataset.color) {
+    screen.updateScreenOptionOfCanvasByKey('bgColor', (e.srcElement as any).dataset.color)
+  }
 }
 
 onUnmounted(() => {

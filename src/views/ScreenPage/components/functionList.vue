@@ -226,6 +226,8 @@ import useStore from "@/store";
 import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
 import {ShapePoolItem} from "@/types/shape";
 import {getImageConfig, getShapeConfig, getTextConfig} from "@/utils/screenUtil";
+import {postScreenHtml} from "@/network/screen";
+import * as url from "url";
 
 type STATUS = '1' | '2'| '3'
 interface IItem {
@@ -362,7 +364,6 @@ const itemClick = (info: any, _type: "chart" | "map") => {
     },
   }
   if (_type === 'map') option['adcode'] = info.adcode
-  console.log(option)
   screen.addScreenOptionOfElements(option)
 }
 
@@ -424,13 +425,53 @@ const exportImage = () => {  // 导出图片
     type: imgType.value
   })
 }
-const exportClick = (type: string) => {
+const exportClick = async (type: string) => {
   switch (type) {
     case 'html':
+      let loading = proxy.$loading({
+        lock: true,
+        text: "正在导出HTML，请稍后...",
+        background: "rgba(0, 0, 0, 0.7)",
+      })
+      Promise.all([
+        postScreenHtml({
+          option: JSON.stringify(screen.getScreenOption),
+          c_width: document.getElementById("dragElement")?.clientWidth as number,
+          c_height: document.getElementById("dragElement")?.clientHeight as number
+        }),
+        new Promise((resolve) => {
+          setTimeout(resolve, 1000)
+        }),
+      ]).then((res: any) => {
+        res = res[0]
+        if (!res.status) {
+          throw new Error()
+        }
+        const blob = new Blob([res.data], {
+          type: "text/html"
+        })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'chart.html'
+        link.click()
+        proxy.$notice({
+          message: "下载文件成功",
+          type: "success",
+          position: "top-left"
+        })
+      }).catch(() => {
+        proxy.$notice({
+          message: "下载文件失败",
+          type: "error",
+          position: "top-left"
+        })
+      }).finally(() => {
+        loading.close()
+      })
       break
     case 'image':
       visible.value = true
-      // proxy.$Bus.emit("exportImage")
       break
   }
   exportPopoverRef.value.hide()

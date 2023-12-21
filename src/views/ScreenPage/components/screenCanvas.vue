@@ -1,13 +1,18 @@
 <template>
-  <div :style="{
-    width: props.width,
-    height: props.height,
-  }" class="screenCanvas">
+  <div class="screenCanvas">
+    <div class="btn-container">
+      <layer-panel>
+        <function-btn icon="i_layer" />
+      </layer-panel>
+    </div>
     <context-menu
       @contextmenu="contextmenu"
       @select="selectItem"
       :menu="menu">
-      <div class="opacityBg">
+      <div class="opacityBg" :style="{
+        width: size[0] + 'px',
+        height: size[1] + 'px'
+      }">
         <div
           class="mainCanvas"
           :style="{
@@ -27,10 +32,12 @@
 <script setup lang="ts">
 import useStore from "@/store";
 import useProxy from "@/hooks/useProxy";
-import {onUnmounted} from "vue";
+import {onMounted, onUnmounted, reactive} from "vue";
 import {postScreenImage} from "@/network/screen";
 import ContextMenu from "@/components/contextMenu.vue";
 import DragItems from "./dragItems.vue";
+import FunctionBtn from "@/views/ScreenPage/components/functionBtn.vue";
+import LayerPanel from "@/views/ScreenPage/components/layerPanel.vue";
 
 interface IProps {
   width: string
@@ -45,7 +52,7 @@ const menu = [
     icon: "i_paste"
   },
 ]
-
+const size = reactive<[number, number]>([0, 0])
 const proxy = useProxy()
 const exportImage = async ({size, type}: any) => {
   let loading = proxy.$loading({
@@ -96,6 +103,12 @@ const contextmenu = (point: [number, number]) => {
   lastPoint[1] = point[1]
 }
 
+onMounted(() => {
+  let container = document.getElementsByClassName("screenCanvas")[0]
+  size[0] = container.clientWidth * 0.95
+  size[1] = size[0] * document.documentElement.clientHeight / document.documentElement.clientWidth
+})
+
 onUnmounted(() => {
   proxy.$Bus.off("exportImage", exportImage)
 })
@@ -105,11 +118,21 @@ onUnmounted(() => {
 .screenCanvas {
   flex: 1;
   overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   .scrollContainer();
 
+  .btn-container {
+    position: absolute;
+    bottom: 15px;
+    left: 25px;
+  }
+
   .opacityBg {
-    width: 1070px;
-    height: 652px;
+    //width: 1070px;
+    //height: 652px;
     margin: 40px auto;
     background-image: url("../../../assets/image/bg.jpg");
     background-repeat: repeat;

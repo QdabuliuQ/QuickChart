@@ -3,6 +3,7 @@ import {Elements, ElementTypeProperties, IConfig} from "@/types/screen";
 export interface IStore {
   screenOption: IConfig | null
   curElementIdx: number
+  activeElementIdx: number
   tmpElement: IConfig | null
 }
 
@@ -11,6 +12,7 @@ const useScreenStore = defineStore('screen', {
     return {
       screenOption: null,  // 大屏配置
       curElementIdx: -1,  // 选择元素索引
+      activeElementIdx: -1,  // 激活元素索引
       tmpElement: null
     }
   },
@@ -30,6 +32,9 @@ const useScreenStore = defineStore('screen', {
     },
     getCurElementIdx(state: any) {
       return state.curElementIdx
+    },
+    getActiveElementIdx(state: any) {
+      return state.activeElementIdx
     }
   },
 
@@ -54,12 +59,18 @@ const useScreenStore = defineStore('screen', {
       if(idx < 0 || idx >= this.screenOption['elements'].length) return
       this.screenOption['elements'][idx]['style'] = style
     },
+    updateTextContent(content: string, idx: number) {
+      this.screenOption['elements'][idx]['content'] = content
+    },
     addScreenOptionOfElements(data: ElementTypeProperties<Elements>) {
       this.screenOption['elements'].push(data)
     },
     deleteScreenOptionOfElements(idx: number) {
       if(this.screenOption['elements'].length <= idx) return
       return this.screenOption['elements'].splice(idx, 1)
+    },
+    updateActiveElementIdx(idx: number) {
+      this.activeElementIdx = idx
     },
     updateCurElementIdx(idx: number) {
       this.curElementIdx = idx

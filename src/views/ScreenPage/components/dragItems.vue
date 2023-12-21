@@ -7,7 +7,7 @@
       :key="item.id"
     >
       <img
-        :class="['dragItem', 'item_' + item.id]"
+        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
         v-if="item.type === 'chart' || item.type === 'map'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -18,7 +18,7 @@
         }"
         :src="item.cover"/>
       <div
-        :class="['dragItem', 'item_' + item.id]"
+        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
         v-else-if="item.type === 'text'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -40,8 +40,6 @@
       >
         <span
           class="textInfo"
-          contenteditable="true"
-          @dblclick="(e: any) => e.target.focus()"
           :style="{
             backgroundColor: item.style.backgroundColor
           }"
@@ -52,7 +50,7 @@
       </div>
       <div
         @click="itemClick(idx as number, $event)"
-        :class="['dragItem', 'item_' + item.id]"
+        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
         v-else-if="item.type === 'shape'"
         :style="{
           width: item.style.width + 'px',
@@ -80,7 +78,7 @@
         </svg>
       </div>
       <img
-        :class="['imgElement', 'dragItem', 'item_' + item.id]"
+        :class="['imgElement', 'dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
         v-else-if="item.type === 'image'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -110,7 +108,6 @@
       :elementSnapDirections='{"top":true,"left":true,"bottom":true,"right":true,"center":true,"middle":true}'
       :elementGuidelines="elementGuidelines"
       :bounds="bounds"
-      :dragFocusedInput="screen.getCurElementIdx === -1 ? false : screen.getScreenOptionOfElements[screen.getCurElementIdx].type === 'text'"
       @render="onRender"
       @drag-end="dragEnd"
       @rotate="onRotate"
@@ -278,7 +275,6 @@ const setImageStyle = (info: any, idx: number) => {
   info['borderWidth'] = parseInt(style.borderWidth)
   info['borderType'] = style.borderStyle
   info['borderColor'] = style.borderColor
-  console.log("info", info)
 }
 
 const cancelClickEvent = (e: any) => {
@@ -377,23 +373,26 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   position: relative;
-  [contenteditable] {
-    outline: none;
-    border: 0;
-    width: 100%;
-  }
-
-  [contenteditable]:focus {
-    outline: 1px solid @theme;
-  }
   .imgElement {
     -webkit-user-drag: none;
   }
   .dragItem {
     position: absolute;
     overflow: hidden;
+    box-sizing: border-box;
     .textInfo {
       word-break: break-all;
+    }
+  }
+  .activeItem {
+    animation: borderAnimate 1s linear infinite;
+  }
+  @keyframes borderAnimate {
+    0% {
+      border: 1px dashed @theme;
+    }
+    100% {
+      border: 1px dashed transparent;
     }
   }
 }

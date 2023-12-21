@@ -14,3 +14,15 @@ export function postScreenImage(data: {
     data
   })
 }
+
+export function postScreenHtml(data: {
+  option: string
+  c_width: number
+  c_height: number
+}) {
+  return ajax({
+    url: "/sc/screenHtml",
+    method: "post",
+    data
+  })
+}

@@ -4,6 +4,9 @@
       <config-title title="文本参数" />
       <common-config :info="baseInfo" />
       <config-title title="文本配置" />
+      <series-item title="内容">
+        <el-input size="small" v-model="content" maxlength="100" />
+      </series-item>
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
       </series-item>
@@ -106,16 +109,18 @@ let info = ref<Text | null>(null)
 const idx = ref<number>(-1)
 
 const {screen} = useStore()
+const content = ref<string>('')
 const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>)
 const updateInfo = () => {
   if (screen.getCurElementIdx !== -1) {
     idx.value = screen.getCurElementIdx
     info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>))
+    content.value = info.value!.content
   }
 }
 let stop = watch(() => info, debounce(() => {
   setCommonStyle(baseInfo, info)
-  screen.updateScreenOptionOfElementStyle(JSON.parse(JSON.stringify(info.value!.style )), idx.value)
+  screen.updateScreenOptionOfElementStyle(info.value!.style, idx.value)
 }), {
   deep: true
 })
@@ -125,6 +130,9 @@ let stop2 = watch(() => screen.curElementIdx, (newVal: number) => {
     updateInfo()
   }
 })
+let stop3 = watch(content, debounce(() => {
+  screen.updateTextContent(content.value, idx.value)
+}))
 
 const proxy = useProxy()
 const deleteEvent = () => {  // 删除图表
@@ -138,6 +146,7 @@ onMounted(() => {
 onUnmounted(() => {
   stop()
   stop2()
+  stop3()
 })
 </script>
 <style lang="less">
