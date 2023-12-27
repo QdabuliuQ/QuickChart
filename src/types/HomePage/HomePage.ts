@@ -1,7 +1,5 @@
 export class InitData {
   animate: boolean = false
-  imgWidth: number = 0
-  coverHeight: number = 0
   processList: {
     step: number
     title: string

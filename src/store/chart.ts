@@ -44,6 +44,9 @@ const useChartStore = defineStore('chart', {
     },
     setType(type: 'chart'|'map') {
       this.type = type
+    },
+    setMapJSON(json: any) {
+      this.mapJSON = json
     }
   }
 })

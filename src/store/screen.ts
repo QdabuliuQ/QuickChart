@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {Elements, ElementTypeProperties, IConfig} from "@/types/screen";
+import {Elements, ElementTypeProperties, IConfig, IStyle} from "@/types/screen";
 export interface IStore {
   screenOption: IConfig | null
   curElementIdx: number
@@ -25,7 +25,7 @@ const useScreenStore = defineStore('screen', {
       return state.screenOption
     },
     getScreenOptionOfElements(state: any) {
-      return state.screenOption.elements
+      return state.screenOption ? state.screenOption.elements : null
     },
     getScreenOptionOfCanvas(state: any) {
       return state.screenOption.canvas
@@ -58,6 +58,10 @@ const useScreenStore = defineStore('screen', {
     updateScreenOptionOfElementStyle(style: any, idx: number) {
       if(idx < 0 || idx >= this.screenOption['elements'].length) return
       this.screenOption['elements'][idx]['style'] = style
+    },
+    updateScreenOptionOfElementStyleItem(idx: number, key: keyof IStyle, val: any) {
+      if(idx < 0 || idx >= this.screenOption['elements'].length) return
+      this.screenOption['elements'][idx]['style'][key] = val
     },
     updateTextContent(content: string, idx: number) {
       this.screenOption['elements'][idx]['content'] = content

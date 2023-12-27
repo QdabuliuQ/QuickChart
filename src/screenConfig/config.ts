@@ -41,6 +41,7 @@ let config: IConfig = {
       viewBox: [200, 200],
       path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 Z',
       style: {
+        display: "block",
         fill: "#f8b557",
         stroke: "rgba(0,0,0,0)",
         strokeWidth: 0,
@@ -63,6 +64,7 @@ let config: IConfig = {
       option: "",
       isLock: false,
       style: {
+        display: "block",
         width: 200,
         height: 130,
         translateX: 0,

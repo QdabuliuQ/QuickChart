@@ -1,10 +1,5 @@
 <template>
   <div class="screenCanvas">
-    <div class="btn-container">
-      <layer-panel>
-        <function-btn icon="i_layer" />
-      </layer-panel>
-    </div>
     <context-menu
       @contextmenu="contextmenu"
       @select="selectItem"
@@ -38,6 +33,7 @@ import ContextMenu from "@/components/contextMenu.vue";
 import DragItems from "./dragItems.vue";
 import FunctionBtn from "@/views/ScreenPage/components/functionBtn.vue";
 import LayerPanel from "@/views/ScreenPage/components/layerPanel.vue";
+import {uuid} from "@/utils";
 
 interface IProps {
   width: string
@@ -51,6 +47,10 @@ const menu = [
     label: '粘贴',
     icon: "i_paste"
   },
+  {
+    label: '清空剪切板',
+    icon: "i_clear"
+  }
 ]
 const size = reactive<[number, number]>([0, 0])
 const proxy = useProxy()
@@ -88,10 +88,16 @@ const selectItem = ({label}: {label: string}) => {
     case '粘贴':
       if (screen.getTmpElement) {
         let element = screen.getTmpElement
+        element.id = uuid(6, 36)
         element.style.translateX = lastPoint[0]
         element.style.translateY = lastPoint[1]
         screen.addScreenOptionOfElements(element)
         screen.setTmpElement(null)  // 清空粘贴的元素
+      }
+      break;
+    case '清空剪切板':
+      if (screen.getTmpElement) {
+        screen.setTmpElement(null)
       }
       break;
   }

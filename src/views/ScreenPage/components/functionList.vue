@@ -1,182 +1,195 @@
 <template>
-  <div class="functionList">
-    <div class="funcItem" title="保存图表">
-      <i class="iconfont i_save"></i>
-      保存
-    </div>
-    <div class="funcItem" title="另存图表">
-      <i class="iconfont i_save1"></i>
-      另存
-    </div>
-    <div @click="imgClick" class="funcItem" title="插入图片">
-      <i class="iconfont i_img"></i>
-      图片
-    </div>
-    <input @change="selectFile" style="display: none" accept=".jpg,.png,.jpeg" type="file" ref="inputRef">
-    <div @click="textClick" class="funcItem" title="插入文本">
-      <i class="iconfont i_text"></i>
-      文本
-    </div>
-    <el-popover
-      ref='shapePopoverRef'
-      popper-class="functionListPopoverClass"
-      placement="right-start"
-      trigger="click"
-      :hide-after="0"
-    >
-      <el-scrollbar height="500px">
-        <shape-list @shape-click="shapeClick" />
-      </el-scrollbar>
-      <template #reference>
-        <div class="funcItem" title="插入图形">
-          <i class="iconfont i_shape"></i>
-          图形
+  <save-chart-dialog @save-chart="saveChart" :visible="saveDialogVisible" />
+  <el-scrollbar height="100vh">
+    <div class="functionList">
+      <layer-panel>
+        <div class="funcItem" title="打开图层">
+          <i class="iconfont i_layer"></i>
+          图层
         </div>
-      </template>
-    </el-popover>
-    <el-popover
-      ref='chartPopoverRef'
-      popper-class="functionListPopoverClass"
-      placement="right-start"
-      trigger="click"
-      :hide-after="0"
-    >
-      <el-scrollbar height="400px">
-        <skeleton
-          :count="4"
-          :status="chartInfo.status"
-          :loading-class="['cover', 'name']"
-        >
-          <template v-slot:template="{ setSlotRef }">
-            <div class="item">
-              <div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
-              <div class="name" style="margin-top: 5px">xxxxxxxxxxx</div>
-            </div>
-          </template>
-          <template v-slot:content>
-            <div class="functionListChartContainer">
-              <div
-                @click="itemClick(item, type)"
-                class="item"
-                v-for="item in chartList"
-                :key="item.cover"
-              >
-                <div class="mask">插入图表</div>
-                <el-image
-                  style="width: 100%; aspect-ratio: 2/1.3"
-                  :src="item.cover"
-                  fit="cover"
-                />
-                <div class="name">{{ item.name }}</div>
-              </div>
-            </div>
-            <el-pagination
-              class="paginationClass"
-              v-model:current-page="chartInfo.offset"
-              hide-on-single-page
-              background
-              layout="prev, pager, next"
-              :page-size="chartInfo.limit"
-              :total="chartInfo.count"
-              @current-change="chartCurrentChange"
-            />
-          </template>
-          <template v-slot:empty>
-            <el-empty description="暂无图表" />
-          </template>
-        </skeleton>
-      </el-scrollbar>
-      <template #reference>
-        <div @click="funcClick('chart')" class="funcItem" title="插入图表">
-          <i class="iconfont i_chart"></i>
-          图表
-        </div>
-      </template>
-    </el-popover>
-    <el-popover
-      ref="mapPopoverRef"
-      popper-class="functionListPopoverClass"
-      placement="right-start"
-      trigger="click"
-      :hide-after="0"
-    >
-      <el-scrollbar height="400px">
-        <skeleton
-          :count="4"
-          :status="mapInfo.status"
-          :loading-class="['cover', 'name']"
-        >
-          <template v-slot:template="{ setSlotRef }">
-            <div class="item">
-              <div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
-              <div class="name" style="margin-top: 5px">xxxxxxxxxxx</div>
-            </div>
-          </template>
-          <template v-slot:content>
-            <div class="functionListChartContainer">
-              <div
-                @click="itemClick(item, type)"
-                class="item"
-                v-for="item in mapList"
-                :key="item.cover"
-              >
-                <div class="mask">插入图表</div>
-                <el-image
-                  style="width: 100%; aspect-ratio: 2/1.3"
-                  :src="item.cover"
-                  fit="cover"
-                />
-                <div class="name">{{ item.name }}</div>
-              </div>
-            </div>
-            <el-pagination
-              class="paginationClass"
-              v-model:current-page="mapInfo.offset"
-              hide-on-single-page
-              background
-              layout="prev, pager, next"
-              :page-size="mapInfo.limit"
-              :total="mapInfo.count"
-              @current-change="mapCurrentChange"
-            />
-          </template>
-          <template v-slot:empty>
-            <el-empty description="暂无图表" />
-          </template>
-        </skeleton>
-      </el-scrollbar>
-      <template #reference>
-        <div @click="funcClick('map')" class="funcItem" title="插入地图">
-          <i class="iconfont i_map"></i>
-          地图
-        </div>
-      </template>
-    </el-popover>
-    <el-popover
-      ref="exportPopoverRef"
-      popper-class="functionListPopoverClass"
-      placement="right-start"
-      trigger="click"
-      :hide-after="0"
-    >
-      <div class="typeContainer">
-        <div @click="exportClick('html')" class="typeItem">
-          <img src="@/assets/image/html.svg" />
-          HTML
-        </div>
-        <div @click="exportClick('image')" class="typeItem">
-          <img src="@/assets/image/image.svg" />
-          图片
-        </div>
+      </layer-panel>
+      <div class="funcItem" title="保存图表">
+        <i class="iconfont i_save"></i>
+        保存
       </div>
-      <template #reference>
-        <div class="funcItem" title="导出内容">
-          <i class="iconfont i_export"></i>
-          导出
+      <div @click="() => saveDialogVisible = true" class="funcItem" title="另存图表">
+        <i class="iconfont i_save1"></i>
+        另存
+      </div>
+      <div @click="imgClick" class="funcItem" title="插入图片">
+        <i class="iconfont i_img"></i>
+        图片
+      </div>
+      <input @change="selectFile" style="display: none" accept=".jpg,.png,.jpeg" type="file" ref="inputRef">
+      <div @click="textClick" class="funcItem" title="插入文本">
+        <i class="iconfont i_text"></i>
+        文本
+      </div>
+      <el-popover
+        ref='shapePopoverRef'
+        popper-class="functionListPopoverClass"
+        placement="right-start"
+        trigger="click"
+        :hide-after="0"
+      >
+        <el-scrollbar height="500px">
+          <shape-list @shape-click="shapeClick" />
+        </el-scrollbar>
+        <template #reference>
+          <div class="funcItem" title="插入图形">
+            <i class="iconfont i_shape"></i>
+            图形
+          </div>
+        </template>
+      </el-popover>
+      <el-popover
+        ref='chartPopoverRef'
+        popper-class="functionListPopoverClass"
+        placement="right-start"
+        trigger="click"
+        :hide-after="0"
+      >
+        <el-scrollbar height="400px">
+          <skeleton
+            :count="4"
+            :status="chartInfo.status"
+            :loading-class="['cover', 'name']"
+          >
+            <template v-slot:template="{ setSlotRef }">
+              <div class="item">
+                <div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
+                <div class="name" style="margin-top: 5px">xxxxxxxxxxx</div>
+              </div>
+            </template>
+            <template v-slot:content>
+              <div class="functionListChartContainer">
+                <div
+                  @click="itemClick(item, type)"
+                  class="item"
+                  v-for="item in chartList"
+                  :key="item.cover"
+                >
+                  <div class="mask">插入图表</div>
+                  <el-image
+                    style="width: 100%; aspect-ratio: 2/1.3"
+                    :src="item.cover"
+                    fit="cover"
+                  />
+                  <div class="name">{{ item.name }}</div>
+                </div>
+              </div>
+              <el-pagination
+                class="paginationClass"
+                v-model:current-page="chartInfo.offset"
+                hide-on-single-page
+                background
+                layout="prev, pager, next"
+                :page-size="chartInfo.limit"
+                :total="chartInfo.count"
+                @current-change="chartCurrentChange"
+              />
+            </template>
+            <template v-slot:empty>
+              <el-empty description="暂无图表" />
+            </template>
+          </skeleton>
+        </el-scrollbar>
+        <template #reference>
+          <div @click="funcClick('chart')" class="funcItem" title="插入图表">
+            <i class="iconfont i_chart"></i>
+            图表
+          </div>
+        </template>
+      </el-popover>
+      <el-popover
+        ref="mapPopoverRef"
+        popper-class="functionListPopoverClass"
+        placement="right-start"
+        trigger="click"
+        :hide-after="0"
+      >
+        <el-scrollbar height="400px">
+          <skeleton
+            :count="4"
+            :status="mapInfo.status"
+            :loading-class="['cover', 'name']"
+          >
+            <template v-slot:template="{ setSlotRef }">
+              <div class="item">
+                <div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
+                <div class="name" style="margin-top: 5px">xxxxxxxxxxx</div>
+              </div>
+            </template>
+            <template v-slot:content>
+              <div class="functionListChartContainer">
+                <div
+                  @click="itemClick(item, type)"
+                  class="item"
+                  v-for="item in mapList"
+                  :key="item.cover"
+                >
+                  <div class="mask">插入图表</div>
+                  <el-image
+                    style="width: 100%; aspect-ratio: 2/1.3"
+                    :src="item.cover"
+                    fit="cover"
+                  />
+                  <div class="name">{{ item.name }}</div>
+                </div>
+              </div>
+              <el-pagination
+                class="paginationClass"
+                v-model:current-page="mapInfo.offset"
+                hide-on-single-page
+                background
+                layout="prev, pager, next"
+                :page-size="mapInfo.limit"
+                :total="mapInfo.count"
+                @current-change="mapCurrentChange"
+              />
+            </template>
+            <template v-slot:empty>
+              <el-empty description="暂无图表" />
+            </template>
+          </skeleton>
+        </el-scrollbar>
+        <template #reference>
+          <div @click="funcClick('map')" class="funcItem" title="插入地图">
+            <i class="iconfont i_map"></i>
+            地图
+          </div>
+        </template>
+      </el-popover>
+      <el-popover
+        ref="exportPopoverRef"
+        popper-class="functionListPopoverClass"
+        placement="right-start"
+        trigger="click"
+        :hide-after="0"
+      >
+        <div class="typeContainer">
+          <div @click="exportClick('html')" class="typeItem">
+            <img src="@/assets/image/html.svg" />
+            HTML
+          </div>
+          <div @click="exportClick('image')" class="typeItem">
+            <img src="@/assets/image/image.svg" />
+            图片
+          </div>
         </div>
-      </template>
-    </el-popover>
-  </div>
+        <template #reference>
+          <div class="funcItem" title="导出内容">
+            <i class="iconfont i_export"></i>
+            导出
+          </div>
+        </template>
+      </el-popover>
+      <div @click="previewEvent" class="funcItem" title="效果预览">
+        <i class="iconfont i_preview"></i>
+        预览
+      </div>
+    </div>
+  </el-scrollbar>
   <el-dialog
     v-model="visible"
     title="导出图片"
@@ -216,18 +229,22 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import {onMounted, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
 import { getChart } from "@/network/chart";
 import { getChart as getMap } from "@/network/map";
 import {ajaxRequest, fileType, uuid} from "@/utils";
-import Skeleton from "@/components/skeleton.vue";
-import useProxy from "@/hooks/useProxy";
-import useStore from "@/store";
-import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
 import {ShapePoolItem} from "@/types/shape";
 import {getImageConfig, getShapeConfig, getTextConfig} from "@/utils/screenUtil";
-import {postScreenHtml} from "@/network/screen";
-import * as url from "url";
+import {postScreen, postScreenHtml} from "@/network/screen";
+import useProxy from "@/hooks/useProxy";
+import useStore from "@/store";
+import LayerPanel from "@/views/ScreenPage/components/layerPanel.vue";
+import SaveChartDialog from "@/components/saveChartDialog.vue";
+import Skeleton from "@/components/skeleton.vue";
+import ShapeList from "@/views/ScreenPage/components/shapeList.vue";
+
+const router = useRouter();
 
 type STATUS = '1' | '2'| '3'
 interface IItem {
@@ -287,6 +304,38 @@ const sizes = [
     tar: '超清'
   }
 ]
+
+const previewEvent = () => {
+  localStorage.setItem("screenData", JSON.stringify(screen.getScreenOption))
+  let detail = router.resolve({
+    path:'/preview'
+  })
+  window.open(detail.href, '_blank');
+}
+
+const saveDialogVisible = ref<boolean>(false)
+const saveChart = async (name: string) => {
+  let loading = proxy.$loading({
+    lock: true,
+    text: "正在保存...",
+    background: "rgba(0, 0, 0, 0.7)",
+  })
+  let res: any = await postScreen({
+    name,
+    option: JSON.stringify(screen.getScreenOption),
+    c_width: document.getElementById("dragElement")?.clientWidth as number,
+    c_height: document.getElementById("dragElement")?.clientHeight as number,
+  })
+  if(res.status) {
+    proxy.$notice({
+      type: "success",
+      message: res.msg,
+      position: "top-left"
+    })
+  }
+  saveDialogVisible.value = false
+  loading.close()
+}
 
 const getData = async () => {
   if (
@@ -352,7 +401,9 @@ const itemClick = (info: any, _type: "chart" | "map") => {
     type: _type,
     cover: info.cover,
     option: info.option,
+    isLock: false,
     style: {
+      display: "block",
       width: 200,
       height: 130,
       translateX: 0,
@@ -425,6 +476,7 @@ const exportImage = () => {  // 导出图片
     type: imgType.value
   })
 }
+
 const exportClick = async (type: string) => {
   switch (type) {
     case 'html':
@@ -476,7 +528,6 @@ const exportClick = async (type: string) => {
   }
   exportPopoverRef.value.hide()
 }
-
 </script>
 
 <style lang="less">
@@ -560,7 +611,7 @@ const exportClick = async (type: string) => {
 .functionList {
   display: flex;
   flex-direction: column;
-  padding: 20px 0;
+  padding: 20px 3px 20px 0;
   background-color: @curColor;
   .active {
     background-color: #4d4d4d !important;

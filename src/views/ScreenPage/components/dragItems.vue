@@ -11,6 +11,7 @@
         v-if="item.type === 'chart' || item.type === 'map'"
         @click="itemClick(idx as number, $event)"
         :style="{
+          display: item.style.display,
           width: item.style.width + 'px',
           height: item.style.height + 'px',
           transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
@@ -22,6 +23,7 @@
         v-else-if="item.type === 'text'"
         @click="itemClick(idx as number, $event)"
         :style="{
+          display: item.style.display,
           width: item.style.width + 'px',
           height: item.style.height + 'px',
           transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
@@ -53,6 +55,7 @@
         :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
         v-else-if="item.type === 'shape'"
         :style="{
+          display: item.style.display,
           width: item.style.width + 'px',
           height: item.style.height + 'px',
           transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
@@ -82,6 +85,7 @@
         v-else-if="item.type === 'image'"
         @click="itemClick(idx as number, $event)"
         :style="{
+          display: item.style.display,
           width: item.style.width + 'px',
           height: item.style.height + 'px',
           transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
@@ -93,7 +97,7 @@
       />
     </context-menu>
     <Moveable
-      :target="target"
+      :target="screen.getCurElementIdx !== -1 ? target : null"
       :ables="[Deleteable]"
       :props="({ deleteable: true })"
       :draggable="true"
@@ -110,8 +114,8 @@
       :bounds="bounds"
       @render="onRender"
       @drag-end="dragEnd"
-      @rotate="onRotate"
-      @resize="onResize"
+      @rotate="dragEnd"
+      @resize="dragEnd"
       @click.stop
     />
   </div>
@@ -124,7 +128,6 @@ import useStore from "@/store";
 import {IStyle} from "@/types/screen";
 import {debounce, deepCopy} from "@/utils";
 import ContextMenu from "@/components/contextMenu.vue";
-import {useCopyElement} from "@/hooks/useCopyElement";
 import {cutElement, lockElement, unlockElement} from "@/utils/screenUtil";
 
 const proxy = useProxy()
@@ -218,8 +221,9 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     styleInfo[target.style[i]] = target.style[target.style[i] as any]
     i++
   }
-  let [x,y,d] = styleInfo['transform'] ? styleInfo['transform'].match(/\d+(\.\d+)?/g).map((item: string) => parseFloat(item)) : [0,0,0,1,1]
+  let [x,y,d] = styleInfo['transform'] ? styleInfo['transform'].match(/-?\d+(\.\d+)?/g).map((item: string) => parseFloat(item)) : [0,0,0,1,1]
   let info: IStyle = {
+    display: styleInfo.display,
     width: styleInfo.width ? parseFloat(styleInfo.width) : 0,
     height: styleInfo.height ? parseFloat(styleInfo.height) : 0,
     translateX: x ? x : 0,
@@ -304,9 +308,6 @@ const dragEnd = debounce(() => {
   }
 }, 50)
 
-const onRotate = dragEnd  // 旋转
-const onResize = dragEnd  // 缩放
-
 let closeImg = require("@/assets/image/close.png")
 const Deleteable = {
   name: "deleteable",
@@ -359,6 +360,10 @@ let stop = watch(() => screen.screenOption.elements, () => {
 onMounted(() => {
   document.getElementsByClassName('mainCanvas')[0].addEventListener("click", cancelClickEvent)
   proxy.$Bus.on("deleteChart", deleteChart)
+  setTimeout(() => {
+    localStorage.setItem("cWidth", ((document.getElementsByClassName("opacityBg")[0] as HTMLDivElement).clientWidth).toString())
+    localStorage.setItem("cHeight", ((document.getElementsByClassName("opacityBg")[0] as HTMLDivElement).clientHeight).toString())
+  }, 100)
 })
 
 onUnmounted(() => {

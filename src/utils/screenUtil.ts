@@ -32,6 +32,7 @@ export function getTextConfig(config?: ElementTypeProperties<"text">) {
     content: "插入文本内容",
     isLock: false,
     style: {
+      display: "block",
       fontSize: 14,
       fontWeight: 'normal',
       color: '#000',
@@ -65,6 +66,7 @@ export const getShapeConfig = (config?: ElementTypeProperties<"shape">) => {
     viewBox: [200, 200],
     path: '',
     style: {
+      display: "block",
       fill: "#f8b557",
       stroke: "rgba(0,0,0,0)",
       strokeWidth: 0,
@@ -93,6 +95,7 @@ export function getImageConfig(config?: any) {
     url: '',
     file: '',
     style: {
+      display: "block",
       width: 200,
       height: 130,
       translateX: 200,
@@ -116,7 +119,6 @@ export function getImageConfig(config?: any) {
 
 export function cutElement(i: number) {
   screen.setTmpElement(screen.deleteScreenOptionOfElements(i)[0])
-  console.log(screen.getTmpElement)
 }
 export function lockElement(i: number) {
   screen.updateElementOfItem(i, 'isLock', true)
@@ -124,4 +126,7 @@ export function lockElement(i: number) {
 }
 export function unlockElement(i: number) {
   screen.updateElementOfItem(i, 'isLock', false)
+}
+export function getOffset(val1: number, val2: number, val3: number) {
+  return (val1 * val3 / val2).toFixed(2)
 }

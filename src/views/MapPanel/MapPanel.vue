@@ -97,13 +97,13 @@ const getConfig = async () => {
       chartConfig.push(item);
     }
   }
-  common.$patch((state: any) => {
-    state.option = tmpOption;
-    state.chartConfig = chartConfig;
-    state.defaultOption = deepCopy(tmpOption);
-    state.mapJSON = JSONData
-    state.type = 'map'
-  });
+
+  chart.setOption(tmpOption)
+  chart.setChartConfig(chartConfig)
+  chart.setDefaultOption(deepCopy(tmpOption))
+  chart.setMapJSON(JSONData)
+  chart.setType('map')
+
   chart_loading.value = false
   setTimeout(() => {
     params_loading.value = false

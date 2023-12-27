@@ -223,8 +223,6 @@ onUnmounted(() => {
   stop1()
   stop2()
 })
-
-
 </script>
 <style lang="less">
 .mapDetail {

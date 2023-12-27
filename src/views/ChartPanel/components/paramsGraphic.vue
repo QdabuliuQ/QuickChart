@@ -10,13 +10,13 @@
       :before-close="handleClose"
       @open="drawerOpen"
     >
-      <graphicComItem
+      <GraphicComItem
         @delete-item="deleteItem"
         @toggle-item="toggleItem"
         @add-item="addItem"
         :components="config"
       />
-      <optionItems v-if="config.length" :config="config[activeIdx]" />
+      <OptionItems v-if="config.length" :config="config[activeIdx]" />
       <el-empty v-else description="暂无内容信息" />
     </el-drawer>
   </div>
@@ -30,11 +30,11 @@ import useProxy from "@/hooks/useProxy";
 import {ConfigInt} from "@/types/common";
 import { common, label } from '@/chartConfig/opname';
 import useStore from "@/store";
-import optionItems from '@/components/optionItems.vue'
-import graphicComItem from "@/components/graphicComItem.vue"
 import { ElMessageBox } from "element-plus";
 import {IOption, TOption} from "@/types/option";
 import {oss} from "@/network";
+import optionItems from '@/components/optionItems.vue'
+import graphicComItem from "@/components/graphicComItem.vue"
 
 const proxy = useProxy()
 const {chart}: any = useStore()
@@ -153,7 +153,6 @@ const getConfigs = (options: any[]) => {
         }
       })
     } else if(item.type == 'image') {
-      console.log(item.style.url, "----", item.style.image)
       config.push({
         type: {
           type: null,

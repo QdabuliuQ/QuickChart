@@ -1,6 +1,6 @@
 <template>
   <el-popover
-    placement="top-start"
+    placement="right-start"
     :width="200"
     trigger="click"
     popper-class="layer-panel-popper-class"
@@ -9,36 +9,41 @@
       <slot></slot>
     </template>
     <el-scrollbar height="400px">
-      <div
-        @mouseenter="enterEvent(idx)"
-        @mouseleave="leaveEvent"
-        v-for="(item, idx) in screen.getScreenOptionOfElements"
-        :key="item.id"
-        class="element-item">
-        <div class="element-info">
-          <div class="element-icon">
-            <img
-              v-if="item.type === 'chart' || item.type === 'map'"
-              :src="item.cover" />
-            <img
-              v-else-if="item.type === 'image'"
-              :src="item.url" />
-            <i v-else :class='["iconfont", getIconClass(item.type)]'></i>
+      <template v-if="screen.getScreenOptionOfElements.length">
+        <div
+          @mouseenter="enterEvent(idx)"
+          @mouseleave="leaveEvent"
+          v-for="(item, idx) in screen.getScreenOptionOfElements"
+          :key="item.id"
+          class="element-item">
+          <div class="element-info">
+            <div class="element-icon">
+              <img
+                v-if="item.type === 'chart' || item.type === 'map'"
+                :src="item.cover" />
+              <img
+                v-else-if="item.type === 'image'"
+                :src="item.url" />
+              <i v-else :class='["iconfont", getIconClass(item.type)]'></i>
+            </div>
+            <div class="element-title">
+              {{getTitle(item.type)}}
+            </div>
           </div>
-          <div class="element-title">
-            {{getTitle(item.type)}}
+          <div class="element-status">
+            <i @click="lockStatusChange(idx, item.isLock)" style="font-size: 15px" :class="['iconfont', item.isLock ? 'i_unlock' : 'i_lock']"></i>
+            <i @click="visibleStatusChange(idx, item.style.display === 'none' ? 'block' : 'none')" style="font-size: 17px" :class="['iconfont', item.style.display === 'none' ? 'i_see' : 'i_unsee']"></i>
           </div>
         </div>
-        <div class="element-status">
-          <i @click="lockStatusChange(idx, item.isLock)" style="font-size: 15px" :class="['iconfont', item.isLock ? 'i_unlock' : 'i_lock']"></i>
-          <i style="font-size: 17px" class="iconfont i_see"></i>
-        </div>
-      </div>
+      </template>
+      <el-empty
+        v-else
+        description="暂无元素"
+        :image-size="80"/>
     </el-scrollbar>
   </el-popover>
 </template>
 <script setup lang="ts">
-import {reactive} from "vue";
 import useStore from "@/store";
 
 const {screen}: any = useStore()
@@ -67,7 +72,6 @@ const getTitle = (type: string) => {
 }
 
 const enterEvent = (idx: number) => {
-  console.log(idx)
   screen.updateActiveElementIdx(idx)
 }
 const leaveEvent = () => {
@@ -76,12 +80,15 @@ const leaveEvent = () => {
 const lockStatusChange = (idx: number, isLock: boolean) => {
   screen.updateElementOfItem(idx, 'isLock', !isLock)
 }
+const visibleStatusChange = (idx: number, display: 'none' | 'block') => {
+  screen.updateScreenOptionOfElementStyleItem(idx, 'display', display)
+}
 
 </script>
 <style lang="less">
 .layer-panel-popper-class {
   .element-item {
-    padding: 8px;
+    padding: 6px 8px;
     cursor: pointer;
     border-radius: 8px;
     box-sizing: border-box;
@@ -100,7 +107,7 @@ const lockStatusChange = (idx: number, isLock: boolean) => {
     }
     .element-icon {
       width: 55%;
-      height: 50px;
+      height: 55px;
       object-fit: contain;
       border-radius: 8px;
       background-color: #424242;

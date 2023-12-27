@@ -1,6 +1,6 @@
 <template>
-  <div class="function-btn">
-    <i @click="emits('clickEvent')" :class="['iconfont', props.icon]"></i>
+  <div @click="emits('clickEvent')" class="function-btn">
+    <i :class="['iconfont', props.icon]"></i>
   </div>
 </template>
 <script setup lang="ts">

@@ -93,7 +93,6 @@ import ShareChartDialog from "@/components/shareChartDialog.vue";
 import InfoPanel from "@/components/infoPanel.vue";
 import CommentDrawer from "@/components/commentDrawer.vue";
 import SaveChartDialog from "@/components/saveChartDialog.vue";
-import {snapshotElement} from "@/utils/snapshotUntils";
 
 const router = useRouter();
 const props = withDefaults(

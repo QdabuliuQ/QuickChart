@@ -103,12 +103,17 @@ const getConfig = async () => {
         chartConfig.push(item);
       }
     }
-    common.$patch((state: any) => {
-      state.option = data.data.option;
-      state.chartConfig = chartConfig;
-      state.defaultOption = deepCopy(data.data.option);
-      state.type = 'chart'
-    });
+    chart.setOption(data.data.option)
+    chart.setChartConfig(chartConfig)
+    chart.setDefaultOption(deepCopy(data.data.option))
+    chart.setType('chart')
+
+    // common.$patch((state: any) => {
+    //   state.option = data.data.option;
+    //   state.chartConfig = chartConfig;
+    //   state.defaultOption = deepCopy(data.data.option);
+    //   state.type = 'chart'
+    // });
     chart_loading.value = false
     setTimeout(() => {
       params_loading.value = false

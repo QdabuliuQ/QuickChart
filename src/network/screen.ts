@@ -26,3 +26,16 @@ export function postScreenHtml(data: {
     data
   })
 }
+
+export function postScreen(data: {
+  name: string
+  option: string
+  c_width: number
+  c_height: number
+}) {
+  return ajax({
+    url: "/sc/screen",
+    method: "post",
+    data
+  })
+}

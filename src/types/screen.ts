@@ -7,7 +7,8 @@ export interface IStyle {
   translateX: number;
   translateY: number;
   rotate: number;
-  zIndex: number
+  zIndex: number;
+  display: "none" | "block"
 }
 export type Image = {
   id: string

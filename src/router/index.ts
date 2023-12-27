@@ -15,6 +15,7 @@ const CommunityPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/vi
 const EventPage = () => import(/* webpackChunkName:"LoginPageChunk" */ '@/views/InfoPage/EventPage.vue')
 const MapPanel = () => import(/* webpackChunkName:"MapChunk" */ '@/views/MapPanel/MapPanel.vue')
 const ScreenPage = () => import(/* webpackChunkName:"ScreenChunk" */ '@/views/ScreenPage/ScreenPage.vue')
+const PreviewPage = () => import(/* webpackChunkName:"ScreenChunk" */ '@/views/PreviewPage/PreviewPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/index' },
@@ -117,6 +118,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/map/:id',
     name: 'modifyMap',
     component: Modify_MapPage
+  },
+  {
+    path: '/preview',
+    name: 'preview',
+    component: PreviewPage
   }
 ]
 
