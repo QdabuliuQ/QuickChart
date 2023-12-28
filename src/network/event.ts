@@ -1,4 +1,4 @@
-import ajax from "@/network/index";
+import ajax, {upload} from "@/network/index";
 
 export function getEvents(params: {
   type: string
@@ -85,4 +85,8 @@ export function postPraiseComment(data: {
     method: 'post',
     data
   })
+}
+
+export function screenImageUpload(data: any) {
+  return upload('/screenImage', data)
 }

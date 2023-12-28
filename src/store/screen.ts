@@ -45,7 +45,7 @@ const useScreenStore = defineStore('screen', {
     initScreenOption(data: any) {
       this.screenOption = data
     },
-    updateScreenOptionOfCanvasByKey(key: string, val: any) {
+    updateScreenOptionOfCanvasByKey<T extends keyof IConfig['canvas']>(key: T, val: IConfig['canvas'][T]) {
       this.screenOption['canvas'][key] = val
     },
     updateScreenOptionOfCanvas(data: any) {

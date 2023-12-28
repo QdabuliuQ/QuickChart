@@ -10,7 +10,7 @@
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
       </series-item>
-      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
+      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除元素" />
     </template>
   </div>
 </template>

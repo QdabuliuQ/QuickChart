@@ -31,8 +31,19 @@
             </div>
           </div>
           <div class="element-status">
-            <i @click="lockStatusChange(idx, item.isLock)" style="font-size: 15px" :class="['iconfont', item.isLock ? 'i_unlock' : 'i_lock']"></i>
-            <i @click="visibleStatusChange(idx, item.style.display === 'none' ? 'block' : 'none')" style="font-size: 17px" :class="['iconfont', item.style.display === 'none' ? 'i_see' : 'i_unsee']"></i>
+            <i @click="lockStatusChange(idx, item.isLock)" style="font-size: 13px" :class="['iconfont', item.isLock ? 'i_unlock' : 'i_lock']"></i>
+            <i @click="visibleStatusChange(idx, item.style.display === 'none' ? 'block' : 'none')" style="font-size: 15px" :class="['iconfont', item.style.display === 'none' ? 'i_see' : 'i_unsee']"></i>
+            <el-popconfirm
+              @confirm="deleteScreenElement"
+              width="170"
+              icon-color="#eb5959"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              title="确定删除该元素吗">
+              <template #reference>
+                <i @click="selectIdx = idx" style="font-size: 13px" class="iconfont i_delete_2"></i>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
       </template>
@@ -45,9 +56,10 @@
 </template>
 <script setup lang="ts">
 import useStore from "@/store";
+import {ref} from "vue";
 
 const {screen}: any = useStore()
-
+const selectIdx = ref<number>(-1)
 const getIconClass = (type: string) => {
   switch (type) {
     case "text":
@@ -82,6 +94,12 @@ const lockStatusChange = (idx: number, isLock: boolean) => {
 }
 const visibleStatusChange = (idx: number, display: 'none' | 'block') => {
   screen.updateScreenOptionOfElementStyleItem(idx, 'display', display)
+}
+const deleteScreenElement = () => {
+  if (selectIdx.value !== -1) {
+    screen.deleteScreenOptionOfElements(selectIdx.value)
+    selectIdx.value = -1
+  }
 }
 
 </script>

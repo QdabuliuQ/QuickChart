@@ -59,7 +59,7 @@
       <series-item title="边框宽度">
         <el-input-number :min="0" :max="100" size="small" v-model="info.style.strokeWidth" />
       </series-item>
-      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
+      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除元素" />
     </template>
   </div>
 </template>

@@ -86,7 +86,7 @@
       <series-item title="背景颜色">
         <el-color-picker size="small" v-model="info.style.backgroundColor" show-alpha />
       </series-item>
-      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
+      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除元素" />
     </template>
   </div>
 </template>

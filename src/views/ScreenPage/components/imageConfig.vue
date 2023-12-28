@@ -36,7 +36,7 @@
           <el-option key="solid" label="实线" value="solid" />
         </el-select>
       </series-item>
-      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除图表" />
+      <config-btn :icon="'i_delete_2'" :bg-color="'rgb(255, 66, 66)'" @btn-click="deleteEvent" label="删除元素" />
     </template>
   </div>
 </template>

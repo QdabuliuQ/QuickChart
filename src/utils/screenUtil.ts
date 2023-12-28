@@ -1,6 +1,7 @@
-import {Elements, ElementTypeProperties} from "@/types/screen";
+import {Elements, ElementTypeProperties, IConfig} from "@/types/screen";
 import useStore from "@/store";
 import {uuid} from "@/utils/index";
+import {screenImageUpload} from "@/network/event";
 
 const {screen} = useStore()
 export function setCommonStyle(baseInfo: any, info: any) {
@@ -129,4 +130,11 @@ export function unlockElement(i: number) {
 }
 export function getOffset(val1: number, val2: number, val3: number) {
   return (val1 * val3 / val2).toFixed(2)
+}
+export async function conveyScreenOption(option: IConfig) {
+  // if (option.canvas.bgType === 'image' && option.canvas.file) {
+  //   const formData = new FormData()
+  //   formData.append('image', option.canvas.file)
+  //   let res = await screenImageUpload()
+  // }
 }

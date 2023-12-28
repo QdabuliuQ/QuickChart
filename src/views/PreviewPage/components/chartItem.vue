@@ -49,8 +49,6 @@ onMounted(() => {
   const option = props.option.replace(/\$#url#\$/g, oss);
   chart.setOption(JSON.parse(option));
 })
-
-
 </script>
 <style lang="less">
 .preview-page-chart-item {
