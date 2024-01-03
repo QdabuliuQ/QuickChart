@@ -16,11 +16,6 @@
 import useProxy from "@/hooks/useProxy";
 import {markRaw, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useWatchResize} from "@/hooks/useWatchResize";
-// import CanvasConfig from "./canvasConfig.vue"
-// import ChartConfig from "./chartConfig.vue"
-// import TextConfig from "./textConfig.vue";
-// import ShapeConfig from "./shapeConfig.vue";
-// import ImageConfig from "./imageConfig.vue";
 import useStore from "@/store";
 
 const proxy = useProxy()
@@ -33,11 +28,16 @@ let stop = watch(() => screen.getCurElementIdx, async (newVal: number) => {
     !componentsMap.has("default") && componentsMap.set("default", markRaw((await import(`./canvasConfig.vue`)).default))
     return
   }
-  const type: string = screen.getScreenOptionOfElements[screen.curElementIdx].type
+  let type: string = screen.getScreenOptionOfElements[screen.curElementIdx].type
   const id: string = screen.getScreenOptionOfElements[screen.curElementIdx].id
 
   if (!componentsMap.has(id)) {
-    componentsMap.set(id, markRaw((await import(`./${type === 'map' ? 'chart' : type}Config.vue`)).default))
+    if (type === 'chart' || type === 'map') {
+      componentsMap.set(id, markRaw((await import(`./${type === 'map' ? 'chart' : type}Config.vue`)).default))
+    } else if (type === 'scrollText') {
+      type = 'text'
+    }
+    componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
   }
 }, {
   immediate: true

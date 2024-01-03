@@ -6,7 +6,7 @@
     trigger="click"
     :hide-after="0"
   >
-    <el-scrollbar height="500px">
+    <el-scrollbar height="450px">
       <shape-list @shape-click="shapeClick" />
     </el-scrollbar>
     <template #reference>
@@ -32,6 +32,3 @@ const shapeClick = (shape: ShapePoolItem & {idx: number}) => {  // 插入图形
   shapePopoverRef.value.hide()
 }
 </script>
-<style lang="less">
-
-</style>

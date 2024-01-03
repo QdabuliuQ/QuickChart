@@ -1,6 +1,6 @@
 import {BorderType} from "@/types/element";
 
-export type Elements = "chart"|"map"|"text"|"shape"|"image"
+export type Elements = "chart"|"map"|"text"|"shape"|"image"|"scrollText"
 export interface IStyle {
   width: number;
   height: number;
@@ -59,6 +59,26 @@ export type Map = {
   style: IStyle
   adcode: string
 }
+export type ScrollText = {
+  id: string
+  type: 'scrollText',
+  isLock: boolean
+  content: string
+  style: {
+    fontSize: number;
+    fontWeight: string;
+    color: string;
+    textAlign: "left" | "right" | "center";
+    letterSpacing: number
+    fontStyle: "normal" | "italic"
+    lineHeight: number
+    textDecorationLine: "none"|"underline"|"overline"|"line-through"
+    textDecorationColor: string
+    textDecorationStyle: "solid"|"double"|"dotted"|"dashed"|"wavy"
+    backgroundColor: string
+  } & IStyle
+}
+
 export type Text = {
   id: string
   type: 'text'
@@ -79,8 +99,8 @@ export type Text = {
   } & IStyle
 }
 export type BgType = "color" | "image"
-export type ElementType = Chart | Map | Text | Shape | Image
-export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : T extends 'shape' ? Shape : T extends 'image' ? Image : never
+export type ElementType = Chart | Map | Text | Shape | Image | ScrollText
+export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : T extends 'shape' ? Shape : T extends 'image' ? Image : T extends 'scrollText' ? ScrollText : never
 export interface IConfig {
   canvas: {
     bgType: BgType;

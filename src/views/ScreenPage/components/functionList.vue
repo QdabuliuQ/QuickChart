@@ -28,11 +28,16 @@ import PreviewButton from "@/views/ScreenPage/components/previewButton.vue";
 
 <style lang="less">
 .functionListPopoverClass {
+  padding: 0 !important;
   width: auto !important;
+  .el-scrollbar {
+    padding: 10px;
+  }
   .typeContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 15px;
+    padding: 10px;
     .typeItem {
       display: flex;
       flex-direction: column;
@@ -54,16 +59,17 @@ import PreviewButton from "@/views/ScreenPage/components/previewButton.vue";
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
-    width: 500px;
+    width: 400px;
   }
   .el-empty {
-    width: 500px;
+    width: 400px;
   }
   .functionListChartContainer {
+    padding: 0 !important;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
-    width: 500px;
+    width: 400px;
     .el-image {
       border-radius: 10px;
       overflow: hidden;

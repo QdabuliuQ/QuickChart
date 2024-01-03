@@ -1,5 +1,5 @@
 <template>
-  <div class="textConfig">
+  <div class="scrollTextConfig">
     <template v-if="info">
       <config-title title="文本参数" />
       <common-config :info="baseInfo" />
@@ -92,29 +92,29 @@
 </template>
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref, watch} from "vue";
-import {ElementTypeProperties, Text} from "@/types/screen";
+import {ElementTypeProperties, ScrollText} from "@/types/screen";
 import useStore from "@/store";
+import SeriesItem from "@/components/seriesItem.vue";
+import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
+import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
+import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
 import {debounce} from "@/utils";
 import {setCommonStyle} from "@/utils/screenUtil";
 import useProxy from "@/hooks/useProxy";
-import CommonConfig from "@/views/ScreenPage/components/commonConfig.vue";
-import ConfigTitle from "./configTitle.vue";
-import SeriesItem from "@/components/seriesItem.vue";
-import ConfigBtn from "@/views/ScreenPage/components/configBtn.vue";
 
+let info = ref<ScrollText | null>(null)
 const props = defineProps<{
   id: string
 }>()
-let info = ref<Text | null>(null)
-const idx = ref<number>(-1)
 
+const idx = ref<number>(-1)
 const {screen} = useStore()
 const content = ref<string>('')
-const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>)
+const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'scrollText'>)
 const updateInfo = () => {
   if (screen.getCurElementIdx !== -1) {
     idx.value = screen.getCurElementIdx
-    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'text'>))
+    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'scrollText'>))
     content.value = info.value!.content
   }
 }
@@ -149,6 +149,6 @@ onUnmounted(() => {
   stop3()
 })
 </script>
-
 <style lang="less">
+
 </style>

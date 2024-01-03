@@ -95,6 +95,28 @@
         }"
         :src="item.url"
       />
+      <ScrollText
+        v-else-if="item.type === 'scrollText'"
+        @click="itemClick(idx as number, $event)"
+        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
+        :style="{
+          display: item.style.display,
+          width: item.style.width + 'px',
+          height: item.style.height + 'px',
+          transform: `translate(${item.style.translateX}px, ${item.style.translateY}px) rotate(${item.style.rotate}deg)`,
+          zIndex: item.style.zIndex,
+          fontSize: item.style.fontSize + 'px',
+          fontWeight: item.style.fontWeight,
+          color: item.style.color,
+          textAlign: item.style.textAlign,
+          fontStyle: item.style.fontStyle,
+          letterSpacing: item.style.letterSpacing + 'px',
+          lineHeight: item.style.lineHeight + 'px',
+          textDecorationLine: item.style.textDecorationLine,
+          textDecorationColor: item.style.textDecorationColor,
+          textDecorationStyle: item.style.textDecorationStyle,
+        }"
+        :text="item.content" />
     </context-menu>
     <Moveable
       :target="screen.getCurElementIdx !== -1 ? target : null"
@@ -129,6 +151,7 @@ import {IStyle} from "@/types/screen";
 import {debounce, deepCopy} from "@/utils";
 import ContextMenu from "@/components/contextMenu.vue";
 import {cutElement, lockElement, unlockElement} from "@/utils/screenUtil";
+import ScrollText from "@/views/ScreenPage/elements/scrollText.vue";
 
 const proxy = useProxy()
 const {screen} = useStore()
