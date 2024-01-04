@@ -15,9 +15,10 @@ let config: IConfig = {
   elements: [
     {
       id: 'xas1sr3q',
-      type: "scrollText",
+      type: "marquee",
       content: "跑马灯文本哈哈哈哈哈哈哈哈哈哈哈",
       isLock: false,
+      speed: 1,
       style: {
         display: "block",
         fontSize: 14,

@@ -63,8 +63,9 @@ const useScreenStore = defineStore('screen', {
       if(idx < 0 || idx >= this.screenOption['elements'].length) return
       this.screenOption['elements'][idx]['style'][key] = val
     },
-    updateTextContent(content: string, idx: number) {
-      this.screenOption['elements'][idx]['content'] = content
+    updateScreenOptionOfElementProperty<T extends number, K extends keyof Array<ElementTypeProperties<Elements>>[T]>(idx: number, key: K, value: Array<ElementTypeProperties<Elements>>[T][K]) {
+      if(!this.screenOption['elements'][idx] || !this.screenOption['elements'][idx][key]) return
+      this.screenOption['elements'][idx][key] = value
     },
     addScreenOptionOfElements(data: ElementTypeProperties<Elements>) {
       this.screenOption['elements'].push(data)

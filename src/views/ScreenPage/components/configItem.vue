@@ -34,8 +34,6 @@ let stop = watch(() => screen.getCurElementIdx, async (newVal: number) => {
   if (!componentsMap.has(id)) {
     if (type === 'chart' || type === 'map') {
       componentsMap.set(id, markRaw((await import(`./${type === 'map' ? 'chart' : type}Config.vue`)).default))
-    } else if (type === 'scrollText') {
-      type = 'text'
     }
     componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
   }

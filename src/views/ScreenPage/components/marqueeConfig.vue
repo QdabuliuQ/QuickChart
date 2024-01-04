@@ -4,8 +4,11 @@
       <config-title title="文本参数" />
       <common-config :info="baseInfo" />
       <config-title title="文本配置" />
-      <series-item title="内容">
+      <series-item title="文本内容">
         <el-input size="small" v-model="content" maxlength="100" />
+      </series-item>
+      <series-item title="滚动速度">
+        <el-input-number :min=".1" :max="10" :step=".1" size="small" v-model="speed" />
       </series-item>
       <series-item title="层级">
         <el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
@@ -91,8 +94,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref, watch} from "vue";
-import {ElementTypeProperties, ScrollText} from "@/types/screen";
+import {onMounted, onUnmounted, ref, watch, watchEffect} from "vue";
+import {ElementTypeProperties, Marquee} from "@/types/screen";
 import useStore from "@/store";
 import SeriesItem from "@/components/seriesItem.vue";
 import ConfigTitle from "@/views/ScreenPage/components/configTitle.vue";
@@ -102,7 +105,7 @@ import {debounce} from "@/utils";
 import {setCommonStyle} from "@/utils/screenUtil";
 import useProxy from "@/hooks/useProxy";
 
-let info = ref<ScrollText | null>(null)
+let info = ref<Marquee | null>(null)
 const props = defineProps<{
   id: string
 }>()
@@ -110,12 +113,15 @@ const props = defineProps<{
 const idx = ref<number>(-1)
 const {screen} = useStore()
 const content = ref<string>('')
-const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'scrollText'>)
+const speed = ref<number>(0)
+const baseInfo = ref(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'marquee'>)
 const updateInfo = () => {
   if (screen.getCurElementIdx !== -1) {
     idx.value = screen.getCurElementIdx
-    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'scrollText'>))
+    info.value = JSON.parse(JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'marquee'>))
+    console.log(info.value)
     content.value = info.value!.content
+    speed.value = info.value!.speed
   }
 }
 let stop1 = watch(() => info, debounce(() => {
@@ -130,8 +136,10 @@ let stop2 = watch(() => screen.curElementIdx, (newVal: number) => {
     updateInfo()
   }
 })
-let stop3 = watch(content, debounce(() => {
-  screen.updateTextContent(content.value, idx.value)
+
+let stop3 = watch([content, speed], debounce(() => {
+  screen.updateScreenOptionOfElementProperty(idx.value, 'content', content.value)
+  screen.updateScreenOptionOfElementProperty(idx.value, 'speed', speed.value)
 }))
 
 const proxy = useProxy()

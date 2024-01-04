@@ -1,6 +1,6 @@
 import {BorderType} from "@/types/element";
 
-export type Elements = "chart"|"map"|"text"|"shape"|"image"|"scrollText"
+export type Elements = "chart"|"map"|"text"|"shape"|"image"|"marquee"
 export interface IStyle {
   width: number;
   height: number;
@@ -59,11 +59,12 @@ export type Map = {
   style: IStyle
   adcode: string
 }
-export type ScrollText = {
+export type Marquee = {
   id: string
-  type: 'scrollText',
+  type: 'marquee',
   isLock: boolean
   content: string
+  speed: number
   style: {
     fontSize: number;
     fontWeight: string;
@@ -99,8 +100,8 @@ export type Text = {
   } & IStyle
 }
 export type BgType = "color" | "image"
-export type ElementType = Chart | Map | Text | Shape | Image | ScrollText
-export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : T extends 'shape' ? Shape : T extends 'image' ? Image : T extends 'scrollText' ? ScrollText : never
+export type ElementType = Chart | Map | Text | Shape | Image | Marquee
+export type ElementTypeProperties<T extends ElementType['type']> = T extends 'chart' ? Chart : T extends 'map' ? Map : T extends 'text' ? Text : T extends 'shape' ? Shape : T extends 'image' ? Image : T extends 'marquee' ? Marquee : never
 export interface IConfig {
   canvas: {
     bgType: BgType;

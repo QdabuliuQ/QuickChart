@@ -95,9 +95,11 @@
         }"
         :src="item.url"
       />
-      <ScrollText
-        v-else-if="item.type === 'scrollText'"
+      <MarqueeElement
+        v-else-if="item.type === 'marquee'"
         @click="itemClick(idx as number, $event)"
+        :speed="item.speed"
+        :content="item.content"
         :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
         :style="{
           display: item.style.display,
@@ -115,8 +117,7 @@
           textDecorationLine: item.style.textDecorationLine,
           textDecorationColor: item.style.textDecorationColor,
           textDecorationStyle: item.style.textDecorationStyle,
-        }"
-        :text="item.content" />
+        }" />
     </context-menu>
     <Moveable
       :target="screen.getCurElementIdx !== -1 ? target : null"
@@ -143,15 +144,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import Moveable from "vue3-moveable";
-import useProxy from "@/hooks/useProxy";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import useStore from "@/store";
+import useProxy from "@/hooks/useProxy";
 import {IStyle} from "@/types/screen";
 import {debounce, deepCopy} from "@/utils";
-import ContextMenu from "@/components/contextMenu.vue";
 import {cutElement, lockElement, unlockElement} from "@/utils/screenUtil";
-import ScrollText from "@/views/ScreenPage/elements/scrollText.vue";
+import MarqueeElement from "@/views/ScreenPage/elements/marqueeElement.vue";
+import ContextMenu from "@/components/contextMenu.vue";
+import Moveable from "vue3-moveable";
 
 const proxy = useProxy()
 const {screen} = useStore()
