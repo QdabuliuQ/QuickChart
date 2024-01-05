@@ -255,8 +255,8 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
     rotate: d ? d : 0,
     zIndex: parseInt(styleInfo['z-index'])
   }
-  if (screen.getScreenOptionOfElements[idx].type === 'text') {
-    setStyle(styleInfo, info)
+  if (screen.getScreenOptionOfElements[idx].type === 'text' || screen.getScreenOptionOfElements[idx].type === 'marquee') {
+    setTextStyle(styleInfo, info)
   } else if(screen.getScreenOptionOfElements[idx].type === 'shape') {
     setShapeStyle(info, idx)
   } else if (screen.getScreenOptionOfElements[idx].type === 'image') {
@@ -266,7 +266,7 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
 }
 
 const isVisited = new Set(['transform', 'width', 'height', 'z-index'])
-const setStyle = (styleInfo: any, info: any) => {
+const setTextStyle = (styleInfo: any, info: any) => {
   for(let key in styleInfo) {
     if (!styleInfo.hasOwnProperty(key) || isVisited.has(key)) continue
     let _key = key
