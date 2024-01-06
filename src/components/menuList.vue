@@ -1,9 +1,9 @@
 <template>
-  <div class="menuList">
+  <div class="menu-list">
     <div @click="() => {
               item.event ? item.event() : router.push(item.path as string)
               visible = false
-            }" v-for="item in menuItems" :key="item.text" class="myMenuItem">
+            }" v-for="item in menuItems" :key="item.text" class="menu-item">
       <i :class="[item.icon,'iconfont']"></i>
       {{ item.text }}
     </div>
@@ -54,27 +54,27 @@ const menuItems = reactive<menuItemInt[]>([
 
 </script>
 <style lang="less">
-.menuPopoverClass {
-  padding: 0 !important;
+.menu-popover-class {
   width: auto !important;
   min-width: 0 !important;
-  .menuList {
+  padding: 0 !important;
+  .menu-list {
     padding: 10px 0;
-    .myMenuItem {
-      padding: 0 20px 0 15px;
-      height: 40px;
+    .menu-item {
       display: flex;
       align-items: center;
+      height: 40px;
+      padding: 0 20px 0 15px;
       font-size: 13px;
       cursor: pointer;
       letter-spacing: 1px;
       i {
-        font-size: 19px;
         margin-right: 8px;
+        font-size: 19px;
       }
       &:hover {
         color: @theme !important;
-        background-color: #444444;
+        background-color: #444;
       }
     }
   }

@@ -1,10 +1,10 @@
 <template>
   <loading v-if="props.loading" text="加载图表中..." />
-  <div v-else class="mapDetail">
-    <div class="chartContainer">
-      <div class="scrollContainer">
-        <el-button v-if="props.back" @click="router.go(-1)" class="backBtn" type="info"> <i class="iconfont i_exit"></i>返回</el-button>
-        <div class="btnList">
+  <div v-else class="map-detail">
+    <div class="chart-container">
+      <div class="scroll-container">
+        <el-button v-if="props.back" @click="router.go(-1)" class="back-btn" type="info"> <i class="iconfont i_exit"></i>返回</el-button>
+        <div class="btn-list">
           <el-button v-login="() => visible = true" type="primary" >
             <i class="iconfont i_save1"></i>
             另存为
@@ -13,7 +13,7 @@
             <i class="iconfont i_save"></i>
             保存
           </el-button>
-          <el-button v-login="show" v-if="props.share" class="shareBtn" type="primary" color="#626aef">
+          <el-button v-login="show" v-if="props.share" class="share-btn" type="primary" color="#626aef">
             <i class="iconfont i_share"></i>
             分享
           </el-button>
@@ -225,38 +225,38 @@ onUnmounted(() => {
 })
 </script>
 <style lang="less">
-.mapDetail {
+.map-detail {
   width: 100%;
   height: 100%;
-  .chartContainer {
+  .chart-container {
     height: 100%;
     .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
-      white-space: nowrap;
       display: inline-block;
+      white-space: nowrap;
     }
 
     .el-scrollbar__wrap {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
 
-    .scrollContainer {
+    .scroll-container {
+      position: relative;
+      overflow: auto;
       width: 100%;
       height: 100%;
-      overflow: auto;
-      position: relative;
-      .scrollContainer();
-      .backBtn {
+      .scroll-container();
+      .back-btn {
         position: absolute;
         top: 8px;
         left: 8px;
         .iconfont {
-          font-size: 14px;
           margin-right: 5px;
+          font-size: 14px;
         }
       }
-      .btnList {
+      .btn-list {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -265,14 +265,14 @@ onUnmounted(() => {
           margin-right: 5px;
           font-size: 14px;
         }
-        .shareBtn {
+        .share-btn {
           &:hover {
-            border: 1px solid #555bca;
             background-color: #555bca;
+            border: 1px solid #555bca;
           }
           &:focus {
-            border: 1px solid #555bca;
             background-color: #555bca;
+            border: 1px solid #555bca;
           }
         }
         .el-button-style();

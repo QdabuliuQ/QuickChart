@@ -25,22 +25,20 @@ import {getOffset} from "@/utils/screenUtil";
 import {oss} from "@/network";
 
 interface Chart {
-  id: string
-  type: 'chart'
-  isLock: boolean
-  cover: string
-  option: string
-  style: IStyle
-  c_width: number
-  c_height: number
-  width: number
+  id: string;
+  type: 'chart';
+  isLock: boolean;
+  cover: string;
+  option: string;
+  style: IStyle;
+  c_width: number;
+  c_height: number;
+  width: number;
   height: number
 }
 
 const props = defineProps<Chart>()
 const proxy = useProxy()
-const width = ref<number>(0)
-const height = ref<number>(0)
 
 const chartItemRef = ref(null)
 
@@ -54,6 +52,7 @@ onMounted(() => {
 .preview-page-chart-item {
   position: absolute;
   transform-origin: 0 0;
+
   .chart-item-main {
     width: 100%;
     height: 100%;

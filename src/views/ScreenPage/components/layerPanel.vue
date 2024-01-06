@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="element-status">
-            <i @click="lockStatusChange(idx, item.isLock)" style="font-size: 13px" :class="['iconfont', item.isLock ? 'i_unlock' : 'i_lock']"></i>
+            <i @click="lockStatusChange(idx, item.isLock)" style='font-size: 13px' :class="['iconfont', item.isLock ? 'i_unlock' : 'i_lock']"></i>
             <i @click="visibleStatusChange(idx, item.style.display === 'none' ? 'block' : 'none')" style="font-size: 15px" :class="['iconfont', item.style.display === 'none' ? 'i_see' : 'i_unsee']"></i>
             <el-popconfirm
               @confirm="deleteScreenElement"
@@ -106,33 +106,33 @@ const deleteScreenElement = () => {
 <style lang="less">
 .layer-panel-popper-class {
   .element-item {
-    padding: 6px 8px;
-    cursor: pointer;
-    border-radius: 8px;
-    box-sizing: border-box;
-    border: 1px solid transparent;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    box-sizing: border-box;
     &:hover {
-      background-color: rgba(248, 181, 87, 0.33);
+      background-color: rgb(248 181 87 / 33%);
       border: 1px solid @theme;
     }
     .element-info {
-      flex: 1;
       display: flex;
       align-items: center;
+      flex: 1;
     }
     .element-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
       width: 55%;
       height: 55px;
-      object-fit: contain;
-      border-radius: 8px;
       background-color: #424242;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: 8px;
+      object-fit: contain;
       img {
         width: 100%;
         height: 100%;
@@ -142,8 +142,8 @@ const deleteScreenElement = () => {
       }
     }
     .element-title {
-      font-size: 12px;
       margin-left: 10px;
+      font-size: 12px;
     }
     .element-status {
       display: flex;

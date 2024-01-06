@@ -36,7 +36,7 @@
             </div>
           </div>
           <el-pagination
-            class="paginationClass"
+            class="pagination-class"
             v-model:current-page="mapInfo.offset"
             hide-on-single-page
             background

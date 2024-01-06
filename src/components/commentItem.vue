@@ -1,5 +1,5 @@
 <template>
-  <div class="commentItem">
+  <div class="comment-item">
     <div class="topInfo">
       <el-avatar :size="40" :src="props.user_pic" />
       <div class="detail">
@@ -10,7 +10,7 @@
     <div class="bottomContent">
       {{props.content}}
     </div>
-    <div class="commentData">
+    <div class="comment-data">
       <div v-login="praiseEvent" :class="[props.is_praise == '1' ? 'active' : '', 'dataItem']">
         <i class="iconfont i_praise"></i>
         {{props.praise_count ? props.praise_count : '点赞'}}
@@ -67,10 +67,10 @@ const praiseEvent = () => {
 </script>
 
 <style lang="less">
-.commentItem {
+.comment-item {
   &:not(:last-child) {
     margin-bottom: 15px;
-    .commentData {
+    .comment-data {
       border-bottom: 1px solid #525252;
       padding-bottom: 15px;
     }
@@ -86,8 +86,8 @@ const praiseEvent = () => {
         height: 40px;
       }
       .nickname {
-        font-size: 14px;
         margin-bottom: 3px;
+        font-size: 14px;
       }
       .time {
         font-size: 12px;
@@ -96,16 +96,16 @@ const praiseEvent = () => {
     }
   }
   .bottomContent {
+    margin-bottom: 10px;
     margin-left: 50px;
     word-break: break-all;
     line-height: 25px;
-    margin-bottom: 10px;
   }
-  .commentData {
-    margin-left: 50px;
+  .comment-data {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    margin-left: 50px;
     font-size: 13px;
     .active {
       color: @theme !important;

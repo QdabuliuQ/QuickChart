@@ -1,7 +1,7 @@
 <template>
-  <div class="EditPage">
+  <div class="edit-page">
     <ChartType />
-    <div class="rightRouterContainer">
+    <div class="right-router-container">
       <router-view></router-view>
     </div>
   </div>
@@ -19,14 +19,14 @@ type.value = router.currentRoute.value.meta.typeIndex as number
 
 
 <style lang='less'>
-.EditPage {
+.edit-page {
   display: flex;
+  overflow: hidden;
   height: 100vh;
   max-height: 100vh;
-  overflow: hidden;
-  .rightRouterContainer {
-    flex: 1;
+  .right-router-container {
     height: 100%;
+    flex: 1;
   }
 }
 </style>

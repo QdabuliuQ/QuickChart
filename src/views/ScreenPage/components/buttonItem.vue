@@ -21,19 +21,19 @@ const clickEvent = () => {
 <style lang="less">
 .button-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  font-size: 13px;
-  cursor: pointer;
   padding: 15px 20px;
+  font-size: 13px;
   transition: 0.2s all linear;
+  flex-direction: column;
+  cursor: pointer;
   .iconfont {
     margin-bottom: 5px;
     font-size: 23px;
   }
   &:hover {
-    background-color: #4d4d4d;
     color: @theme;
+    background-color: #4d4d4d;
   }
 }
 </style>

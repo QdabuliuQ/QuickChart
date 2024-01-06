@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsPieText">
+  <div class="params-pie-text">
     <option-items :config="config" />
   </div>
 </template>

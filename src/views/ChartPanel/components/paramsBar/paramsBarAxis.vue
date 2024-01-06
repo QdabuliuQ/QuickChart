@@ -41,6 +41,3 @@ const getData = () => {
 useWatchData(config, 'angleAxis', getData)
 
 </script>
-
-<style lang='less'>
-</style>

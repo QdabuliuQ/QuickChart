@@ -94,18 +94,18 @@ const onStart = (ev: MouseEvent | TouchEvent) => {
 .drag-verify {
   width: 100%;
   .range {
-    background-color: #ececee;
     position: relative;
+    overflow: hidden;
+    height: 40px;
+    color: #666;
+    background-color: #ececee;
     border-radius: 4px;
     transition: 1s all;
     user-select: none;
-    color: #666;
-    overflow: hidden;
-    height: 40px;
     .flex();
     &.success {
-      background-color: @theme;
       color: #fff;
+      background-color: @theme;
       .text {
         position: relative;
         z-index: 1;
@@ -115,14 +115,14 @@ const onStart = (ev: MouseEvent | TouchEvent) => {
       }
     }
     .block {
-      display: block;
       position: absolute;
       left: calc(-100% + 40px);
+      display: block;
+      overflow: hidden;
       width: 100%;
       height: 99%;
       background: @theme;
       border-radius: 4px;
-      overflow: hidden;
       i {
         position: absolute;
         right: 0;

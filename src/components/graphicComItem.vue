@@ -1,21 +1,21 @@
 <template>
-  <div class="graphicComItem">
+  <div class="graphic-com-item">
     <div
         @click="toggleItem(idx)"
-        :class="['comItem', idx == aIdx ? 'activeItem' : '']"
+        :class="['com-item', idx == aIdx ? 'active-item' : '']"
         v-for="(item, idx) in props.components">
       {{ getTypeName(item.type.value) }}
       <i @click.stop="deleteItem(idx)" class="iconfont i_close"></i>
     </div>
     <el-dropdown trigger="click">
-      <div class="comItem">
+      <div class="com-item">
         <i class="iconfont i_plus"></i>
         添加组件
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item class="componentDropdownItem" @click="addItem('image')">图形组件</el-dropdown-item>
-          <el-dropdown-item class="componentDropdownItem" @click="addItem('text')">文本组件</el-dropdown-item>
+          <el-dropdown-item class="component-dropdown-item" @click="addItem('image')">图形组件</el-dropdown-item>
+          <el-dropdown-item class="component-dropdown-item" @click="addItem('text')">文本组件</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -59,42 +59,42 @@ const getTypeName = (type: string) => {
 </script>
 
 <style lang="less">
-.componentDropdownItem {
+.component-dropdown-item {
   font-size: 13px;
 }
-.graphicComItem {
+.graphic-com-item {
   display: flex;
   flex-wrap: wrap;
-  .comItem {
-    margin: 0 10px 10px 0;
+  .com-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 6px 15px;
+    margin: 0 10px 10px 0;
     font-size: 12px;
-    border-radius: 15px;
-    cursor: pointer;
     color: #b8b8b8;
     border: 1px solid #575757;
+    border-radius: 15px;
     transition: .2s all linear;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    cursor: pointer;
     &:hover {
       background-color: #4f4f4f;
     }
     .i_plus {
-      font-size: 12px;
       margin-right: 8px;
+      font-size: 12px;
     }
     .i_close {
-      font-size: 12px;
       margin-left: 8px;
+      font-size: 12px;
       &:hover {
         color: #f54040;
       }
     }
   }
-  .activeItem {
-    background-color: @theme !important;
+  .active-item {
     color: #fff;
+    background-color: @theme !important;
   }
 }
 </style>

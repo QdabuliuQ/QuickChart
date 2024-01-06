@@ -2,7 +2,7 @@
   <div class="canvasConfig">
     <config-title title="画布样式" />
     <series-item title="背景类型">
-      <el-select v-model="screen.getScreenOptionOfCanvas.bgType" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
+      <el-select v-model="screen.getScreenOptionOfCanvas.bgType" placeholder="请选择" size="small" popper-class="params-select-popper-class">
         <el-option key="color" label="颜色" value="color" />
         <el-option key="image" label="图片" value="image"></el-option>
       </el-select>
@@ -17,14 +17,14 @@
         :url="`${oss}/upload/chartImage`" />
     </series-item>
     <series-item v-show="screen.getScreenOptionOfCanvas.bgType === 'image'" title="图片覆盖">
-      <el-select v-model="screen.getScreenOptionOfCanvas.backgroundSize" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
+      <el-select v-model="screen.getScreenOptionOfCanvas.backgroundSize" placeholder="请选择" size="small" popper-class="params-select-popper-class">
         <el-option key="cover" label="覆盖" value="cover" />
         <el-option key="contain" label="包含" value="contain" />
         <el-option key="100% 100%" label="填充" value="100% 100%" />
       </el-select>
     </series-item>
     <series-item v-show="screen.getScreenOptionOfCanvas.bgType === 'image'" title="图片重复">
-      <el-select v-model="screen.getScreenOptionOfCanvas.backgroundRepeat" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
+      <el-select v-model="screen.getScreenOptionOfCanvas.backgroundRepeat" placeholder="请选择" size="small" popper-class="params-select-popper-class">
         <el-option key="no-repeat" label="不重复" value="no-repeat" />
         <el-option key="repeat" label="重复" value="repeat" />
       </el-select>
@@ -91,9 +91,9 @@ onUnmounted(() => {
 
 <style lang='less'>
 .canvasConfig {
-  .seriesItem {
+  .series-item {
     align-items: center;
-    .itemTitle {
+    .item-title {
       top: 0 !important;
     }
     .el-color-picker {
@@ -118,14 +118,14 @@ onUnmounted(() => {
     }
   }
   .imagePanel {
-    margin-top: 10px;
     display: grid;
+    margin-top: 10px;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     .image {
-      aspect-ratio: 1/1;
-      border-radius: 5px;
       overflow: hidden;
+      border-radius: 5px;
+      aspect-ratio: 1/1;
       cursor: pointer;
       img {
         width: 100%;

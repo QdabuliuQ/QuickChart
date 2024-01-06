@@ -1,15 +1,15 @@
 <template>
-  <div class="ChartType">
+  <div class="chart-type">
     <div class="types">
-      <div @click="toggle('chart', 0)" :class="[type == 0 ? 'active': '', 'typeItem']">
+      <div @click="toggle('chart', 0)" :class="[type == 0 ? 'active': '', 'type-item']">
         <i style="font-size: 20px" class="iconfont i_bar"></i>
         <span>图表</span>
       </div>
-      <div @click="toggle('map', 1)" :class="[type == 1 ? 'active': '', 'typeItem']">
+      <div @click="toggle('map', 1)" :class="[type == 1 ? 'active': '', 'type-item']">
         <i class="iconfont i_map"></i>
         <span>地图</span>
       </div>
-      <div @click="toggle('screen', 2)" :class="[type == 2 ? 'active': '', 'typeItem']">
+      <div @click="toggle('screen', 2)" :class="[type == 2 ? 'active': '', 'type-item']">
         <i class="iconfont i_screen"></i>
         <span>大屏</span>
       </div>
@@ -17,18 +17,18 @@
     <div class="menu">
       <el-popover
         v-if="JSON.stringify(info) !== '{}'"
-        popper-class="menuPopoverClass"
+        popper-class="menu-popover-class"
         placement="right-end"
         :hide-after="50"
       >
         <template #reference>
-          <div class="menu_item">
+          <div class="menu-item">
             <img :src="info.user_pic" />
           </div>
         </template>
         <menu-list />
       </el-popover>
-      <div v-else class="menu_item">
+      <div v-else class="menu-item">
         <i @click="toLogin" class="iconfont i_login"></i>
       </div>
     </div>
@@ -82,17 +82,17 @@ onUnmounted(() => {
 </script>
 
 <style lang='less'>
-.ChartType {
-  width: 60px;
-  height: 100%;
-  min-width: 60px;
-  background-color: @navColor;
-  box-sizing: border-box;
-  padding: 30px 0;
+.chart-type {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 60px;
+  min-width: 60px;
+  height: 100%;
+  padding: 30px 0;
+  background-color: @navColor;
+  box-sizing: border-box;
+  flex-direction: column;
   .types {
     width: 100%;
   }
@@ -104,14 +104,14 @@ onUnmounted(() => {
     }
   }
 
-  .typeItem {
-    margin-bottom: 10px;
+  .type-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    font-size: 13px;
-    cursor: pointer;
     padding: 12px 0;
+    margin-bottom: 10px;
+    font-size: 13px;
+    flex-direction: column;
+    cursor: pointer;
 
     &:hover {
       background-color: @curColor;
@@ -123,18 +123,17 @@ onUnmounted(() => {
     }
   }
   .menu {
-    .menu_item {
+    .menu-item {
       .iconfont {
-        cursor: pointer;
         font-size: 30px;
         cursor: pointer;
       }
       img {
-        cursor: pointer;
         width: 30px;
         height: 30px;
-        object-fit: cover;
         border-radius: 50%;
+        cursor: pointer;
+        object-fit: cover;
       }
     }
   }

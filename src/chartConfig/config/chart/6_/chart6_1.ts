@@ -211,7 +211,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_tick',
-      componentPath: chartPath + "paramsRadar/paramsRadarAxisTick",
+      componentPath: chartPath + "paramsRadar/params-radar-axis-tick",
     },
     {
       name: '轴刻尺样式',
@@ -229,7 +229,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gsline',
-      componentPath: chartPath + "paramsRadar/paramsRadarSplitLine",
+      componentPath: chartPath + "paramsRadar/params-radar-split-line",
     },
     {
       name: '分割域样式',

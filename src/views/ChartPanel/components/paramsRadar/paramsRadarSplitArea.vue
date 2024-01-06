@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarSplitArea">
+  <div class="params-radar-split-area">
     <optionItems :config="config" />
   </div>
 </template>
@@ -84,7 +84,3 @@ watch(() => config, debounce(() => {
   deep: true
 })
 </script>
-
-<style lang="less">
-
-</style>

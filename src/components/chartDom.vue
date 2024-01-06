@@ -3,10 +3,10 @@
     width: data.width + 'px',
     height: data.height + 'px',
     margin: '15vh auto 0',
-  }" class="transparentBg">
-    <div ref="chartDomRef" id="chartDom"></div>
+  }" class="transparent-bg">
+    <div ref="chartDomRef" id="chart-dom"></div>
   </div>
-  <el-dialog class="codeDialogClass" v-model="data.codeDialog" title="代码配置" width="50%">
+  <el-dialog class="code-dialog-class" v-model="data.codeDialog" title="代码配置" width="50%">
     <highlightjs class="language-javascript" language="javascript" :code="data.code"/>
   </el-dialog>
 </template>
@@ -241,16 +241,16 @@ onUnmounted(() => {
 </script>
 
 <style lang='less'>
-#chartDom {
+#chart-dom {
   position: relative;
-  margin: 0 auto;
   width: 100%;
   height: 100%;
+  margin: 0 auto;
 }
 
-.transparentBg {
-  background-image: url("../assets/image/bg.jpg");
-  background-size: cover;
+.transparent-bg {
   background-repeat: repeat;
+  background-size: cover;
+  background-image: url("../assets/image/bg.jpg");
 }
 </style>

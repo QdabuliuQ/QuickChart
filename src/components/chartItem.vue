@@ -9,9 +9,9 @@
       <div
         @mouseenter="visible = true"
         @mouseleave="visible = false"
-        class="chartItem"
+        class="chart-item"
       >
-        <div class="imageContainer">
+        <div class="image-container">
           <div @click="toggleChart" class="mask">插入图表</div>
           <img :src="cover" alt=""/>
         </div>
@@ -19,7 +19,7 @@
       </div>
     </template>
     <img
-      style="width: 100%; position: relative; top: 2px; border-radius: 7px"
+      style=" position: relative; top: 2px;width: 100%; border-radius: 7px"
       :src="cover"
       alt=""
     />
@@ -45,21 +45,21 @@ const toggleChart = () => {
 </script>
 
 <style lang='less'>
-.chartItem {
+.chart-item {
   width: 100%;
-  text-align: center;
   font-size: 12px;
+  text-align: center;
 
-  .imageContainer {
+  .image-container {
+    position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
-    position: relative;
-    border-radius: 5px;
     overflow: hidden;
+    margin-bottom: 5px;
     background-color: #fff;
-    aspect-ratio: 2/1.6;
     border: 1px solid #5f5f5f;
+    border-radius: 5px;
+    aspect-ratio: 2/1.6;
     box-sizing: border-box;
 
     &:hover .mask {
@@ -68,20 +68,20 @@ const toggleChart = () => {
 
     .mask {
       position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 100%;
       height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(255, 180, 75, 0.509);
-      color: #fff;
-      font-weight: bold;
       font-size: 14px;
-      cursor: pointer;
+      color: #fff;
+      background-color: rgb(255 180 75 / 50.9%);
+      border: 2px solid @theme;
       opacity: 0;
       transition: 0.2s all linear;
+      font-weight: bold;
+      cursor: pointer;
       box-sizing: border-box;
-      border: 2px solid @theme;
     }
 
     img {
@@ -92,6 +92,5 @@ const toggleChart = () => {
       user-select: none;
     }
   }
-
 }
 </style>

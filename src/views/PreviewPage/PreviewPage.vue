@@ -90,19 +90,19 @@ onMounted(() => {
 </script>
 <style lang="less">
 .PreviewPage {
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
   .preview-page-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .preview-page-container {
+    position: relative;
     width: 100%;
     height: 100%;
-    position: relative;
   }
 }
 </style>

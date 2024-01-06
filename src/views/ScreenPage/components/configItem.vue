@@ -6,19 +6,20 @@
           <component
             :key="screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id"
             :id="screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id"
-            :is="componentsMap.get(screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id)"></component>
+            :is="componentsMap.get(screen.getCurElementIdx === -1 ? 'default' : screen.getScreenOptionOfElements[screen.curElementIdx].id)">
+          </component>
         </keep-alive>
       </div>
     </el-scrollbar>
   </div>
 </template>
 <script setup lang="ts">
-import useProxy from "@/hooks/useProxy";
+import useproxy from "@/hooks/useProxy";
 import {markRaw, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useWatchResize} from "@/hooks/useWatchResize";
 import useStore from "@/store";
 
-const proxy = useProxy()
+const proxy = useproxy()
 const height = ref<number>(0)
 const componentsMap = reactive(new Map<string, any>())
 
@@ -59,6 +60,7 @@ onUnmounted(() => {
   height: 100%;
   background-color: @curColor;
   box-sizing: border-box;
+
   .container {
     padding: 10px;
   }

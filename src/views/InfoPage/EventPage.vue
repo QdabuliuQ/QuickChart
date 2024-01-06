@@ -1,5 +1,5 @@
 <template>
-  <div class="EventPage">
+  <div class="event-page">
     <skeleton
       :status="status"
       :count="2"
@@ -42,7 +42,7 @@
           :comments="item.comments"
           :type="item.type" />
         <el-pagination
-          class="paginationClass"
+          class="pagination-class"
           v-model:current-page="offset"
           background
           layout="prev, pager, next"

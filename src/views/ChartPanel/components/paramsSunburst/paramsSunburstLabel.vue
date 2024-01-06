@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsSunburstLabel">
+  <div class="params-sunburst-label">
     <option-items :config="config" />
   </div>
 </template>

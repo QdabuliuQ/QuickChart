@@ -1,11 +1,11 @@
 <template>
-  <div class="chartParams">
+  <div class="chart-params">
     <loading v-if="props.loading" :bgc="'rgb(66, 66, 66)'" text="" />
     <el-scrollbar v-else :height="height">
-      <div class="chartCover">
+      <div class="chart-cover">
         <img :src="props.image.indexOf('data:image') != -1 ? props.image : props.image + '?tempid='+Math.random()" alt=""/>
       </div>
-      <div class="btnList">
+      <div class="btn-list">
         <el-dropdown trigger="click">
           <el-button type="success">
             <template #icon>
@@ -14,7 +14,7 @@
             配置
           </el-button>
           <template #dropdown>
-            <el-dropdown-menu class="configDropDownClass">
+            <el-dropdown-menu class="config-drop-down-class">
               <el-dropdown-item @click="createCode('echart')"><i class="iconfont i_object"></i> Echarts配置
               </el-dropdown-item>
               <el-dropdown-item @click="createCode('js')"><i class="iconfont i_js"></i> JS完整配置</el-dropdown-item>
@@ -22,14 +22,14 @@
           </template>
         </el-dropdown>
         <el-dropdown trigger="click">
-          <el-button class="downloadBtn" color="#626aef">
+          <el-button class="download-btn" color="#626aef">
             <template #icon>
               <i style="margin-right: 4px; font-size: 14px" class="iconfont i_download"></i>
             </template>
             下载
           </el-button>
           <template #dropdown>
-            <el-dropdown-menu class="configDropDownClass">
+            <el-dropdown-menu class="config-drop-down-class">
               <el-dropdown-item @click="downloadChart('html')"><i class="iconfont i_html"></i> HTML文件
               </el-dropdown-item>
               <el-dropdown-item @click="downloadChart('png')"><i class="iconfont i_png"></i> PNG图片</el-dropdown-item>
@@ -37,33 +37,33 @@
           </template>
         </el-dropdown>
       </div>
-      <div :key="key" class="collapseContainer">
-        <div v-for="item in options" :key="item.opName" class="collapseItem">
+      <div :key="key" class="collapse-container">
+        <div v-for="item in options" :key="item.opName" class="collapse-item">
           <div
             v-if="item.menuOption"
             @click="toggleItem(item.opName, item.componentPath)"
             :class="[
-              activeIndex == item.opName ? 'activeCollapseTitle' : '',
-              'collapseTitle',
+              activeIndex == item.opName ? 'active-collapse-title' : '',
+              'collapse-title',
             ]"
           >
-            <div class="leftContent">
+            <div class="left-content">
               <i style="margin-right: 5px"
-                 :class="['iconfont', activeIndex == item.opName && icon_loading ? 'i_loading loadingAnimation' : item.icon]"></i>
+                 :class="['iconfont', activeIndex == item.opName && icon_loading ? 'i_loading loading-animation' : item.icon]"></i>
               {{ item.name }}
             </div>
-            <div class="rightIcon">
+            <div class="right-icon">
               <i
                 :class="[
-                  activeIndex == item.opName ? 'rotateIcon' : '',
+                  activeIndex == item.opName ? 'rotate-icon' : '',
                   'iconfont',
                   'i_hide',
                 ]"
               ></i>
             </div>
           </div>
-          <div v-show="activeIndex == item.opName" class="collapseContent">
-            <component class="paramsPanel" :is="componentsMap.get(item.componentPath)"></component>
+          <div v-show="activeIndex == item.opName" class="collapse-content">
+            <component class="params-panel" :is="componentsMap.get(item.componentPath)"></component>
           </div>
         </div>
       </div>
@@ -152,40 +152,39 @@ onUnmounted(() => {``
 
 </script>
 <style lang="less">
-.configDropDownClass {
+.config-drop-down-class {
   .el-dropdown-menu__item {
     font-size: 12px;
   }
 }
-.chartParams {
+.chart-params {
   height: 100%;
   background-color: @curColor;
 
-  .chartCover {
+  .chart-cover {
+    overflow: hidden;
     width: 90%;
     margin: 10px auto;
-    background-image: url("../assets/image/bg.jpg");
-    background-size: cover;
     background-repeat: repeat;
+    background-size: cover;
     border-radius: 8px;
-    overflow: hidden;
+    background-image: url("../assets/image/bg.jpg");
     img {
       width: 100%;
-
       vertical-align: middle;
     }
   }
 
-  .btnList {
-    padding: 0 12px;
+  .btn-list {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
     user-select: none;
 
     .el-button {
-      font-size: 13px !important;
       padding: 6px 24px !important;
+      font-size: 13px !important;
 
       span {
         position: relative;
@@ -193,49 +192,49 @@ onUnmounted(() => {``
       }
     }
 
-    .downloadBtn:hover {
+    .download-btn:hover {
       background-color: #454bb0;
       border-color: #454bb0;
     }
   }
 
-  .optionItem {
+  .option-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 6px 0;
     font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     color: #a9a8a8;
 
-    .optionOperation {
-      width: 55%;
+    .option-operation {
       display: flex;
       justify-content: flex-end;
+      width: 55%;
     }
   }
 
-  .collapseContainer {
+  .collapse-container {
     margin: 10px 0;
 
-    .collapseItem {
+    .collapse-item {
       margin: 2.5px 0;
 
-      .collapseTitle {
-        cursor: pointer;
+      .collapse-title {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         padding: 10px 10px 14px 12px;
         font-size: 13px;
         transition: 0.1s all linear;
+        cursor: pointer;
         border-bottom: 1px solid #565656;
 
         &:hover {
-          background: @theme;
           color: #fff;
+          background: @theme;
         }
 
-        .leftContent {
+        .left-content {
           display: flex;
           align-items: center;
 
@@ -248,11 +247,11 @@ onUnmounted(() => {``
             transform-origin: 50% 50%;
           }
 
-          .loadingAnimation {
-            animation: rotateAnimation 1s linear infinite;
+          .loading-animation {
+            animation: rotate-animation 1s linear infinite;
           }
 
-          @keyframes rotateAnimation {
+          @keyframes rotate-animation {
             0% {
               transform: rotate(0);
             }
@@ -262,55 +261,55 @@ onUnmounted(() => {``
           }
         }
 
-        .rightIcon {
+        .right-icon {
           .iconfont {
-            display: block;
-            font-size: 18px;
             position: relative;
             top: 1px;
+            display: block;
+            font-size: 18px;
             transition: 0.1s all linear;
           }
         }
       }
 
-      .activeCollapseTitle {
-        background: @theme;
+      .active-collapse-title {
         color: #fff;
+        background: @theme;
       }
 
-      .rotateIcon {
+      .rotate-icon {
         transform: rotateZ(90deg) !important;
       }
     }
 
-    .collapseContent {
-      .paramsPanel {
+    .collapse-content {
+      .params-panel {
         padding: 0 12px;
       }
 
-      .splitLine {
-        font-size: 12px;
-        font-weight: bold;
-        color: @theme;
-        margin: 8px 0 6px 0;
+      .split-line {
         position: relative;
         display: flex;
         align-items: center;
         padding-bottom: 5px;
+        margin: 8px 0 6px;
+        font-size: 12px;
+        color: @theme;
+        font-weight: bold;
 
         &::after {
           position: absolute;
-          content: '';
-          width: 30%;
-          height: 3px;
           bottom: 0;
           left: 0;
+          width: 30%;
+          height: 3px;
           background-color: @theme;
           opacity: .4;
+          content: '';
         }
       }
 
-      .uniqueOptionContainer {
+      .unique-option-container {
         padding: 0 12px;
       }
     }

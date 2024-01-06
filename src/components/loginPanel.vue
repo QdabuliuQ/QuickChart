@@ -1,5 +1,5 @@
 <template>
-  <div class="loginPanel">
+  <div class="login-panel">
     <el-form ref="ruleFormRef" :model="form" :rules="rules">
       <el-form-item prop="email">
         <el-input v-model="form.email" placeholder="请输入邮箱" />
@@ -13,13 +13,13 @@
             <div :style="{
               backgroundColor: disable ? '#e8e8e8' : '#ffae34',
               color: disable ? '#000' : '#fff'
-            }" class="codeBtn" @click="sendCode">
+            }" class="code-btn" @click="sendCode">
               {{ disable ? codeTime+'后重新发送' :'发送验证码' }}
             </div>
           </template>
         </el-input>
       </el-form-item>
-      <drag-verify :key="type" class="dragItem" v-model:value="verify"></drag-verify>
+      <drag-verify :key="type" class="drag-item" v-model:value="verify"></drag-verify>
       <div class="tip">
         <span @click="typeToggle('password')" class="toggle" v-show="type == 'code'">密码登录</span>
         <span @click="typeToggle('code')" class="toggle" v-show="type == 'password'">验证码登录</span>
@@ -199,10 +199,10 @@ const saveData = (token: string, id: string, info: any) => {
 
 </script>
 <style lang="less">
-.loginPanel {
+.login-panel {
   display: flex;
   flex-direction: column;
-  .inputStyle();
+  .input-style();
   .tip {
     display: flex;
     justify-content: space-between;
@@ -219,33 +219,33 @@ const saveData = (token: string, id: string, info: any) => {
     }
   }
   .login {
+    width: 100%;
     height: 40px;
-    cursor: pointer;
-    border-radius: 8px;
     background-color: @theme;
     border: 0;
-    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
     &:hover {
       background-color: @hover;
     }
   }
-  .dragItem {
+  .drag-item {
     margin-bottom: 15px;
   }
   .el-input-group__append {
     overflow: hidden;
     padding: 0;
-    background-color: @grey2;
     font-size: 13px;
-    cursor: pointer;
+    background-color: @grey2;
     box-shadow: 0 1px 0 0 @grey2 inset,0 -1px 0 0 @grey2 inset,-1px 0 0 0 @grey2 inset;
+    cursor: pointer;
   }
-  .codeBtn {
+  .code-btn {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 100%;
     padding: 0 20px;
-    display: flex;
-    align-items: center;
   }
   .el-form-item {
     margin-bottom: 22px;

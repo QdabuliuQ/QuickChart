@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarAxisLabel">
+  <div class="params-radar-axis-label">
     <optionItems :config="config" />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsTitle">
+  <div class="params-title">
     <optionItems :config="config" />
     <optionItems :config="textStyleConfig" />
   </div>

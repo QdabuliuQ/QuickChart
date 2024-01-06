@@ -1,9 +1,9 @@
 <template>
-  <el-dialog class="loginDialogClass" v-model="visible" :show-close="false">
+  <el-dialog class="login-dialog-class" v-model="visible" :show-close="false">
     <i @click="close" class="iconfont i_close_line"></i>
-    <div class="leftCover">
+    <div class="left-cover">
       <div>
-        <div class="leftText">
+        <div class="left-text">
           <div class="text1">
             快速生成图表工具
           </div>
@@ -15,12 +15,12 @@
         </div>
       </div>
     </div>
-    <div class="rightContent">
+    <div class="right-content">
       <div class="tabbar">
-        <div @click="active = 'login'" :class="[active == 'login' ? 'active' : '', 'tabItem']">账号登录</div>
-        <div @click="active = 'register'" :class="[active == 'register' ? 'active' : '', 'tabItem']">账号注册</div>
+        <div @click="active = 'login'" :class="[active == 'login' ? 'active' : '', 'tab-item']">账号登录</div>
+        <div @click="active = 'register'" :class="[active == 'register' ? 'active' : '', 'tab-item']">账号注册</div>
       </div>
-      <div class="panelContainer">
+      <div class="panel-container">
         <login-panel ref="loginPanelRef" @finished="visible = false" v-if="active == 'login'" />
         <register-panel ref="registerRef" @finished="visible = false" v-else />
       </div>
@@ -53,102 +53,102 @@ const close = () => {
 </script>
 
 <style lang="less">
-.loginDialogClass {
-  background-color: #fff !important;
-  box-shadow: 0 0 0 0 !important;
-  width: 770px !important;
-  aspect-ratio: 2/1.2 !important;
-  border-radius: 10px !important;
+.login-dialog-class {
   overflow: hidden !important;
+  width: 770px !important;
+  background-color: #fff !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 0 0 !important;
+  aspect-ratio: 2/1.2 !important;
 
   .el-dialog__header {
-    padding: 0;
     display: none;
+    padding: 0;
   }
   .el-dialog__body {
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
     width: 100%;
     height: 100%;
     padding: 0;
-    display: flex !important;
-    align-items: center !important;
-    position: relative;
   }
   .i_close_line {
     position: absolute;
-    right: 20px;
     top: 20px;
+    right: 20px;
     color: @grey;
     cursor: pointer;
     &:hover {
       color: @theme;
     }
   }
-  .leftCover {
+  .left-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 35%;
     height: 100%;
     background-color: @theme;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .leftText {
-      text-align: center;
+    .left-text {
       position: relative;
+      text-align: center;
       .text1 {
-        color: #fff;
         font-size: 23px;
+        color: #fff;
         font-weight: bold;
         letter-spacing: 2px;
       }
       .text2 {
         margin-top: 10px;
-        color: #fff;
         font-size: 16px;
+        color: #fff;
       }
       img {
-        margin-top: 10px;
         width: 65%;
+        margin-top: 10px;
       }
       .mask {
         position: absolute;
+        bottom: -20px;
         width: 100%;
         height: 100px;
-        bottom: -20px;
         background: linear-gradient(to top, @theme, transparent);
       }
     }
   }
-  .rightContent {
-    flex: 1;
+  .right-content {
     height: 100%;
+    flex: 1;
     .tabbar {
-      margin: 50px 0 40px;
-      height: 40px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      height: 40px;
+      margin: 50px 0 40px;
       box-sizing: border-box;
       border-bottom: 2px solid @grey2;
-      .tabItem {
-        font-weight: bold;
-        font-size: 18px;
-        margin: 0 30px;
-        cursor: pointer;
-        padding: 0 15px;
-        transition: .2s all linear;
-        box-sizing: border-box;
+      .tab-item {
         display: flex;
         align-items: center;
         height: 100%;
+        padding: 0 15px;
+        margin: 0 30px;
+        font-size: 18px;
+        transition: .2s all linear;
+        font-weight: bold;
+        cursor: pointer;
+        box-sizing: border-box;
       }
       .active {
         color: @theme;
         border-bottom: 2px solid @theme;
       }
     }
-    .panelContainer {
+    .panel-container {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
   }
 }

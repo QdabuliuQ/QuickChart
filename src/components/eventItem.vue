@@ -66,7 +66,7 @@
             <el-pagination
               @current-change="changeEvent"
               hide-on-single-page
-              class="paginationClass"
+              class="pagination-class"
               background
               layout="prev, pager, next"
               :page-size="limit"
@@ -83,8 +83,6 @@
 
 <script setup lang="ts">
 import {
-  defineProps,
-  defineEmits,
   ref
 } from "vue"
 import {useRouter} from "vue-router";
@@ -274,52 +272,52 @@ const deleteEvent = async (info: any) => {
     }
     .content {
       width: 100%;
-      word-break: break-all;
-      font-size: 17px;
-      line-height: 25px;
       margin-bottom: 15px;
+      font-size: 17px;
+      word-break: break-all;
+      line-height: 25px;
     }
     .chart {
-      width: 300px;
-      aspect-ratio: 2/1.4;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 15px;
       position: relative;
+      overflow: hidden;
+      width: 300px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      aspect-ratio: 2/1.4;
       cursor: pointer;
       .mask {
         position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 100%;
         background-color: #00000078;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         .iconfont {
           position: absolute;
-          left: 10px;
           bottom: 10px;
+          left: 10px;
           font-size: 25px;
         }
         .chartInfo {
           display: flex;
-          flex-direction: column;
           align-items: center;
+          flex-direction: column;
           .edit {
             padding: 6px 14px 7px;
+            margin-bottom: 10px;
             font-size: 12px;
             color: #fff;
-            border-radius: 15px;
             background-color: #00000087;
-            margin-bottom: 10px;
+            border-radius: 15px;
             .flex();
           }
           .name {
-            max-width: 180px;
-            text-overflow: ellipsis;
             overflow: hidden;
-            white-space: nowrap;
+            max-width: 180px;
             font-size: 15px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           .author {
             display: flex;
@@ -350,8 +348,8 @@ const deleteEvent = async (info: any) => {
         font-size: 14px;
         cursor: pointer;
         .iconfont {
-          font-size: 15px;
           margin-right: 7px;
+          font-size: 15px;
         }
         &:hover {
           color: @theme;

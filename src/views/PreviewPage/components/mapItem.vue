@@ -30,16 +30,16 @@ import useProxy from "@/hooks/useProxy";
 import {oss} from "@/network";
 
 interface Map {
-  id: string
-  type: 'map'
-  isLock: boolean
-  cover: string
-  option: string
-  style: IStyle
-  adcode: string
-  c_width: number
-  c_height: number
-  width: number
+  id: string;
+  type: 'map';
+  isLock: boolean;
+  cover: string;
+  option: string;
+  style: IStyle;
+  adcode: string;
+  c_width: number;
+  c_height: number;
+  width: number;
   height: number
 }
 
@@ -68,6 +68,7 @@ onMounted(async () => {
 .preview-page-map-item {
   position: absolute;
   transform-origin: 0 0;
+
   .map-item-main {
     width: 100%;
     height: 100%;

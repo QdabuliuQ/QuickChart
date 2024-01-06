@@ -64,9 +64,9 @@ const change = async () => {
   height: 140px;
   cursor: pointer;
   .border() {
-    border-radius: 8px;
     overflow: hidden;
     border: 1px dashed #707070;
+    border-radius: 8px;
   }
   .avatarContainer {
     width: 100%;
@@ -80,11 +80,12 @@ const change = async () => {
   }
   .noAvatar {
     .border();
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     .i_jia {
       font-size: 40px;
       color: #707070;

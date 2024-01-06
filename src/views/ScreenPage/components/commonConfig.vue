@@ -50,9 +50,9 @@ const props = defineProps<IProps>()
 </script>
 <style lang="less">
 .commonConfig {
-  .seriesItem {
+  .series-item {
     padding: 8px 0;
-    .itemTitle {
+    .item-title {
       top: 0;
       display: flex;
       align-items: center;
@@ -60,15 +60,15 @@ const props = defineProps<IProps>()
       letter-spacing: 1px;
     }
     .iconfont {
-      font-size: 14px;
       margin-right: 7px;
+      font-size: 14px;
     }
     .data {
-      font-weight: bold;
-      color: @theme;
       font-size: 14px;
+      color: @theme;
+      font-weight: bold;
     }
-    .optionOperation {
+    .option-operation {
       width: 50%;
     }
   }

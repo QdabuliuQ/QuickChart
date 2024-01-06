@@ -1,38 +1,38 @@
 <template>
-  <div id="IndexPage">
+  <div class="index-page">
     <div class="header">
       <div class="left">
         <div class="logo" @click="router.push('/')">
           <img
-            class="logoIcon" src="@/assets/image/logo.png" alt=""/>
+            class="logo-icon" src="@/assets/image/logo.png" alt=""/>
           <img
-            class="titleIcon"
+            class="title-icon"
             src="@/assets/image/quickChart.png"
             alt=""
           />
         </div>
         <div class="menu">
-          <div @click="toPage('home')" :class="[active == 'home' ? 'active' : '', 'menuItem']">
+          <div @click="toPage('home')" :class="[active == 'home' ? 'active' : '', 'menu-item']">
             首页
           </div>
-          <div @click="toPage('community')" :class="[active == 'community'  ? 'active' : '', 'menuItem']">
+          <div @click="toPage('community')" :class="[active == 'community'  ? 'active' : '', 'menu-item']">
             社区
           </div>
         </div>
       </div>
       <div class="more">
-        <div v-if="!isLogin" @click="toLogin" class="moreItem">
+        <div v-if="!isLogin" @click="toLogin" class="more-item">
           <i class="iconfont i_login"></i>
           登录/注册
         </div>
         <el-popover
           v-else
-          popper-class="menuPopoverClass"
+          popper-class="menu-popover-class"
           placement="bottom"
           :hide-after="50"
         >
           <template #reference>
-            <div class="moreItem">
+            <div class="more-item">
               <img :src="info.user_pic"/>
               {{ info.nickname }}
             </div>
@@ -106,15 +106,15 @@ onUnmounted(() => {
 </script>
 
 <style lang='less'>
-#IndexPage {
+.index-page {
   width: 80%;
-  margin: 0 auto;
   min-width: 1100px;
+  margin: 0 auto;
 
   .header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 0;
     border-bottom: 2px solid #494949;
 
@@ -127,14 +127,14 @@ onUnmounted(() => {
       display: flex;
       align-items: center;
 
-      .menuItem {
+      .menu-item {
         padding: 10px 30px 12px;
         margin-right: 20px;
+        font-size: 14px;
+        text-indent: 3px;
         border-radius: 10px;
         cursor: pointer;
-        font-size: 14px;
         letter-spacing: 3px;
-        text-indent: 3px;
 
         &:hover {
           background-color: @grey;
@@ -142,8 +142,8 @@ onUnmounted(() => {
       }
 
       .active {
-        background-color: @theme !important;
         color: #fff;
+        background-color: @theme !important;
       }
     }
 
@@ -152,28 +152,28 @@ onUnmounted(() => {
       align-items: center;
       margin-right: 50px;
 
-      .logoIcon {
-        cursor: pointer;
+      .logo-icon {
         width: 40px;
-      }
-
-      .titleIcon {
         cursor: pointer;
-        width: 200px;
-        margin-left: 5px;
-        padding-right: 10px;
       }
 
-      .userInfo {
+      .title-icon {
+        width: 200px;
+        padding-right: 10px;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+
+      .user-info {
         padding-left: 15px;
         box-sizing: border-box;
         border-left: 1px solid #ccc;
 
         .user {
           span {
-            border-bottom: 2px dashed rgb(135, 135, 135);
-            cursor: pointer;
             transition: 0.2s all linear;
+            border-bottom: 2px dashed rgb(135 135 135);
+            cursor: pointer;
 
             &:hover {
               color: @theme;
@@ -187,18 +187,18 @@ onUnmounted(() => {
       display: flex;
       align-items: center;
 
-      .moreItem {
-        color: #aaaaaa;
-        margin-left: 20px;
-        font-size: 14px;
+      .more-item {
         display: flex;
         align-items: center;
-        cursor: pointer;
+        margin-left: 20px;
+        font-size: 14px;
+        color: #aaa;
         transition: .2s all linear;
+        cursor: pointer;
 
         .iconfont {
-          font-size: 25px;
           margin-right: 8px;
+          font-size: 25px;
         }
 
         &:hover {
@@ -209,8 +209,8 @@ onUnmounted(() => {
           width: 30px;
           height: 30px;
           margin-right: 8px;
-          object-fit: cover;
           border-radius: 50%;
+          object-fit: cover;
         }
       }
     }

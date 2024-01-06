@@ -7,11 +7,11 @@
     :hide-after="0"
   >
     <div class="typeContainer">
-      <div @click="exportClick('html')" class="typeItem">
+      <div @click="exportClick('html')" class="type-item">
         <img src="@/assets/image/html.svg" />
         HTML
       </div>
-      <div @click="exportClick('image')" class="typeItem">
+      <div @click="exportClick('image')" class="type-item">
         <img src="@/assets/image/image.svg" />
         图片
       </div>
@@ -46,7 +46,7 @@
         :key="item.key"
         :value="item.key"
       >
-        <div style="transform: scale(.75); font-size: 15px; padding: 0 15px; display: inline-block; background: #f8b55738; color: #f8b557; border-radius: 6px">{{item.tar}}</div>
+        <div style=" display: inline-block; padding: 0 15px; font-size: 15px; color: #f8b557; background: #f8b55738; border-radius: 6px;transform: scale(.75)">{{item.tar}}</div>
         <span style="font-size: 13px">{{item.label}}</span>
       </el-option>
     </el-select>

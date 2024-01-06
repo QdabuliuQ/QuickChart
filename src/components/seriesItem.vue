@@ -1,10 +1,10 @@
 <template>
-  <div class="seriesItem">
-    <div class="itemTitle">
+  <div class="series-item">
+    <div class="item-title">
       <span v-if="props.title !== 'slot'">{{ props.title }}</span>
       <slot v-else name="title"></slot>
     </div>
-    <div class="optionOperation">
+    <div class="option-operation">
       <slot></slot>
     </div>
   </div>
@@ -18,21 +18,21 @@ const props = defineProps<IProps>()
 </script>
 
 <style lang='less'>
-.seriesItem {
+.series-item {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
+  align-items: flex-start;
   padding: 6px 0;
   font-size: 12px;
   color: #a9a8a8;
-  .itemTitle {
+  .item-title {
     position: relative;
     top: 4px;
   }
-  .optionOperation {
-    width: 55%;
+  .option-operation {
     display: flex;
     justify-content: flex-end;
+    width: 55%;
   }
 }
 </style>

@@ -7,7 +7,7 @@
       :key="item.id"
     >
       <img
-        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
+        :class="['drag-item', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'active-item' : '']"
         v-if="item.type === 'chart' || item.type === 'map'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -19,7 +19,7 @@
         }"
         :src="item.cover"/>
       <div
-        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
+        :class="['drag-item', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'active-item' : '']"
         v-else-if="item.type === 'text'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -52,7 +52,7 @@
       </div>
       <div
         @click="itemClick(idx as number, $event)"
-        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
+        :class="['drag-item', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'active-item' : '']"
         v-else-if="item.type === 'shape'"
         :style="{
           display: item.style.display,
@@ -81,7 +81,7 @@
         </svg>
       </div>
       <img
-        :class="['imgElement', 'dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
+        :class="['imgElement', 'drag-item', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'active-item' : '']"
         v-else-if="item.type === 'image'"
         @click="itemClick(idx as number, $event)"
         :style="{
@@ -100,7 +100,7 @@
         @click="itemClick(idx as number, $event)"
         :speed="item.speed"
         :content="item.content"
-        :class="['dragItem', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'activeItem' : '']"
+        :class="['drag-item', 'item_' + item.id, screen.getActiveElementIdx === idx ? 'active-item' : '']"
         :style="{
           display: item.style.display,
           width: item.style.width + 'px',
@@ -277,7 +277,7 @@ const setTextStyle = (styleInfo: any, info: any) => {
   }
 }
 const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
-  const rootDom = document.getElementsByClassName("dragItem")[idx] as HTMLElement
+  const rootDom = document.getElementsByClassName("drag-item")[idx] as HTMLElement
   const pathDom: HTMLElement = rootDom.childNodes[0].childNodes[0].childNodes[0] as HTMLElement
   let [shadowX, shadowY, shadowBlur] = (rootDom.style.filter.match(/\d+px/g) as any).map((item: string) => parseInt(item))
   info['shadowX'] = shadowX
@@ -290,7 +290,7 @@ const setShapeStyle = (info: any, idx: number) => {  // 更新形状样式
 
 }
 const setImageStyle = (info: any, idx: number) => {
-  const dom = document.getElementsByClassName("dragItem")[idx] as HTMLElement
+  const dom = document.getElementsByClassName("drag-item")[idx] as HTMLElement
   let style: any = dom.style
   let i: number = style.boxShadow.indexOf(')')+1
   let shadowColor = style.boxShadow.substring(0, i)
@@ -399,13 +399,13 @@ onUnmounted(() => {
 </script>
 <style lang="less">
 .dragItems {
+  position: relative;
   width: 100%;
   height: 100%;
-  position: relative;
   .imgElement {
     -webkit-user-drag: none;
   }
-  .dragItem {
+  .drag-item {
     position: absolute;
     overflow: hidden;
     box-sizing: border-box;
@@ -413,9 +413,10 @@ onUnmounted(() => {
       word-break: break-all;
     }
   }
-  .activeItem {
+  .active-item {
     animation: borderAnimate 1s linear infinite;
   }
+
   @keyframes borderAnimate {
     0% {
       border: 1px dashed @theme;

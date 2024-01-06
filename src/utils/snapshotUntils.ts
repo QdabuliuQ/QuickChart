@@ -8,7 +8,7 @@ type RR = {
 export function snapshotElement<T extends 'base64' | 'file'>(el: HTMLElement, type: T): Promise<T extends 'base64' ? string : File> {
   return new Promise((resolve, reject) => {
     try {
-      html2canvas(document.getElementById('chartDom') as HTMLDivElement, {
+      html2canvas(document.getElementById('chart-dom') as HTMLDivElement, {
         // useCORS: true,
         allowTaint: true,
       }).then((canvas) => {

@@ -1,22 +1,22 @@
 <template>
-  <div class="chartMenu">
+  <div class="chart-menu">
     <div class="itemContainer">
       <div ref="typeTitleRef" class="title">
         <i @click="router.push('/')" class="iconfont i_home"></i>
         插入图表
       </div>
       <el-scrollbar :height="height">
-        <div class="itemList">
-          <div class="itemBox" v-for="item in list" :key="item.id">
-            <div @click="item.show = !item.show" class="typeCard">
+        <div class="item-list">
+          <div class="item-box" v-for="item in list" :key="item.id">
+            <div @click="item.show = !item.show" class="type-card">
               <i style="margin-right: 8px;" :class="['iconfont', item.icon]"></i>
               {{ item.type }}
               <i
                 style="color: rgb(127 127 127)"
-                :class="['iconfont more', item.show ? 'rotateIcon' : '', 'i_hide']"
+                :class="['iconfont more', item.show ? 'rotate-icon' : '', 'i_hide']"
               ></i>
             </div>
-            <div v-show="item.show" class="listContainer">
+            <div v-show="item.show" class="list-container">
               <chart-item
                 v-for="chart in item.charts"
                 :key="chart.id"
@@ -74,45 +74,45 @@ onUnmounted(() => {
 
 </script>
 <style lang="less">
-.chartMenu {
+.chart-menu {
   width: 250px;
   height: 100%;
   background-color: @curColor;
   .title {
     position: relative;
     padding: 20px 10px 0;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
     margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
     .iconfont {
       position: absolute;
       bottom: 0;
       left: 10px;
-      cursor: pointer;
       font-size: 20px;
+      cursor: pointer;
     }
   }
-  .itemList {
+  .item-list {
     padding-bottom: 15px;
-    .itemBox {
-      .typeCard {
-        padding: 12px 15px;
-        cursor: pointer;
-        font-size: 13px;
-        color: #e0e0e0;
+    .item-box {
+      .type-card {
+        position: relative;
         display: flex;
         align-items: center;
-        position: relative;
+        padding: 12px 15px;
+        font-size: 13px;
+        color: #e0e0e0;
+        cursor: pointer;
         box-sizing: border-box;
         border-bottom: 1px solid #4c4c4c;
         .more {
           position: absolute;
-          right: 5px;
           top: 50%;
+          right: 5px;
           transform: translateY(-50%);
         }
-        .rotateIcon {
+        .rotate-icon {
           transform: translateY(-50%) rotateZ(90deg) !important;
         }
         i {
@@ -120,13 +120,13 @@ onUnmounted(() => {
           transition: 0.1s all linear;
         }
         &:hover {
-          background: @theme;
           color: #fff;
+          background: @theme;
         }
       }
-      .listContainer {
-        padding: 15px;
+      .list-container {
         display: grid;
+        padding: 15px;
         grid-template-columns: 1fr 1fr;
         grid-gap: 8px;
         box-sizing: border-box;

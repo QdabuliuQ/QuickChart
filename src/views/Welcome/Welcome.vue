@@ -53,11 +53,11 @@ const processList = [
 
 <style lang='less'>
 #Welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   .titleContainer {
     text-align: center;
     img {
@@ -65,9 +65,9 @@ const processList = [
     }
   }
   .stepContainer {
-    margin: 0 40px;
     display: flex;
     align-items: center;
+    margin: 0 40px;
     .stepItem {
       display: flex;
       align-items: center;
@@ -75,9 +75,9 @@ const processList = [
       .stepItemContainer {
         text-align: center;
         .stepItmeTitle {
+          margin-bottom: 10px;
           font-size: 17px;
           font-weight: bold;
-          margin-bottom: 10px;
         }
         .stepItmeDesc {
           height: 80px;
@@ -85,20 +85,21 @@ const processList = [
         }
       }
       .i_step_right {
-        font-size: 40px;
         position: relative;
         top: 10px;
+        font-size: 40px;
         animation: arrowAnimation 1s linear infinite;
+
         @keyframes arrowAnimation {
           0% {
-            left: 0px;
+            left: 0;
           }
           50% {
             left: 10px;
             color: @theme;
           }
           100% {
-            left: 0px;
+            left: 0;
           }
         }
       }

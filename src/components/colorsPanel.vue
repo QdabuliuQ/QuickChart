@@ -1,15 +1,15 @@
 <template>
   <div :style="{
     gridTemplateColumns: props.col ? props.col : '1fr 1fr'
-  }" class="colorsPanel">
-    <div v-for="(item, idx) in _colors" class="colorItem">
+  }" class="colors-panel">
+    <div v-for="(item, idx) in _colors" class="color-item">
       <el-color-picker :size="props.size ? props.size : 'small'" show-alpha v-model="_colors[idx]" />
       <i @click="deleteItem(idx)" class="iconfont i_delete"></i>
     </div>
     <div @click="addItem" :style="{
       width: props.size ? '31px' : '24px',
       height: props.size ? '31px' : '24px',
-    }" class="addBtn">
+    }" class="add-btn">
       <i :style="{
         fontSize: props.size ? '13px' : '11px'
       }" class="iconfont i_jia"></i>
@@ -48,12 +48,12 @@ watch(() => _colors, debounce(() => {
 
 </script>
 <style lang="less">
-.colorsPanel {
+.colors-panel {
+  display: grid;
   width: 100%;
   margin: 10px 0;
-  display: grid;
   grid-gap: 10px;
-  .colorItem {
+  .color-item {
     display: flex;
     align-items: center;
     .iconfont {
@@ -64,12 +64,12 @@ watch(() => _colors, debounce(() => {
       }
     }
   }
-  .addBtn {
+  .add-btn {
     display: flex;
-    align-items: center;
     justify-content: center;
-    border-radius: 5px;
+    align-items: center;
     border: 1px solid #5c5c5c;
+    border-radius: 5px;
     box-sizing: border-box;
     cursor: pointer;
     &:hover {

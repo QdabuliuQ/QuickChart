@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsPointAngleAxis">
+  <div class="params-point-angle-axis">
     <option-items :config="config" />
   </div>
 </template>

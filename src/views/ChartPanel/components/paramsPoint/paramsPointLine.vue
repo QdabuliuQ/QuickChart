@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsPointLine">
+  <div class="params-point-line">
     <option-items :config="config" />
   </div>
 </template>

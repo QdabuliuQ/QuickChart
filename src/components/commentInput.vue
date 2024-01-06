@@ -56,16 +56,16 @@ const send = () => {
     border: 1px solid @theme;
   }
   textarea {
-    flex: 1;
-    padding: 8px 10px;
-    outline: none;
-    border: 0;
-    resize: none;
     width: 100%;
     height: 100%;
-    background-color: #3d3d3d;
-    border-radius: 10px;
+    padding: 8px 10px;
     font-size: 15px;
+    background-color: #3d3d3d;
+    border: 0;
+    border-radius: 10px;
+    outline: none;
+    resize: none;
+    flex: 1;
     line-height: 35px;
     box-sizing: border-box;
     &::-webkit-scrollbar {
@@ -75,17 +75,17 @@ const send = () => {
   }
 
   .send {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 25px;
     margin-left: 10px;
     font-size: 16px;
-    font-weight: bold;
-    padding: 0 25px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffc97c;
     color: #fff;
+    background-color: #ffc97c;
     border-radius: 10px;
+    font-weight: bold;
     cursor: pointer;
     &:hover {
       background-color: @theme;

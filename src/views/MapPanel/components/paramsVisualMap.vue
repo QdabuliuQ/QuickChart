@@ -190,7 +190,7 @@ useWatchData(config, "visualMap", getData)
 </script>
 <style lang="less">
 .paramsVisualMap {
-  .colorsPanel {
+  .colors-panel {
     margin: 0 !important;
   }
 }

@@ -187,6 +187,3 @@ watch(() => config, debounce(() => {
 })
 
 </script>
-
-<style lang='less'>
-</style>

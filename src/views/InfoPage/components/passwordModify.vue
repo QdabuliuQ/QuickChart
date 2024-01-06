@@ -25,7 +25,7 @@
             <div :style="{
               backgroundColor: disable ? '#e8e8e8' : '#ffae34',
               color: disable ? '#000' : '#fff'
-            }" class="codeBtn" @click="sendCode">
+            }" class="code-btn" @click="sendCode">
               {{ disable ? codeTime+'后重新发送' :'发送验证码' }}
             </div>
           </template>
@@ -159,17 +159,17 @@ const closed = () => {  // 关闭回调函数
   .el-input-group__append {
     overflow: hidden;
     padding: 0;
-    background-color: @grey2;
     font-size: 13px;
-    cursor: pointer;
+    background-color: @grey2;
     box-shadow: 0 1px 0 0 @grey2 inset,0 -1px 0 0 @grey2 inset,-1px 0 0 0 @grey2 inset;
+    cursor: pointer;
   }
-  .codeBtn {
+  .code-btn {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 100%;
     padding: 0 20px;
-    display: flex;
-    align-items: center;
   }
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
-  <div class="chartData">
-    <div class="excelContainer">
-      <div class="topBtnList" style="margin: 8px 0">
-        <div class="leftBtn">
+  <div class="chart-data">
+    <div class="excel-container">
+      <div class="top-btn-list" style='margin: 8px 0;'>
+        <div class="left-btn">
           <input
             @change="changeEvent"
             accept=".xls,.xlsx"
             ref="uploadExcelInputRef"
-            style="display: none"
+            style='display: none;'
             type="file"
           />
           <el-button @click="uploadExcelInputRef.click()" color="#626aef">
@@ -23,8 +23,8 @@
             下载数据
           </el-button>
         </div>
-        <div class="rightBtn">
-          <el-button @click="resetChartData" class="resetBtn" type="info">
+        <div class="right-btn">
+          <el-button @click="resetChartData" class="reset-btn" type="info">
             <template #icon>
               <i class="iconfont i_refresh"></i>
             </template>
@@ -33,26 +33,25 @@
         </div>
       </div>
       <div
-        class="excelDataBox"
+        class="excel-data-box"
         element-loading-background="rgba(0, 0, 0, 1)"
         v-loading="loading"
       >
-        <div id="dataExcel"></div>
+        <div id="data-excel"></div>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from "vue";
-// import Worker from "worker-loader!@/workers/worker";
 import Spreadsheet from "x-data-spreadsheet";
 import zhCN from "x-data-spreadsheet/src/locale/zh-cn";
-Spreadsheet.locale("zh-cn", zhCN);
 import {fileType} from "@/utils/fileType";
 import {exportFile, importFile, stox} from "@/utils/excelOpe";
 import useProxy from "@/hooks/useProxy";
 import useStore from "@/store";
 import {deepCopy} from "@/utils";
+Spreadsheet.locale("zh-cn", zhCN);
 
 const props = defineProps<{
   loading: boolean
@@ -125,8 +124,8 @@ const exportExcel = () => {
 
 const initData = () => {
   setTimeout(() => {
-    let w = document.getElementById("dataExcel")?.clientWidth;
-    let h = document.getElementById("dataExcel")?.clientHeight;
+    let w = document.getElementById("data-excel")?.clientWidth;
+    let h = document.getElementById("data-excel")?.clientHeight;
     let option: any = {
       // 图表配置
       mode: "edit", // edit | read
@@ -169,7 +168,7 @@ const initData = () => {
       name: "sheet11",
       rows: excelData,
     };
-    sheetObj = new Spreadsheet("#dataExcel", option)
+    sheetObj = new Spreadsheet("#data-excel", option)
       .loadData(data1) // load data
       .change((res) => {  // 图表数据修改
         clearTimeout(timer);
@@ -226,19 +225,19 @@ onUnmounted(() => {
 
 </script>
 <style lang="less">
-.chartData {
+.chart-data {
+  position: relative;
   height: 100%;
   padding: 0 10px;
   background-color: @curColor;
-  position: relative;
-  .excelContainer {
+  .excel-container {
+    overflow: hidden;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    .topBtnList {
+    .top-btn-list {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       .saveBtn {
         span {
           position: relative;
@@ -246,19 +245,20 @@ onUnmounted(() => {
         }
       }
     }
-    .excelDataBox {
+    .excel-data-box {
+      overflow: hidden;
       height: 91%;
       border-radius: 6px;
-      overflow: hidden;
-      #dataExcel {
+      #data-excel {
         width: 100%;
         height: 100%;
         .x-spreadsheet-scrollbar {
           /* 滚动条整体 */
           &::-webkit-scrollbar {
-            height: 10px;
             width: 10px;
+            height: 10px;
           }
+
           /* 两个滚动条交接处 -- x轴和y轴 */
           &::-webkit-scrollbar-corner {
             background-color: transparent;
@@ -266,16 +266,16 @@ onUnmounted(() => {
 
           /* 滚动条滑块 */
           &::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
             background: #535353;
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgb(0 0 0 / 20%);
           }
 
           /* 滚动条轨道 */
           &::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
             background: #ededed;
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgb(0 0 0 / 20%);
           }
         }
       }

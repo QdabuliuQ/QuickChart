@@ -1,11 +1,11 @@
 <template>
-  <div class="paramsGraphic">
-    <div class="manageGraphic" @click="drawer = true"><i class="iconfont i_manage"></i> 管理图形组件</div>
+  <div class="params-graphic">
+    <div class="manage-graphic" @click="drawer = true"><i class="iconfont i_manage"></i> 管理图形组件</div>
     <el-drawer
       v-model="drawer"
       :size="'35%'"
       title="管理图形组件"
-      custom-class="graphicManageDrawerClass"
+      custom-class="graphic-manage-drawer-class"
       :direction="'rtl'"
       :before-close="handleClose"
       @open="drawerOpen"
@@ -303,29 +303,29 @@ const getDefaultConfig = (type: string): {
 </script>
 
 <style lang="less">
-.graphicManageDrawerClass {
+.graphic-manage-drawer-class {
   .el-drawer__header {
     margin-bottom: 20px;
   }
 }
-.paramsGraphic {
-  .manageGraphic {
-    padding: 8px 20px;
+.params-graphic {
+  .manage-graphic {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 8px 20px;
+    margin: 10px;
     font-size: 12px;
-    cursor: pointer;
-    border-radius: 20px;
+    color: #fff;
     background-color: transparent;
     border: 1px solid #777676;
+    border-radius: 20px;
+    cursor: pointer;
     box-sizing: border-box;
-    color: #fff;
     letter-spacing: 2px;
-    margin: 10px 10px;
     i {
-      font-size: 12px;
       margin-right: 8px;
+      font-size: 12px;
     }
     &:hover {
       background-color: #4f4f4f;

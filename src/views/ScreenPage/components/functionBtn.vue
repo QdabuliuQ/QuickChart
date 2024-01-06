@@ -15,8 +15,8 @@ const emits = defineEmits(['clickEvent'])
 .function-btn {
   padding: 15px;
   color: #fff;
-  border-radius: 50%;
   background-color: #4b4b4b;
+  border-radius: 50%;
   cursor: pointer;
   
   &:hover {

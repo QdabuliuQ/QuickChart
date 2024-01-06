@@ -53,12 +53,12 @@ onMounted(() => {
 
 <style lang="less">
 .marquee-element {
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 
   .marquee-text {
-    white-space: nowrap;
     position: absolute;
+    white-space: nowrap;
   }
 }
 </style>

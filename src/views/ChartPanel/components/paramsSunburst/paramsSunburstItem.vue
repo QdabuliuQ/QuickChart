@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsSunburstItem">
+  <div class="params-sunburst-item">
     <series-item v-if="series.levels" :title='"层级颜色"'>
       <colorPanel @colorChange="colorChange" :colors="colors" />
     </series-item>
@@ -107,8 +107,8 @@ useWatchData(config, 'series', getData)
 </script>
 
 <style lang="less">
-.paramsSunburstItem {
-  .colorsPanel {
+.params-sunburst-item {
+  .colors-panel {
     margin: 0;
   }
 }

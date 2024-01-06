@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsSankeyStyle">
+  <div class="params-sankey-style">
     <option-items :config="config"/>
   </div>
 </template>

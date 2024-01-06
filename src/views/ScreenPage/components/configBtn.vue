@@ -20,15 +20,15 @@ const emits = defineEmits([
 <style lang="less">
 .deleteBtn {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 8px 0 9px 0;
-  border-radius: 8px;
-  font-size: 13px;
+  align-items: center;
+  padding: 8px 0 9px;
   margin: 6px 0;
-  cursor: pointer;
+  font-size: 13px;
   color: #fff;
+  border-radius: 8px;
   transition: .2s all linear;
+  cursor: pointer;
   .iconfont {
     margin-right: 5px;
   }

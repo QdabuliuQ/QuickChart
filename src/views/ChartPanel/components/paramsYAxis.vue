@@ -1,19 +1,19 @@
 <template>
-  <div class="paramsYAxis">
+  <div class="params-y-axis">
     <option-items :config="config" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴名称样式
     </div>
     <option-items :config="textStyleConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴样式
     </div>
     <option-items :config="axisLineConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴文本样式
     </div>
     <option-items :config="axisLabelConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴刻度样式
     </div>
     <option-items :config="axisTickConfig" />
@@ -310,25 +310,25 @@ useWatchData(axisTickConfig, 'yAxis', () => getData('axisTickConfig'))
 useWatchData(axisLabelConfig, 'yAxis', () => getData('axisLabelConfig'))
 </script>
 <style lang="less">
-.paramsYAxis {
-  .splitLine {
-    font-size: 12px;
-    font-weight: bold;
-    color: @theme;
-    margin: 8px 0 6px 0;
+.params-y-axis {
+  .split-line {
     position: relative;
     display: flex;
     align-items: center;
     padding-bottom: 5px;
+    margin: 8px 0 6px;
+    font-size: 12px;
+    color: @theme;
+    font-weight: bold;
     &::after {
       position: absolute;
-      content: '';
-      width: 30%;
-      height: 3px;
       bottom: 0;
       left: 0;
+      width: 30%;
+      height: 3px;
       background-color: @theme;
       opacity: .4;
+      content: '';
     }
   }
 }

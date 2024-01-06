@@ -1,15 +1,15 @@
 <template>
-  <div class="ChartPanel">
-    <div class="infoContainer" v-if="state === 1">
-      <div class="leftChartContainer">
+  <div class="chart-panel">
+    <div class="info-container" v-if="state === 1">
+      <div class="left-chart-container">
         <chart-detail
           :loading="chart_loading"
           :detail-type="detailType"
           :info-panel="false"
           :type="type" />
       </div>
-      <div class="rightParamsContainer">
-        <div class="panelBtnList">
+      <div class="right-params-container">
+        <div class="panel-btn-list">
           <div @click="toggle(0)" :class="[opType == 0 ? 'active' : '', 'btnItem']">
             编辑数据
           </div>
@@ -19,7 +19,7 @@
         </div>
         <div :style="{
           width: opType === 0 ? '450px' : '220px'
-        }" class="paramsContainer">
+        }" class="params-container">
           <chart-data
             v-show="opType == 0"
             :detail_type="detailType"
@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="emptyContainer">
+    <div v-else class="empty-container">
       <empty-tip />
     </div>
   </div>
@@ -121,50 +121,50 @@ onUnmounted(() => {
 </script>
 
 <style lang='less'>
-.ChartPanel {
+.chart-panel {
   width: 100%;
   height: 100%;
-  .infoContainer {
+  .info-container {
+    display: flex;
     width: 100%;
     height: 100%;
-    display: flex;
-    .leftChartContainer {
+    .left-chart-container {
       flex: 1;
     }
-    .rightParamsContainer {
+    .right-params-container {
       width: 220px;
-      .panelBtnList {
-        padding: 20px 0 0;
+      .panel-btn-list {
         display: flex;
         align-items: center;
+        padding: 20px 0 0;
         font-size: 12.5px;
 
         .btnItem {
-          flex: 1;
-          text-align: center;
           padding: 9px 0;
-          color: rgb(150, 150, 150);
+          text-align: center;
+          text-indent: 1px;
+          color: rgb(150 150 150);
           transition: 0.2s all linear;
+          flex: 1;
           cursor: pointer;
           letter-spacing: 1px;
-          text-indent: 1px;
         }
 
         .active {
-          background-color: @curColor;
           color: @theme;
+          background-color: @curColor;
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
         }
       }
-      .paramsContainer {
-        height: calc(100vh - 34.8px - 20px);
+      .params-container {
         position: absolute;
         right: 0;
+        height: calc(100vh - 34.8px - 20px);
       }
     }
   }
-  .emptyContainer {
+  .empty-container {
     width: 100%;
     height: 100%;
   }

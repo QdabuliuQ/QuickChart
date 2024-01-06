@@ -1,18 +1,18 @@
 <template>
   <loading v-if="props.loading" text="加载图表中..."/>
   <div v-else class="chartDetail">
-    <div class="chartContainer">
-      <div class="scrollContainer">
+    <div class="chart-container">
+      <div class="scroll-container">
         <el-button
           v-if="props.back"
           @click="router.go(-1)"
-          class="backBtn"
+          class="back-btn"
           type="info"
         >
           <i class="iconfont i_exit"></i>返回
         </el-button
         >
-        <div class="btnList">
+        <div class="btn-list">
           <el-button v-login="() => (visible = true)" type="primary">
             <i class="iconfont i_save1"></i>
             另存为
@@ -24,7 +24,7 @@
           <el-button
             v-login="() => (shareVisible = true)"
             v-if="props.share"
-            class="shareBtn"
+            class="share-btn"
             type="primary"
             color="#626aef"
           >
@@ -72,8 +72,6 @@ import {
   onUnmounted,
 } from "vue";
 import {useRouter} from "vue-router";
-import {setImageOption} from "@/utils";
-import html2canvas from 'html2canvas'
 import useProxy from "@/hooks/useProxy";
 import Loading from "@/components/loading.vue";
 import ChartDom from "@/components/chartDom.vue";
@@ -81,7 +79,7 @@ import {ElLoading, FormInstance, FormRules} from "element-plus";
 import {
   deleteComment,
   getComment,
-  postChart, postChartImage,
+  postChart,
   postComment,
   postPraise,
   postPraiseComment,
@@ -279,45 +277,44 @@ onUnmounted(() => {
   stop2();
 });
 </script>
-<style lang="less">
+<style lang="less"> 
 .chartDetail {
   width: 100%;
   height: 100%;
-
-  .chartContainer {
+  .chart-container {
     height: 100%;
 
     .el-scrollbar .el-scrollbar__wrap .el-scrollbar__view {
-      white-space: nowrap;
       display: inline-block;
+      white-space: nowrap;
     }
 
     .el-scrollbar__wrap {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
 
-    .scrollContainer {
+    .scroll-container {
+      position: relative;
+      overflow: auto;
       width: 100%;
       height: 100%;
-      overflow: auto;
-      position: relative;
 
-      .backBtn {
+      .back-btn {
         position: absolute;
         top: 8px;
         left: 8px;
 
         .iconfont {
-          font-size: 14px;
           margin-right: 5px;
+          font-size: 14px;
         }
       }
 
-      .scrollContainer();
+      .scroll-container();
 
-      .btnList {
+      .btn-list {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -328,15 +325,15 @@ onUnmounted(() => {
           font-size: 14px;
         }
 
-        .shareBtn {
+        .share-btn {
           &:hover {
-            border: 1px solid #555bca;
             background-color: #555bca;
+            border: 1px solid #555bca;
           }
 
           &:focus {
-            border: 1px solid #555bca;
             background-color: #555bca;
+            border: 1px solid #555bca;
           }
         }
 

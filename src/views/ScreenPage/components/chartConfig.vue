@@ -70,13 +70,13 @@ onUnmounted(() => {
 <style lang="less">
 .chartConfig {
   .cover {
-    width: 100%;
-    aspect-ratio: 1/.7;
-    border-radius: 10px;
     overflow: hidden;
-    background-image: url("../../../assets/image/bg.jpg");
-    background-size: cover;
+    width: 100%;
     background-repeat: repeat;
+    background-size: cover;
+    border-radius: 10px;
+    aspect-ratio: 1/.7;
+    background-image: url("../../../assets/image/bg.jpg");
     img {
       width: 100%;
       height: 100%;

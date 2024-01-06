@@ -3,9 +3,9 @@
     width: width + 'px',
     height: height + 'px',
     margin: '15vh auto 0',
-  }" class="transparentBg">
-    <div ref="mapDomRef" id="mapDom"></div>
-    <el-dialog class="codeDialogClass" v-model="codeDialog" title="代码配置" width="50%">
+  }" class="transparent-bg">
+    <div ref="mapDomRef" id="map-dom"></div>
+    <el-dialog class="code-dialog-class" v-model="codeDialog" title="代码配置" width="50%">
       <highlightjs class="language-javascript" language="javascript" :code="code" />
     </el-dialog>
   </div>
@@ -135,15 +135,15 @@ onUnmounted(() => {
 
 </script>
 <style lang="less">
-.transparentBg {
-  background-image: url("../assets/image/bg.jpg");
-  background-size: cover;
+.transparent-bg {
   background-repeat: repeat;
-  #mapDom {
+  background-size: cover;
+  background-image: url("../assets/image/bg.jpg");
+  #map-dom {
     position: relative;
-    margin: 0 auto;
     width: 100%;
     height: 100%;
+    margin: 0 auto;
   }
 }
 </style>

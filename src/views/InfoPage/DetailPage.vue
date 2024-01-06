@@ -1,6 +1,6 @@
 <template>
-  <div class="DetailPage">
-    <div class="pageTitle">账户管理</div>
+  <div class="detail-page">
+    <div class="page-title">账户管理</div>
     <el-form
       ref="ruleFormRef"
       :label-position="'top'"
@@ -25,12 +25,12 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="updateInfo">
-      <i style="font-size: 12px; margin-right: 6px;" class="iconfont i_update"></i>
+      <i style=" margin-right: 6px;font-size: 12px;" class="iconfont i_update"></i>
       更新资料
     </el-button>
-    <div class="pageTitle">安全设置</div>
-    <div class="settingItem">
-      <div class="leftIcon">
+    <div class="page-title">安全设置</div>
+    <div class="setting-item">
+      <div class="left-icon">
         <img src="@/assets/image/setting.svg" />
         修改登录的密码
       </div>
@@ -111,19 +111,19 @@ const updateInfo = debounce(async () => {
 
 </script>
 <style lang="less">
-.DetailPage {
-  .settingItem {
-    padding: 10px 0;
+.detail-page {
+  .setting-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
     box-sizing: border-box;
-    .leftIcon {
+    .left-icon {
       font-size: 16px;
       img {
         width: 70px;
-        vertical-align: middle;
         margin-right: 6px;
+        vertical-align: middle;
       }
     }
     &:not(:last-child) {
@@ -134,7 +134,7 @@ const updateInfo = debounce(async () => {
       font-size: 14px;
     }
     .el-button:focus, .el-button:hover {
-      background-color: rgba(255, 174, 52, 0.25);
+      background-color: rgb(255 174 52 / 25%);
       border: 1px solid @theme;
     }
     .el-button:active {

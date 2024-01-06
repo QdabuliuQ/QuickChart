@@ -28,24 +28,24 @@ import PreviewButton from "@/views/ScreenPage/components/previewButton.vue";
 
 <style lang="less">
 .functionListPopoverClass {
-  padding: 0 !important;
   width: auto !important;
+  padding: 0 !important;
   .el-scrollbar {
     padding: 10px;
   }
   .typeContainer {
     display: grid;
+    padding: 10px;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 15px;
-    padding: 10px;
-    .typeItem {
+    .type-item {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      font-size: 13px;
-      cursor: pointer;
       padding: 10px;
+      font-size: 13px;
       border-radius: 10px;
+      flex-direction: column;
+      cursor: pointer;
       img {
         width: 50px;
         margin-bottom: 10px;
@@ -55,34 +55,34 @@ import PreviewButton from "@/views/ScreenPage/components/previewButton.vue";
       }
     }
   }
-  .skeleton_loading {
+  .skeleton-loading {
     display: grid;
+    width: 400px;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
-    width: 400px;
   }
   .el-empty {
     width: 400px;
   }
   .functionListChartContainer {
-    padding: 0 !important;
     display: grid;
+    width: 400px;
+    padding: 0 !important;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
-    width: 400px;
     .el-image {
-      border-radius: 10px;
       overflow: hidden;
       background-color: #fff;
-      box-sizing: border-box;
       border: 1px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
     }
     .item {
       position: relative;
       .name {
         margin-top: 5px;
-        text-align: center;
         font-size: 14px;
+        text-align: center;
       }
       &:hover .mask {
         opacity: 1;
@@ -90,22 +90,22 @@ import PreviewButton from "@/views/ScreenPage/components/previewButton.vue";
       .mask {
         position: absolute;
         z-index: 2;
-        width: 100%;
-        aspect-ratio: 2/1.3;
         display: flex;
-        align-items: center;
         justify-content: center;
-        background-color: rgba(255, 180, 75, 0.509);
-        color: #fff;
-        font-weight: bold;
+        align-items: center;
+        overflow: hidden;
+        width: 100%;
         font-size: 14px;
-        cursor: pointer;
-        opacity: 0;
-        transition: 0.2s all linear;
-        box-sizing: border-box;
+        color: #fff;
+        background-color: rgb(255 180 75 / 50.9%);
         border: 2px solid @theme;
         border-radius: 10px;
-        overflow: hidden;
+        opacity: 0;
+        transition: 0.2s all linear;
+        aspect-ratio: 2/1.3;
+        font-weight: bold;
+        cursor: pointer;
+        box-sizing: border-box;
       }
     }
   }
@@ -115,8 +115,8 @@ import PreviewButton from "@/views/ScreenPage/components/previewButton.vue";
   flex-direction: column;
   padding: 20px 3px 20px 0;
   .active {
-    background-color: #4d4d4d !important;
     color: @theme !important;
+    background-color: #4d4d4d !important;
   }
 }
 </style>

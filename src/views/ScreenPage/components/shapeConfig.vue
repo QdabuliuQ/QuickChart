@@ -127,10 +127,10 @@ onUnmounted(() => {
 <style lang="less">
 .shapeConfig {
   .el-scrollbar {
+    overflow: hidden;
     margin-top: 10px;
     background-color: #494949;
     border-radius: 10px;
-    overflow: hidden;
     .shapeContainer {
       padding: 15px 10px;
       .shapeGroup {

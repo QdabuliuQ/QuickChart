@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    custom-class="commentDrawerCustomClass"
+    custom-class="comment-drawer-custom-class"
     v-model="drawer"
     direction="ltr"
     title="评论内容"
@@ -44,7 +44,7 @@
         <el-pagination
           @current-change="changeEvent"
           hide-on-single-page
-          class="paginationClass"
+          class="pagination-class"
           background
           v-model:current-page="offset"
           layout="prev, pager, next"
@@ -161,10 +161,10 @@ onUnmounted(() => {
 </script>
 
 <style lang="less">
-.commentDrawerCustomClass {
+.comment-drawer-custom-class {
   .el-drawer__header {
-    margin-bottom: 0;
     padding: 15px 10px 10px;
+    margin-bottom: 0;
   }
   .el-drawer__body {
     padding: 20px 15px;
@@ -183,9 +183,9 @@ onUnmounted(() => {
     &::-webkit-scrollbar-corner{
       background: #179a16;
     }
-    .commentItem {
+    .comment-item {
       &:not(:last-child) {
-        .commentData {
+        .comment-data {
           border-bottom: 1px solid #2f2f2f;
         }
       }

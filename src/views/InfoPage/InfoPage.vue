@@ -1,7 +1,7 @@
 <template>
-  <div class="InfoPage">
+  <div class="info-page">
     <el-affix :offset="20">
-      <div class="leftMenu">
+      <div class="left-menu">
         <el-menu
           active-text-color="#ffae34"
           :default-active="active"
@@ -21,7 +21,7 @@
         </el-menu>
       </div>
     </el-affix>
-    <div class="rightContainer">
+    <div class="right-container">
       <router-view/>
     </div>
   </div>
@@ -58,17 +58,17 @@ onMounted(() => {
 </script>
 
 <style lang="less">
-.InfoPage {
+.info-page {
   display: flex;
   align-items: flex-start;
   margin-top: 20px;
-  .leftMenu {
+  .left-menu {
+    z-index: 1;
+    padding: 30px 0;
     background-color: #353535;
     border-radius: 15px;
-    box-sizing: border-box;
-    padding: 30px 0;
     box-shadow: 0 0 9px 0 #0d0d0d;
-    z-index: 1;
+    box-sizing: border-box;
     .el-menu {
       width: 180px;
       border-right: 0;
@@ -76,44 +76,44 @@ onMounted(() => {
     .el-menu-item {
       padding-left: 40px !important;
       .iconfont {
-        font-size: 18px;
         margin-right: 14px;
+        font-size: 18px;
       }
       &:hover {
-        background-color: rgba(255, 174, 52, 0.29);
+        background-color: rgb(255 174 52 / 29%);
       }
     }
     .is-active {
-      background-color: @theme !important;
       color: #fff;
+      background-color: @theme !important;
     }
   }
-  .rightContainer {
-    flex: 1;
+  .right-container {
+    min-height: 80vh;
+    padding: 30px;
     margin: 0 0 20px 20px;
     background-color: #353535;
-    box-sizing: border-box;
     border-radius: 15px;
-    padding: 30px;
-    min-height: 80vh;
-    .pageTitle {
-      font-weight: bold;
-      color: @theme;
-      font-size: 17px;
-      margin-bottom: 20px;
+    flex: 1;
+    box-sizing: border-box;
+    .page-title {
       position: relative;
+      margin-bottom: 20px;
+      font-size: 17px;
+      color: @theme;
+      font-weight: bold;
       &:not(:first-child) {
         margin-top: 40px;
       }
-      &:after {
+      &::after {
         position: absolute;
-        content: '';
+        bottom: -5px;
+        left: 0;
         width: 40px;
         height: 2px;
         background-color: @theme;
-        bottom: -5px;
-        left: 0;
         border-radius: 2px;
+        content: '';
       }
     }
   }

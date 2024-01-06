@@ -1,13 +1,13 @@
 <template>
-  <div class="infoPanel">
+  <div class="info-panel">
     <div v-login="toPraise" :class="['infoBtn', props.is_praise == 1 ? 'active' : '']">
-      <div class="btnContainer">
+      <div class="btn-container">
         <i class="iconfont i_praise"></i>
         <span>{{props.praise_count == 0 ? '点赞' : props.praise_count}}</span>
       </div>
     </div>
     <div @click="showComment" class="infoBtn">
-      <div class="btnContainer">
+      <div class="btn-container">
         <i class="iconfont i_comment"></i>
         <span>{{props.comment_count == 0 ? '评论' : props.comment_count}}</span>
       </div>
@@ -33,10 +33,6 @@ const emits = defineEmits([
   'showDrawer'
 ])
 const comments = reactive<any>([])
-let flag = false
-const drawer = ref<boolean>(false)
-const proxy = useProxy()
-
 const toPraise = () => {
   let state = props.is_praise == 1 ? 0 : 1
   props.praiseEvent && props.praiseEvent(state).then(() => {
@@ -74,10 +70,10 @@ const send = (content: string) => {
 </script>
 
 <style lang="less">
-.commentDrawerCustomClass {
+.comment-drawer-custom-class {
   .el-drawer__header {
-    margin-bottom: 0;
     padding: 15px 10px 10px;
+    margin-bottom: 0;
   }
   .el-drawer__body {
     padding: 20px 15px;
@@ -96,44 +92,43 @@ const send = (content: string) => {
     &::-webkit-scrollbar-corner{
       background: #179a16;
     }
-    .commentItem {
+    .comment-item {
       &:not(:last-child) {
-        .commentData {
+        .comment-data {
           border-bottom: 1px solid #2f2f2f;
         }
       }
     }
   }
 }
-.infoPanel {
+.info-panel {
   position: absolute;
   bottom: 10px;
   left: 10px;
   .active {
-    background-color: @theme !important;
     color: #fff !important;
+    background-color: @theme !important;
   }
   .infoBtn {
     display: flex;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
     justify-content: center;
     align-items: center;
+    width: 55px;
+    height: 55px;
     background-color: #424242;
-    cursor: pointer;
+    border-radius: 50%;
     transition: .2s all linear;
+    cursor: pointer;
     &:hover {
       background-color: #595959;
     }
     &:not(:last-child) {
       margin-bottom: 10px;
     }
-    .btnContainer {
+    .btn-container {
       display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
       text-align: center;
+      flex-flow: column nowrap;
     }
     .iconfont {
       margin-bottom: 3px;

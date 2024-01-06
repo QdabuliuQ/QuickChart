@@ -1,11 +1,11 @@
 <template>
-  <div id="HomePage">
-    <div class="mainContainer">
-      <div class="main_leftInfo">
+  <div class="home-page">
+    <div class="main-container">
+      <div class="main-leftInfo">
         <div class="title1">
           <em>QuickChart 图表在线生成</em>
         </div>
-        <div class="title2 infoItem">
+        <div class="title2 info-item">
           基于 <img class="vue" src="@/assets/image/vue.png" alt="" />
           <a href="https://cn.vuejs.org/">Vue3</a> &
           <img src="@/assets/image/echarts.png" alt="" /><a
@@ -14,16 +14,16 @@
           >
           实现的在线图表编辑工具
         </div>
-        <div class="start infoItem">
+        <div class="start info-item">
           <div
             @mouseenter="animate = true"
             @mouseleave="animate = false"
-            class="startBtn"
+            class="start-btn"
             @click="router.push('/edit')"
           >
             开始制作图表
             <i
-              :class="[animate ? 'arrowAnimation' : '', 'iconfont', 'i_right']"
+              :class="[animate ? 'arrow-animation' : '', 'iconfont', 'i_right']"
             ></i>
           </div>
         </div>
@@ -31,16 +31,16 @@
           第一次使用<span> QucikChart </span>? 点击<span> 查看文档</span>
         </div>
       </div>
-      <div class="main_rightInfo">
+      <div class="main-rightInfo">
         <img
           @load="imgLoad"
           class="cover"
           src="@/assets/image/cover.svg"
           alt=""
         />
-        <div class="coverActiveContainer">
+        <div class="cover-active-container">
           <img
-            class="coverActive"
+            class="cover-active"
             src="@/assets/image/coverActive.svg"
             alt=""
           />
@@ -48,14 +48,14 @@
       </div>
     </div>
     <el-divider content-position="left">
-      <div class="divider_title">核心功能</div>
+      <div class="divider-title">核心功能</div>
     </el-divider>
-    <div class="functionContainer">
-      <div class="function_itemList">
+    <div class="function-container">
+      <div class="function-itemList">
         <div
           v-for="(item, index) in functionList"
           :key="index"
-          class="function_item"
+          class="function-item"
         >
           <div style="padding: 60px 30px">
             <div style="width: 160px; height: 160px; margin: 0 auto">
@@ -65,10 +65,10 @@
                 :fit="'contain'"
               />
             </div>
-            <div class="function_item_title">
+            <div class="function-item-title">
               {{ item.title }}
             </div>
-            <div class="function_item_desc">
+            <div class="function-item-desc">
               {{ item.desc }}
             </div>
           </div>
@@ -76,18 +76,18 @@
       </div>
     </div>
     <el-divider content-position="left">
-      <div class="divider_title">使用步骤</div>
+      <div class="divider-title">使用步骤</div>
     </el-divider>
     <div class="processContainer">
       <el-carousel height="170px" direction="vertical" :autoplay="false">
         <el-carousel-item v-for="item in processList" :key="item.step">
-          <div class="process_item">
-            <div class="process_item_left">
-              <div class="item_step_title">Step {{ item.step }}</div>
-              <div class="item_title">{{ item.title }}</div>
-              <div class="item_desc">{{ item.desc }}</div>
+          <div class="process-item">
+            <div class="process-item-left">
+              <div class="item-step-title">Step {{ item.step }}</div>
+              <div class="item-title">{{ item.title }}</div>
+              <div class="item-desc">{{ item.desc }}</div>
             </div>
-            <div class="process_item_right">
+            <div class="process-item-right">
               <img :src="item.img" alt="" />
             </div>
           </div>
@@ -121,8 +121,10 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-.infoContainer {
-  .infoItem {
+.info-container {
+
+  .info-item {
+    
     .title {
       margin: 7px 0;
       font-weight: bold;
@@ -156,24 +158,24 @@ export default defineComponent({
     }
   }
 }
-#HomePage {
+.home-page {
   .el-divider {
     margin: 24px 0 55px;
   }
   .el-divider__text {
     background-color: #282828;
   }
-  .divider_title {
+  .divider-title {
     font-size: 30px;
     font-weight: bold;
   }
-  .mainContainer {
-    margin: 50px 0;
+  .main-container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    .main_leftInfo {
-      .infoItem {
+    align-items: center;
+    margin: 50px 0;
+    .main-leftInfo {
+      .info-item {
         margin-top: 30px;
       }
       .title1 {
@@ -181,21 +183,21 @@ export default defineComponent({
         font-weight: bold;
       }
       .title2 {
-        font-size: 20px;
         display: flex;
         align-items: center;
+        font-size: 20px;
         a {
-          color: #ccc;
           margin-right: 6px;
+          color: #ccc;
           &:hover {
             color: @theme;
           }
         }
         img {
-          width: 20px;
-          margin: 0 6px;
           position: relative;
           top: 0.5px;
+          width: 20px;
+          margin: 0 6px;
         }
         .vue {
           height: 24px;
@@ -204,27 +206,28 @@ export default defineComponent({
       .start {
         display: flex;
         align-items: center;
-        .startBtn {
+        .start-btn {
           display: flex;
           align-items: center;
           padding: 13px 30px 15px;
-          background-color: @theme;
-          color: #fff;
           font-size: 16px;
+          color: #fff;
+          background-color: @theme;
           border-radius: 8px;
           cursor: pointer;
           .iconfont {
-            font-size: 21px;
-            margin-left: 5px;
             position: relative;
+            margin-left: 5px;
+            font-size: 21px;
           }
           &:hover {
             background-color: @hover;
           }
-          .arrowAnimation {
-            animation: arrowAnimation 0.7s linear infinite;
+          .arrow-animation {
+            animation: arrow-animation 0.7s linear infinite;
           }
-          @keyframes arrowAnimation {
+
+          @keyframes arrow-animation {
             0% {
               left: 0;
             }
@@ -247,10 +250,10 @@ export default defineComponent({
         }
       }
     }
-    .main_rightInfo {
-      flex: 1;
+    .main-rightInfo {
       position: relative;
       margin-left: 20px;
+      flex: 1;
       img {
         width: 100%;
       }
@@ -258,59 +261,57 @@ export default defineComponent({
         position: relative;
         right: -10px;
       }
-      .coverActiveContainer {
+      .cover-active-container {
+        position: absolute;
+        top: -1.5px;
+        right: -10px;
+        overflow: hidden;
         width: 100%;
         height: 100%;
-        overflow: hidden;
-        position: absolute;
-        right: -10px;
-        top: -1.5px;
-        -webkit-clip-path: polygon(15% 0, 30% 0, 15% 100%, 0% 100%);
         clip-path: polygon(15% 0, 30% 0, 15% 100%, 0% 100%);
         animation: coverContainerAnimation 6s linear infinite;
       }
-      .coverActive {
-        width: 100%;
+      .cover-active {
         position: absolute;
-        height: 100%;
         z-index: 2;
+        width: 100%;
+        height: 100%;
       }
+
       @keyframes coverContainerAnimation {
         0% {
-          -webkit-clip-path: polygon(0% 0, 15% 0, 0% 100%, -15% 100%);
           clip-path: polygon(0% 0, 15% 0, 0% 100%, -15% 100%);
         }
         100% {
-          -webkit-clip-path: polygon(115% 0, 130% 0, 115% 100%, 100% 100%);
           clip-path: polygon(115% 0, 130% 0, 115% 100%, 100% 100%);
         }
       }
     }
   }
-  .functionContainer {
+  .function-container {
     margin-bottom: 60px;
-    .function_itemList {
-      margin: 30px 0;
+    .function-itemList {
       display: grid;
+      margin: 30px 0;
+      text-align: center;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-gap: 40px;
-      text-align: center;
-      .function_item {
-        box-shadow: 0px 0px 12px 1px rgba(131, 131, 131, 0.4);
-        border-radius: 10px;
+      .function-item {
         position: relative;
         top: 0;
+        border-radius: 10px;
+        box-shadow: 0 0 12px 1px rgb(131 131 131 / 40%);
         transition: 0.3s all linear;
         &:hover {
           top: -7px;
         }
       }
-      .function_item_title {
+      .function-item-title {
         margin-top: 40px;
-        font-weight: bold;
         font-size: 19px;
+        font-weight: bold;
       }
-      .function_item_desc {
+      .function-item-desc {
         margin-top: 20px;
         font-weight: bold;
       }
@@ -318,27 +319,27 @@ export default defineComponent({
   }
   .processContainer {
     margin: 0 0 60px;
-    .process_item {
+    .process-item {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      .item_step_title {
+      align-items: center;
+      .item-step-title {
         font-size: 20px;
         color: #939393;
       }
-      .item_title {
+      .item-title {
         margin-top: 10px;
         font-size: 30px;
-        font-weight: bold;
         color: @theme;
+        font-weight: bold;
       }
-      .item_desc {
+      .item-desc {
         margin-top: 10px;
       }
-      .process_item_left {
+      .process-item-left {
         flex: 1;
       }
-      .process_item_right {
+      .process-item-right {
         img {
           width: 200px;
           margin-right: 30px;

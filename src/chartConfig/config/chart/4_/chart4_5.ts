@@ -116,7 +116,7 @@ export default () => {
       menuOption: true,
       uniqueOption: true,
       icon: 'i_gline',
-      componentPath: chartPath + 'paramsPoint/paramsPointLine'
+      componentPath: chartPath + 'paramsPoint/params-point-line'
     },
   ]
 }

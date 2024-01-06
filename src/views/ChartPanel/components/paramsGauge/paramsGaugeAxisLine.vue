@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsGaugeAxisLine">
+  <div class="params-gauge-axis-line">
     <series-item :title='"颜色"'>
       <colorPanel @colorChange="colorChange" :colors="colors" />
     </series-item>
@@ -110,9 +110,9 @@ useWatchData(config, 'series', getData)
 </script>
 
 <style lang="less">
-.paramsGaugeAxisLine {
-  .seriesItem {
-    .colorsPanel {
+.params-gauge-axis-line {
+  .series-item {
+    .colors-panel {
       margin: 0;
     }
   }

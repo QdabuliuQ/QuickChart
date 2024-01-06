@@ -122,13 +122,13 @@ onUnmounted(() => {
 </script>
 <style lang="less">
 .screenCanvas {
-  flex: 1;
-  overflow: scroll;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
-  .scrollContainer();
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  flex: 1;
+  .scroll-container();
 
   .btn-container {
     position: absolute;
@@ -140,15 +140,15 @@ onUnmounted(() => {
     //width: 1070px;
     //height: 652px;
     margin: 40px auto;
-    background-image: url("../../../assets/image/bg.jpg");
     background-repeat: repeat;
     background-size: cover;
+    background-image: url("../../../assets/image/bg.jpg");
   }
 
   .mainCanvas {
+    position: relative;
     width: 100%;
     height: 100%;
-    position: relative;
   }
 }
 </style>

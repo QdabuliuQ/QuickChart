@@ -1,7 +1,7 @@
 <template>
-  <div class="loadingComponent">
+  <div class="loading-component">
     <div
-      class="loadingContainer"
+      class="loading-container"
       :element-loading-text="props.text ? props.text : '加载中...'"
       :element-loading-background="props.bgc ? props.bgc : '#292929'"
       v-loading="data.isLoading"
@@ -27,12 +27,12 @@ const data: comInitData = reactive({
 </script>
 
 <style lang='less'>
-.loadingComponent {
-  width: 100%;
-  height: 100%;
+.loading-component {
   position: relative;
   z-index: 99;
-  .loadingContainer {
+  width: 100%;
+  height: 100%;
+  .loading-container {
     width: 100%;
     height: 100%;
   }

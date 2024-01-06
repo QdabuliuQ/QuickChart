@@ -55,8 +55,8 @@ const scrollTextClick = () => {
 <style lang="less">
 .functionListPopoverClass {
   .popover-text-list {
-    width: 400px;
     display: grid;
+    width: 400px;
     grid-template-columns: 1fr 1fr;
     grid-gap: 15px;
     .text-item {
@@ -66,25 +66,25 @@ const scrollTextClick = () => {
       }
     }
     .text-item-cover {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 100%;
       height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: @theme;
-      border-radius: 10px;
-      background-color: #383838;
       margin-bottom: 5px;
-      box-sizing: border-box;
+      color: @theme;
+      background-color: #383838;
       border: 1px solid transparent;
+      border-radius: 10px;
       transition: all .2s linear;
+      box-sizing: border-box;
       .iconfont {
         font-size: 50px;
       }
     }
     .text-item-title {
-      text-align: center;
       font-size: 13px;
+      text-align: center;
     }
   }
 }

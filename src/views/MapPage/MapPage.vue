@@ -1,7 +1,7 @@
 <template>
   <div class="MapPage">
     <chart-menu :itemlist="list" :click-event="clickEvent" />
-    <div class="chartContainer">
+    <div class="chart-container">
       <router-view></router-view>
     </div>
   </div>
@@ -145,9 +145,9 @@ const closeEvent = () => {
 
 <style lang='less'>
 .MapPage {
-  height: 100%;
   display: flex;
-  .chartContainer {
+  height: 100%;
+  .chart-container {
     flex: 1;
   }
 }
@@ -159,14 +159,11 @@ const closeEvent = () => {
     position: relative;
   }
   .empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: auto;
     font-size: 13px;
     color: @grey2;
@@ -174,8 +171,8 @@ const closeEvent = () => {
   .cityContainer {
     display: flex;
     .active {
-      background-color: @theme !important;
       color: #fff;
+      background-color: @theme !important;
     }
     .leftProvince  {
       width: 25%;
@@ -184,8 +181,8 @@ const closeEvent = () => {
         cursor: pointer;
         border-radius: 5px;
         &:hover {
-          background-color: @grey;
           color: #fff;
+          background-color: @grey;
         }
       }
     }
@@ -197,15 +194,15 @@ const closeEvent = () => {
         cursor: pointer;
         border-radius: 5px;
         &:hover {
-          background-color: @grey;
           color: #fff;
+          background-color: @grey;
         }
       }
     }
     .rightArea {
-      flex: 1;
-      padding-left: 30px;
       display: flex;
+      padding-left: 30px;
+      flex: 1;
       border-left: 1px solid #444;
       .el-scrollbar {
         width: 100%;
@@ -217,12 +214,12 @@ const closeEvent = () => {
       .cityItem {
         padding: 10px 13px;
         margin: 0 7px 7px 0;
-        border-radius: 5px;
         font-size: 14px;
+        border-radius: 5px;
         cursor: pointer;
         &:hover {
-          background-color: @grey;
           color: #fff;
+          background-color: @grey;
         }
       }
     }

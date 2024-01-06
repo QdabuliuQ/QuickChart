@@ -36,7 +36,7 @@
             </div>
           </div>
           <el-pagination
-            class="paginationClass"
+            class="pagination-class"
             v-model:current-page="chartInfo.offset"
             hide-on-single-page
             background

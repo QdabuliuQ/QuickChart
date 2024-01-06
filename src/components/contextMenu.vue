@@ -69,15 +69,15 @@ onBeforeUnmount(() => {
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
-  box-shadow: 2px 2px 11px 0 rgba(0, 0, 0, .3);
+  box-shadow: 2px 2px 11px 0 rgb(0 0 0 / 30%);
   .menu-item {
-    cursor: pointer;
     padding: 8px 20px;
-    color: #000;
     font-size: 13px;
+    color: #000;
     transition: .2s all linear;
+    cursor: pointer;
     &:hover {
-      background: rgba(248, 181, 87, 0.2);
+      background: rgb(248 181 87 / 20%);
     }
   }
 }

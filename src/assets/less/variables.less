@@ -1,8 +1,13 @@
 @navColor: #303030;
+
 @curColor: rgb(66, 66, 66);
+
 @theme: #f8b557;
+
 @hover: #efa22e;
+
 @grey: #444444;
+
 @grey2: #e8e8e8;
 
 .flex() {
@@ -10,13 +15,13 @@
   justify-content: center;
   align-items: center;
 }
-.inputStyle() {
+.input-style() {
   .el-input {
     width: 300px;
 
     .el-input__wrapper {
-      box-shadow: 0 0 0 1px @grey2;
       padding: 5px 11px;
+      box-shadow: 0 0 0 1px @grey2;
 
       input {
         color: #000;
@@ -40,21 +45,21 @@
 }
 
 .row() {
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .overflow() {
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.scrollContainer() {
+.scroll-container() {
   /* 滚动条整体 */
   &::-webkit-scrollbar {
-    height: 10px;
     width: 10px;
+    height: 10px;
   }
 
   /* 两个滚动条交接处 -- x轴和y轴 */
@@ -64,15 +69,15 @@
 
   /* 滚动条滑块 */
   &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     background: #535353;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgb(0 0 0 / 20%);
   }
 
   /* 滚动条轨道 */
   &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
     background: transparent;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgb(0 0 0 / 20%);
   }
 }

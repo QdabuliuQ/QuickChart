@@ -85,8 +85,8 @@ onUnmounted(() => {
   width: 100%;
   .piecesItem {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     &:not(:last-child) {
       margin-bottom: 8px;
     }
@@ -99,15 +99,15 @@ onUnmounted(() => {
 
   }
   .itemAdd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 27px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 12px;
     border: 1px solid #5b5b5b;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
     .iconfont {
       margin-right: 8px;
       font-size: 14px;

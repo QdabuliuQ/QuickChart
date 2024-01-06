@@ -137,41 +137,41 @@ onBeforeRouteUpdate(() => {
   width: 100%;
   height: 100%;
   .infoContainer {
+    display: flex;
     width: 100%;
     height: 100%;
-    display: flex;
     .leftChartContainer {
       flex: 1;
     }
     .rightParamsContainer {
       width: 220px;
       .panelBtnList {
-        padding: 20px 0 0;
         display: flex;
         align-items: center;
+        padding: 20px 0 0;
         font-size: 12.5px;
         .btnItem {
-          flex: 1;
-          text-align: center;
           padding: 9px 0;
-          color: rgb(150, 150, 150);
+          text-align: center;
+          text-indent: 1px;
+          color: rgb(150 150 150);
           transition: 0.2s all linear;
+          flex: 1;
           cursor: pointer;
           letter-spacing: 1px;
-          text-indent: 1px;
         }
 
         .active {
-          background-color: @curColor;
           color: @theme;
+          background-color: @curColor;
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
         }
       }
       .paramsContainer {
-        height: calc(100vh - 34.8px - 20px);
         position: absolute;
         right: 0;
+        height: calc(100vh - 34.8px - 20px);
       }
     }
   }

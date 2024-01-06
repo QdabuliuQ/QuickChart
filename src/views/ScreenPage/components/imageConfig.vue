@@ -29,7 +29,7 @@
         <el-input-number :min="0" :max="100" size="small" v-model="info.style.borderWidth" />
       </series-item>
       <series-item title="边框类型">
-        <el-select v-model="info.style.borderType" placeholder="请选择" size="small" popper-class="paramsSelectPopperClass">
+        <el-select v-model="info.style.borderType" placeholder="请选择" size="small" popper-class="params-select-popper-class">
           <el-option key="none" label="无边框" value="none" />
           <el-option key="dotted" label="点线" value="dotted" />
           <el-option key="dashed" label="线段" value="dashed" />
@@ -68,12 +68,12 @@ let {
 <style lang="less">
 .imageConfig {
   .configInfo {
-    width: 100%;
-    aspect-ratio: 2/1.3;
     overflow: hidden;
-    border-radius: 10px;
-    background-image: url("../../../assets/image/bg.jpg");
+    width: 100%;
     background-size: 100% 100%;
+    border-radius: 10px;
+    aspect-ratio: 2/1.3;
+    background-image: url("../../../assets/image/bg.jpg");
     img {
       width: 100%;
       height: 100%;

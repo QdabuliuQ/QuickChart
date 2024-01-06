@@ -67,7 +67,7 @@ useWatchData(config, 'backgroundColor', getData)
     cursor: pointer;
     margin-top: 5px;
   }
-  .imageUpload {
+  .image-upload {
     padding: 0;
   }
 }

@@ -24,7 +24,7 @@
       </series-item>
       <series-item title="字体粗细">
         <el-select
-          popper-class="paramsSelectPopperClass"
+          popper-class="params-select-popper-class"
           v-model="info.style.fontWeight"
           placeholder="请选择"
           size="small">
@@ -36,7 +36,7 @@
       </series-item>
       <series-item title="字体对齐">
         <el-select
-          popper-class="paramsSelectPopperClass"
+          popper-class="params-select-popper-class"
           v-model="info.style.textAlign"
           placeholder="请选择"
           size="small">
@@ -47,7 +47,7 @@
       </series-item>
       <series-item title="字体样式">
         <el-select
-          popper-class="paramsSelectPopperClass"
+          popper-class="params-select-popper-class"
           v-model="info.style.fontStyle"
           placeholder="请选择"
           size="small">
@@ -57,7 +57,7 @@
       </series-item>
       <series-item title="字体线段">
         <el-select
-          popper-class="paramsSelectPopperClass"
+          popper-class="params-select-popper-class"
           v-model="info.style.textDecorationLine"
           placeholder="请选择"
           size="small">
@@ -69,7 +69,7 @@
       </series-item>
       <series-item title="线段类型">
         <el-select
-          popper-class="paramsSelectPopperClass"
+          popper-class="params-select-popper-class"
           v-model="info.style.textDecorationStyle"
           placeholder="请选择"
           size="small">

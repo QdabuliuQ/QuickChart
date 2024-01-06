@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarAxisLine">
+  <div class="params-radar-axis-line">
     <optionItems :config="config" />
   </div>
 </template>
@@ -90,6 +90,3 @@ watch(() => config, debounce(() => {
   deep: true
 })
 </script>
-
-<style lang='less'>
-</style>

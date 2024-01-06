@@ -117,6 +117,3 @@ const getData = () => {
 
 useWatchData(config, 'grid', getData)
 </script>
-
-<style lang='less'>
-</style>

@@ -87,7 +87,7 @@ let config: IConfig = {
     // {
     //   id: '23fsadas1',
     //   type: "chart",
-    //   cover: 'http://127.0.0.1:3031/chartCover/type9/VY4RV4HY39MNEQUXHRIB.octet-stream',
+    //   cover: 'http://127.0.0.1:3031/chart-cover/type9/VY4RV4HY39MNEQUXHRIB.octet-stream',
     //   option: "",
     //   isLock: false,
     //   style: {

@@ -1,16 +1,16 @@
 <template>
-  <div class="paramsSunburstStyle">
+  <div class="params-sunburst-style">
     <option-items :config="config" />
   </div>
 </template>
 <script setup lang="ts">
 import {reactive} from 'vue';
-import optionItems from '@/components/optionItems.vue'
 import useProxy from '@/hooks/useProxy';
 import useWatchData from "@/hooks/useWatchData";
 import useStore from "@/store";
 import {ConfigInt} from '@/types/common';
 import {getConfigValue} from '@/utils';
+import optionItems from '@/components/optionItems.vue'
 
 const proxy = useProxy()
 const {chart}: any = useStore()

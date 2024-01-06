@@ -1,19 +1,19 @@
 <template>
-  <div class="paramsXAxis">
+  <div class="params-x-axis">
     <option-items :config="config" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴名称样式
     </div>
     <option-items :config="textStyleConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴样式
     </div>
     <option-items :config="axisLineConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴文本样式
     </div>
     <option-items :config="axisLabelConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴刻度样式
     </div>
     <option-items :config="axisTickConfig" />

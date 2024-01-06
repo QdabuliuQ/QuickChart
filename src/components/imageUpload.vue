@@ -1,5 +1,5 @@
 <template>
-  <div class="imageUpload">
+  <div class="image-upload">
     <div style="padding: 2px 0" v-if="props.value">
       <el-link @click="dialogVisible = true" type="primary">查看</el-link>
       <el-link @click="deleteImage" type="danger">删除</el-link>
@@ -13,8 +13,8 @@
         </span>
       </el-button>
     </div>
-    <el-dialog class="imagePreviewDialog" v-model="dialogVisible">
-      <div class="imageContainer">
+    <el-dialog class="image-preview-dialog" v-model="dialogVisible">
+      <div class="image-container">
         <img w-full :src="props.value"/>
       </div>
     </el-dialog>
@@ -95,15 +95,15 @@ const fileUpload = async () => {
 
 </script>
 <style lang="less">
-.imagePreviewDialog {
+.image-preview-dialog {
   .el-dialog__body {
     height: 50vh;
 
-    .imageContainer {
-      background-image: url("../assets/image/bg.jpg");
+    .image-container {
+      height: 100%;
       background-repeat: repeat;
       background-size: cover;
-      height: 100%;
+      background-image: url("../assets/image/bg.jpg");
 
       img {
         width: 100%;
@@ -115,7 +115,7 @@ const fileUpload = async () => {
   }
 }
 
-.imageUpload {
+.image-upload {
   padding: 5px 0;
   .el-link {
     margin-left: 10px;

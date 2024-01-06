@@ -89,6 +89,3 @@ const getData = () => {
 
 useWatchData(config, 'legend', getData)
 </script>
-
-<style lang='less'>
-</style>

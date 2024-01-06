@@ -17,7 +17,7 @@ export function postChart(data: {
 }
 
 export function chartCoverUpload(data: FormData) {
-  return upload('/chartCover', data)
+  return upload('/chart-cover', data)
 }
 
 /**

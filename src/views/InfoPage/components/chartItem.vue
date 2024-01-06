@@ -1,21 +1,21 @@
 <template>
-  <div class="info_chartItem">
+  <div class="info-chart-item">
     <div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="box">
       <div :style="{
         opacity
       }" @click="toModify" class="mask">
         <el-popover
-          popper-class="chartItemPopoverClass"
+          popper-class="chart-item-popover-class"
           placement="bottom-start"
           :hide-after="0"
           trigger="hover"
         >
-          <div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="menuList">
-            <div @click="renameEvent" class="menuItem">
+          <div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="menu-list">
+            <div @click="renameEvent" class="menu-item">
               <i class="iconfont i_rename"></i>
               重命名
             </div>
-            <div @click="deleteEvent" class="menuItem">
+            <div @click="deleteEvent" class="menu-item">
               <i class="iconfont i_delete_2"></i>
               删除
             </div>
@@ -39,9 +39,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import useProxy from "@/hooks/useProxy";
-import {deleteChart, putChartName} from "@/network/chart";
 import {ElMessageBox} from "element-plus";
-import router from "@/router";
 
 const props = defineProps<{
   chart_id: string
@@ -142,69 +140,69 @@ const deleteEvent = () => {
 
 </script>
 <style lang="less">
-.chartItemPopoverClass {
+.chart-item-popover-class {
   width: 100px !important;
   min-width: 100px !important;
   padding: 0 !important;
-  .menuList {
+  .menu-list {
     padding: 12px 0 !important;
-    .menuItem {
-      padding: 7px 10px;
-      font-size: 13px;
+    .menu-item {
       display: flex;
       align-items: center;
+      padding: 7px 10px;
+      font-size: 13px;
       cursor: pointer;
       .iconfont {
         margin-right: 8px;
       }
       &:hover {
-        background-color: #414141;
         color: @theme;
+        background-color: #414141;
       }
     }
   }
 }
-.info_chartItem {
+.info-chart-item {
   width: 100%;
   .box {
     position: relative;
-    border-radius: 10px;
     overflow: hidden;
+    background-repeat: repeat;
+    background-size: cover;
+    border-radius: 10px;
     cursor: pointer;
     background-image: url("../../../assets/image/bg.jpg");
-    background-size: cover;
-    background-repeat: repeat;
   }
   .mask {
     position: absolute;
+    z-index: 1;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    background-color: rgb(0 0 0 / 50%);
 
     .edit {
       position: absolute;
+      top: 50%;
+      left: 50%;
       padding: 6px 14px 7px;
       font-size: 12px;
       color: #fff;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 15px;
       background-color: #00000087;
+      border-radius: 15px;
+      transform: translate(-50%, -50%);
     }
     .more {
       position: absolute;
-      padding: 3px 4px;
-      border-radius: 4px;
-      color: #000;
-      right: 5px;
       top: 5px;
-      background-color: #fff;
-      font-size: 35px;
+      right: 5px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      padding: 3px 4px;
+      font-size: 35px;
+      color: #000;
+      background-color: #fff;
+      border-radius: 4px;
       .iconfont {
         font-size: 18px;
       }
@@ -217,33 +215,31 @@ const deleteEvent = () => {
     vertical-align: middle;
   }
   .name {
-    max-width: 140px;
-    text-align: center;
+    overflow: hidden;
     width: 100%;
+    max-width: 140px;
+    height: 30px;
+    margin: 5px auto 0;
+    font-size: 14px;
+    text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
-    font-size: 14px;
-    height: 30px;
     line-height: 30px;
-    margin: 5px auto 0;
   }
   .input {
-    margin-top: 5px;
-    height: 30px;
-    line-height: 23px;
-
-    border-bottom: 1px solid #636363;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    height: 30px;
+    margin-top: 5px;
+    line-height: 23px;
+    border-bottom: 1px solid #636363;
     input {
       width: 90%;
+      font-size: 14px;
       text-align: center;
       border: 0;
       outline: none;
-      font-size: 14px;
-
     }
   }
 }

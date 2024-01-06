@@ -138,9 +138,9 @@ const getCommentData = async (e: number) => {
   width: 100vw;
   height: 100vh;
   .infoContainer {
+    display: flex;
     width: 100%;
     height: 100%;
-    display: flex;
     .leftExcelContainer {
       width: 450px;
     }

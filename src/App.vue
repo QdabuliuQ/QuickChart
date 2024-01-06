@@ -37,24 +37,24 @@ export default defineComponent({
 <style lang="less">
 html,
 body {
-  margin: 0;
   padding: 0;
-  background-color: #282828;
+  margin: 0;
   color: #d0d0d0;
+  background-color: #282828;
 }
 ::selection {
-  background: #ffae3453;
   color: #fff;
+  background: #ffae3453;
 }
-::-moz-selection {
-  background: #ffae3453;
+::selection {
   color: #fff;
+  background: #ffae3453;
 }
 ::-webkit-selection {
-  background: #ffae3453;
   color: #fff;
+  background: #ffae3453;
 }
-.paramsSelectPopperClass {
+.params-select-popper-class {
   .el-select-dropdown__item {
     font-size: 12px;
   }
@@ -75,14 +75,14 @@ img {
   max-height: 430px;
   font-size: 18px;
 }
-.codeDialogClass {
+.code-dialog-class {
   .el-dialog__body {
     padding: 0 15px 15px;
   }
 }
-.paginationClass {
+.pagination-class {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 </style>

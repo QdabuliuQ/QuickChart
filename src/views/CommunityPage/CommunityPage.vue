@@ -1,12 +1,12 @@
 <template>
-  <div class="CommunityPage">
+  <div class="community-page">
     <el-affix :offset="20">
       <div class="types">
-        <div :class="[active === 0 ? 'active' : '', 'typeItem']">
+        <div :class="[active === 0 ? 'active' : '', 'type-item']">
           <i class="iconfont i_all"></i>
           全部
         </div>
-        <div v-for="item in list" :key="item.id" :class="[active === item.id ? 'active' : '', 'typeItem']">
+        <div v-for="item in list" :key="item.id" :class="[active === item.id ? 'active' : '', 'type-item']">
           <i :class="['iconfont', item.icon]"></i>
           {{ item.type }}
         </div>
@@ -54,7 +54,7 @@
             :au_user_id="item.au_user_id"
             :type="item.type"/>
           <el-pagination
-            class="paginationClass"
+            class="pagination-class"
             v-model:current-page="offset"
             background
             layout="prev, pager, next"
@@ -75,15 +75,15 @@
             <span class="nickname">{{ info.nickname }}</span>
           </div>
           <div class="data">
-            <div class="dataItem">
+            <div class="data-item">
               <div class="cnt">0</div>
               <div class="desc">图表</div>
             </div>
-            <div class="dataItem">
+            <div class="data-item">
               <div class="cnt">0</div>
               <div class="desc">关注</div>
             </div>
-            <div class="dataItem">
+            <div class="data-item">
               <div class="cnt">0</div>
               <div class="desc">关注着</div>
             </div>
@@ -110,7 +110,6 @@ import {ajaxRequest, getInfo} from "@/utils";
 import {useCheckState} from "@/hooks/useCheckState";
 import usePagination from "@/hooks/usePagination";
 import skeleton from "@/components/skeleton.vue"
-import {getChart} from "@/network/chart";
 
 const items = reactive<ListInt[]>(list)
 const active = ref<number>(0)
@@ -157,7 +156,7 @@ const toLogin = () => {
 
 </script>
 <style lang="less">
-.CommunityPage {
+.community-page {
   display: flex;
   margin: 30px 0;
   .types {
@@ -166,7 +165,7 @@ const toLogin = () => {
     border-radius: 10px;
     box-shadow: 0 0 9px 0 #0d0d0d;
 
-    .typeItem {
+    .type-item {
       padding: 12px 45px 12px 40px;
       cursor: pointer;
       transition: .2s all linear;
@@ -176,44 +175,45 @@ const toLogin = () => {
       }
 
       &:hover {
-        background-color: rgba(255, 174, 52, 0.29);
+        background-color: rgb(255 174 52 / 29%);
       }
     }
 
     .active {
-      background-color: @theme;
       color: #fff;
+      background-color: @theme;
     }
   }
 
   .user {
     width: 250px;
-    border-radius: 10px;
     background-color: #353535;
+    border-radius: 10px;
 
     .login {
       padding: 0 20px;
 
       .detail {
-        padding: 25px 0;
         display: flex;
         align-items: center;
+        padding: 25px 0;
 
         .nickname {
           .overflow();
+
           width: 150px;
           margin-left: 10px;
         }
       }
 
       .data {
-        box-sizing: border-box;
-        border-top: 1px solid #606060;
-        padding: 10px 0 30px 0;
         display: flex;
         align-items: center;
+        padding: 10px 0 30px;
+        box-sizing: border-box;
+        border-top: 1px solid #606060;
 
-        .dataItem {
+        .data-item {
           flex: 1;
 
           .desc {
@@ -235,8 +235,8 @@ const toLogin = () => {
         cursor: pointer;
 
         .iconfont {
-          font-size: 45px;
           margin-right: 10px;
+          font-size: 45px;
         }
       }
 
@@ -244,11 +244,11 @@ const toLogin = () => {
   }
 
   .info {
+    padding: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
     //width: calc(100% - 180px - 260px);
     background-color: #353535;
-    margin-left: 20px;
-    margin-right: 20px;
-    padding: 20px;
     border-radius: 10px;
     flex: 1;
 

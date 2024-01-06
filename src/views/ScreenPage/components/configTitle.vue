@@ -11,21 +11,21 @@ const props = defineProps<IProps>()
 </script>
 <style lang="less">
 .configTitle {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 10px 0;
-  text-align: center;
   position: relative;
+  padding: 10px 0;
+  font-size: 14px;
+  text-align: center;
   color: @theme;
+  font-weight: bold;
 
-  &:after {
+  &::after {
     position: absolute;
-    content: '';
+    bottom: 3px;
+    left: 50%;
     width: 70px;
     height: 2px;
     background-color: @theme;
-    bottom: 3px;
-    left: 50%;
+    content: '';
     transform: translateX(-50%);
   }
 }

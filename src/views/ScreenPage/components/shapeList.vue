@@ -54,21 +54,21 @@ const shapeClick = (s: ShapePoolItem, i: number) => {
       margin-bottom: 20px;
     }
     .shapeCategory {
-      color: @theme;
-      background: rgba(248, 181, 87, 0.15);
+      position: relative;
       padding: 7px 0 7px 15px;
       margin-bottom: 15px;
       font-size: 13px;
-      position: relative;
+      color: @theme;
+      background: rgb(248 181 87 / 15%);
       font-weight: bold;
-      &:after {
+      &::after {
         position: absolute;
-        content: "";
+        top: 0;
+        left: 0;
         width: 2px;
         height: 100%;
         background: @theme;
-        left: 0;
-        top: 0;
+        content: "";
       }
     }
     .shapeContainer {

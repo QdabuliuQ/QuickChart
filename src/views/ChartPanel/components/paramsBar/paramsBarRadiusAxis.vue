@@ -1,11 +1,11 @@
 <template>
   <div class="paramsBarRadiusAxis">
     <option-items :config="config" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴轴线样式
     </div>
     <option-items :config="axisLineConfig" />
-    <div class="splitLine">
+    <div class="split-line">
       坐标轴标签样式
     </div>
     <option-items :config="axisLabelConfig" />

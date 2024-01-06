@@ -1,11 +1,11 @@
 <template>
   <div class="skeleton">
-    <div v-show="props.status === '1'" class="skeleton_loading">
-      <div v-for="_ in props.count" class="skeleton_container">
+    <div v-show="props.status === '1'" class="skeleton-loading">
+      <div v-for="_ in props.count" class="skeleton-container">
         <slot name="template" :setSlotRef="setSlotRef"></slot>
       </div>
     </div>
-    <div v-if="props.status === '2'" class="skeleton_content">
+    <div v-if="props.status === '2'" class="skeleton-content">
       <slot name="content"></slot>
     </div>
     <div v-else-if="props.status === '3'">
@@ -45,16 +45,16 @@ const addAnimationLoadingClass = (dom: HTMLElement) => {
     let classList = Array.from(dom.classList)
     for(let _class of classList) {
       if(hiddenClass.has(_class)) {
-        dom.classList.add('hiddenContent')
+        dom.classList.add('hidden-content')
         return;
       }
       if(classSet.has(_class)) {
         let style = window.getComputedStyle(dom)
         let val = style.getPropertyValue('border-radius')
         if(val == '0px' || !val) {
-          dom.classList.add('borderRadius')
+          dom.classList.add('border-radius')
         }
-        dom.classList.add('skeletonLoading')
+        dom.classList.add('skeleton-loading')
         dom.style.backgroundImage = loadingBGC
         break;
       }
@@ -72,7 +72,7 @@ let stop = watch(() => props.status, (newVal: STATUS) => {
 })
 
 onMounted(() => {
-  slotContainers = document.querySelectorAll('.skeleton_container')
+  slotContainers = document.querySelectorAll('.skeleton-container')
   for(let dom of slotContainers) {
     addAnimationLoadingClass(dom.children[0] as HTMLElement)
   }
@@ -82,17 +82,17 @@ onMounted(() => {
 <style lang="less">
 .skeleton {
   user-select: none;
-  .hiddenContent {
-    opacity: 0;
+  .hidden-content {
     display: none;
+    opacity: 0;
   }
-  .borderRadius {
+  .border-radius {
     border-radius: 10px;
   }
-  .skeletonLoading {
+  .skeleton-loading {
     color: transparent !important;
-    background-size: 400% 100%;
     background-position: 100% 50%;
+    background-size: 400% 100%;
     animation: skeleton-loading 1.4s ease infinite;
   }
 

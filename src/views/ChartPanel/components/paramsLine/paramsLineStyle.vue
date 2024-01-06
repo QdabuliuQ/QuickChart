@@ -127,6 +127,3 @@ watch(() => lineConfig, debounce(() => {
 })
 
 </script>
-
-<style lang='less'>
-</style>

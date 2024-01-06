@@ -1,9 +1,9 @@
 <template>
-  <div class="info_ChartPage">
-    <div class="pageTitle">我的图表</div>
+  <div class="info-chart-page">
+    <div class="page-title">我的图表</div>
     <div class="types">
-      <div @click="toggleType('chart')" :class="[type === 'chart' ? 'active' : '', 'typeItem']">图表</div>
-      <div @click="toggleType('map')" :class="[type === 'map' ? 'active' : '', 'typeItem']">地图</div>
+      <div @click="toggleType('chart')" :class="[type === 'chart' ? 'active' : '', 'type-item']">图表</div>
+      <div @click="toggleType('map')" :class="[type === 'map' ? 'active' : '', 'type-item']">地图</div>
     </div>
     <skeleton
       :count="5"
@@ -28,7 +28,7 @@
           :user_id="'null'"/>
       </template>
       <template v-slot:content>
-        <div class="chartContainer">
+        <div class="chart-container">
           <chart-item
             v-for="(item,idx) in charts"
             :key="item.chart_id ? item.chart_id : item.map_id"
@@ -192,8 +192,8 @@ const toggleType = (_type: "chart" | "map") => {
 
 </script>
 <style lang="less">
-.info_ChartPage {
-  .skeleton_loading {
+.info-chart-page {
+  .skeleton-loading {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 20px;
@@ -206,7 +206,7 @@ const toggleType = (_type: "chart" | "map") => {
     padding: 80px 0;
   }
 
-  .chartContainer {
+  .chart-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 20px;
@@ -216,14 +216,14 @@ const toggleType = (_type: "chart" | "map") => {
     display: flex;
     margin-bottom: 20px;
 
-    .typeItem {
-      margin-right: 20px;
+    .type-item {
       padding: 6px 20px 8px;
+      margin-right: 20px;
+      font-size: 13px;
       color: #fff;
       border-radius: 20px;
       transition: .2s all linear;
       cursor: pointer;
-      font-size: 13px;
     }
 
     .active {

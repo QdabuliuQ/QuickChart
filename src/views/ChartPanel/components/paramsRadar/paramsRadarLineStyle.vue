@@ -1,5 +1,5 @@
 <template>
-  <div class="paramsRadarLineStyle">
+  <div class="params-radar-line-style">
     <optionItems :config="config" />
     <optionItems :config="lineStyleConfig" />
     <optionItems :config="labelConfig" />
@@ -150,7 +150,3 @@ watch(() => labelConfig, debounce(() => {
   deep: true
 })
 </script>
-
-<style lang="less">
-
-</style>
