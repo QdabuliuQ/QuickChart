@@ -1,5 +1,5 @@
-import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance } from 'vue'
 export default function () {
-  const { appContext } = getCurrentInstance() as ComponentInternalInstance;
-  return appContext.config.globalProperties;
+	const { appContext } = getCurrentInstance() as ComponentInternalInstance
+	return appContext.config.globalProperties
 }

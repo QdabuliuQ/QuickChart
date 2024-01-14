@@ -1,88 +1,90 @@
 <template>
-  <router-view />
-  <login-dialog/>
+	<router-view />
+	<login-dialog />
 </template>
 
-<script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { InitData } from "@/types/App";
-import { getCurrentInstance } from "vue";
+<script setup lang="ts">
+import { onMounted, getCurrentInstance, ref, onUnmounted } from 'vue'
 import loginDialog from '@/components/loginDialog.vue'
 
-let timer: any;
-export default defineComponent({
-  name: "App",
-  components: {
-    loginDialog
-  },
-  setup() {
-    const _this: any = getCurrentInstance();
-    const data = reactive(new InitData());
-    onMounted(() => {
-      window.addEventListener("resize", () => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          data.height = document.documentElement.clientHeight;
-          _this.proxy.$Bus.emit("resize", data.height);
-        }, 500);
-      });
-    });
-    return {
-      ...toRefs(data),
-    };
-  },
-});
+let timer: any
+const _this: any = getCurrentInstance()
+const height = ref<number>(0)
+
+const resizeEvent = () => {
+	clearTimeout(timer)
+	timer = setTimeout(() => {
+		height.value = document.documentElement.clientHeight
+		_this.proxy.$Bus.emit('resize', height.value)
+	}, 500)
+}
+
+onMounted(() => {
+	window.addEventListener('resize', resizeEvent)
+})
+
+onUnmounted(() => {
+	window.removeEventListener('resize', resizeEvent)
+})
 </script>
 
 <style lang="less">
-html,
 body {
-  padding: 0;
-  margin: 0;
-  color: #d0d0d0;
-  background-color: #282828;
+	padding: 0;
+	margin: 0;
+	color: #d0d0d0;
+	background-color: #282828;
 }
+
 ::selection {
-  color: #fff;
-  background: #ffae3453;
+	color: rgb(255 255 255);
+	background: rgb(255 174 52 / 32.5%);
 }
-::selection {
-  color: #fff;
-  background: #ffae3453;
-}
+
 ::-webkit-selection {
-  color: #fff;
-  background: #ffae3453;
+	color: #fff;
+	background: #ffae3453;
 }
+
 .params-select-popper-class {
-  .el-select-dropdown__item {
-    font-size: 12px;
-  }
+	/* stylelint-disable */
+	.el-select-dropdown__item {
+		font-size: 12px;
+	}
+	/* stylelint-enable */
 }
+
 img {
-  user-select: none;
+	user-select: none;
 }
+
 .el-button {
-  span {
-    font-size: 13px !important;
-  }
+	span {
+		font-size: 13px !important;
+	}
 }
+
 .el-button:focus-visible {
-  outline: 2px solid transparent !important;
+	outline: 2px solid transparent !important;
 }
+
 .hljs {
-  overflow-y: scroll;
-  max-height: 430px;
-  font-size: 18px;
+	overflow-y: scroll;
+	max-height: 430px;
+	font-size: 18px;
 }
+
 .code-dialog-class {
-  .el-dialog__body {
-    padding: 0 15px 15px;
-  }
+	/* stylelint-disable */
+	.el-dialog__body {
+		padding: 0 15px 15px;
+	}
+	/* stylelint-enable */
 }
+
 .pagination-class {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>

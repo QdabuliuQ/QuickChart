@@ -1,8 +1,5 @@
 <template>
-  <div class="document">
-    Document
-  </div>
+	<div class="document">Document</div>
 </template>
 
-<script setup lang='ts'>
-</script>
+<script setup lang="ts"></script>

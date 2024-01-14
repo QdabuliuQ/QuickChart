@@ -1,24 +1,26 @@
 <template>
-  <div :style="{
-    width: width + 'px',
-    height: height + 'px',
-    margin: '15vh auto 0',
-  }" class="transparent-bg">
-    <div ref="mapDomRef" id="map-dom"></div>
-    <el-dialog class="code-dialog-class" v-model="codeDialog" title="代码配置" width="50%">
-      <highlightjs class="language-javascript" language="javascript" :code="code" />
-    </el-dialog>
-  </div>
+	<div
+		:style="{
+			width: width + 'px',
+			height: height + 'px',
+			margin: '15vh auto 0'
+		}"
+		class="transparent-bg">
+		<div ref="mapDomRef" id="map-dom"></div>
+		<el-dialog class="code-dialog-class" v-model="codeDialog" title="代码配置" width="50%">
+			<highlightjs class="language-javascript" language="javascript" :code="code" />
+		</el-dialog>
+	</div>
 </template>
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref} from "vue";
-import useProxy from "@/hooks/useProxy";
-import useStore from "@/store";
-import {downloadFile, generateMapCode, htmlDownload} from "@/utils";
-import {useRoute} from "vue-router";
-import {oss} from "@/network";
+import { onMounted, onUnmounted, ref } from 'vue'
+import useProxy from '@/hooks/useProxy'
+import useStore from '@/store'
+import { downloadFile, generateMapCode, htmlDownload } from '@/utils'
+import { useRoute } from 'vue-router'
+import { oss } from '@/network'
 
-const {chart}: any = useStore()
+const { chart }: any = useStore()
 const route = useRoute()
 const proxy = useProxy()
 const width = ref<number>(700)
@@ -29,121 +31,119 @@ const mapDomRef = ref<any>(null)
 const chart_i = ref<any>()
 
 defineExpose({
-  chartInstance: chart_i
+	chartInstance: chart_i
 })
 
-let chartInstance: any;
+let chartInstance: any
 let option: any = null
 const optionChange = (e: any) => {
-  let k: string = Object.keys(e)[0];
-  for (let key in option) {
-    if (key == k) {
-      option[key] = e[key];
-      break;
-    }
-  }
-  // chartInstance.setOption(option, true);
-  chartInstance.setOption(option);
-  chart.setOption(option)
+	let k: string = Object.keys(e)[0]
+	for (let key in option) {
+		if (key == k) {
+			option[key] = e[key]
+			break
+		}
+	}
+	// chartInstance.setOption(option, true);
+	chartInstance.setOption(option)
+	chart.setOption(option)
 }
 const canvasChange = (e: any) => {
-  if (e.hasOwnProperty('backgroundColor')) {
-    const {backgroundColor} = e;
-    option.backgroundColor = backgroundColor;
-    chartInstance.setOption({
-      backgroundColor,
-    });
-  } else {
-    option.backgroundColor = e
-    chartInstance.setOption({
-      backgroundColor: e,
-    });
-  }
-  // 修改pinia数据
-  chart.setOption(option)
+	if (e.hasOwnProperty('backgroundColor')) {
+		const { backgroundColor } = e
+		option.backgroundColor = backgroundColor
+		chartInstance.setOption({
+			backgroundColor
+		})
+	} else {
+		option.backgroundColor = e
+		chartInstance.setOption({
+			backgroundColor: e
+		})
+	}
+	// 修改pinia数据
+	chart.setOption(option)
 }
 const downloadChart = (type: string) => {
-  if (type == 'png') {
-    let res = chartInstance.getDataURL({
-      pixelRatio: 2,
-    });
-    downloadFile("chart.png", res);
-  } else {
-    // 生成html字符串
-    const html = generateMapCode(
-      chart.getOption,
-      width.value,
-      height.value,
-      route.params.adcode as string
-    )
-    htmlDownload(html)
-  }
+	if (type == 'png') {
+		let res = chartInstance.getDataURL({
+			pixelRatio: 2
+		})
+		downloadFile('chart.png', res)
+	} else {
+		// 生成html字符串
+		const html = generateMapCode(
+			chart.getOption,
+			width.value,
+			height.value,
+			route.params.adcode as string
+		)
+		htmlDownload(html)
+	}
 }
 const dataChange = (e: any) => {
-  let piniaOption = chart.getOption
-  for (let key in e) {
-    piniaOption[key] = e[key]
-  }
-  chartInstance.setOption(piniaOption, true);
-  // 修改pinia数据
-  chart.setOption(piniaOption)
-  // common.$patch((state: any) => {
-  //   state.option = piniaOption
-  // });
+	let piniaOption = chart.getOption
+	for (let key in e) {
+		piniaOption[key] = e[key]
+	}
+	chartInstance.setOption(piniaOption, true)
+	// 修改pinia数据
+	chart.setOption(piniaOption)
+	// common.$patch((state: any) => {
+	//   state.option = piniaOption
+	// });
 }
 
 const createCode = (type: string) => {
-
-  const jData = JSON.stringify(chart.getOption, null, 4);
-  const option = jData.replace(/"(\w+)":/g, "$1:");
-  if (type === "js") {
-    code.value = `// mapJson url: ${oss}/map/cityJSON?adcode=${route.params.adcode}
+	const jData = JSON.stringify(chart.getOption, null, 4)
+	const option = jData.replace(/"(\w+)":/g, '$1:')
+	if (type === 'js') {
+		code.value = `// mapJson url: ${oss}/map/cityJSON?adcode=${route.params.adcode}
 const chart = echarts.init(document.getElementById('chart'));
 const option = ${option};
 chart.setOption(option);  //设置option`
-  } else {
-    code.value = option
-  }
-  codeDialog.value = true
+	} else {
+		code.value = option
+	}
+	codeDialog.value = true
 }
 
 const initChart = () => {
-  chartInstance = proxy.$echarts.init((mapDomRef.value) as HTMLElement);
-  chart_i.value = chartInstance
-  chartInstance.clear()
-  proxy.$echarts.registerMap('map', chart.getMapJson);
-  chartInstance.setOption(chart.getOption);
-  option = chart.getOption;
+	chartInstance = proxy.$echarts.init(mapDomRef.value as HTMLElement)
+	chart_i.value = chartInstance
+	chartInstance.clear()
+	proxy.$echarts.registerMap('map', chart.getMapJson)
+	chartInstance.setOption(chart.getOption)
+	option = chart.getOption
 
-  proxy.$Bus.on("optionChange", optionChange);  // 监听图表配置变化
-  proxy.$Bus.on("canvasChange", canvasChange);  // 修改画布
-  proxy.$Bus.on("downloadChart", downloadChart);  // 下载图表
-  proxy.$Bus.on("dataChange", dataChange);  // 修改数据
-  proxy.$Bus.on("createCode", createCode);
+	proxy.$Bus.on('optionChange', optionChange) // 监听图表配置变化
+	proxy.$Bus.on('canvasChange', canvasChange) // 修改画布
+	proxy.$Bus.on('downloadChart', downloadChart) // 下载图表
+	proxy.$Bus.on('dataChange', dataChange) // 修改数据
+	proxy.$Bus.on('createCode', createCode)
 }
 
 onMounted(() => {
-  initChart()
+	initChart()
 })
 
 onUnmounted(() => {
-  chartInstance.clear()
-  proxy.$Bus.off("optionChange", optionChange);
-  proxy.$Bus.off("canvasChange", canvasChange);
-  proxy.$Bus.off("downloadChart", downloadChart);
+	chartInstance.clear()
+	proxy.$Bus.off('optionChange', optionChange)
+	proxy.$Bus.off('canvasChange', canvasChange)
+	proxy.$Bus.off('downloadChart', downloadChart)
 })
-
 </script>
 <style lang="less">
 .transparent-bg {
-  background-repeat: repeat;
-  background-size: cover;
-  background-image: url("../assets/image/bg.jpg");
-  #map-dom {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-  }
+	background-repeat: repeat;
+	background-size: cover;
+	background-image: url('../assets/image/bg.jpg');
+	#map-dom {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		margin: 0 auto;
+	}
 }
 </style>

@@ -1,49 +1,44 @@
 <template>
-  <div class="Modify_MapPage">
-    <div class="infoContainer" v-if="state === 1">
-      <div class="leftExcelContainer">
-        <chart-data
-          :detail_type="detailType"
-          :type="type"
-          :loading="data_loading" />
-      </div>
-      <div class="centerChartContainer">
-        <map-detail
-          :loading="chart_loading"
-          :detail-type="detailType"
-          :type="type"
-          :update="self"
-          :share="true"
-          :back="true"
-          :adcode="adcode"
-          :map_id="id as string"
-          :praise_count="praise_count"
-          :is_praise="is_praise"/>
-      </div>
-      <div class="rightParamsContainer">
-        <chart-params
-          :loading="params_loading"
-          :image="image" />
-      </div>
-    </div>
-    <div v-else class="emptyContainer">
-      <empty-tip />
-    </div>
-  </div>
+	<div class="Modify_MapPage">
+		<div class="infoContainer" v-if="state === 1">
+			<div class="leftExcelContainer">
+				<chart-data :detail_type="detailType" :type="type" :loading="data_loading" />
+			</div>
+			<div class="centerChartContainer">
+				<map-detail
+					:loading="chart_loading"
+					:detail-type="detailType"
+					:type="type"
+					:update="self"
+					:share="true"
+					:back="true"
+					:adcode="adcode"
+					:map_id="id as string"
+					:praise_count="praise_count"
+					:is_praise="is_praise" />
+			</div>
+			<div class="rightParamsContainer">
+				<chart-params :loading="params_loading" :image="image" />
+			</div>
+		</div>
+		<div v-else class="emptyContainer">
+			<empty-tip />
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-import EmptyTip from "@/components/emptyTip.vue";
-import {getChartDetail, getCityJSON} from "@/network/map"
-import {useRoute} from "vue-router";
-import {createImage, deepCopy} from "@/utils";
-import useStore from "@/store";
-import ChartData from "@/components/chartData.vue";
-import MapDetail from "@/components/mapDetail.vue";
-import ChartParams from "@/components/chartParams.vue";
+import { ref } from 'vue'
+import EmptyTip from '@/components/emptyTip.vue'
+import { getChartDetail, getCityJSON } from '@/network/map'
+import { useRoute } from 'vue-router'
+import { createImage, deepCopy } from '@/utils'
+import useStore from '@/store'
+import ChartData from '@/components/chartData.vue'
+import MapDetail from '@/components/mapDetail.vue'
+import ChartParams from '@/components/chartParams.vue'
 
-const {chart}: any = useStore();
+const { chart }: any = useStore()
 const route = useRoute()
 const { id } = route.params
 let JSONData: any = null
@@ -60,108 +55,109 @@ const is_praise = ref<number>(0)
 const self = ref<boolean>(false)
 
 const getDetail = async () => {
-  let data: any = await getChartDetail({
-    map_id: id as string
-  })
-  state.value = data.status
-  if (data.status !== 1) return
-  adcode.value = data.data.adcode
-  image.value = data.data.cover
-  self.value = data.self
-  praise_count.value = data.data.praise_count
-  is_praise.value = data.data.is_praise
-  await getJSON(adcode.value)
-  await getConfig(data.data.type, data.data.option)
+	let data: any = await getChartDetail({
+		map_id: id as string
+	})
+	state.value = data.status
+	if (data.status !== 1) return
+	adcode.value = data.data.adcode
+	image.value = data.data.cover
+	self.value = data.self
+	praise_count.value = data.data.praise_count
+	is_praise.value = data.data.is_praise
+	await getJSON(adcode.value)
+	await getConfig(data.data.type, data.data.option)
 }
 const getJSON = async (adcode: string) => {
-  if(localStorage.getItem(adcode as string)) {
-    JSONData = JSON.parse(localStorage.getItem(adcode as string) as string)
-  } else {
-    let data = await getCityJSON({
-      adcode: adcode as string
-    })
-    JSONData = data.data
-    localStorage.setItem(adcode as string, JSON.stringify(data.data))
-  }
+	if (localStorage.getItem(adcode as string)) {
+		JSONData = JSON.parse(localStorage.getItem(adcode as string) as string)
+	} else {
+		let data = await getCityJSON({
+			adcode: adcode as string
+		})
+		JSONData = data.data
+		localStorage.setItem(adcode as string, JSON.stringify(data.data))
+	}
 }
 const getConfig = async (_type: string, _option: any) => {
-  detailType.value = _type
-  type.value = parseInt(_type).toString()
+	detailType.value = _type
+	type.value = parseInt(_type).toString()
 
-  if(typeof _option.backgroundColor === 'object') {  // 处理背景颜色
-    let src = _option.backgroundColor.image
-    _option.backgroundColor.image = createImage(src)
-    _option.backgroundColor.url = src
-  }
-  if(_option.graphic.length) {  // 处理图形组件
-    for(let item of _option.graphic) {
-      if(item.type === 'image') {
-        // let src = item.style.url
-        item.style.image = createImage(item.style.url)
-        // item.style.url = src
-      }
-    }
-  }
-  try {
-    let res = await import(`@/chartConfig/config/map/${type.value}_/map${detailType.value}`)
-    let option = res.default()
-    let chartConfig: any[] = [];
-    for(let item of option) {
-      if(_option.hasOwnProperty(item.opName)) {
-        item.defaultOption[item.opName] = _option[item.opName]
-      }
-      if (item.menuOption) {
-        chartConfig.push(item);
-      }
-    }
-    chart.setOption(_option)
-    chart.setChartConfig(chartConfig)
-    chart.setDefaultOption(deepCopy(_option))
-    chart.setMapJSON(JSONData)
-    chart.setType('map')
+	if (typeof _option.backgroundColor === 'object') {
+		// 处理背景颜色
+		let src = _option.backgroundColor.image
+		_option.backgroundColor.image = createImage(src)
+		_option.backgroundColor.url = src
+	}
+	if (_option.graphic.length) {
+		// 处理图形组件
+		for (let item of _option.graphic) {
+			if (item.type === 'image') {
+				// let src = item.style.url
+				item.style.image = createImage(item.style.url)
+				// item.style.url = src
+			}
+		}
+	}
+	try {
+		let res = await import(`@/config/chart/config/map/${type.value}_/map${detailType.value}`)
+		let option = res.default()
+		let chartConfig: any[] = []
+		for (let item of option) {
+			if (_option.hasOwnProperty(item.opName)) {
+				item.defaultOption[item.opName] = _option[item.opName]
+			}
+			if (item.menuOption) {
+				chartConfig.push(item)
+			}
+		}
+		chart.setOption(_option)
+		chart.setChartConfig(chartConfig)
+		chart.setDefaultOption(deepCopy(_option))
+		chart.setMapJSON(JSONData)
+		chart.setType('map')
 
-    // common.$patch((state: any) => {
-    //   state.option = _option;
-    //   state.chartConfig = chartConfig;
-    //   state.defaultOption = deepCopy(_option);
-    //   state.mapJSON = JSONData
-    //   state.type = 'map'
-    // });
-    chart_loading.value = false
-    setTimeout(() => {
-      params_loading.value = false
-      data_loading.value = false
-    }, 800)
-  } catch (err) {
-    state.value = 0
-  }
+		// common.$patch((state: any) => {
+		//   state.option = _option;
+		//   state.chartConfig = chartConfig;
+		//   state.defaultOption = deepCopy(_option);
+		//   state.mapJSON = JSONData
+		//   state.type = 'map'
+		// });
+		chart_loading.value = false
+		setTimeout(() => {
+			params_loading.value = false
+			data_loading.value = false
+		}, 800)
+	} catch (err) {
+		state.value = 0
+	}
 }
 getDetail()
-
 </script>
 
 <style lang="less">
 .Modify_MapPage {
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
-  .infoContainer {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    .leftExcelContainer {
-      width: 450px;
-    }
-    .centerChartContainer {
-      flex: 1;
-    }
-    .rightParamsContainer {
-      width: 220px;
-    }
-  }
-  .emptyContainer {
-    width: 100vw;
-    height: 100vh;
-  }
+	height: 100vh;
+	min-height: 100vh;
+	max-height: 100vh;
+	.infoContainer {
+		display: flex;
+		width: 100%;
+		height: 100%;
+		.leftExcelContainer {
+			width: 450px;
+		}
+		.centerChartContainer {
+			flex: 1;
+		}
+		.rightParamsContainer {
+			width: 220px;
+		}
+	}
+	.emptyContainer {
+		width: 100vw;
+		height: 100vh;
+	}
 }
 </style>
