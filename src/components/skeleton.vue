@@ -1,7 +1,7 @@
 <template>
 	<div class="skeleton">
 		<div v-show="props.status === '1'" class="skeleton-loading">
-			<div v-for="_ in props.count" class="skeleton-container">
+			<div v-for="item in props.count" :key="item" class="skeleton-container">
 				<slot name="template" :setSlotRef="setSlotRef"></slot>
 			</div>
 		</div>
@@ -14,7 +14,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 
 type STATUS = '1' | '2' | '3'
 const props = withDefaults(
@@ -37,7 +37,7 @@ const classSet = new Set(props.loadingClass)
 const hiddenClass = new Set(props.hiddenClass)
 const loadingBGC = `linear-gradient(111deg, ${props.color1} 25%, ${props.color2} 37%, ${props.color1} 63%)`
 const slotRef = ref<HTMLElement>()
-let slotContainers: NodeListOf<Element> | null = null
+let slotContainers: any = null
 const setSlotRef = (el: HTMLElement) => {
 	slotRef.value = el
 }

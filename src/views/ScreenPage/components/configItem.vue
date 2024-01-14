@@ -3,7 +3,9 @@
 		<el-scrollbar :height="height + 'px'">
 			<div class="container">
 				<keep-alive>
+					<skeleton-config v-if="loading" />
 					<component
+						v-else
 						:key="
 							screen.getCurElementIdx === -1
 								? 'default'
@@ -29,11 +31,14 @@
 <script setup lang="ts">
 import { markRaw, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 
+import SkeletonConfig from '@/components/skeletonConfig.vue'
+
 import { useWatchResize } from '@/hooks/useWatchResize'
 
 import useStore from '@/store'
 
 const height = ref<number>(0)
+const loading = ref<boolean>(false)
 const componentsMap = reactive(new Map<string, any>())
 
 const { screen } = useStore()
@@ -49,13 +54,16 @@ let stop = watch(
 		const id: string = screen.getScreenOptionOfElements[screen.curElementIdx].id
 
 		if (!componentsMap.has(id)) {
+			loading.value = true
 			if (type === 'chart' || type === 'map') {
 				componentsMap.set(
 					id,
 					markRaw((await import(`./${type === 'map' ? 'chart' : type}Config.vue`)).default)
 				)
+			} else {
+				componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
 			}
-			componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
+			loading.value = false
 		}
 	},
 	{
@@ -81,7 +89,6 @@ onUnmounted(() => {
 	height: 100%;
 	background-color: @curColor;
 	box-sizing: border-box;
-
 	.container {
 		padding: 10px;
 	}

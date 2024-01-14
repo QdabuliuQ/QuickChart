@@ -1,6 +1,7 @@
 <template>
-	<div class="textConfig">
+	<div class="text-config">
 		<template v-if="info">
+			<config-cover icon="i_text" />
 			<config-title title="文本参数" />
 			<common-config :info="baseInfo" />
 			<config-title title="文本配置" />
@@ -96,15 +97,21 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { ElementTypeProperties, Text } from '@/types/screen'
-import useStore from '@/store'
-import { debounce } from '@/utils'
-import { setCommonStyle } from '@/utils/screenUtil'
-import useProxy from '@/hooks/useProxy'
-import CommonConfig from '@/views/ScreenPage/components/commonConfig.vue'
+
 import ConfigTitle from './configTitle.vue'
 import SeriesItem from '@/components/seriesItem.vue'
+import CommonConfig from '@/views/ScreenPage/components/commonConfig.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
+import ConfigCover from '@/views/ScreenPage/components/configCover.vue'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
+import { setCommonStyle } from '@/utils/screenUtil'
+import { debounce } from '@/utils'
+
+import { ElementTypeProperties, Text } from '@/types/screen'
 
 const props = defineProps<{
 	id: string
@@ -170,5 +177,3 @@ onUnmounted(() => {
 	stop3()
 })
 </script>
-
-<style lang="less"></style>

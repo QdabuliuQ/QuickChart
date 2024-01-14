@@ -8,11 +8,14 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
+
+import ConfigItem from './components/configItem.vue'
 import FunctionList from './components/functionList.vue'
 import ScreenCanvas from './components/screenCanvas.vue'
-import ConfigItem from './components/configItem.vue'
-import useStore from '@/store'
+
 import { useWatchResize } from '@/hooks/useWatchResize'
+
+import useStore from '@/store'
 
 const width = ref<number>(0)
 const height = ref<number>(0)

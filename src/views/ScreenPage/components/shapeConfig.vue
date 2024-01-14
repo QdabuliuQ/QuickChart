@@ -1,6 +1,7 @@
 <template>
-	<div class="shapeConfig">
+	<div class="shape-config">
 		<template v-if="info">
+			<config-cover icon="i_shape" />
 			<config-title title="图形参数" />
 			<common-config :info="baseInfo" />
 			<config-title title="替换图形" />
@@ -72,6 +73,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import CommonConfig from './commonConfig.vue'
 import SeriesItem from '@/components/seriesItem.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
+import ConfigCover from '@/views/ScreenPage/components/configCover.vue'
 import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
 
 import { SHAPE_LIST } from '@/assets/js/shape'
@@ -148,7 +150,7 @@ onUnmounted(() => {
 })
 </script>
 <style lang="less">
-.shapeConfig {
+.shape-config {
 	.el-scrollbar {
 		overflow: hidden;
 		margin-top: 10px;

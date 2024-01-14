@@ -1,6 +1,7 @@
 <template>
-	<div class="scrollTextConfig">
+	<div class="marquee-config">
 		<template v-if="info">
+			<config-cover icon="i_scroll_text" />
 			<config-title title="文本参数" />
 			<common-config :info="baseInfo" />
 			<config-title title="文本配置" />
@@ -103,6 +104,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import SeriesItem from '@/components/seriesItem.vue'
 import CommonConfig from '@/views/ScreenPage/components/commonConfig.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
+import ConfigCover from '@/views/ScreenPage/components/configCover.vue'
 import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
 
 import useProxy from '@/hooks/useProxy'
