@@ -43,18 +43,20 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { useLogin } from '@/hooks/useLogin'
+
 import avatarUpload from '@/components/avatarUpload.vue'
-import { FormInstance, FormRules } from 'element-plus'
-import { putProfile, getProfile } from '@/network/info'
-import useProxy from '@/hooks/useProxy'
-import { debounce } from 'lodash'
 import PasswordModify from '@/views/InfoPage/components/passwordModify.vue'
-import { useCheckState } from '@/hooks/useCheckState'
+
+import { useLogin } from '@/hooks/useLogin'
+import useProxy from '@/hooks/useProxy'
+
+import { debounce } from '@/utils'
+
+import { getProfile, putProfile } from '@/network/info'
 
 const proxy = useProxy()
 const visible = ref(false)
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef = ref()
 const info = useLogin(false)
 const form: any = reactive({
 	nickname: (info as any).nickname,
@@ -63,7 +65,7 @@ const form: any = reactive({
 	desc: (info as any).desc,
 	user_pic: (info as any).user_pic
 })
-const rules = reactive<FormRules>({
+const rules = reactive({
 	nickname: [
 		{ required: true, message: '昵称不能为空', trigger: 'blur' },
 		{ min: 1, max: 15, message: '昵称长度不能超过15个字符', trigger: 'blur' }
@@ -71,7 +73,6 @@ const rules = reactive<FormRules>({
 })
 
 const updateInfo = debounce(async () => {
-	let check = useCheckState() as any
 	;(ruleFormRef.value as any).validate((valid: boolean) => {
 		if (!valid)
 			return proxy.$notice({
@@ -80,7 +81,7 @@ const updateInfo = debounce(async () => {
 				position: 'top-left'
 			})
 	})
-	let data = await putProfile({
+	let data: any = await putProfile({
 		user_pic: form.user_pic,
 		desc: form.desc,
 		homePage: form.homePage,

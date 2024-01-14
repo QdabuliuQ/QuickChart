@@ -4,7 +4,7 @@
 			backgroundColor: props.bgColor
 		}"
 		@click="emits('btnClick')"
-		class="deleteBtn">
+		class="delete-btn">
 		<i :class="['iconfont', props.icon]"></i>
 		{{ props.label }}
 	</div>
@@ -19,7 +19,7 @@ const props = defineProps<IProps>()
 const emits = defineEmits(['btnClick'])
 </script>
 <style lang="less">
-.deleteBtn {
+.delete-btn {
 	display: flex;
 	justify-content: center;
 	align-items: center;

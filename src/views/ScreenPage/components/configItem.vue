@@ -27,12 +27,12 @@
 	</div>
 </template>
 <script setup lang="ts">
-import useproxy from '@/hooks/useProxy'
 import { markRaw, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+
 import { useWatchResize } from '@/hooks/useWatchResize'
+
 import useStore from '@/store'
 
-const proxy = useproxy()
 const height = ref<number>(0)
 const componentsMap = reactive(new Map<string, any>())
 

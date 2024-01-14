@@ -1,13 +1,14 @@
-import useStore from '@/store'
-import titleOption from '@/config/chart/commonParams/title'
 import canvasOption from '@/config/chart/commonParams/canvas'
-import gridOption from '@/config/chart/commonParams/grid'
-import legendOption from '@/config/chart/commonParams/legend'
-import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
-import { bar_series_label } from '@/config/chart/option'
 import colorOption from '@/config/chart/commonParams/color'
 import graphicOption from '@/config/chart/commonParams/graphic'
+import gridOption from '@/config/chart/commonParams/grid'
+import legendOption from '@/config/chart/commonParams/legend'
+import titleOption from '@/config/chart/commonParams/title'
 import { chartPath } from '@/config/chart/constant'
+import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
+import { bar_series_label } from '@/config/chart/option'
+
+import useStore from '@/store'
 const { chart }: any = useStore()
 
 export default () => {
@@ -128,7 +129,7 @@ export default () => {
 			menuOption: true,
 			uniqueOption: true,
 			icon: 'i_bg',
-			componentPath: chartPath + 'paramsBar/paramsBarBgStyle.vue'
+			componentPath: chartPath + 'paramsBar/paramsBarBgStyle'
 		}
 	]
 }

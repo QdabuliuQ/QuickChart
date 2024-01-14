@@ -1,12 +1,13 @@
-import { asisOpNameList, chartPath } from '@/config/chart/constant'
-import useStore from '@/store'
-import titleOption from '@/config/chart/commonParams/title'
 import canvasOption from '@/config/chart/commonParams/canvas'
-import gridOption from '@/config/chart/commonParams/grid'
 import colorOption from '@/config/chart/commonParams/color'
+import graphicOption from '@/config/chart/commonParams/graphic'
+import gridOption from '@/config/chart/commonParams/grid'
+import titleOption from '@/config/chart/commonParams/title'
+import { asisOpNameList, chartPath } from '@/config/chart/constant'
 import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
 import { line_series, line_series_label } from '@/config/chart/option'
-import graphicOption from '@/config/chart/commonParams/graphic'
+
+import useStore from '@/store'
 
 const { chart }: any = useStore()
 const lineSeriesOption = line_series(),

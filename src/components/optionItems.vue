@@ -46,10 +46,10 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="optionItems">
-import { defineProps } from 'vue'
-import seriesItem from '@/components/seriesItem.vue'
+<script setup lang="ts">
 import imageUpload from './imageUpload.vue'
+import seriesItem from '@/components/seriesItem.vue'
+
 import { common } from '@/config/chart/opname'
 
 interface PropsInt {

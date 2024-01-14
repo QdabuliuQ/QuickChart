@@ -1,86 +1,93 @@
 <template>
 	<div class="chart-params">
 		<loading v-if="props.loading" :bgc="'rgb(66, 66, 66)'" text="" />
-		<el-scrollbar v-else :height="height">
-			<div class="chart-cover">
-				<img
-					:src="
-						props.image.indexOf('data:image') != -1
-							? props.image
-							: props.image + '?tempid=' + Math.random()
-					"
-					alt="" />
-			</div>
-			<div class="btn-list">
-				<el-dropdown trigger="click">
-					<el-button type="success">
-						<template #icon>
-							<i style="margin-right: 4px; font-size: 15px" class="iconfont i_code"></i>
+		<el-scrollbar v-else>
+			<div>
+				<div class="chart-cover">
+					<img
+						:src="
+							props.image.indexOf('data:image') != -1
+								? props.image
+								: props.image + '?tempid=' + Math.random()
+						"
+						alt="" />
+				</div>
+				<div class="btn-list">
+					<el-dropdown trigger="click">
+						<el-button type="success">
+							<template #icon>
+								<i style="margin-right: 4px; font-size: 15px" class="iconfont i_code"></i>
+							</template>
+							配置
+						</el-button>
+						<template #dropdown>
+							<el-dropdown-menu class="config-drop-down-class">
+								<el-dropdown-item @click="createCode('echart')">
+									<i class="iconfont i_object"></i>
+									Echarts配置
+								</el-dropdown-item>
+								<el-dropdown-item @click="createCode('js')">
+									<i class="iconfont i_js"></i>
+									JS完整配置
+								</el-dropdown-item>
+							</el-dropdown-menu>
 						</template>
-						配置
-					</el-button>
-					<template #dropdown>
-						<el-dropdown-menu class="config-drop-down-class">
-							<el-dropdown-item @click="createCode('echart')">
-								<i class="iconfont i_object"></i>
-								Echarts配置
-							</el-dropdown-item>
-							<el-dropdown-item @click="createCode('js')">
-								<i class="iconfont i_js"></i>
-								JS完整配置
-							</el-dropdown-item>
-						</el-dropdown-menu>
-					</template>
-				</el-dropdown>
-				<el-dropdown trigger="click">
-					<el-button class="download-btn" color="#626aef">
-						<template #icon>
-							<i style="margin-right: 4px; font-size: 14px" class="iconfont i_download"></i>
+					</el-dropdown>
+					<el-dropdown trigger="click">
+						<el-button class="download-btn" color="#626aef">
+							<template #icon>
+								<i style="margin-right: 4px; font-size: 14px" class="iconfont i_download"></i>
+							</template>
+							下载
+						</el-button>
+						<template #dropdown>
+							<el-dropdown-menu class="config-drop-down-class">
+								<el-dropdown-item @click="downloadChart('html')">
+									<i class="iconfont i_html"></i>
+									HTML文件
+								</el-dropdown-item>
+								<el-dropdown-item @click="downloadChart('png')">
+									<i class="iconfont i_png"></i>
+									PNG图片
+								</el-dropdown-item>
+							</el-dropdown-menu>
 						</template>
-						下载
-					</el-button>
-					<template #dropdown>
-						<el-dropdown-menu class="config-drop-down-class">
-							<el-dropdown-item @click="downloadChart('html')">
-								<i class="iconfont i_html"></i>
-								HTML文件
-							</el-dropdown-item>
-							<el-dropdown-item @click="downloadChart('png')">
-								<i class="iconfont i_png"></i>
-								PNG图片
-							</el-dropdown-item>
-						</el-dropdown-menu>
-					</template>
-				</el-dropdown>
-			</div>
-			<div :key="key" class="collapse-container">
-				<div v-for="item in options" :key="item.opName" class="collapse-item">
-					<div
-						v-if="item.menuOption"
-						@click="toggleItem(item.opName, item.componentPath)"
-						:class="[activeIndex == item.opName ? 'active-collapse-title' : '', 'collapse-title']">
-						<div class="left-content">
-							<i
-								style="margin-right: 5px"
-								:class="[
-									'iconfont',
-									activeIndex == item.opName && icon_loading
-										? 'i_loading loading-animation'
-										: item.icon
-								]"></i>
-							{{ item.name }}
+					</el-dropdown>
+				</div>
+				<div :key="key" class="collapse-container">
+					<div v-for="item in options" :key="item.opName" class="collapse-item">
+						<div
+							v-if="item.menuOption"
+							@click="toggleItem(item.opName, item.componentPath)"
+							:class="[
+								activeIndex == item.opName ? 'active-collapse-title' : '',
+								'collapse-title'
+							]">
+							<div class="left-content">
+								<i
+									style="margin-right: 5px"
+									:class="[
+										'iconfont',
+										activeIndex == item.opName && icon_loading
+											? 'i_loading loading-animation'
+											: item.icon
+									]"></i>
+								{{ item.name }}
+							</div>
+							<div class="right-icon">
+								<i
+									:class="[
+										activeIndex == item.opName ? 'rotate-icon' : '',
+										'iconfont',
+										'i_hide'
+									]"></i>
+							</div>
 						</div>
-						<div class="right-icon">
-							<i
-								:class="[
-									activeIndex == item.opName ? 'rotate-icon' : '',
-									'iconfont',
-									'i_hide'
-								]"></i>
+						<div v-show="activeIndex == item.opName" class="collapse-content">
+							<component
+								class="params-panel"
+								:is="componentsMap.get(item.componentPath)"></component>
 						</div>
-					</div>
-					<div v-show="activeIndex == item.opName" class="collapse-content">
-						<component class="params-panel" :is="componentsMap.get(item.componentPath)"></component>
 					</div>
 				</div>
 			</div>
@@ -88,9 +95,12 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, defineProps, reactive, ref, markRaw, watch, onUnmounted } from 'vue'
+import { markRaw, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+
 import Loading from '@/components/loading.vue'
+
 import useProxy from '@/hooks/useProxy'
+
 import useStore from '@/store'
 
 const props = defineProps<{
@@ -138,7 +148,7 @@ const downloadChart = (type: string): void => {
 	proxy.$Bus.emit('downloadChart', type)
 }
 
-const changeEvent = ({ cb }: { cb: Function }) => {
+const changeEvent = ({ cb }: { cb: () => void }) => {
 	initOptions()
 	cb()
 }
@@ -168,7 +178,6 @@ onMounted(() => {
 	resizeEvent()
 })
 onUnmounted(() => {
-	;``
 	// 取消订阅
 	proxy.$Bus.off('chartChange', changeEvent)
 	proxy.$Bus.off('resetChartData', resetEvent)
@@ -182,6 +191,7 @@ onUnmounted(() => {
 		font-size: 12px;
 	}
 }
+
 .chart-params {
 	height: 100%;
 	background-color: @curColor;
@@ -194,6 +204,7 @@ onUnmounted(() => {
 		background-size: cover;
 		border-radius: 8px;
 		background-image: url('../assets/image/bg.jpg');
+
 		img {
 			width: 100%;
 			vertical-align: middle;
@@ -242,13 +253,11 @@ onUnmounted(() => {
 		margin: 10px 0;
 
 		.collapse-item {
-			margin: 2.5px 0;
-
 			.collapse-title {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 10px 10px 14px 12px;
+				padding: 12px 10px 14px 12px;
 				font-size: 13px;
 				transition: 0.1s all linear;
 				cursor: pointer;
@@ -309,7 +318,9 @@ onUnmounted(() => {
 
 		.collapse-content {
 			.params-panel {
-				padding: 0 12px;
+				padding: 5px 12px;
+				box-sizing: border-box;
+				border-bottom: 1px solid #565656;
 			}
 
 			.split-line {

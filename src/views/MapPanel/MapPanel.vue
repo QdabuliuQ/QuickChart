@@ -34,15 +34,19 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
-import useStore from '@/store'
+import { ref } from 'vue'
 import { onBeforeRouteUpdate, useRouter } from 'vue-router'
-import { getCityJSON } from '@/network/map'
-import { deepCopy } from '@/utils'
+
+import ChartData from '@/components/chartData.vue'
+import ChartParams from '@/components/chartParams.vue'
 import EmptyTip from '@/components/emptyTip.vue'
 import MapDetail from '@/components/mapDetail.vue'
-import ChartParams from '@/components/chartParams.vue'
-import ChartData from '@/components/chartData.vue'
+
+import useStore from '@/store'
+
+import { deepCopy } from '@/utils'
+
+import { getCityJSON } from '@/network/map'
 
 const { chart }: any = useStore()
 const router = useRouter()

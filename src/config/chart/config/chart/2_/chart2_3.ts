@@ -1,15 +1,16 @@
-import useStore from '@/store'
-import titleOption from '@/config/chart/commonParams/title'
 import canvasOption from '@/config/chart/commonParams/canvas'
-import gridOption from '@/config/chart/commonParams/grid'
-import legendOption from '@/config/chart/commonParams/legend'
-import xAxisOption from '@/config/chart/commonParams/xAxis'
-import yAxisOption from '@/config/chart/commonParams/yAxis'
-import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
-import { bar_series_label } from '@/config/chart/option'
 import colorOption from '@/config/chart/commonParams/color'
 import graphicOption from '@/config/chart/commonParams/graphic'
+import gridOption from '@/config/chart/commonParams/grid'
+import legendOption from '@/config/chart/commonParams/legend'
+import titleOption from '@/config/chart/commonParams/title'
+import xAxisOption from '@/config/chart/commonParams/xAxis'
+import yAxisOption from '@/config/chart/commonParams/yAxis'
 import { chartPath } from '@/config/chart/constant'
+import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
+import { bar_series_label } from '@/config/chart/option'
+
+import useStore from '@/store'
 
 const { chart }: any = useStore()
 const series_label = bar_series_label({
@@ -128,7 +129,6 @@ export function combineOption(data: any) {
 	const series = data.seriesData
 	const dataset = chart.getOption.dataset
 	dataset.source = data.datasetData
-	console.log(series, 'ppppp')
 	return {
 		series,
 		dataset
@@ -176,6 +176,5 @@ export const conveyExcelData = (rows: any, options: any) => {
 			datas.seriesData.push(options.series[0])
 		}
 	}
-	console.log(datas.seriesData)
 	return datas
 }

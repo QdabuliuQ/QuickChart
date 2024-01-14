@@ -1,15 +1,15 @@
-import titleOption from '@/config/chart/commonParams/title'
 import canvasOption from '@/config/chart/commonParams/canvas'
+import colorOption from '@/config/chart/commonParams/color'
+import graphicOption from '@/config/chart/commonParams/graphic'
 import gridOption from '@/config/chart/commonParams/grid'
 import legendOption from '@/config/chart/commonParams/legend'
-import colorOption from '@/config/chart/commonParams/color'
+import titleOption from '@/config/chart/commonParams/title'
 import xAxisOption from '@/config/chart/commonParams/xAxis'
 import yAxisOption from '@/config/chart/commonParams/yAxis'
+import { combineOption as _combineOption } from '@/config/chart/config/chart/1_/chart1_1'
+import { chartPath } from '@/config/chart/constant'
 import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
 import { line_series, line_series_label } from '@/config/chart/option'
-import graphicOption from '@/config/chart/commonParams/graphic'
-import { chartPath } from '@/config/chart/constant'
-import { combineOption as _combineOption } from '@/config/chart/config/chart/1_/chart1_1'
 
 const lineSeriesOption = line_series(),
 	lineSeriesLabelOption = line_series_label()
