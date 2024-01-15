@@ -14,32 +14,49 @@ const config: IConfig = {
 	},
 	elements: [
 		{
-			id: 'xas1sr3q',
-			type: 'marquee',
-			content: '跑马灯文本哈哈哈哈哈哈哈哈哈哈哈',
+			id: '1111111',
+			type: 'border',
 			isLock: false,
-			speed: 1,
+			code: 1,
 			style: {
-				display: 'block',
-				fontSize: 14,
-				fontWeight: 'normal',
-				color: '#000',
+				color1: '#004bfa',
+				color2: '#73d4f7',
 				width: 200,
-				height: 130,
-				translateX: 100,
-				translateY: 100,
+				height: 200,
+				translateX: 0,
+				translateY: 0,
 				rotate: 0,
 				zIndex: 1,
-				textAlign: 'center',
-				letterSpacing: 0,
-				fontStyle: 'normal',
-				lineHeight: 16,
-				textDecorationLine: 'none',
-				textDecorationColor: '#000',
-				textDecorationStyle: 'solid',
-				backgroundColor: 'rgba(0,0,0,0)'
+				display: 'block'
 			}
 		}
+		// {
+		// 	id: 'xas1sr3q',
+		// 	type: 'marquee',
+		// 	content: '跑马灯文本哈哈哈哈哈哈哈哈哈哈哈',
+		// 	isLock: false,
+		// 	speed: 1,
+		// 	style: {
+		// 		display: 'block',
+		// 		fontSize: 14,
+		// 		fontWeight: 'normal',
+		// 		color: '#000',
+		// 		width: 200,
+		// 		height: 130,
+		// 		translateX: 100,
+		// 		translateY: 100,
+		// 		rotate: 0,
+		// 		zIndex: 1,
+		// 		textAlign: 'center',
+		// 		letterSpacing: 0,
+		// 		fontStyle: 'normal',
+		// 		lineHeight: 16,
+		// 		textDecorationLine: 'none',
+		// 		textDecorationColor: '#000',
+		// 		textDecorationStyle: 'solid',
+		// 		backgroundColor: 'rgba(0,0,0,0)'
+		// 	}
+		// }
 		// {
 		//   type: "image",
 		//   isLock: false,

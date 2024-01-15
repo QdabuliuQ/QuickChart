@@ -30,6 +30,11 @@
 				@itemClick="itemClick"
 				v-bind="item"
 				:idx="idx" />
+			<BorderElement
+				v-else-if="item.type === 'border'"
+				@itemClick="itemClick"
+				v-bind="item"
+				:idx="idx" />
 		</context-menu>
 		<Moveable
 			:target="screen.getCurElementIdx !== -1 ? target : null"
@@ -73,6 +78,7 @@
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 
 import ContextMenu from '@/components/contextMenu.vue'
+import BorderElement from '@/views/ScreenPage/elements/borderElement/index.vue'
 import ChartElement from '@/views/ScreenPage/elements/chartElement.vue'
 import ImageElement from '@/views/ScreenPage/elements/imageElement.vue'
 import MarqueeElement from '@/views/ScreenPage/elements/marqueeElement.vue'
