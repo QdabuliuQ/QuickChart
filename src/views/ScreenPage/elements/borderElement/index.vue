@@ -28,7 +28,9 @@
 			<border3 v-else-if="props.code === 3" v-bind="props.style" />
 			<border4 v-else-if="props.code === 4" v-bind="props.style" :id="props.id" />
 			<border5 v-else-if="props.code === 5" v-bind="props.style" />
-      <border6 v-else-if="props.code === 6" v-bind="props.style" />
+			<border6 v-else-if="props.code === 6" v-bind="props.style" />
+			<border7 v-else-if="props.code === 7" v-bind="props.style" :id="props.id" />
+			<border8 v-else-if="props.code === 8" v-bind="props.style" />
 		</div>
 	</div>
 </template>
@@ -39,6 +41,8 @@ import border3 from './border3.vue'
 import border4 from './border4.vue'
 import border5 from './border5.vue'
 import border6 from './border6.vue'
+import border7 from './border7.vue'
+import border8 from './border8.vue'
 
 import useElementClick from '@/hooks/useElementClick.ts'
 
