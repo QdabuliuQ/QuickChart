@@ -208,7 +208,10 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
 		setShapeStyle(info, idx)
 	} else if (screen.getScreenOptionOfElements[idx].type === 'image') {
 		setImageStyle(info, idx)
+	} else if (screen.getScreenOptionOfElements[idx].type === 'border') {
+		console.log(info)
 	}
+	console.log(screen.getScreenOptionOfElements[idx]);
 	screen.updateScreenOptionOfElementStyle(info, idx)
 }
 
