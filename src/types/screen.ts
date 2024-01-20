@@ -16,6 +16,12 @@ export type Border = {
 	isLock: boolean
 	code: number
 	style: {
+		duration?: number
+		borderTitleWidth?: number
+		borderTitleHeight?: number
+		borderTitleColor?: string
+		borderTitleSize?: number
+		borderTitle?: string
 		color1: string
 		color2: string
 	} & IStyle

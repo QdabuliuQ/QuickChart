@@ -43,8 +43,3 @@ const itemClick = (event: MouseEvent) => {
 	})
 }
 </script>
-
-<style lang="less">
-.chart-element {
-}
-</style>

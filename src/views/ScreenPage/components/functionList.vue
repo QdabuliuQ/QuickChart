@@ -8,6 +8,7 @@
 			<shape-button />
 			<chart-button />
 			<map-button />
+			<border-button />
 			<export-button />
 			<preview-button />
 		</div>
@@ -22,6 +23,7 @@ import TextButton from '@/views/ScreenPage/components/textButton.vue'
 import ShapeButton from '@/views/ScreenPage/components/shapeButton.vue'
 import ChartButton from '@/views/ScreenPage/components/chartButton.vue'
 import MapButton from '@/views/ScreenPage/components/mapButton.vue'
+import BorderButton from '@/views/ScreenPage/components/borderButton.vue'
 import ExportButton from '@/views/ScreenPage/components/exportButton.vue'
 import PreviewButton from '@/views/ScreenPage/components/previewButton.vue'
 </script>
