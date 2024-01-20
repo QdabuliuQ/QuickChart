@@ -17,12 +17,7 @@
 .skeleton-config {
 	width: 100%;
 	.skeleton-loading {
-		background-image: linear-gradient(
-			111deg,
-			#2b2b2b 25%,
-			rgb(73, 73, 73) 37%,
-			#2b2b2b 63%
-		);
+		background-image: linear-gradient(111deg, #2b2b2b 25%, rgb(73, 73, 73) 37%, #2b2b2b 63%);
 		color: transparent !important;
 		background-position: 100% 50%;
 		background-size: 400% 100%;

@@ -168,7 +168,12 @@ const selectElement = (info: any, idx: number) => {
 
 const itemClick = ({ idx, e }: { idx: number; e: MouseEvent }) => {
 	e.stopPropagation()
-	if (target.value) updateElementStyle(target.value, screen.getCurElementIdx)
+	if (target.value)
+		updateElementStyle(
+			target.value,
+			screen.getCurElementIdx,
+			target.value?.cloneNode() as HTMLElement
+		)
 	if (screen.getScreenOptionOfElements[idx].isLock) {
 		target.value = null // 清空
 	} else {
@@ -177,7 +182,7 @@ const itemClick = ({ idx, e }: { idx: number; e: MouseEvent }) => {
 	}
 }
 
-const updateElementStyle = (target: HTMLElement, idx: number) => {
+const updateElementStyle = (target: HTMLElement, idx: number, preNode: HTMLElement) => {
 	if (idx <= -1 || !target) return
 	let i = 0
 	let styleInfo: {
@@ -209,13 +214,32 @@ const updateElementStyle = (target: HTMLElement, idx: number) => {
 	} else if (screen.getScreenOptionOfElements[idx].type === 'image') {
 		setImageStyle(info, idx)
 	} else if (screen.getScreenOptionOfElements[idx].type === 'border') {
-		console.log(info)
+		setBorderStyle(info, idx, target, preNode)
 	}
 	console.log(screen.getScreenOptionOfElements[idx]);
 	screen.updateScreenOptionOfElementStyle(info, idx)
+	preNode = null as any // 释放内存
 }
 
 const isVisited = new Set(['transform', 'width', 'height', 'z-index'])
+const setBorderStyle = (info: any, idx: number, target: HTMLElement, preNode: HTMLElement) => {
+	const customDataset = [
+		'color1',
+		'color2',
+		'duration',
+		'borderTitleWidth',
+		'borderTitleHeight',
+		'borderTitleColor',
+		'borderTitleSize',
+		'borderTitle'
+	]
+	for (const key of customDataset) {
+		if (preNode.getAttribute(`data-${key}`)) {
+			const value = preNode.getAttribute(`data-${key}`)
+			info[key] = Number.isNaN(Number(value)) ? value : Number(value)
+		}
+	}
+}
 const setTextStyle = (styleInfo: any, info: any) => {
 	for (let key in styleInfo) {
 		if (!Object.prototype.hasOwnProperty.call(styleInfo, key) || isVisited.has(key)) continue
@@ -261,7 +285,12 @@ const setImageStyle = (info: any, idx: number) => {
 }
 
 const cancelClickEvent = () => {
-	if (target.value) updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
+	if (target.value)
+		updateElementStyle(
+			target.value as HTMLElement,
+			screen.getCurElementIdx,
+			target.value?.cloneNode() as HTMLElement
+		)
 	target.value = null
 	screen.updateCurElementIdx(-1)
 }
@@ -285,7 +314,11 @@ const deleteChart = (idx: number = screen.getCurElementIdx) => {
 const dragEnd = debounce(() => {
 	if (target.value) {
 		// 更新元素样式
-		updateElementStyle(target.value as HTMLElement, screen.getCurElementIdx)
+		updateElementStyle(
+			target.value as HTMLElement,
+			screen.getCurElementIdx,
+			target.value?.cloneNode() as HTMLElement
+		)
 	}
 }, 50)
 

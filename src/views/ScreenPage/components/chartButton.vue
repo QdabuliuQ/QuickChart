@@ -43,12 +43,16 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+
 import Skeleton from '@/components/skeleton.vue'
-import { ajaxRequest, uuid } from '@/utils'
+import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
+
 import useStore from '@/store'
+
+import { ajaxRequest, uuid } from '@/utils'
+
 import { getChart } from '@/network/chart'
 import { Chart } from '@/types/screen'
-import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
 
 type STATUS = '1' | '2' | '3'
 interface IItem {
