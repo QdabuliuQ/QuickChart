@@ -1,7 +1,7 @@
 <template>
 	<el-popover
 		placement="right-start"
-		:width="200"
+		:width="220"
 		trigger="click"
 		popper-class="layer-panel-popper-class">
 		<template #reference>
@@ -53,8 +53,9 @@
 	</el-popover>
 </template>
 <script setup lang="ts">
-import useStore from '@/store'
 import { ref } from 'vue'
+
+import useStore from '@/store'
 
 const { screen }: any = useStore()
 const selectIdx = ref<number>(-1)
@@ -64,6 +65,8 @@ const getIconClass = (type: string) => {
 			return 'i_text'
 		case 'shape':
 			return 'i_shape'
+		case 'border':
+			return 'i_border'
 	}
 }
 const getTitle = (type: string) => {
@@ -78,6 +81,8 @@ const getTitle = (type: string) => {
 			return '形状'
 		case 'image':
 			return '图片'
+		case 'border':
+			return '边框'
 	}
 }
 
@@ -102,6 +107,17 @@ const deleteScreenElement = () => {
 </script>
 <style lang="less">
 .layer-panel-popper-class {
+	padding: 0 !important;
+	.el-scrollbar {
+		padding: 10px 12px 10px 10px;
+	}
+	.el-scrollbar__view {
+		height: 100%;
+		.el-empty {
+			padding: 0;
+			height: 100%;
+		}
+	}
 	.element-item {
 		display: flex;
 		justify-content: space-between;
@@ -126,7 +142,7 @@ const deleteScreenElement = () => {
 			align-items: center;
 			overflow: hidden;
 			width: 55%;
-			height: 55px;
+			height: 60px;
 			background-color: #424242;
 			border-radius: 8px;
 			object-fit: contain;

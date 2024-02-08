@@ -18,7 +18,6 @@ function resetConfig<T extends Elements>(
 	newConfig: Partial<ElementTypeProperties<T>>
 ) {
 	const reset = (o: any, n: any) => {
-		console.log(n, 'nnn')
 		for (const key in n) {
 			if (Object.prototype.hasOwnProperty.call(n, key)) {
 				if (typeof n[key] === 'object' && !Array.isArray(n[key])) {

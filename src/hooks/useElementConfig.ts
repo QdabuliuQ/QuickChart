@@ -1,11 +1,15 @@
-import useStore from '@/store'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { Chart, ElementTypeProperties, Image, Shape, Text } from '@/types/screen'
-import useProxy from '@/hooks/useProxy'
-import { debounce } from '@/utils'
-import { setCommonStyle } from '@/utils/screenUtil'
 
-export function useElementConfig<T extends Image | Chart | Text | Shape>() {
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
+import { setCommonStyle } from '@/utils/screenUtil'
+import { debounce } from '@/utils'
+
+import { Border, Chart, ElementTypeProperties, Image, Shape, Text } from '@/types/screen'
+
+export function useElementConfig<T extends Image | Chart | Text | Shape | Border>() {
 	const proxy = useProxy()
 	const { screen } = useStore()
 	const baseInfo = ref(
@@ -23,11 +27,7 @@ export function useElementConfig<T extends Image | Chart | Text | Shape>() {
 		if (screen.getCurElementIdx !== -1) {
 			idx.value = screen.getCurElementIdx
 			info.value = JSON.parse(
-				JSON.stringify(
-					screen.getScreenOptionOfElements[
-						screen.getCurElementIdx
-					] as ElementTypeProperties<'chart'>
-				)
+				JSON.stringify(screen.getScreenOptionOfElements[screen.getCurElementIdx] as T)
 			)
 		}
 	}

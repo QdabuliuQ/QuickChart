@@ -28,9 +28,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getTextConfig } from '@/utils/screenUtil'
-import useStore from '@/store'
+
 import ButtonItem from './buttonItem.vue'
+
+import useStore from '@/store'
+
+import { getTextConfig } from '@/utils/screenUtil'
 
 const shapePopoverRef = ref()
 const { screen } = useStore()

@@ -47,7 +47,7 @@ let stop = watch(
 	async (newVal: number) => {
 		if (newVal === -1) {
 			!componentsMap.has('default') &&
-				componentsMap.set('default', markRaw((await import(`./canvasConfig.vue`)).default))
+				componentsMap.set('default', markRaw((await import(`../config/canvasConfig.vue`)).default))
 			return
 		}
 		let type: string = screen.getScreenOptionOfElements[screen.curElementIdx].type
@@ -58,10 +58,10 @@ let stop = watch(
 			if (type === 'chart' || type === 'map') {
 				componentsMap.set(
 					id,
-					markRaw((await import(`./${type === 'map' ? 'chart' : type}Config.vue`)).default)
+					markRaw((await import(`../config/${type === 'map' ? 'chart' : type}Config.vue`)).default)
 				)
 			} else {
-				componentsMap.set(id, markRaw((await import(`./${type}Config.vue`)).default))
+				componentsMap.set(id, markRaw((await import(`../config/${type}Config.vue`)).default))
 			}
 			loading.value = false
 		}
