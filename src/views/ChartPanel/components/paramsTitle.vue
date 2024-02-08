@@ -6,16 +6,20 @@
 </template>
 
 <script setup lang="ts">
-import { watch, reactive } from 'vue'
-import useProxy from '@/hooks/useProxy'
-import { ConfigInt } from '@/types/common'
-import { common, label } from '@/config/chart/opname'
-import useStore from '@/store'
-import { fontWeight, textAlign } from '@/config/chart/constant'
+import { reactive } from 'vue'
+
 import optionItems from '@/components/optionItems.vue'
-import { debounce, getConfigValue } from '@/utils'
-import { IOption, TSelectOption } from '@/types/option'
+
+import { fontWeight, textAlign } from '@/config/chart/constant'
+import { common, label } from '@/config/chart/opname'
+
 import useWatchData from '@/hooks/useWatchData'
+
+import useStore from '@/store'
+
+import { getConfigValue } from '@/utils'
+
+import { IOption } from '@/types/option'
 
 const { chart }: any = useStore()
 
@@ -87,7 +91,6 @@ const textStyleConfig = reactive<ITextStyleConfig>({
 		value: chart.getOption.title.textStyle.fontSize
 	}
 })
-const proxy = useProxy()
 
 const getData = (type: string) => {
 	let title = chart.getOption.title

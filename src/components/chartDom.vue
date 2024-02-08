@@ -31,7 +31,6 @@ interface comInitData {
 	option: any
 }
 
-// let chart_i: any = null
 const chart_i = ref<any>(null)
 const { chart }: any = useStore()
 const proxy = useProxy()
@@ -80,21 +79,51 @@ const getHTML = (jsCode: string) => {
 }
 
 //下载
+// const downloadFile = (fileName: string, content: string) => {
+// 	let aLink = document.createElement('a')
+// 	let blob = base64ToBlob(content) //new Blob([content]);
+// 	let evt = document.createEvent('HTMLEvents')
+// 	evt.initEvent('click', true, true) //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+// 	aLink.download = fileName
+// 	aLink.href = URL.createObjectURL(blob)
+// 	aLink.dispatchEvent(
+// 		new MouseEvent('click', {
+// 			bubbles: true,
+// 			cancelable: true,
+// 			view: window
+// 		})
+// 	)
+// }
+
+/**
+ * 触发浏览器下载文件。
+ *
+ * @param fileName - 指定下载文件的文件名。
+ * @param content - 文件内容的Base64编码字符串。
+ */
 const downloadFile = (fileName: string, content: string) => {
+	// 创建一个<a>元素用于触发下载
 	let aLink = document.createElement('a')
-	let blob = base64ToBlob(content) //new Blob([content]);
+	// 将Base64编码的内容转换为Blob对象
+	let blob = base64ToBlob(content) // 使用之前定义的base64ToBlob函数
+	// 创建一个事件，用于在不直接点击链接的情况下触发下载
 	let evt = document.createEvent('HTMLEvents')
-	evt.initEvent('click', true, true) //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+	// 初始化事件，设置事件类型为'click'。这里的true参数表示事件可以冒泡，第二个true表示可以取消默认行为
+	evt.initEvent('click', true, true)
+	// 设置下载文件的名称
 	aLink.download = fileName
+	// 为<a>元素设置href属性，其值为指向创建的Blob对象的URL
 	aLink.href = URL.createObjectURL(blob)
+	// 使用dispatchEvent触发<a>元素的点击事件，实现程序化的下载操作
 	aLink.dispatchEvent(
 		new MouseEvent('click', {
-			bubbles: true,
-			cancelable: true,
-			view: window
+			bubbles: true, // 事件可以冒泡
+			cancelable: true, // 事件可以取消
+			view: window // 指定事件的视图（视窗），这里是window对象
 		})
 	)
 }
+
 //base64转blob
 const base64ToBlob = (code: string) => {
 	let parts = code.split(';base64,')
@@ -153,7 +182,7 @@ const initChart = () => {
 
 	// 监听图表画布配置变化
 	proxy.$Bus.on('canvasChange', (e: any) => {
-		if (e.hasOwnProperty('backgroundColor')) {
+		if (Object.prototype.hasOwnProperty.call(e, 'backgroundColor')) {
 			const { backgroundColor } = e
 			data.option.backgroundColor = backgroundColor
 			chartInstance.setOption({
@@ -197,7 +226,7 @@ const initChart = () => {
 						position: 'top-left'
 					})
 				})
-				.catch((err) => {
+				.catch(() => {
 					proxy.$notice({
 						type: 'error',
 						message: '生成图片失败',

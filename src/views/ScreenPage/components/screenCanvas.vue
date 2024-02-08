@@ -86,11 +86,12 @@ const selectItem = ({ label }: { label: string }) => {
 	switch (label) {
 		case '粘贴':
 			if (screen.getTmpElement) {
-				let element = screen.getTmpElement
+				const element = screen.getTmpElement
 				element.id = uuid(6, 36)
 				element.style.translateX = lastPoint[0]
 				element.style.translateY = lastPoint[1]
 				screen.addScreenOptionOfElements(element)
+				console.log(element, 'element')
 				screen.setTmpElement(null) // 清空粘贴的元素
 			}
 			break

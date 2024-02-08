@@ -1,7 +1,9 @@
 import { onUnmounted, watch } from 'vue'
-import { debounce } from '@/utils'
+
 import useProxy from '@/hooks/useProxy'
-export default function (data: any, propName: string, cb: () => void) {
+
+import { debounce } from '@/utils'
+export default function useWatchData(data: any, propName: string, cb: () => void) {
 	let proxy: any = useProxy()
 	const stop = watch(
 		() => data,

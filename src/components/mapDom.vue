@@ -14,10 +14,14 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import useProxy from '@/hooks/useProxy'
-import useStore from '@/store'
-import { downloadFile, generateMapCode, htmlDownload } from '@/utils'
 import { useRoute } from 'vue-router'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
+import { downloadFile, generateMapCode, htmlDownload } from '@/utils'
+
 import { oss } from '@/network'
 
 const { chart }: any = useStore()
@@ -49,7 +53,7 @@ const optionChange = (e: any) => {
 	chart.setOption(option)
 }
 const canvasChange = (e: any) => {
-	if (e.hasOwnProperty('backgroundColor')) {
+	if (Object.prototype.hasOwnProperty.call(e, 'backgroundColor')) {
 		const { backgroundColor } = e
 		option.backgroundColor = backgroundColor
 		chartInstance.setOption({
@@ -89,9 +93,6 @@ const dataChange = (e: any) => {
 	chartInstance.setOption(piniaOption, true)
 	// 修改pinia数据
 	chart.setOption(piniaOption)
-	// common.$patch((state: any) => {
-	//   state.option = piniaOption
-	// });
 }
 
 const createCode = (type: string) => {

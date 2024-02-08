@@ -46,6 +46,7 @@ import useStore from '@/store'
 
 import { deepCopy } from '@/utils'
 
+import 'echarts-gl' //3D地图插件
 import { getCityJSON } from '@/network/map'
 
 const { chart }: any = useStore()
@@ -77,9 +78,9 @@ const getConfig = async () => {
 	await getJSON()
 	detailType.value = id as string
 	type.value = parseInt(id as string).toString()
-	let m = await import('@/assets/image/map' + detailType.value + '.webp')
+	let m = await import('../../assets/image/map' + detailType.value + '.webp')
 	image.value = m.default
-	let res = await import(`@/config/chart/config/map/${type.value}_/map${detailType.value}`)
+	let res = await import(`../../config/chart/config/map/${type.value}_/map${detailType.value}`)
 	let option = res.default()
 	let chartConfig: any[] = []
 	let tmpOption: any = {} // 临时配置

@@ -1,5 +1,5 @@
 <template>
-	<div class="commonConfig">
+	<div class="common-config">
 		<series-item title="slot">
 			<template #title>
 				<i class="iconfont i_width"></i>
@@ -39,6 +39,7 @@
 </template>
 <script setup lang="ts">
 import SeriesItem from '@/components/seriesItem.vue'
+
 import { Elements, ElementTypeProperties } from '@/types/screen'
 
 interface IProps {
@@ -47,7 +48,7 @@ interface IProps {
 const props = defineProps<IProps>()
 </script>
 <style lang="less">
-.commonConfig {
+.common-config {
 	.series-item {
 		padding: 8px 0;
 		.item-title {

@@ -1,13 +1,13 @@
 <template>
 	<el-popover
-		ref="chartPopoverRef"
+		ref="borderPopoverRef"
 		popper-class="functionListPopoverClass"
 		placement="right-start"
 		trigger="click"
 		:hide-after="0">
 		<el-scrollbar height="400px">
 			<div class="functionListChartContainer">
-				<div v-for="(item, index) in 8" class="item">
+				<div @click="borderClick(index + 1)" v-for="(item, index) in 12" :key="index" class="item">
 					<el-image
 						class="border-image"
 						style="width: 100%; aspect-ratio: 2/1.3"
@@ -18,12 +18,14 @@
 			</div>
 		</el-scrollbar>
 		<template #reference>
-			<button-item @click-event="clickEvent" title="边框" icon="i_border" tip="插入边框" />
+			<button-item title="边框" icon="i_border" tip="插入边框" />
 		</template>
 	</el-popover>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
 
 import border1 from '@/assets/image/border1.png'
@@ -34,10 +36,55 @@ import border5 from '@/assets/image/border5.png'
 import border6 from '@/assets/image/border6.png'
 import border7 from '@/assets/image/border7.png'
 import border8 from '@/assets/image/border8.png'
+import border9 from '@/assets/image/border9.png'
+import border10 from '@/assets/image/border10.png'
+import border11 from '@/assets/image/border11.png'
+import border12 from '@/assets/image/border12.png'
 
-const borders = [border1, border2, border3, border4, border5, border6, border7, border8]
+import useStore from '@/store'
 
-const clickEvent = () => {}
+import { getBorderConfig } from '@/utils/screenUtil'
+
+const borders = [
+	border1,
+	border2,
+	border3,
+	border4,
+	border5,
+	border6,
+	border7,
+	border8,
+	border9,
+	border10,
+	border11,
+	border12
+]
+
+const borderPopoverRef = ref<any>(null)
+const { screen } = useStore()
+
+const borderClick = (idx: number) => {
+	borderPopoverRef.value.hide()
+	let option: any = {
+		code: idx
+	}
+	if (idx === 4) {
+		option['style'] = {
+			color1: '#2CF7FE',
+			color2: '#6586EC',
+			borderTitleWidth: 250,
+			borderTitleHeight: 33,
+			borderTitleColor: '#fff',
+			borderTitleSize: 16,
+			borderTitle: '标题'
+		}
+	} else if (idx === 1) {
+		option['style'] = {
+			duration: 1
+		}
+	}
+	screen.addScreenOptionOfElements(getBorderConfig(option))
+}
 </script>
 
 <style lang="less">

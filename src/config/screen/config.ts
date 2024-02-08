@@ -17,7 +17,7 @@ const config: IConfig = {
 			id: '1111111',
 			type: 'border',
 			isLock: false,
-			code: 8,
+			code: 12,
 			style: {
 				// duration: 3,
 				// borderTitleWidth: 120,

@@ -96,6 +96,7 @@
 </template>
 <script setup lang="ts">
 import { markRaw, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 import Loading from '@/components/loading.vue'
 
@@ -107,11 +108,16 @@ const props = defineProps<{
 	image: string
 	loading: boolean
 }>()
-
-const module = {
-	...import.meta.glob('../views/ChartPanel/components/*.vue'),
-	...import.meta.glob('../views/ChartPanel/components/**/*.vue')
-}
+console.log()
+const module =
+	useRoute().name === 'mapType'
+		? {
+				...import.meta.glob('../views/ChartPanel/components/**/*.vue'),
+				...import.meta.glob('../views/MapPanel/components/**/*.vue')
+			}
+		: {
+				...import.meta.glob('../views/ChartPanel/components/**/*.vue')
+			}
 
 const { chart }: any = useStore()
 const proxy = useProxy()
@@ -134,6 +140,7 @@ const toggleItem = (e: string, p: string) => {
 		if (!componentsMap.has(p)) {
 			icon_loading.value = true
 			setTimeout(async () => {
+				console.log(`../views${p}.vue`)
 				componentsMap.set(p, markRaw(((await module[`../views${p}.vue`]()) as any).default))
 				icon_loading.value = false
 			}, 0)

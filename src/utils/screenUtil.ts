@@ -2,7 +2,7 @@ import useStore from '@/store'
 
 import { uuid } from '@/utils/index'
 
-import { Elements, ElementTypeProperties } from '@/types/screen'
+import { Border, Elements, ElementTypeProperties } from '@/types/screen'
 
 const { screen } = useStore()
 export function setCommonStyle(baseInfo: any, info: any) {
@@ -15,13 +15,14 @@ export function setCommonStyle(baseInfo: any, info: any) {
 
 function resetConfig<T extends Elements>(
 	originConfig: ElementTypeProperties<T>,
-	newConfig: ElementTypeProperties<T>
+	newConfig: Partial<ElementTypeProperties<T>>
 ) {
 	const reset = (o: any, n: any) => {
+		console.log(n, 'nnn')
 		for (const key in n) {
-			if (o.hasOwnProperty.call(o, key)) {
-				if (n[key] && typeof n[key] === 'object' && !Array.isArray(n[key])) {
-					resetConfig(o[key], n[key])
+			if (Object.prototype.hasOwnProperty.call(n, key)) {
+				if (typeof n[key] === 'object' && !Array.isArray(n[key])) {
+					reset(o[key], n[key])
 				} else {
 					o[key] = n[key]
 				}
@@ -118,6 +119,29 @@ export function getImageConfig(config?: any) {
 	}
 	if (config) {
 		resetConfig(originConfig, config)
+	}
+	return originConfig
+}
+export function getBorderConfig(config?: Partial<Border>) {
+	const originConfig: Border = {
+		id: uuid(6, 36),
+		type: 'border',
+		isLock: false,
+		code: 1,
+		style: {
+			display: 'block',
+			width: 200,
+			height: 130,
+			translateX: 0,
+			translateY: 0,
+			rotate: 0,
+			zIndex: 1,
+			color1: '#6586EC',
+			color2: '#2CF7FE'
+		}
+	}
+	if (config) {
+		resetConfig<'border'>(originConfig, config)
 	}
 	return originConfig
 }

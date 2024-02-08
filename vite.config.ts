@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
-import VueSetupExtend from 'vite-plugin-vue-setup-extend'
+import { defineConfig } from 'vite'
 import requireTransform from 'vite-plugin-require-transform'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vitejs.dev/config/
 export default defineConfig({

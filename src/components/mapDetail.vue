@@ -51,26 +51,31 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElLoading } from 'element-plus'
-import useStore from '@/store'
+
+import CommentDrawer from '@/components/commentDrawer.vue'
+import InfoPanel from '@/components/infoPanel.vue'
+import Loading from '@/components/loading.vue'
+import MapDom from '@/components/mapDom.vue'
+import SaveChartDialog from '@/components/saveChartDialog.vue'
+import ShareChartDialog from '@/components/shareChartDialog.vue'
+
 import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
 import { base64ToFile, setImageOption } from '@/utils'
+
+import { postEvent } from '@/network/event'
 import {
 	deleteComment,
 	getComment,
 	postChart,
 	postComment,
 	postPraise,
-	putChart,
-	postPraiseComment
+	postPraiseComment,
+	putChart
 } from '@/network/map'
-import { postEvent } from '@/network/event'
-import ShareChartDialog from '@/components/shareChartDialog.vue'
-import InfoPanel from '@/components/infoPanel.vue'
-import CommentDrawer from '@/components/commentDrawer.vue'
-import Loading from '@/components/loading.vue'
-import MapDom from '@/components/mapDom.vue'
-import SaveChartDialog from '@/components/saveChartDialog.vue'
+import { ElLoading } from 'element-plus'
 
 const proxy = useProxy()
 const props = withDefaults(

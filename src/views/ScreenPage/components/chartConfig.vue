@@ -1,5 +1,5 @@
 <template>
-	<div class="chartConfig">
+	<div class="chart-config">
 		<template v-if="info">
 			<div class="cover">
 				<img :src="info.cover" />
@@ -20,15 +20,20 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import useStore from '@/store'
-import { Chart, ElementTypeProperties } from '@/types/screen'
-import useProxy from '@/hooks/useProxy'
-import { debounce } from '@/utils'
-import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
+
 import SeriesItem from '@/components/seriesItem.vue'
-import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
 import CommonConfig from '@/views/ScreenPage/components/commonConfig.vue'
+import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
+import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
 import { setCommonStyle } from '@/utils/screenUtil'
+import { debounce } from '@/utils'
+
+import { Chart, ElementTypeProperties } from '@/types/screen'
 
 const props = defineProps<{
 	id: string
@@ -88,7 +93,7 @@ onUnmounted(() => {
 })
 </script>
 <style lang="less">
-.chartConfig {
+.chart-config {
 	.cover {
 		overflow: hidden;
 		width: 100%;

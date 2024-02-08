@@ -199,7 +199,6 @@ const toLogin = () => {
 				position: 'top-left'
 			})
 			emits('finished')
-			console.log('22312313')
 			proxy.$Bus.emit('logined')
 		}
 	})

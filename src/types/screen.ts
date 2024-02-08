@@ -26,6 +26,7 @@ export type Border = {
 		color2: string
 	} & IStyle
 }
+
 export type Image = {
 	id: string
 	type: 'image'

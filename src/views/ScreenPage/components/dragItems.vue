@@ -146,6 +146,7 @@ const onRender = (e: any) => {
 }
 
 const selectElement = (info: any, idx: number) => {
+	console.log(info.label)
 	switch (info.label) {
 		case '剪切':
 			cutElement(idx)
@@ -216,7 +217,6 @@ const updateElementStyle = (target: HTMLElement, idx: number, preNode: HTMLEleme
 	} else if (screen.getScreenOptionOfElements[idx].type === 'border') {
 		setBorderStyle(info, idx, target, preNode)
 	}
-	console.log(screen.getScreenOptionOfElements[idx]);
 	screen.updateScreenOptionOfElementStyle(info, idx)
 	preNode = null as any // 释放内存
 }

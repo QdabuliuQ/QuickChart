@@ -1,4 +1,3 @@
-// const XLSX = require('xlsx')
 import * as XLSX from 'xlsx'
 
 // 导出
@@ -27,7 +26,7 @@ const xtos = (sdata: any) => {
 export const exportFile = (data: any) => {
 	const new_wb = xtos(data)
 	/* generate download */
-	XLSX.writeFile(new_wb, `excel.xlsx`)
+	XLSX.writeFile(new_wb, `data.xlsx`)
 }
 
 const fixData = (data: any) => {
@@ -50,7 +49,6 @@ export const importFile = (file: any, callback: (workbook: any) => void) => {
 		workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
 
 		callback(workbook)
-		// this.xs.loadData(this.stox(workbook))
 	}
 	reader.readAsArrayBuffer(file)
 }

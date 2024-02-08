@@ -38,7 +38,7 @@ export const deepCopy = (object: any) => {
 	// 遍历对象上每一个属性
 	for (const key in object) {
 		// 必须是对象上的 而不是原型上的
-		if (object[key]) {
+		if (Object.prototype.hasOwnProperty.call(object, key)) {
 			// 判断object[key]的类型
 			// 如果还是对象类型，则进行递归拷贝
 			// 如果是值类型则直接放入

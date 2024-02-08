@@ -37,15 +37,19 @@
 		</div>
 	</div>
 </template>
-<script setup lang="ts" name="chartData">
+<script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
+import { exportFile, importFile, stox } from '@/utils/excelOpe'
+import { fileType } from '@/utils/fileType'
+import { deepCopy } from '@/utils'
+
 import Spreadsheet from 'x-data-spreadsheet'
 import zhCN from 'x-data-spreadsheet/src/locale/zh-cn'
-import { fileType } from '@/utils/fileType'
-import { exportFile, importFile, stox } from '@/utils/excelOpe'
-import { deepCopy } from '@/utils'
-import useProxy from '@/hooks/useProxy'
-import useStore from '@/store'
 Spreadsheet.locale('zh-cn', zhCN)
 
 const props = defineProps<{
@@ -205,16 +209,15 @@ const initHandleFun = async () => {
 	conveyData = conveyExcelData
 	combineData = combineOption
 	excelData = createInitiativeData(chart.getOption)
-	console.log(deepCopy(excelData), excelData)
 	originData = deepCopy(excelData)
 	initData()
 }
 
 const stop = watch(
 	() => props.loading,
-	(nval: boolean) => {
+	(val: boolean) => {
 		initHandleFun()
-		loading.value = nval
+		loading.value = val
 	}
 )
 onUnmounted(() => {

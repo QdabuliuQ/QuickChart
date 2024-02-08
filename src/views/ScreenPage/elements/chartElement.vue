@@ -6,7 +6,7 @@
 			'item-' + props.id,
 			screen.getActiveElementIdx === props.idx ? 'active-item' : ''
 		]"
-		@click="itemClick($event)"
+		:src="props.cover"
 		:style="{
 			display: props.style.display,
 			width: props.style.width + 'px',
@@ -14,10 +14,10 @@
 			transform: `translate(${props.style.translateX}px, ${props.style.translateY}px) rotate(${props.style.rotate}deg)`,
 			zIndex: props.style.zIndex
 		}"
-		:src="props.cover" />
+		@click="itemClick($event)" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import useStore from '@/store'
 
 import { IStyle } from '@/types/screen.ts'
