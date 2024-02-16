@@ -23,7 +23,7 @@
 				:hidden-class="['mask', 'cover', 'operation']">
 				<template v-slot:template="{ setSlotRef }">
 					<eventItem
-						:ref="(el) => setSlotRef(el)"
+						:ref="(el: any) => setSlotRef(el)"
 						:chart_id="'xxxxxxxxx'"
 						:content="'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"
 						:cover="'xxxxxxxxx'"
@@ -104,17 +104,20 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import list, { ListInt } from '@/utils/chartItem'
-import { getEvents } from '@/network/event'
-import useProxy from '@/hooks/useProxy'
-import { EventInt } from '@/types/common'
+
 import eventItem from '@/components/eventItem.vue'
-import { ajaxRequest, getInfo } from '@/utils'
-import { useCheckState } from '@/hooks/useCheckState'
-import usePagination from '@/hooks/usePagination'
 import skeleton from '@/components/skeleton.vue'
 
-const items = reactive<ListInt[]>(list)
+import { useCheckState } from '@/hooks/useCheckState'
+import usePagination from '@/hooks/usePagination'
+import useProxy from '@/hooks/useProxy'
+
+import list from '@/utils/chartItem'
+import { ajaxRequest, getInfo } from '@/utils'
+
+import { getEvents } from '@/network/event'
+import { EventInt } from '@/types/common'
+
 const active = ref<number>(0)
 const status = ref<'1' | '2' | '3'>('1')
 const events = reactive<EventInt[]>([])
@@ -124,7 +127,7 @@ const proxy = useProxy()
 const getData = async () => {
 	status.value = '1'
 	window.scrollTo(0, 0)
-	let data = await ajaxRequest(getEvents, {
+	const data = await ajaxRequest(getEvents, {
 		offset: offset.value,
 		type: active.value.toString()
 	})
@@ -143,13 +146,6 @@ const getData = async () => {
 }
 let [limit, total, offset, changeEvent]: any = usePagination(getData)
 getData()
-
-// ajaxRequest(getEvents, [
-//   {
-//     offset: offset.value,
-//     type: (active.value).toString()
-//   }
-// ]).then(res => console.log(res))
 
 const toLogin = () => {
 	let { check } = useCheckState() as any

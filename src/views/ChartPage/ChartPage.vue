@@ -8,9 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import chartMenu from '@/components/chartMenu.vue'
 import { useRouter } from 'vue-router'
+
+import chartMenu from '@/components/chartMenu.vue'
+
 import list from '@/utils/chartItem'
+
 import { ElMessageBox } from 'element-plus'
 
 const router = useRouter()

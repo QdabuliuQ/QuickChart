@@ -1,5 +1,5 @@
 <template>
-	<div class="PreviewPage">
+	<div class="preview-page">
 		<div v-if="!screenData.elements.length" class="preview-page-empty">
 			<el-empty description="暂无可预览内容" />
 		</div>
@@ -40,18 +40,28 @@
 					:c_width="cWidth"
 					:width="width"
 					:height="height" />
+				<BorderItem
+					v-else-if="item.type === 'border'"
+					v-bind="item as ElementTypeProperties<'border'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
 			</template>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
-import { ElementTypeProperties, IConfig } from '@/types/screen'
+
 import ChartItem from './components/chartItem.vue'
+import BorderItem from '@/views/PreviewPage/components/borderItem.vue'
+import ImageItem from '@/views/PreviewPage/components/imageItem.vue'
 import MapItem from '@/views/PreviewPage/components/mapItem.vue'
 import ShapeItem from '@/views/PreviewPage/components/shapeItem.vue'
 import TextItem from '@/views/PreviewPage/components/textItem.vue'
-import ImageItem from '@/views/PreviewPage/components/imageItem.vue'
+
+import { ElementTypeProperties, IConfig } from '@/types/screen'
 
 let style = reactive<any>(null)
 let screenData = reactive<IConfig>({} as any)
@@ -68,6 +78,7 @@ if (localStorage.getItem('screenData')) {
 			backgroundSize: screenData.canvas.backgroundSize
 		}
 	}
+	console.log(screenData)
 }
 const width = ref<number>(0)
 const height = ref<number>(0)
@@ -80,9 +91,10 @@ onMounted(() => {
 })
 </script>
 <style lang="less">
-.PreviewPage {
+.preview-page {
 	width: 100vw;
 	height: 100vh;
+	overflow: hidden;
 	.preview-page-empty {
 		display: flex;
 		justify-content: center;

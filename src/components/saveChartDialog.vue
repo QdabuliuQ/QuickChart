@@ -16,11 +16,11 @@
 
 <script setup lang="ts">
 import { onUnmounted, reactive, ref, watch } from 'vue'
-import { FormInstance, FormRules } from 'element-plus'
+
 import useProxy from '@/hooks/useProxy'
 
 const proxy = useProxy()
-const formRef = ref<FormInstance>()
+const formRef = ref<any>()
 const props = withDefaults(
 	defineProps<{
 		visible: boolean
@@ -36,7 +36,7 @@ const visible = ref<boolean>(false)
 const form = reactive({
 	name: ''
 })
-const rules = reactive<FormRules>({
+const rules = reactive({
 	name: [
 		{ required: true, message: '图表名称不能为空', trigger: 'blur' },
 		{ max: 15, message: '图表名称不能超过15个字符', trigger: 'blur' }

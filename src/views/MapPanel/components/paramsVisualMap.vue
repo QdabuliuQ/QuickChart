@@ -15,17 +15,23 @@
 </template>
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { ConfigInt } from '@/types/common'
-import { common } from '@/config/chart/opname'
-import useStore from '@/store'
-import { fontFamily, fontStyle, fontWeight, orient } from '@/config/chart/constant'
-import useProxy from '@/hooks/useProxy'
-import useWatchData from '@/hooks/useWatchData'
-import { getConfigValue } from '@/utils'
-import PiecesOption from '.piecesOption.vue'
+
+import PiecesOption from './piecesOption.vue'
+import ColorPanel from '@/components/colorsPanel.vue'
 import OptionItems from '@/components/optionItems.vue'
 import SeriesItem from '@/components/seriesItem.vue'
-import ColorPanel from '@/components/colorsPanel.vue'
+
+import { fontFamily, fontStyle, fontWeight, orient } from '@/config/chart/constant'
+import { common } from '@/config/chart/opname'
+
+import useProxy from '@/hooks/useProxy'
+import useWatchData from '@/hooks/useWatchData'
+
+import useStore from '@/store'
+
+import { getConfigValue } from '@/utils'
+
+import { ConfigInt } from '@/types/common'
 
 const proxy = useProxy()
 const { chart }: any = useStore()

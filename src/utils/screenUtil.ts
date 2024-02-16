@@ -2,7 +2,7 @@ import useStore from '@/store'
 
 import { uuid } from '@/utils/index'
 
-import { Border, Elements, ElementTypeProperties } from '@/types/screen'
+import { Map, Border, Elements, ElementTypeProperties } from '@/types/screen'
 
 const { screen } = useStore()
 export function setCommonStyle(baseInfo: any, info: any) {
@@ -29,6 +29,30 @@ function resetConfig<T extends Elements>(
 		}
 	}
 	reset(originConfig, newConfig)
+}
+
+export function getMapConfig(config?: Partial<Map>) {
+	const originConfig: Map = {
+		id: uuid(6, 36),
+		type: 'map',
+		cover: '',
+		option: '',
+		isLock: false,
+		adcode: '',
+		style: {
+			display: 'block',
+			width: 200,
+			height: 130,
+			translateX: 0,
+			translateY: 0,
+			rotate: 0,
+			zIndex: 0
+		}
+	}
+	if (config) {
+		resetConfig<'map'>(originConfig, config)
+	}
+	return originConfig
 }
 export function getTextConfig(config?: ElementTypeProperties<'text'>) {
 	const originConfig: ElementTypeProperties<'text'> = {

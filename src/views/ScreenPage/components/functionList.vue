@@ -16,16 +16,16 @@
 </template>
 
 <script setup lang="ts">
-import SaveAsButton from '@/views/ScreenPage/components/saveAsButton.vue'
-import LayerButton from '@/views/ScreenPage/components/layerButton.vue'
-import ImageButton from '@/views/ScreenPage/components/imageButton.vue'
-import TextButton from '@/views/ScreenPage/components/textButton.vue'
-import ShapeButton from '@/views/ScreenPage/components/shapeButton.vue'
-import ChartButton from '@/views/ScreenPage/components/chartButton.vue'
-import MapButton from '@/views/ScreenPage/components/mapButton.vue'
 import BorderButton from '@/views/ScreenPage/components/borderButton.vue'
+import ChartButton from '@/views/ScreenPage/components/chartButton.vue'
 import ExportButton from '@/views/ScreenPage/components/exportButton.vue'
+import ImageButton from '@/views/ScreenPage/components/imageButton.vue'
+import LayerButton from '@/views/ScreenPage/components/layerButton.vue'
+import MapButton from '@/views/ScreenPage/components/mapButton.vue'
 import PreviewButton from '@/views/ScreenPage/components/previewButton.vue'
+import SaveAsButton from '@/views/ScreenPage/components/saveAsButton.vue'
+import ShapeButton from '@/views/ScreenPage/components/shapeButton.vue'
+import TextButton from '@/views/ScreenPage/components/textButton.vue'
 </script>
 
 <style lang="less">
@@ -59,7 +59,6 @@ import PreviewButton from '@/views/ScreenPage/components/previewButton.vue'
 	}
 	.skeleton-loading {
 		display: grid;
-		width: 400px;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 20px;
 	}

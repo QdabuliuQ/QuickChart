@@ -92,15 +92,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import useProxy from '@/hooks/useProxy'
-import { deleteComment, postComment, postPraise, postPraiseComment } from '@/network/event'
-import CommentItem from '@/components/commentItem.vue'
-import { CommentInt } from '@/types/common'
+
 import CommentInput from '@/components/commentInput.vue'
-import { getComment as getCommentData } from '@/network/event'
-import usePagination from '@/hooks/usePagination'
+import CommentItem from '@/components/commentItem.vue'
 import Skeleton from '@/components/skeleton.vue'
+
+import usePagination from '@/hooks/usePagination'
+import useProxy from '@/hooks/useProxy'
+
 import { ajaxRequest } from '@/utils'
+
+import { deleteComment, postComment, postPraise, postPraiseComment } from '@/network/event'
+import { getComment as getCommentData } from '@/network/event'
+import { CommentInt } from '@/types/common'
 
 interface EventInt {
 	chart_id: string
@@ -177,8 +181,8 @@ const praiseCommentEvent = async (info: any) => {
  * @return void
  */
 const praiseEvent = async () => {
-	let type = (props.is_praise === 1 ? 0 : 1).toString()
-	let data: any = await postPraise({
+	const type = (props.is_praise === 1 ? 0 : 1).toString()
+	const data: any = await postPraise({
 		event_id: props.event_id,
 		type
 	})
@@ -212,12 +216,12 @@ const getComment = () => {
  */
 const send = (comment: string): Promise<boolean> => {
 	return new Promise(async (resolve, reject) => {
-		let data: any = await postComment({
+		const data: any = await postComment({
 			content: comment,
 			event_id: props.event_id
 		})
 		if (data.status) {
-			let comments = [...props.comments!]
+			const comments = [...props.comments!]
 			comments.unshift(data.data)
 			emits('update:comments', comments)
 			resolve(true)
@@ -226,7 +230,7 @@ const send = (comment: string): Promise<boolean> => {
 }
 
 const deleteEvent = async (info: any) => {
-	let data: any = await deleteComment({
+	const data: any = await deleteComment({
 		comment_id: info.comment_id
 	})
 	if (data.status) {
@@ -238,6 +242,12 @@ const deleteEvent = async (info: any) => {
 		let comments = [...props.comments!]
 		comments.splice(info.idx, 1)
 		emits('update:comments', comments)
+	} else {
+		proxy.$notice({
+			type: 'error',
+			message: data.msg,
+			position: 'top-left'
+		})
 	}
 }
 </script>

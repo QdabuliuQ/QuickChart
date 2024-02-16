@@ -25,6 +25,7 @@
 </template>
 <script setup lang="ts">
 import { getOffset } from '@/utils/screenUtil'
+
 import { BorderType } from '@/types/element'
 import { IStyle } from '@/types/screen'
 

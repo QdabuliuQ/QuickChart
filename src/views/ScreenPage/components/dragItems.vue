@@ -25,12 +25,12 @@
 				@item-click="itemClick"
 				v-bind="item"
 				:idx="idx" />
-			<MarqueeElement
+			<marquee-element
 				v-else-if="item.type === 'marquee'"
 				@itemClick="itemClick"
 				v-bind="item"
 				:idx="idx" />
-			<BorderElement
+			<border-element
 				v-else-if="item.type === 'border'"
 				@itemClick="itemClick"
 				v-bind="item"
@@ -146,7 +146,6 @@ const onRender = (e: any) => {
 }
 
 const selectElement = (info: any, idx: number) => {
-	console.log(info.label)
 	switch (info.label) {
 		case '剪切':
 			cutElement(idx)
@@ -239,6 +238,7 @@ const setBorderStyle = (info: any, idx: number, target: HTMLElement, preNode: HT
 			info[key] = Number.isNaN(Number(value)) ? value : Number(value)
 		}
 	}
+	console.log(preNode, info)
 }
 const setTextStyle = (styleInfo: any, info: any) => {
 	for (let key in styleInfo) {

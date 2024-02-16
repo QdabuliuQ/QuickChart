@@ -40,8 +40,9 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { IStyle } from '@/types/screen'
 import { getOffset } from '@/utils/screenUtil'
+
+import { IStyle } from '@/types/screen'
 
 interface Shape {
 	id: string

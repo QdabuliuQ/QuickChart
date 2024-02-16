@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import { getOffset } from '@/utils/screenUtil'
+
 import { IStyle } from '@/types/screen'
 
 interface Text {

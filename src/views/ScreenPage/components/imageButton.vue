@@ -9,11 +9,15 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { fileType } from '@/utils'
-import { getImageConfig } from '@/utils/screenUtil'
-import useProxy from '@/hooks/useProxy'
+
 import ButtonItem from './buttonItem.vue'
+
+import useProxy from '@/hooks/useProxy'
+
 import useStore from '@/store'
+
+import { getImageConfig } from '@/utils/screenUtil'
+import { fileType } from '@/utils'
 
 const inputRef = ref()
 const proxy = useProxy()
@@ -35,11 +39,12 @@ const selectFile = () => {
 			let reader = new FileReader()
 			reader.readAsDataURL(img)
 			reader.onload = function (e: any) {
-				let p = getImageConfig({
-					url: e.target.result,
-					file: img
-				})
-				screen.addScreenOptionOfElements(p)
+				screen.addScreenOptionOfElements(
+					getImageConfig({
+						url: e.target.result,
+						file: img
+					})
+				)
 			}
 		}
 	} else {

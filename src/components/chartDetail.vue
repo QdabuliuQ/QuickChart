@@ -50,12 +50,20 @@
 	<save-chart-dialog v-model:visible="visible" @save-chart="saveChart" />
 </template>
 <script setup lang="ts">
-import { reactive, ref, defineProps, withDefaults, watch, onUnmounted } from 'vue'
+import { onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import useProxy from '@/hooks/useProxy'
-import Loading from '@/components/loading.vue'
+
 import ChartDom from '@/components/chartDom.vue'
-import { ElLoading, FormInstance, FormRules } from 'element-plus'
+import CommentDrawer from '@/components/commentDrawer.vue'
+import InfoPanel from '@/components/infoPanel.vue'
+import Loading from '@/components/loading.vue'
+import SaveChartDialog from '@/components/saveChartDialog.vue'
+import ShareChartDialog from '@/components/shareChartDialog.vue'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
 import {
 	deleteComment,
 	getComment,
@@ -65,12 +73,8 @@ import {
 	postPraiseComment,
 	putChart
 } from '@/network/chart'
-import useStore from '@/store'
 import { postEvent } from '@/network/event'
-import ShareChartDialog from '@/components/shareChartDialog.vue'
-import InfoPanel from '@/components/infoPanel.vue'
-import CommentDrawer from '@/components/commentDrawer.vue'
-import SaveChartDialog from '@/components/saveChartDialog.vue'
+import { ElLoading } from 'element-plus'
 
 const router = useRouter()
 const props = withDefaults(
@@ -86,7 +90,7 @@ const props = withDefaults(
 		share?: boolean
 		chart_id?: string
 		infoPanel?: boolean
-		getData?: Function
+		getData?: () => any
 	}>(),
 	{
 		type: '',
@@ -114,15 +118,6 @@ const show = ref<boolean>(false)
 const chartDomRef = ref()
 
 let save_loading: any = null
-const form = reactive({
-	name: ''
-})
-const rules = reactive<FormRules>({
-	name: [
-		{ required: true, message: '图表名称不能为空', trigger: 'blur' },
-		{ max: 15, message: '图表名称不能超过15个字符', trigger: 'blur' }
-	]
-})
 
 const praiseEvent = (is_praise: string): Promise<boolean> => {
 	return new Promise(async (resolve, reject) => {
@@ -157,7 +152,7 @@ const saveChart = async (name: string) => {
 				position: 'top-left'
 			})
 		})
-		.catch((err) => {
+		.catch(() => {
 			proxy.$notice({
 				type: 'error',
 				message: '保存图片失败',
@@ -204,7 +199,7 @@ const toUpdate = async () => {
 }
 
 const shareEvent = async (content: string) => {
-	let data: any = await postEvent({
+	const data: any = await postEvent({
 		chart_id: props.chart_id,
 		content,
 		type: 'chart',

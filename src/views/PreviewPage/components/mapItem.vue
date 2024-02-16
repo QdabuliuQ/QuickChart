@@ -24,11 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { getOffset } from '@/utils/screenUtil'
-import { IStyle } from '@/types/screen'
 import { onMounted, ref } from 'vue'
+
 import useProxy from '@/hooks/useProxy'
+
+import { getOffset } from '@/utils/screenUtil'
+
 import { oss } from '@/network'
+import { IStyle } from '@/types/screen'
 
 interface Map {
 	id: string

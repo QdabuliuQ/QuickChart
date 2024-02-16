@@ -29,14 +29,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import EmptyTip from '@/components/emptyTip.vue'
-import { getChartDetail, getCityJSON } from '@/network/map'
 import { useRoute } from 'vue-router'
-import { createImage, deepCopy } from '@/utils'
-import useStore from '@/store'
+
 import ChartData from '@/components/chartData.vue'
-import MapDetail from '@/components/mapDetail.vue'
 import ChartParams from '@/components/chartParams.vue'
+import EmptyTip from '@/components/emptyTip.vue'
+import MapDetail from '@/components/mapDetail.vue'
+
+import useStore from '@/store'
+
+import { deepCopy } from '@/utils'
+
+import { getChartDetail, getCityJSON } from '@/network/map'
 
 const { chart }: any = useStore()
 const route = useRoute()
@@ -65,6 +69,7 @@ const getDetail = async () => {
 	self.value = data.self
 	praise_count.value = data.data.praise_count
 	is_praise.value = data.data.is_praise
+	sessionStorage.setItem('curAdcode', adcode.value)
 	await getJSON(adcode.value)
 	await getConfig(data.data.type, data.data.option)
 }
@@ -83,28 +88,29 @@ const getConfig = async (_type: string, _option: any) => {
 	detailType.value = _type
 	type.value = parseInt(_type).toString()
 
-	if (typeof _option.backgroundColor === 'object') {
-		// 处理背景颜色
-		let src = _option.backgroundColor.image
-		_option.backgroundColor.image = createImage(src)
-		_option.backgroundColor.url = src
-	}
-	if (_option.graphic.length) {
-		// 处理图形组件
-		for (let item of _option.graphic) {
-			if (item.type === 'image') {
-				// let src = item.style.url
-				item.style.image = createImage(item.style.url)
-				// item.style.url = src
-			}
-		}
-	}
+	// if (typeof _option.backgroundColor === 'object') {
+	// 	// 处理背景颜色
+	// 	let src = _option.backgroundColor.image
+	// 	_option.backgroundColor.image = createImage(src)
+	// 	_option.backgroundColor.url = src
+	// }
+	// if (_option.graphic.length) {
+	// 	// 处理图形组件
+	// 	for (let item of _option.graphic) {
+	// 		if (item.type === 'image') {
+	// 			// let src = item.style.url
+	// 			item.style.image = createImage(item.style.url)
+	// 			// item.style.url = src
+	// 		}
+	// 	}
+	// }
 	try {
-		let res = await import(`@/config/chart/config/map/${type.value}_/map${detailType.value}`)
+		let res = await import(`../../config/chart/config/map/${type.value}_/map${detailType.value}`)
+		console.log(res, '---')
 		let option = res.default()
 		let chartConfig: any[] = []
 		for (let item of option) {
-			if (_option.hasOwnProperty(item.opName)) {
+			if (Object.prototype.hasOwnProperty.call(_option, item.opName)) {
 				item.defaultOption[item.opName] = _option[item.opName]
 			}
 			if (item.menuOption) {
@@ -117,13 +123,6 @@ const getConfig = async (_type: string, _option: any) => {
 		chart.setMapJSON(JSONData)
 		chart.setType('map')
 
-		// common.$patch((state: any) => {
-		//   state.option = _option;
-		//   state.chartConfig = chartConfig;
-		//   state.defaultOption = deepCopy(_option);
-		//   state.mapJSON = JSONData
-		//   state.type = 'map'
-		// });
 		chart_loading.value = false
 		setTimeout(() => {
 			params_loading.value = false

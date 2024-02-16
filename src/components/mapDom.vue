@@ -48,7 +48,6 @@ const optionChange = (e: any) => {
 			break
 		}
 	}
-	// chartInstance.setOption(option, true);
 	chartInstance.setOption(option)
 	chart.setOption(option)
 }
@@ -110,10 +109,12 @@ chart.setOption(option);  //设置option`
 }
 
 const initChart = () => {
+	console.log('init')
 	chartInstance = proxy.$echarts.init(mapDomRef.value as HTMLElement)
 	chart_i.value = chartInstance
 	chartInstance.clear()
-	proxy.$echarts.registerMap('map', chart.getMapJson)
+	console.log(chart)
+	proxy.$echarts.registerMap('map' + sessionStorage.getItem('curAdcode'), chart.getMapJson)
 	chartInstance.setOption(chart.getOption)
 	option = chart.getOption
 

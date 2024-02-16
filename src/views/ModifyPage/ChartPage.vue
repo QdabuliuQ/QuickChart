@@ -30,15 +30,20 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import chartData from '@/components/chartData.vue'
-import chartParams from '@/components/chartParams.vue'
-import chartDetail from '@/components/chartDetail.vue'
-import emptyTip from '@/components/emptyTip.vue'
 import { useRouter } from 'vue-router'
-import { getChartDetail, getComment } from '@/network/chart'
+
+import chartData from '@/components/chartData.vue'
+import chartDetail from '@/components/chartDetail.vue'
+import chartParams from '@/components/chartParams.vue'
+import emptyTip from '@/components/emptyTip.vue'
+
 import useProxy from '@/hooks/useProxy'
-import { createImage, deepCopy } from '@/utils'
+
 import useStore from '@/store'
+
+import { createImage, deepCopy } from '@/utils'
+
+import { getChartDetail, getComment } from '@/network/chart'
 
 const { chart }: any = useStore()
 const proxy = useProxy()
@@ -92,14 +97,14 @@ const getConfig = async () => {
 	}
 	try {
 		let res = await import(
-			/* @vite-ignore */ `@/config/chart/config/chart/${parseInt(data.data.type)}_/chart${
+			/* @vite-ignore */ `../../config/chart/config/chart/${parseInt(data.data.type)}_/chart${
 				data.data.type
 			}`
 		)
 		let option = res.default()
 		let chartConfig: any[] = []
 		for (let item of option) {
-			if (data.data.option.hasOwnProperty(item.opName)) {
+			if (Object.prototype.hasOwnProperty.call(data.data.option, item.opName)) {
 				item.defaultOption[item.opName] = data.data.option[item.opName]
 			}
 			if (item.menuOption) {
@@ -110,13 +115,6 @@ const getConfig = async () => {
 		chart.setChartConfig(chartConfig)
 		chart.setDefaultOption(deepCopy(data.data.option))
 		chart.setType('chart')
-
-		// common.$patch((state: any) => {
-		//   state.option = data.data.option;
-		//   state.chartConfig = chartConfig;
-		//   state.defaultOption = deepCopy(data.data.option);
-		//   state.type = 'chart'
-		// });
 		chart_loading.value = false
 		setTimeout(() => {
 			params_loading.value = false

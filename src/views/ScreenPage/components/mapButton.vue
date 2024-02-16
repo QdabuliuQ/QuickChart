@@ -6,7 +6,7 @@
 		trigger="click"
 		:hide-after="0">
 		<el-scrollbar height="400px">
-			<skeleton :count="4" :status="mapInfo.status" :loading-class="['cover', 'name']">
+			<skeleton :count="4" :status="'1'" :loading-class="['cover', 'name']">
 				<template v-slot:template="{ setSlotRef }">
 					<div class="item">
 						<div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
@@ -43,12 +43,17 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+
 import Skeleton from '@/components/skeleton.vue'
-import { ajaxRequest, uuid } from '@/utils'
-import { Map } from '@/types/screen'
-import useStore from '@/store'
-import { getChart } from '@/network/map'
 import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
+
+import useStore from '@/store'
+
+import { ajaxRequest, uuid } from '@/utils'
+
+import { getChart } from '@/network/map'
+import { Map } from '@/types/screen'
+import { getMapConfig } from '@/utils/screenUtil.ts'
 
 type STATUS = '1' | '2' | '3'
 interface IItem {
@@ -75,24 +80,13 @@ const mapInfo = reactive<IInfo>({
 
 const itemClick = (info: any) => {
 	mapPopoverRef.value.hide()
-	let option: Map = {
-		id: uuid(6, 36),
-		type: 'map',
-		cover: info.cover,
-		option: info.option,
-		isLock: false,
-		adcode: info.adcode,
-		style: {
-			display: 'block',
-			width: 200,
-			height: 130,
-			translateX: 0,
-			translateY: 0,
-			rotate: 0,
-			zIndex: 0
-		}
-	}
-	screen.addScreenOptionOfElements(option)
+	screen.addScreenOptionOfElements(
+		getMapConfig({
+			cover: info.cover,
+			option: info.option,
+			adcode: info.adcode
+		})
+	)
 }
 
 const getData = async () => {

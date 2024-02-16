@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 import ChartType from './components/ChartType.vue'
 
 const router = useRouter()
