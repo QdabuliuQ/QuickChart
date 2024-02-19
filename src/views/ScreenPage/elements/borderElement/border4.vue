@@ -177,10 +177,9 @@
 		<polygon
 			:fill="color1"
 			:filter="`url(#${id})`"
-			:points="`
-          7, ${53 + (height - 167) / 2} 11, ${57 + (height - 167) / 2}
-          11, ${133 + (height - 167) / 2} 7, ${137 + (height - 167) / 2}
-        `" />
+			:points="`7, ${53 + (height - 167) / 2} 11, ${57 + (height - 167) / 2}
+	11, ${133 + (height - 167) / 2} 7, ${137 + (height - 167) / 2}
+ `" />
 
 		<polygon
 			:fill="color1"
@@ -218,5 +217,3 @@ const {
 	borderTitle
 } = defineProps<IProps>()
 </script>
-
-<style scoped></style>

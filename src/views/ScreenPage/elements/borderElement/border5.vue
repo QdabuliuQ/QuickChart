@@ -34,6 +34,8 @@ const { width, height, color1, color2 } = defineProps<IProps>()
 
 <style lang="less">
 .border5 {
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	border-radius: 15px;
 }

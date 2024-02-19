@@ -16,7 +16,7 @@
 			stroke-linecap="round"
 			stroke-dasharray="10, 5"
 			:stroke="color1"
-			:d="`M 16 9 L 61 9`" />
+			d="M 16 9 L 61 9" />
 
 		<path fill="transparent" :stroke="color2" :d="`M 5 20 L 5 10 L 12 3  L 60 3 L 68 10`" />
 

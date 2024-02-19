@@ -4,10 +4,10 @@
 			<el-form-item prop="email">
 				<el-input v-model="form.email" placeholder="请输入邮箱" />
 			</el-form-item>
-			<el-form-item v-show="type == 'password'" prop="password">
+			<el-form-item v-if="type == 'password'" prop="password">
 				<el-input type="password" show-password v-model="form.password" placeholder="请输入密码" />
 			</el-form-item>
-			<el-form-item v-show="type == 'code'" prop="code">
+			<el-form-item v-else-if="type == 'code'" prop="code">
 				<el-input v-model="form.code" placeholder="验证码">
 					<template #append>
 						<div
@@ -28,28 +28,31 @@
 				<span @click="typeToggle('code')" class="toggle" v-show="type == 'password'">
 					验证码登录
 				</span>
-				<span class="forget">忘记密码？</span>
+				<span @click="emits('forgeted')" class="forget">忘记密码？</span>
 			</div>
 		</el-form>
 		<button @click="toLogin" class="login">登录</button>
 	</div>
 </template>
 <script setup lang="ts">
-import { reactive, ref, watch, defineExpose } from 'vue'
-import JsEncrypt from 'jsencrypt'
-import { FormInstance, FormRules } from 'element-plus'
-import { emailPattern, publicKey } from '@/utils'
+import { onUnmounted, reactive, ref, watch } from 'vue'
+
 import dragVerify from '@/components/dragVerify.vue'
-import { getCode, login, loginByCode } from '@/network/login'
+
 import useProxy from '@/hooks/useProxy'
 
-const emits = defineEmits(['finished'])
+import { emailPattern, publicKey } from '@/utils'
+
+import { getCode, login, loginByCode } from '@/network/login'
+import JsEncrypt from 'jsencrypt'
+
+const emits = defineEmits(['finished', 'forgeted'])
 const proxy = useProxy()
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef = ref()
 defineExpose({
 	ruleFormRef
 })
-let rules = reactive<FormRules>({
+let rules = reactive<any>({
 	email: [
 		{ required: true, message: '邮箱不能为空', trigger: 'blur' },
 		{ pattern: emailPattern, message: '邮箱格式错误', trigger: 'blur' }
@@ -60,11 +63,11 @@ const form = reactive({
 	password: '',
 	code: ''
 })
-const verify = ref(false)
-const type = ref('code')
-const disable = ref(false)
-const codeTime = ref(60)
-watch(
+const verify = ref<boolean>(false)
+const type = ref<string>('code')
+const disable = ref<boolean>(false)
+const codeTime = ref<number>(60)
+const stop = watch(
 	type,
 	(val: any) => {
 		if (val === 'password') {
@@ -99,7 +102,6 @@ watch(
 const typeToggle = (_type: string) => {
 	type.value = _type
 	verify.value = false
-	console.log(verify.value)
 	;(ruleFormRef.value as any).resetFields()
 }
 
@@ -115,7 +117,7 @@ const sendCode = async () => {
 			position: 'top-left'
 		})
 	if (emailPattern.test(email)) {
-		let data = await getCode({
+		const data: any = await getCode({
 			email,
 			type: 'login'
 		})
@@ -162,7 +164,7 @@ const toLogin = () => {
 			})
 		if (type.value === 'code') {
 			// 验证码登录
-			let data = await loginByCode({
+			const data: any = await loginByCode({
 				email: form.email,
 				code: form.code
 			})
@@ -182,24 +184,20 @@ const toLogin = () => {
 			proxy.$Bus.emit('logined')
 		} else {
 			// 密码登录
-			let data = await login({
+			const data: any = await login({
 				email: form.email,
 				password: en.encrypt(form.password) as string
 			})
-			if (!data.status)
-				return proxy.$notice({
-					type: 'error',
+			if (data.status) {
+				saveData(data.token, data.id, data.data)
+				proxy.$notice({
+					type: 'success',
 					message: data.msg,
 					position: 'top-left'
 				})
-			saveData(data.token, data.id, data.data)
-			proxy.$notice({
-				type: 'success',
-				message: data.msg,
-				position: 'top-left'
-			})
-			emits('finished')
-			proxy.$Bus.emit('logined')
+				emits('finished')
+				proxy.$Bus.emit('logined')
+			}
 		}
 	})
 }
@@ -209,6 +207,10 @@ const saveData = (token: string, id: string, info: any) => {
 	localStorage.setItem('id', id)
 	localStorage.setItem('info', JSON.stringify(info))
 }
+
+onUnmounted(() => {
+	stop()
+})
 </script>
 <style lang="less">
 .login-panel {

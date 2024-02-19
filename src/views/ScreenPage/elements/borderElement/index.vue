@@ -80,8 +80,19 @@ const props = defineProps<Border>()
 const { screen } = useStore()
 const clickEvent = useElementClick(props.idx, emits)
 </script>
-
 <style lang="less">
+.go-border-box {
+	polyline {
+		fill: none;
+		stroke-linecap: round;
+	}
+}
+.go-border-line-w-2 {
+	stroke-width: 2;
+}
+.go-border-line-w-5 {
+	stroke-width: 5;
+}
 .border-element {
 	.border-item {
 		position: absolute;

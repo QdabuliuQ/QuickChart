@@ -129,24 +129,25 @@ en.setPublicKey(publicKey)
 const submit = async () => {
 	// 提交修改信息
 	;(ruleFormRef.value as any).validate(async (valid: boolean) => {
-		if (!valid) return
+		if (!valid)
+			return proxy.$notice({
+				type: 'error',
+				message: '请完善输入内容',
+				position: 'top-left'
+			})
 		let data: any = await putPassword({
 			old_password: en.encrypt(form.old_password) as string,
 			new_password: en.encrypt(form.new_password) as string,
 			code: form.code
 		})
-		if (!data.status)
-			return proxy.$notice({
+		if (data.status) {
+			proxy.$notice({
 				message: data.msg,
-				type: 'error',
+				type: 'success',
 				position: 'top-left'
 			})
-		proxy.$notice({
-			message: data.msg,
-			type: 'success',
-			position: 'top-left'
-		})
-		emits('update:visible', false)
+			emits('update:visible', false)
+		}
 	})
 }
 const closed = () => {

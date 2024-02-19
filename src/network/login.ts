@@ -13,7 +13,6 @@ export function getCode(params: {
 }
 
 export function register(data: {
-	// 账号注册
 	email: string
 	code: string
 	password: string
@@ -22,6 +21,19 @@ export function register(data: {
 	return ajax({
 		url: '/api/register',
 		method: 'post',
+		data
+	})
+}
+
+export function modifyPassword(data: {
+	email: string
+	code: string
+	password: string
+	re_password: string
+}) {
+	return ajax({
+		url: '/api/password',
+		method: 'put',
 		data
 	})
 }

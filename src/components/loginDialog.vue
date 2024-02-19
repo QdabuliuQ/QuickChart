@@ -21,37 +21,57 @@
 					:class="[active == 'register' ? 'active' : '', 'tab-item']">
 					账号注册
 				</div>
+				<div @click="active = 'forget'" :class="[active == 'forget' ? 'active' : '', 'tab-item']">
+					忘记密码
+				</div>
 			</div>
 			<div class="panel-container">
-				<login-panel ref="loginPanelRef" @finished="visible = false" v-if="active == 'login'" />
-				<register-panel ref="registerRef" @finished="visible = false" v-else />
+				<login-panel
+					@forgeted="active = 'forget'"
+					ref="loginPanelRef"
+					@finished="visible = false"
+					v-if="active == 'login'" />
+				<register-panel
+					ref="registerRef"
+					@finished="active = 'login'"
+					v-else-if="active === 'register'" />
+				<forget-panel ref="forgetRef" @finished="active = 'login'" v-else />
 			</div>
 		</div>
 	</el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
+
+import forgetPanel from './forgetPanel.vue'
 import loginPanel from './loginPanel.vue'
 import registerPanel from './registerPanel.vue'
+
 import useProxy from '@/hooks/useProxy'
 
-let active = ref('login')
-let visible = ref(false)
+const active = ref<'login' | 'register' | 'forget'>('login')
+const visible = ref(false)
 const loginPanelRef = ref()
 const registerRef = ref()
 const proxy = useProxy()
 
-// 收到事件总线 打开登录窗口
-proxy.$Bus.on('showLoginDialog', () => {
+const showLoginDialog = () => {
 	visible.value = true
-})
+}
+
+// 收到事件总线 打开登录窗口
+proxy.$Bus.on('showLoginDialog', showLoginDialog)
 
 const close = () => {
 	loginPanelRef.value && loginPanelRef.value.ruleFormRef.resetFields() // 清除表单内容
-	registerRef.value && registerRef.value.ruleFormRef.resetFields() // 清除表单内容
+	registerRef.value && registerRef.value.resetFields() // 清除表单内容
 	visible.value = false
 }
+
+onUnmounted(() => {
+	proxy.$Bus.off('showLoginDialog', showLoginDialog)
+})
 </script>
 
 <style lang="less">
@@ -61,7 +81,7 @@ const close = () => {
 	background-color: #fff !important;
 	border-radius: 10px !important;
 	box-shadow: 0 0 0 0 !important;
-	aspect-ratio: 2/1.2 !important;
+	aspect-ratio: 2/1.3 !important;
 
 	.el-dialog__header {
 		display: none;
@@ -127,7 +147,7 @@ const close = () => {
 			justify-content: center;
 			align-items: center;
 			height: 40px;
-			margin: 50px 0 40px;
+			margin: 50px 0 0;
 			box-sizing: border-box;
 			border-bottom: 2px solid @grey2;
 			.tab-item {
@@ -135,7 +155,7 @@ const close = () => {
 				align-items: center;
 				height: 100%;
 				padding: 0 15px;
-				margin: 0 30px;
+				margin: 0 15px;
 				font-size: 18px;
 				transition: 0.2s all linear;
 				font-weight: bold;
@@ -148,6 +168,7 @@ const close = () => {
 			}
 		}
 		.panel-container {
+			height: calc(100% - 90px);
 			display: flex;
 			justify-content: center;
 			align-items: center;
