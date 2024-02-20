@@ -8,16 +8,18 @@
 			@focus="isFocus = true"
 			@blur="blurEvent"
 			placeholder="快来发布评论吧~~~"></textarea>
-		<div @click="send" class="send">发布</div>
+		<div v-login="send" class="send">发布</div>
 	</div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import useProxy from '@/hooks/useProxy'
+
 import { getMessageOption } from '@/utils'
 
 const props = defineProps<{
-	send: Function
+	send: (comment: string) => Promise<any>
 }>()
 const comment = ref<string>('')
 const isFocus = ref<boolean>(false)

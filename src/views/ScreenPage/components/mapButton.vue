@@ -6,7 +6,7 @@
 		trigger="click"
 		:hide-after="0">
 		<el-scrollbar height="400px">
-			<skeleton :count="4" :status="'1'" :loading-class="['cover', 'name']">
+			<skeleton :count="4" :status="mapInfo.status" :loading-class="['cover', 'name']">
 				<template v-slot:template="{ setSlotRef }">
 					<div class="item">
 						<div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
@@ -49,11 +49,10 @@ import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
 
 import useStore from '@/store'
 
-import { ajaxRequest, uuid } from '@/utils'
+import { getMapConfig } from '@/utils/screenUtil.ts'
+import { ajaxRequest } from '@/utils'
 
 import { getChart } from '@/network/map'
-import { Map } from '@/types/screen'
-import { getMapConfig } from '@/utils/screenUtil.ts'
 
 type STATUS = '1' | '2' | '3'
 interface IItem {

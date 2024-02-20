@@ -52,6 +52,16 @@ ajax.interceptors.response.use(
 				position: 'top-left'
 			})
 			return req.data
+		} else if (req.data.status == -1) {
+			ElNotification({
+				type: 'error',
+				message: req.data.msg,
+				position: 'top-left'
+			})
+			localStorage.removeItem('token')
+			localStorage.removeItem('id')
+			localStorage.removeItem('info')
+			location.reload()
 		} else {
 			return req.data
 		}
