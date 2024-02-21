@@ -52,7 +52,7 @@ ajax.interceptors.response.use(
 				position: 'top-left'
 			})
 			return req.data
-		} else if (req.data.status == -1) {
+		} else if (req.data.status == -1 || req.data.status == -2) {
 			ElNotification({
 				type: 'error',
 				message: req.data.msg,
@@ -61,16 +61,10 @@ ajax.interceptors.response.use(
 			localStorage.removeItem('token')
 			localStorage.removeItem('id')
 			localStorage.removeItem('info')
-			location.reload()
+			location.href = '/'
 		} else {
 			return req.data
 		}
-
-		// if(req.data.status == -1) {
-		//   // window.location.href = window.location.protocol + '//' + window.location.host + '/login'
-		// } else {
-		//   return req.data
-		// }
 	},
 	() => {
 		// Toast.fail('网络错误')

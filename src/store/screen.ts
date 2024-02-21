@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import { Elements, ElementTypeProperties, IConfig, IStyle } from '@/types/screen'
+import { defineStore } from 'pinia'
 export interface IStore {
 	screenOption: IConfig | null
 	curElementIdx: number

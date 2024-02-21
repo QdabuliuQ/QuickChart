@@ -19,7 +19,7 @@
 						backgroundRepeat: screen.getScreenOptionOfCanvas.backgroundRepeat,
 						backgroundSize: screen.getScreenOptionOfCanvas.backgroundSize
 					}">
-					<drag-items />
+					<render />
 				</div>
 			</div>
 		</context-menu>
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive } from 'vue'
 
-import DragItems from './dragItems.vue'
+import render from './render.vue'
 import ContextMenu from '@/components/contextMenu.vue'
 
 import useProxy from '@/hooks/useProxy'
@@ -63,8 +63,8 @@ const exportImage = async ({ size, type }: any) => {
 		option: JSON.stringify(screen.getScreenOption),
 		width: size[0],
 		height: size[1],
-		c_width: document.getElementById('dragElement')?.clientWidth.toString() as string,
-		c_height: document.getElementById('dragElement')?.clientHeight.toString() as string,
+		c_width: document.getElementById('render')?.clientWidth.toString() as string,
+		c_height: document.getElementById('render')?.clientHeight.toString() as string,
 		type
 	})
 	loading.close()
@@ -128,6 +128,7 @@ onUnmounted(() => {
 	align-items: center;
 	overflow: scroll;
 	flex: 1;
+	margin: 40px auto;
 	.scroll-container();
 
 	.btn-container {
@@ -137,9 +138,6 @@ onUnmounted(() => {
 	}
 
 	.opacityBg {
-		//width: 1070px;
-		//height: 652px;
-		margin: 40px auto;
 		background-repeat: repeat;
 		background-size: cover;
 		background-image: url('../../../assets/image/bg.jpg');

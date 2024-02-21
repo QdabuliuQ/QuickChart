@@ -101,8 +101,8 @@ const exportClick = async (type: string) => {
 			Promise.all([
 				postScreenHtml({
 					option: JSON.stringify(screen.getScreenOption),
-					c_width: document.getElementById('dragElement')?.clientWidth as number,
-					c_height: document.getElementById('dragElement')?.clientHeight as number
+					c_width: document.getElementById('render')?.clientWidth as number,
+					c_height: document.getElementById('render')?.clientHeight as number
 				}),
 				new Promise((resolve) => {
 					setTimeout(resolve, 1000)
