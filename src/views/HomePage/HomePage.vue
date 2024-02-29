@@ -16,12 +16,12 @@
 				</div>
 				<div class="start info-item">
 					<div
-						@mouseenter="animate = true"
-						@mouseleave="animate = false"
+						@mouseenter="data.animate = true"
+						@mouseleave="data.animate = false"
 						class="start-btn"
 						@click="router.push('/edit')">
 						开始制作图表
-						<i :class="[animate ? 'arrow-animation' : '', 'iconfont', 'i_right']"></i>
+						<i :class="[data.animate ? 'arrow-animation' : '', 'iconfont', 'i_right']"></i>
 					</div>
 				</div>
 				<div class="tip">
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 			<div class="main-rightInfo">
-				<img @load="imgLoad" class="cover" src="@/assets/image/cover.svg" alt="" />
+				<img class="cover" src="@/assets/image/cover.svg" alt="" />
 				<div class="cover-active-container">
 					<img class="cover-active" src="@/assets/image/coverActive.svg" alt="" />
 				</div>
@@ -43,7 +43,7 @@
 		</el-divider>
 		<div class="function-container">
 			<div class="function-itemList">
-				<div v-for="(item, index) in functionList" :key="index" class="function-item">
+				<div v-for="(item, index) in data.functionList" :key="index" class="function-item">
 					<div style="padding: 60px 30px">
 						<div style="width: 160px; height: 160px; margin: 0 auto">
 							<el-image style="width: 100%; height: 100%" :src="item.img" :fit="'contain'" />
@@ -63,7 +63,7 @@
 		</el-divider>
 		<div class="processContainer">
 			<el-carousel height="170px" direction="vertical" :autoplay="false">
-				<el-carousel-item v-for="item in processList" :key="item.step">
+				<el-carousel-item v-for="item in data.processList" :key="item.step">
 					<div class="process-item">
 						<div class="process-item-left">
 							<div class="item-step-title">Step {{ item.step }}</div>
@@ -80,28 +80,96 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+<script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { InitData } from '@/types/HomePage/HomePage'
 
-export default defineComponent({
-	name: 'HomePage',
-	setup() {
-		const router = useRouter()
-		const data = reactive(new InitData())
+import step5 from '@/assets/image/category.png'
+import step7 from '@/assets/image/data.png'
+import step6 from '@/assets/image/detail.png'
+import step8 from '@/assets/image/noLogin.png'
+import step1 from '@/assets/image/process_category.png'
+import step3 from '@/assets/image/process_data.png'
+import step2 from '@/assets/image/process_detail.png'
+import step4 from '@/assets/image/process_result.png'
 
-		const imgLoad = () => {}
+import { reactive } from 'vue'
 
-		onMounted(() => {})
-		return {
-			router,
-			imgLoad,
-			...toRefs(data)
+const router = useRouter()
+const data = reactive({
+	animate: false,
+	processList: [
+		{
+			step: 1,
+			title: '选择图表',
+			desc: '在左侧的图表列表提供了若干钟图表类型，您可以根据实际需求选择合适的图表进行配置',
+			img: step1
+		},
+		{
+			step: 2,
+			title: '配置数据',
+			desc: '可以在右侧的图表配置中找到数据编辑，按照规范编辑/导入EXCEL表格模板格式，EXCEL表格上方也提供了导入导出功能',
+			img: step2
+		},
+		{
+			step: 3,
+			title: '配置图表',
+			desc: '每一个图表都提供了不同的图表样式配置，根据实际需求对图表的各个部分的样式进行调整',
+			img: step3
+		},
+		{
+			step: 4,
+			title: '导出数据/下载图表',
+			desc: '当进行图表的配置完成后，可以在右侧的参数面板下载图表的PNG格式，和下载图表数据的EXCEL文件',
+			img: step4
 		}
-	}
+	],
+	functionList: [
+		{
+			title: '丰富的图表类型',
+			desc: '提供了线性图，柱状图，饼状图，地图等多种类型',
+			img: step5
+		},
+		{
+			title: '强大的细节配置',
+			desc: '将图表的不同配置进行划分，根据需求选择指定配置',
+			img: step6
+		},
+		{
+			title: '数据的导入导出',
+			desc: '支持通过导入EXCEL文件批量生成数据，和导出EXCEL文件',
+			img: step7
+		},
+		{
+			title: '免登录即可使用',
+			desc: '无需登录账号即可快速体验！',
+			img: step8
+		}
+	]
 })
 </script>
+
+<!--<script lang="ts">-->
+<!--import { defineComponent, reactive, onMounted, toRefs } from 'vue'-->
+<!--import { useRouter } from 'vue-router'-->
+<!--import { InitData } from '@/types/HomePage/HomePage'-->
+
+<!--export default defineComponent({-->
+<!--	name: 'HomePage',-->
+<!--	setup() {-->
+<!--		const router = useRouter()-->
+<!--		const data = reactive(new InitData())-->
+
+<!--		const imgLoad = () => {}-->
+
+<!--		onMounted(() => {})-->
+<!--		return {-->
+<!--			router,-->
+<!--			imgLoad,-->
+<!--			...toRefs(data)-->
+<!--		}-->
+<!--	}-->
+<!--})-->
+<!--</script>-->
 
 <style lang="less">
 .info-container {
