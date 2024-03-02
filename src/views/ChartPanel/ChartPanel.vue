@@ -36,13 +36,17 @@
 
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
-import useStore from '@/store'
 import { useRouter } from 'vue-router'
-import { deepCopy } from '@/utils'
+
+import ChartData from '@/components/chartData.vue'
 import ChartDetail from '@/components/chartDetail.vue'
 import ChartParams from '@/components/chartParams.vue'
-import ChartData from '@/components/chartData.vue'
 import EmptyTip from '@/components/emptyTip.vue'
+
+import useStore from '@/store'
+
+import { importChartFile } from '@/utils/importFile.ts'
+import { deepCopy } from '@/utils'
 
 const { chart }: any = useStore()
 const router = useRouter()
@@ -60,31 +64,30 @@ const getConfig = async () => {
 	detailType.value = router.currentRoute.value.params.id as string
 	type.value = parseInt(router.currentRoute.value.params.id as string).toString()
 
-	image.value = ((await import('../../assets/image/' + detailType.value + '.webp')) as any).default
+	image.value = `${import.meta.env.VITE_API_URL}/images/${detailType.value}.webp`
 
-	// image.value = m.default
-	let res = await import(`../../config/chart/config/chart/${type.value}_/chart${detailType.value}`)
-	// let res = await import.meta.glob(`@/config/chart/config/chart/${type.value}_/chart${detailType.value}`, {eager: true})
-	let option = res.default()
-	let chartConfig: any[] = []
-	let tmpOption: any = {} // 临时配置
-	for (let item of option) {
-		if (item.chartOption) {
-			tmpOption[item.opName] = item.defaultOption[item.opName]
+	importChartFile(`/chart/${type.value}_/chart${detailType.value}.ts`)().then((res: any) => {
+		const option = res.default()
+		let chartConfig: any[] = []
+		let tmpOption: any = {} // 临时配置
+		for (let item of option) {
+			if (item.chartOption) {
+				tmpOption[item.opName] = item.defaultOption[item.opName]
+			}
+			if (item.menuOption) {
+				chartConfig.push(item)
+			}
 		}
-		if (item.menuOption) {
-			chartConfig.push(item)
-		}
-	}
-	chart.setOption(tmpOption)
-	chart.setChartConfig(chartConfig)
-	chart.setDefaultOption(deepCopy(tmpOption))
-	chart.setType('chart')
+		chart.setOption(tmpOption)
+		chart.setChartConfig(chartConfig)
+		chart.setDefaultOption(deepCopy(tmpOption))
+		chart.setType('chart')
 
-	chart_loading.value = false
-	setTimeout(() => {
-		params_loading.value = false
-	}, 800)
+		chart_loading.value = false
+		setTimeout(() => {
+			params_loading.value = false
+		}, 800)
+	})
 }
 getConfig()
 

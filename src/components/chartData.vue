@@ -46,6 +46,7 @@ import useStore from '@/store'
 
 import { exportFile, importFile, stox } from '@/utils/excelOpe'
 import { fileType } from '@/utils/fileType'
+import { importChartFile, importMapFile } from '@/utils/importFile.ts'
 import { deepCopy } from '@/utils'
 
 import Spreadsheet from 'x-data-spreadsheet'
@@ -201,16 +202,22 @@ worker.onmessage = (e: { data: any }) => {
 }
 
 const initHandleFun = async () => {
-	const { createExcelData, conveyExcelData, combineOption } = (await import(
-		`../config/chart/config/${chart.getType}/${props.type}_/${chart.getType}${props.detail_type}.ts`
-	)) as any
-
-	createInitiativeData = createExcelData
-	conveyData = conveyExcelData
-	combineData = combineOption
-	excelData = createInitiativeData(chart.getOption)
-	originData = deepCopy(excelData)
-	initData()
+	let importFun: any = null
+	if (chart.getType === 'chart') {
+		importFun = importChartFile
+	} else {
+		importFun = importMapFile
+	}
+	importFun(`/${chart.getType}/${props.type}_/${chart.getType}${props.detail_type}.ts`)().then(
+		(res: any) => {
+			createInitiativeData = res.createExcelData
+			conveyData = res.conveyExcelData
+			combineData = res.combineOption
+			excelData = createInitiativeData(chart.getOption)
+			originData = deepCopy(excelData)
+			initData()
+		}
+	)
 }
 
 const stop = watch(

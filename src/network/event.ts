@@ -70,3 +70,10 @@ export function postPraiseComment(data: { comment_id: string; type: '1' | '0' })
 export function screenImageUpload(data: any) {
 	return upload('/screenImage', data)
 }
+
+export function getChartType() {
+	return ajax({
+		url: '/ev/chartType',
+		method: 'get'
+	})
+}

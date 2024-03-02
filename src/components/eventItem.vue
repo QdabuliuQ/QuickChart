@@ -55,30 +55,34 @@
 							:content="'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'" />
 					</template>
 					<template v-slot:content>
-						<CommentItem
-							v-for="(item, idx) in props.comments"
-							:key="item.comment_id"
-							:comment_id="item.comment_id"
-							:id="item.event_id"
-							:idx="idx"
-							:user_id="item.user_id"
-							:user_pic="item.user_pic"
-							:nickname="item.nickname"
-							:time="item.time"
-							:content="item.content"
-							:self="item.self"
-							:is_praise="item.is_praise as number"
-							:praise_count="item.praise_count as number"
-							@delete="deleteEvent"
-							@praise="praiseCommentEvent" />
-						<el-pagination
-							@current-change="changeEvent"
-							hide-on-single-page
-							class="pagination-class"
-							background
-							layout="prev, pager, next"
-							:page-size="limit"
-							:total="total" />
+						<div v-if="commentList.length">
+							<CommentItem
+								v-for="(item, idx) in commentList"
+								:key="item.comment_id"
+								:comment_id="item.comment_id"
+								:id="item.event_id"
+								:idx="idx"
+								:user_id="item.user_id"
+								:user_pic="item.user_pic"
+								:nickname="item.nickname"
+								:time="item.time"
+								:content="item.content"
+								:self="item.self"
+								:is_praise="item.is_praise as number"
+								:praise_count="item.praise_count as number"
+								@delete="deleteEvent"
+								@praise="praiseCommentEvent" />
+							<el-pagination
+								@current-change="changeEvent"
+								hide-on-single-page
+								class="pagination-class"
+								background
+								layout="prev, pager, next"
+								:page-size="limit"
+								:current-page="offset"
+								:total="total" />
+						</div>
+						<el-empty v-else description="暂无评论哦" />
 					</template>
 					<template v-slot:empty>
 						<el-empty description="暂无评论哦" />
@@ -90,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import CommentInput from '@/components/commentInput.vue'
@@ -134,6 +138,7 @@ const proxy = useProxy()
 const showComment = ref<boolean>(false)
 const status = ref<'1' | '2' | '3'>('1')
 
+const commentList = reactive<CommentInt[]>([])
 const toDetail = () => {
 	router.push((props.type === 'chart' ? `/chart/` : '/map/') + props.chart_id)
 }
@@ -152,7 +157,8 @@ const getData = async () => {
 	} else {
 		status.value = '2'
 	}
-	emits('update:comments', data.data)
+	commentList.length = 0
+	commentList.push(...data.data)
 	total.value = data.count
 	limit.value = data.limit
 }
@@ -166,13 +172,12 @@ const praiseCommentEvent = async (info: any) => {
 	let type = info.is_praise == '1' ? '0' : '1'
 	if (data.status) {
 		if (type === '1') {
-			props.comments![info.idx].is_praise = 1
-			;(props.comments![info.idx].praise_count as number)++
+			commentList![info.idx].is_praise = 1
+			;(commentList![info.idx].praise_count as number)++
 		} else {
-			props.comments![info.idx].is_praise = 0
-			;(props.comments![info.idx].praise_count as number)--
+			commentList![info.idx].is_praise = 0
+			;(commentList![info.idx].praise_count as number)--
 		}
-		emits('update:comments', props.comments)
 	}
 }
 
@@ -204,7 +209,8 @@ const praiseEvent = async () => {
  */
 const getComment = () => {
 	showComment.value = !showComment.value
-	if (props.comments && props.comments.length === 0) {
+	if (showComment.value) {
+		offset.value = 1
 		getData()
 	}
 }
@@ -221,9 +227,7 @@ const send = (comment: string): Promise<boolean> => {
 			event_id: props.event_id
 		})
 		if (data.status) {
-			const comments = [...props.comments!]
-			comments.unshift(data.data)
-			emits('update:comments', comments)
+			commentList.unshift(data.data)
 			resolve(true)
 		} else reject(false)
 	})
@@ -239,9 +243,7 @@ const deleteEvent = async (info: any) => {
 			message: data.msg,
 			position: 'top-left'
 		})
-		let comments = [...props.comments!]
-		comments.splice(info.idx, 1)
-		emits('update:comments', comments)
+		commentList.splice(info.idx, 1)
 	} else {
 		proxy.$notice({
 			type: 'error',

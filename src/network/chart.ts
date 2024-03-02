@@ -147,3 +147,9 @@ export function postChartImage(data: { option: string }) {
 		data
 	})
 }
+
+export function getChartTemplatesList() {
+	return ajax({
+		url: '/qc/chartTemplatesList'
+	})
+}

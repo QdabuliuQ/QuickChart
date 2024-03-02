@@ -41,6 +41,7 @@ import useStore from '@/store'
 import { deepCopy } from '@/utils'
 
 import { getChartDetail, getCityJSON } from '@/network/map'
+import { importMapFile } from '@/utils/importFile.ts'
 
 const { chart }: any = useStore()
 const route = useRoute()
@@ -88,46 +89,53 @@ const getConfig = async (_type: string, _option: any) => {
 	detailType.value = _type
 	type.value = parseInt(_type).toString()
 
-	// if (typeof _option.backgroundColor === 'object') {
-	// 	// 处理背景颜色
-	// 	let src = _option.backgroundColor.image
-	// 	_option.backgroundColor.image = createImage(src)
-	// 	_option.backgroundColor.url = src
-	// }
-	// if (_option.graphic.length) {
-	// 	// 处理图形组件
-	// 	for (let item of _option.graphic) {
-	// 		if (item.type === 'image') {
-	// 			// let src = item.style.url
-	// 			item.style.image = createImage(item.style.url)
-	// 			// item.style.url = src
-	// 		}
-	// 	}
-	// }
 	try {
-		let res = await import(`../../config/chart/config/map/${type.value}_/map${detailType.value}`)
-		console.log(res, '---')
-		let option = res.default()
-		let chartConfig: any[] = []
-		for (let item of option) {
-			if (Object.prototype.hasOwnProperty.call(_option, item.opName)) {
-				item.defaultOption[item.opName] = _option[item.opName]
+		importMapFile(`/map/${type.value}_/map${detailType.value}.ts`)().then((res: any) => {
+			let option = res.default()
+			let chartConfig: any[] = []
+			for (let item of option) {
+				if (Object.prototype.hasOwnProperty.call(_option, item.opName)) {
+					item.defaultOption[item.opName] = _option[item.opName]
+				}
+				if (item.menuOption) {
+					chartConfig.push(item)
+				}
 			}
-			if (item.menuOption) {
-				chartConfig.push(item)
-			}
-		}
-		chart.setOption(_option)
-		chart.setChartConfig(chartConfig)
-		chart.setDefaultOption(deepCopy(_option))
-		chart.setMapJSON(JSONData)
-		chart.setType('map')
+			chart.setOption(_option)
+			chart.setChartConfig(chartConfig)
+			chart.setDefaultOption(deepCopy(_option))
+			chart.setMapJSON(JSONData)
+			chart.setType('map')
 
-		chart_loading.value = false
-		setTimeout(() => {
-			params_loading.value = false
-			data_loading.value = false
-		}, 800)
+			chart_loading.value = false
+			setTimeout(() => {
+				params_loading.value = false
+				data_loading.value = false
+			}, 800)
+		})
+
+		// let res = await import(`../../config/chart/config/map/${type.value}_/map${detailType.value}`)
+		// let option = res.default()
+		// let chartConfig: any[] = []
+		// for (let item of option) {
+		// 	if (Object.prototype.hasOwnProperty.call(_option, item.opName)) {
+		// 		item.defaultOption[item.opName] = _option[item.opName]
+		// 	}
+		// 	if (item.menuOption) {
+		// 		chartConfig.push(item)
+		// 	}
+		// }
+		// chart.setOption(_option)
+		// chart.setChartConfig(chartConfig)
+		// chart.setDefaultOption(deepCopy(_option))
+		// chart.setMapJSON(JSONData)
+		// chart.setType('map')
+		//
+		// chart_loading.value = false
+		// setTimeout(() => {
+		// 	params_loading.value = false
+		// 	data_loading.value = false
+		// }, 800)
 	} catch (err) {
 		state.value = 0
 	}

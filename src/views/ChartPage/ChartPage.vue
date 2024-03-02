@@ -8,13 +8,23 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import chartMenu from '@/components/chartMenu.vue'
 
-import list from '@/utils/chartItem'
-
+import { getChartTemplatesList } from '@/network/chart.ts'
 import { ElMessageBox } from 'element-plus'
+
+const list = reactive<any>([])
+
+onBeforeMount(async () => {
+	const res: any = await getChartTemplatesList()
+	for (const item of res) {
+		item.show = false
+		list.push(item)
+	}
+})
 
 const router = useRouter()
 const clickEvent = (id: string) => {

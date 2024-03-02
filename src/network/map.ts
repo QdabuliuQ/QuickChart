@@ -124,3 +124,10 @@ export function postPraiseComment(data: { comment_id: string; type: '1' | '0' })
 		data
 	})
 }
+
+export function getMapTemplateList() {
+	return ajax({
+		url: '/map/mapTemplateList',
+		method: 'get'
+	})
+}

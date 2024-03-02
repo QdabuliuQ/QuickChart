@@ -68,12 +68,22 @@
 </template>
 
 <script setup lang="ts">
-import chartMenu from '@/components/chartMenu.vue'
-import list from '@/utils/mapItem'
-import { getCityData } from '@/network/map'
-import { ref } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { onBeforeMount, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+import chartMenu from '@/components/chartMenu.vue'
+
+import { getCityData, getMapTemplateList } from '@/network/map'
+
+const list = reactive<any>([])
+
+onBeforeMount(async () => {
+	const res: any = await getMapTemplateList()
+	for (let item of res) {
+		item.show = false
+		list.push(item)
+	}
+})
 
 interface CityInt {
 	code: string

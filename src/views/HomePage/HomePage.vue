@@ -71,7 +71,7 @@
 							<div class="item-desc">{{ item.desc }}</div>
 						</div>
 						<div class="process-item-right">
-							<img :src="item.img" alt="" />
+							<img v-lazy :src="item.img" alt="" />
 						</div>
 					</div>
 				</el-carousel-item>
@@ -81,6 +81,7 @@
 </template>
 
 <script lang="ts" setup>
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import step5 from '@/assets/image/category.png'
@@ -91,8 +92,6 @@ import step1 from '@/assets/image/process_category.png'
 import step3 from '@/assets/image/process_data.png'
 import step2 from '@/assets/image/process_detail.png'
 import step4 from '@/assets/image/process_result.png'
-
-import { reactive } from 'vue'
 
 const router = useRouter()
 const data = reactive({

@@ -2,14 +2,15 @@
 	<div class="community-page">
 		<el-affix :offset="20">
 			<div class="types">
-				<div :class="[active === 0 ? 'active' : '', 'type-item']">
+				<div @click="typeToggle(0)" :class="[active === '0' ? 'active' : '', 'type-item']">
 					<i class="iconfont i_all"></i>
 					全部
 				</div>
 				<div
+					@click="typeToggle(item)"
 					v-for="item in list"
-					:key="item.id"
-					:class="[active === item.id ? 'active' : '', 'type-item']">
+					:key="item.type + item.id"
+					:class="[active === `${item.chartType}|${item.id}` ? 'active' : '', 'type-item']">
 					<i :class="['iconfont', item.icon]"></i>
 					{{ item.type }}
 				</div>
@@ -103,7 +104,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onBeforeMount, reactive, ref } from 'vue'
 
 import eventItem from '@/components/eventItem.vue'
 import skeleton from '@/components/skeleton.vue'
@@ -112,24 +113,42 @@ import { useCheckState } from '@/hooks/useCheckState'
 import usePagination from '@/hooks/usePagination'
 import useProxy from '@/hooks/useProxy'
 
-import list from '@/utils/chartItem'
 import { ajaxRequest, getInfo } from '@/utils'
 
-import { getEvents } from '@/network/event'
+import { getChartType, getEvents } from '@/network/event'
 import { EventInt } from '@/types/common'
 
-const active = ref<number>(0)
+const active = ref<string>('0')
 const status = ref<'1' | '2' | '3'>('1')
 const events = reactive<EventInt[]>([])
 const info = reactive<any>(getInfo())
 const proxy = useProxy()
 
+const list = reactive<any>([])
+
+onBeforeMount(async () => {
+	const res: any = await getChartType()
+	list.push(...res)
+})
+
+const typeToggle = (info: any) => {
+	offset.value = 1
+	if (!info) {
+		active.value = '0'
+	} else {
+		active.value = `${info.chartType}|${info.id}`
+	}
+	getData()
+}
+
 const getData = async () => {
 	status.value = '1'
 	window.scrollTo(0, 0)
 	const data = await ajaxRequest(getEvents, {
+		limit: limit.value,
 		offset: offset.value,
-		type: active.value.toString()
+		type: active.value === '0' ? '0' : active.value.split('|')[0],
+		d_type: active.value === '0' ? '0' : active.value.split('|')[1]
 	})
 	if (!data.status || data.data.length === 0) {
 		status.value = '3'
@@ -144,7 +163,7 @@ const getData = async () => {
 		events.push(item)
 	}
 }
-let [limit, total, offset, changeEvent]: any = usePagination(getData)
+let [limit, total, offset, changeEvent]: any = usePagination(getData, 10)
 getData()
 
 const toLogin = () => {
@@ -163,9 +182,10 @@ const toLogin = () => {
 		box-shadow: 0 0 9px 0 #0d0d0d;
 
 		.type-item {
-			padding: 12px 45px 12px 40px;
+			padding: 12px 75px 12px 20px;
 			cursor: pointer;
 			transition: 0.2s all linear;
+			font-size: 14px;
 
 			i {
 				margin-right: 7px;
@@ -178,7 +198,7 @@ const toLogin = () => {
 
 		.active {
 			color: #fff;
-			background-color: @theme;
+			background-color: @theme !important;
 		}
 	}
 

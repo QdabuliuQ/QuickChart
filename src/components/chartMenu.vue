@@ -31,17 +31,20 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import useProxy from '@/hooks/useProxy'
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
-import { ListInt } from '@/utils/chartItem'
+import { useRouter } from 'vue-router'
+
 import chartItem from './chartItem.vue'
+
+import useProxy from '@/hooks/useProxy'
+
+import { ListInt } from '@/utils/chartItem'
 
 const router = useRouter()
 const proxy = useProxy()
 const props = defineProps<{
 	itemlist: ListInt[]
-	clickEvent: Function
+	clickEvent: (id: string) => any
 }>()
 const list = reactive<ListInt[]>(props.itemlist)
 const height = ref<string>('')

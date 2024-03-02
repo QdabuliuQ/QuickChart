@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const props = defineProps<{
 	cover: string
@@ -26,7 +25,6 @@ const props = defineProps<{
 	name: string
 }>()
 const emits = defineEmits(['clickEvent'])
-const router = useRouter()
 const visible = ref<boolean>(false)
 
 const toggleChart = () => {

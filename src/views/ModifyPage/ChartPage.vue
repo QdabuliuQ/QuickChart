@@ -44,6 +44,7 @@ import useStore from '@/store'
 import { createImage, deepCopy } from '@/utils'
 
 import { getChartDetail, getComment } from '@/network/chart'
+import { importChartFile } from '@/utils/importFile.ts'
 
 const { chart }: any = useStore()
 const proxy = useProxy()
@@ -96,30 +97,35 @@ const getConfig = async () => {
 		}
 	}
 	try {
-		let res = await import(
-			/* @vite-ignore */ `../../config/chart/config/chart/${parseInt(data.data.type)}_/chart${
-				data.data.type
-			}`
+		importChartFile(`/chart/${parseInt(data.data.type)}_/chart${data.data.type}.ts`)().then(
+			(res: any) => {
+				let option = res.default()
+				let chartConfig: any[] = []
+				for (let item of option) {
+					if (Object.prototype.hasOwnProperty.call(data.data.option, item.opName)) {
+						item.defaultOption[item.opName] = data.data.option[item.opName]
+					}
+					if (item.menuOption) {
+						chartConfig.push(item)
+					}
+				}
+				chart.setOption(data.data.option)
+				chart.setChartConfig(chartConfig)
+				chart.setDefaultOption(deepCopy(data.data.option))
+				chart.setType('chart')
+				chart_loading.value = false
+				setTimeout(() => {
+					params_loading.value = false
+					data_loading.value = false
+				}, 800)
+			}
 		)
-		let option = res.default()
-		let chartConfig: any[] = []
-		for (let item of option) {
-			if (Object.prototype.hasOwnProperty.call(data.data.option, item.opName)) {
-				item.defaultOption[item.opName] = data.data.option[item.opName]
-			}
-			if (item.menuOption) {
-				chartConfig.push(item)
-			}
-		}
-		chart.setOption(data.data.option)
-		chart.setChartConfig(chartConfig)
-		chart.setDefaultOption(deepCopy(data.data.option))
-		chart.setType('chart')
-		chart_loading.value = false
-		setTimeout(() => {
-			params_loading.value = false
-			data_loading.value = false
-		}, 800)
+
+		// let res = await import(
+		// 	/* @vite-ignore */ `../../config/chart/config/chart/${parseInt(data.data.type)}_/chart${
+		// 		data.data.type
+		// 	}`
+		// )
 	} catch (err) {
 		state.value = 0
 	}

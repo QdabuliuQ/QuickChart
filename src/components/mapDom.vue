@@ -115,6 +115,8 @@ const initChart = () => {
 	chartInstance.clear()
 	console.log(chart)
 	proxy.$echarts.registerMap('map' + sessionStorage.getItem('curAdcode'), chart.getMapJson)
+	console.log(chart.getOption, sessionStorage.getItem('curAdcode'))
+
 	chartInstance.setOption(chart.getOption)
 	option = chart.getOption
 
