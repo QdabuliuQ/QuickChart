@@ -7,33 +7,28 @@
 					<i class="iconfont i_exit"></i>
 					返回
 				</el-button>
-				<div class="btn-list">
-					<el-button v-login="() => (visible = true)" type="primary">
-						<i class="iconfont i_save1"></i>
-						另存为
-					</el-button>
-					<el-button v-if="props.update" v-login="toUpdate" type="success">
-						<i class="iconfont i_save"></i>
-						保存
-					</el-button>
-					<el-button
-						v-login="() => (shareVisible = true)"
-						v-if="props.share"
-						class="share-btn"
-						type="primary"
-						color="#626aef">
-						<i class="iconfont i_share"></i>
-						分享
-					</el-button>
-				</div>
-				<info-panel
-					v-if="props.infoPanel"
-					v-model:is_praise="is_praise"
-					v-model:praise_count="praise_count"
-					:chart_id="props.chart_id"
-					:comment_count="props.comment_count"
+				<ope-buttons
+					:save-as="true"
+					@save-as-event="visible = true"
+					:save="props.update"
+					@save-event="toUpdate"
+					:share="props.share"
+					@share-event="shareVisible = true"
+					:praise="route.name !== 'mapType'"
+					v-model:isPraise="is_praise"
+					v-model:praiseCount="praise_count"
 					:praise-event="praiseEvent"
-					@showDrawer="show = true" />
+					:comment="route.name !== 'type'"
+					:commentCount="props.comment_count"
+					@comment-event="show = true" />
+				<!--				<info-panel-->
+				<!--					v-if="props.infoPanel"-->
+				<!--					v-model:is_praise="is_praise"-->
+				<!--					v-model:praise_count="praise_count"-->
+				<!--					:chart_id="props.chart_id"-->
+				<!--					:comment_count="props.comment_count"-->
+				<!--					:praise-event="praiseEvent"-->
+				<!--					@showDrawer="show = true" />-->
 				<chart-dom ref="chartDomRef" :key="key" />
 			</div>
 		</div>
@@ -51,12 +46,13 @@
 </template>
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import ChartDom from '@/components/chartDom.vue'
 import CommentDrawer from '@/components/commentDrawer.vue'
 import InfoPanel from '@/components/infoPanel.vue'
 import Loading from '@/components/loading.vue'
+import OpeButtons from '@/components/opeButtons.vue'
 import SaveChartDialog from '@/components/saveChartDialog.vue'
 import ShareChartDialog from '@/components/shareChartDialog.vue'
 
@@ -77,6 +73,7 @@ import { postEvent } from '@/network/event'
 import { ElLoading } from 'element-plus'
 
 const router = useRouter()
+const route = useRoute()
 const props = withDefaults(
 	defineProps<{
 		type: string
@@ -172,7 +169,7 @@ const toUpdate = async () => {
 		background: 'rgba(0, 0, 0, 0.7)'
 	})
 	putChart({
-		chart_id: proxy.chart_id,
+		chart_id: props.chart_id,
 		option: JSON.stringify(chart.getOption)
 	})
 		.then((data: any) => {
@@ -292,32 +289,6 @@ onUnmounted(() => {
 			}
 
 			.scroll-container();
-
-			.btn-list {
-				position: absolute;
-				top: 8px;
-				right: 8px;
-				z-index: 2;
-
-				.iconfont {
-					margin-right: 5px;
-					font-size: 14px;
-				}
-
-				.share-btn {
-					&:hover {
-						background-color: #555bca;
-						border: 1px solid #555bca;
-					}
-
-					&:focus {
-						background-color: #555bca;
-						border: 1px solid #555bca;
-					}
-				}
-
-				.el-button-style();
-			}
 		}
 	}
 }

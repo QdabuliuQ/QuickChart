@@ -38,10 +38,10 @@ import MapDetail from '@/components/mapDetail.vue'
 
 import useStore from '@/store'
 
+import { importMapFile } from '@/utils/importFile.ts'
 import { deepCopy } from '@/utils'
 
 import { getChartDetail, getCityJSON } from '@/network/map'
-import { importMapFile } from '@/utils/importFile.ts'
 
 const { chart }: any = useStore()
 const route = useRoute()

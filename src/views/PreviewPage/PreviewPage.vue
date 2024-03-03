@@ -52,7 +52,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
 import ChartItem from './components/chartItem.vue'
 import BorderItem from '@/views/PreviewPage/components/borderItem.vue'
@@ -61,33 +61,58 @@ import MapItem from '@/views/PreviewPage/components/mapItem.vue'
 import ShapeItem from '@/views/PreviewPage/components/shapeItem.vue'
 import TextItem from '@/views/PreviewPage/components/textItem.vue'
 
+import { listenMsg, sendMsg } from '@/utils/previewChannel.ts'
+
 import { ElementTypeProperties, IConfig } from '@/types/screen'
 
 let style = reactive<any>(null)
-let screenData = reactive<IConfig>({} as any)
-if (localStorage.getItem('screenData')) {
-	screenData = JSON.parse(localStorage.getItem('screenData') as string)
-	if (screenData.canvas.bgType === 'color') {
-		style = {
-			backgroundColor: screenData.canvas.bgColor
-		}
-	} else {
-		style = {
-			backgroundImage: `url(${screenData.canvas.bgImage})`,
-			backgroundRepeat: screenData.canvas.backgroundRepeat,
-			backgroundSize: screenData.canvas.backgroundSize
-		}
-	}
-	console.log(screenData)
-}
+let screenData = ref<IConfig>({} as any)
 const width = ref<number>(0)
 const height = ref<number>(0)
 const cWidth = ref<number>(Number(localStorage.getItem('cWidth')))
 const cHeight = ref<number>(Number(localStorage.getItem('cHeight')))
 
+const setPreviewCanvas = (data: string) => {
+	screenData.value = JSON.parse(data)
+	if (screenData.value.canvas.bgType === 'color') {
+		style = {
+			backgroundColor: screenData.value.canvas.bgColor
+		}
+	} else {
+		style = {
+			backgroundImage: `url(${screenData.value.canvas.bgImage})`,
+			backgroundRepeat: screenData.value.canvas.backgroundRepeat,
+			backgroundSize: screenData.value.canvas.backgroundSize
+		}
+	}
+}
+if (localStorage.getItem('screenData')) {
+	setPreviewCanvas(localStorage.getItem('screenData') as string)
+}
+
+listenMsg((data: any) => {
+	if (data.type === 'update') {
+		setPreviewCanvas(data.data)
+	}
+})
+
+const visibleEvent = () => {
+	if (document.visibilityState === 'visible') {
+		// 激活
+		sendMsg('active')
+	} else {
+	}
+}
+
 onMounted(() => {
 	width.value = document.documentElement.clientWidth
 	height.value = document.documentElement.clientHeight
+
+	document.addEventListener('visibilitychange', visibleEvent)
+})
+
+onUnmounted(() => {
+	document.removeEventListener('visibilitychange', visibleEvent)
 })
 </script>
 <style lang="less">

@@ -98,6 +98,7 @@ export function getComment(params: {
 	// 获取评论
 	map_id: string
 	offset: number
+	limit: number
 }) {
 	return ajax({
 		url: '/map/comment',

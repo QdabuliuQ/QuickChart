@@ -7,32 +7,20 @@
 					<i class="iconfont i_exit"></i>
 					返回
 				</el-button>
-				<div class="btn-list">
-					<el-button v-login="() => (visible = true)" type="primary">
-						<i class="iconfont i_save1"></i>
-						另存为
-					</el-button>
-					<el-button v-if="props.update" v-login="toUpdate" type="success">
-						<i class="iconfont i_save"></i>
-						保存
-					</el-button>
-					<el-button
-						v-login="show"
-						v-if="props.share"
-						class="share-btn"
-						type="primary"
-						color="#626aef">
-						<i class="iconfont i_share"></i>
-						分享
-					</el-button>
-				</div>
-				<info-panel
-					v-model:is_praise="is_praise"
-					v-model:praise_count="praise_count"
-					:chart_id="props.map_id as string"
-					:comment_count="props.comment_count"
+				<ope-buttons
+					:save-as="true"
+					@save-as-event="visible = true"
+					:save="props.update"
+					@save-event="toUpdate"
+					:share="props.share"
+					@share-event="show"
+					:praise="route.name !== 'mapType'"
+					v-model:isPraise="is_praise"
+					v-model:praiseCount="praise_count"
 					:praise-event="praiseEvent"
-					@showDrawer="showDrawer = true" />
+					:comment="route.name !== 'mapType'"
+					:commentCount="props.comment_count"
+					@comment-event="showDrawer = true" />
 				<map-dom ref="chartDomRef" />
 			</div>
 		</div>
@@ -50,12 +38,12 @@
 
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import CommentDrawer from '@/components/commentDrawer.vue'
-import InfoPanel from '@/components/infoPanel.vue'
 import Loading from '@/components/loading.vue'
 import MapDom from '@/components/mapDom.vue'
+import OpeButtons from '@/components/opeButtons.vue'
 import SaveChartDialog from '@/components/saveChartDialog.vue'
 import ShareChartDialog from '@/components/shareChartDialog.vue'
 
@@ -102,6 +90,7 @@ const props = withDefaults(
 )
 
 const router = useRouter()
+const route = useRoute()
 const { chart }: any = useStore()
 const chartDomRef = ref()
 const shareVisible = ref<boolean>(false)
@@ -217,6 +206,7 @@ const toUpdate = async () => {
 const _getComment = async (e: number) => {
 	// 获取评论
 	return await getComment({
+		limit: 10,
 		offset: e,
 		map_id: props.map_id as string
 	})
@@ -295,27 +285,6 @@ onUnmounted(() => {
 					margin-right: 5px;
 					font-size: 14px;
 				}
-			}
-			.btn-list {
-				position: absolute;
-				top: 8px;
-				right: 8px;
-				z-index: 2;
-				.iconfont {
-					margin-right: 5px;
-					font-size: 14px;
-				}
-				.share-btn {
-					&:hover {
-						background-color: #555bca;
-						border: 1px solid #555bca;
-					}
-					&:focus {
-						background-color: #555bca;
-						border: 1px solid #555bca;
-					}
-				}
-				.el-button-style();
 			}
 		}
 	}

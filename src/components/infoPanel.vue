@@ -16,19 +16,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { postComment } from '@/network/chart'
-import useProxy from '@/hooks/useProxy'
-
 const props = defineProps<{
 	chart_id: string
 	is_praise: number
 	praise_count: number
 	comment_count: number
-	praiseEvent: Function
+	praiseEvent: (state: number) => any
 }>()
 const emits = defineEmits(['update:is_praise', 'update:praise_count', 'showDrawer'])
-const comments = reactive<any>([])
+// const comments = reactive<any>([])
 const toPraise = () => {
 	let state = props.is_praise == 1 ? 0 : 1
 	props.praiseEvent &&
@@ -51,52 +47,52 @@ const showComment = async () => {
  * @param content 评论消息
  * @return Promise<boolean> 返回Promise
  */
-const send = (content: string) => {
-	return new Promise(async (resolve, reject) => {
-		let data: any = await postComment({
-			chart_id: props.chart_id,
-			content
-		})
-		if (data.status) {
-			comments.unshift(data.data)
-			resolve(true)
-		} else reject(false)
-	})
-}
+// const send = (content: string) => {
+// 	return new Promise(async (resolve, reject) => {
+// 		let data: any = await postComment({
+// 			chart_id: props.chart_id,
+// 			content
+// 		})
+// 		if (data.status) {
+// 			comments.unshift(data.data)
+// 			resolve(true)
+// 		} else reject(false)
+// 	})
+// }
 </script>
 
 <style lang="less">
-.comment-drawer-custom-class {
-	.el-drawer__header {
-		padding: 15px 10px 10px;
-		margin-bottom: 0;
-	}
-	.el-drawer__body {
-		padding: 20px 15px;
-		&::-webkit-scrollbar {
-			width: 10px;
-			height: 10px;
-		}
-		&::-webkit-scrollbar-track {
-			background: #323232;
-			border-radius: 2px;
-		}
-		&::-webkit-scrollbar-thumb {
-			background: #565656;
-			border-radius: 10px;
-		}
-		&::-webkit-scrollbar-corner {
-			background: #179a16;
-		}
-		.comment-item {
-			&:not(:last-child) {
-				.comment-data {
-					border-bottom: 1px solid #2f2f2f;
-				}
-			}
-		}
-	}
-}
+//.comment-drawer-custom-class {
+//	.el-drawer__header {
+//		padding: 15px 10px 10px;
+//		margin-bottom: 0;
+//	}
+//	.el-drawer__body {
+//		padding: 20px 15px;
+//		&::-webkit-scrollbar {
+//			width: 10px;
+//			height: 10px;
+//		}
+//		&::-webkit-scrollbar-track {
+//			background: #323232;
+//			border-radius: 2px;
+//		}
+//		&::-webkit-scrollbar-thumb {
+//			background: #565656;
+//			border-radius: 10px;
+//		}
+//		&::-webkit-scrollbar-corner {
+//			background: #179a16;
+//		}
+//		.comment-item {
+//			&:not(:last-child) {
+//				.comment-data {
+//					border-bottom: 1px solid #2f2f2f;
+//				}
+//			}
+//		}
+//	}
+//}
 .info-panel {
 	position: absolute;
 	bottom: 10px;

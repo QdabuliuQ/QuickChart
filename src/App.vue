@@ -4,7 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, getCurrentInstance, ref, onUnmounted } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
+
 import loginDialog from '@/components/loginDialog.vue'
 
 let timer: any

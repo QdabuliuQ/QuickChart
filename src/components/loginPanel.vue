@@ -59,9 +59,9 @@ let rules = reactive<any>({
 	]
 })
 const form = reactive({
-	email: '',
-	password: '',
-	code: ''
+	email: '111@qq.com',
+	password: '111111',
+	code: '111111'
 })
 const verify = ref<boolean>(false)
 const type = ref<string>('code')

@@ -24,31 +24,34 @@
 					:content="'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'" />
 			</template>
 			<template v-slot:content>
-				<comment-item
-					v-for="(item, idx) in comments"
-					:key="item.comment_id"
-					:comment_id="item.comment_id"
-					:id="item.chart_id ? item.chart_id : item.map_id"
-					:idx="idx as number"
-					:user_id="item.user_id"
-					:user_pic="item.user_pic"
-					:nickname="item.nickname"
-					:time="item.time"
-					:self="item.self"
-					:content="item.content"
-					:is_praise="item.is_praise"
-					:praise_count="item.praise_count"
-					@delete="deleteEvent"
-					@praise="praiseEvent" />
-				<el-pagination
-					@current-change="changeEvent"
-					hide-on-single-page
-					class="pagination-class"
-					background
-					v-model:current-page="offset"
-					layout="prev, pager, next"
-					:page-size="limit"
-					:total="total" />
+				<div v-if="comments.length">
+					<comment-item
+						v-for="(item, idx) in comments"
+						:key="item.comment_id"
+						:comment_id="item.comment_id"
+						:id="item.chart_id ? item.chart_id : item.map_id"
+						:idx="idx as number"
+						:user_id="item.user_id"
+						:user_pic="item.user_pic"
+						:nickname="item.nickname"
+						:time="item.time"
+						:self="item.self"
+						:content="item.content"
+						:is_praise="item.is_praise"
+						:praise_count="item.praise_count"
+						@delete="deleteEvent"
+						@praise="praiseEvent" />
+					<el-pagination
+						@current-change="changeEvent"
+						hide-on-single-page
+						class="pagination-class"
+						background
+						v-model:current-page="offset"
+						layout="prev, pager, next"
+						:page-size="limit"
+						:total="total" />
+				</div>
+				<el-empty v-else description="暂无评论哦" />
 			</template>
 			<template v-slot:empty>
 				<el-empty description="暂无评论哦" />
@@ -57,20 +60,23 @@
 	</el-drawer>
 </template>
 <script setup lang="ts">
+import { onUnmounted, reactive, ref, watch } from 'vue'
+
 import CommentInput from '@/components/commentInput.vue'
 import CommentItem from '@/components/commentItem.vue'
-import useProxy from '@/hooks/useProxy'
-import usePagination from '@/hooks/usePagination'
-import { onUnmounted, reactive, ref, watch } from 'vue'
-import { ajaxRequest } from '@/utils'
 import Skeleton from '@/components/skeleton.vue'
+
+import usePagination from '@/hooks/usePagination'
+import useProxy from '@/hooks/useProxy'
+
+import { ajaxRequest } from '@/utils'
 
 const props = defineProps<{
 	drawer: boolean
-	getData: Function
-	postComment: Function
-	deleteComment: Function
-	praiseComment: Function
+	getData: () => any
+	postComment: (info: { chart_id: string; content: string }) => any
+	deleteComment: (info: { comment_id: string }) => any
+	praiseComment: (info: any) => any
 	chart_id: string
 }>()
 const emits = defineEmits(['update:drawer'])
@@ -80,10 +86,12 @@ const status = ref<'1' | '2' | '3'>('1')
 const proxy = useProxy()
 
 const closeEvent = () => {
+	offset.value = 1
 	emits('update:drawer', false)
 }
 
 const getCommentData = async (e: number) => {
+	comments.length = 0
 	status.value = '1'
 	let data: any = await ajaxRequest(props.getData, e)
 	if (!data.status || data.data.length === 0) {
@@ -139,6 +147,7 @@ const send = (content: string) => {
 		})
 		if (data.status) {
 			comments.unshift(data.data)
+			status.value = '2'
 			resolve(true)
 		} else reject(false)
 	})
@@ -148,7 +157,7 @@ let stop = watch(
 	() => props.drawer,
 	(newVal: boolean) => {
 		drawer.value = newVal
-		if (newVal && comments.length === 0) {
+		if (newVal) {
 			getCommentData(offset.value)
 		}
 	}

@@ -44,11 +44,11 @@ import MapDetail from '@/components/mapDetail.vue'
 
 import useStore from '@/store'
 
+import { importMapFile } from '@/utils/importFile.ts'
 import { deepCopy } from '@/utils'
 
 import 'echarts-gl' //3D地图插件
 import { getCityJSON } from '@/network/map'
-import { importMapFile } from '@/utils/importFile.ts'
 
 const { chart }: any = useStore()
 const router = useRouter()

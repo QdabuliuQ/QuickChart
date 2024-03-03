@@ -28,6 +28,8 @@ const ScreenPage = () =>
 	import(/* webpackChunkName:"ScreenChunk" */ '@/views/ScreenPage/ScreenPage.vue')
 const PreviewPage = () =>
 	import(/* webpackChunkName:"ScreenChunk" */ '@/views/PreviewPage/PreviewPage.vue')
+const ErrorPage = () =>
+	import(/* webpackChunkName:"ErrorChunk" */ '@/views/ErrorPage/ErrorPage.vue')
 
 const routes: Array<RouteRecordRaw> = [
 	{ path: '/', redirect: '/index' },
@@ -107,7 +109,11 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: 'type/:id/:adcode',
 						name: 'mapType',
-						component: MapPanel
+						component: MapPanel,
+						beforeEnter: function (to, from, next) {
+							console.log(to, from)
+							next()
+						}
 					}
 				]
 			},
@@ -135,13 +141,19 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/preview',
 		name: 'preview',
 		component: PreviewPage
+	},
+	{
+		path: '/404',
+		name: '404',
+		component: ErrorPage
+	},
+	{
+		path: '/:pathMatch(.*)',
+		redirect: '/404'
 	}
 ]
-console.log(import.meta.env)
 
 const router = createRouter({
-	// history: createWebHashHistory(),
-	// history: createWebHistory(process.env.BASE_URL),
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes
 })
