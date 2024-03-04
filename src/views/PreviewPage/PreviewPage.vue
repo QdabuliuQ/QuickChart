@@ -92,6 +92,7 @@ if (localStorage.getItem('screenData')) {
 
 listenMsg((data: any) => {
 	if (data.type === 'update') {
+		console.log('update', JSON.parse(data.data))
 		setPreviewCanvas(data.data)
 	}
 })

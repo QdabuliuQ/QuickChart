@@ -45,11 +45,13 @@ const itemInfo = reactive<TProps>(
 const stop = watch(
 	() => props,
 	debounce(() => {
-		console.log(JSON.parse(JSON.stringify(itemInfo)), 'before')
+		itemInfo.style = props.style
 		itemInfo.style.width = getOffset(props.width, props.c_width, props.style.width) - 0
 		itemInfo.style.height = getOffset(props.height, props.c_height, props.style.height) - 0
 		itemInfo.style.translateX = getOffset(props.width, props.c_width, props.style.translateX) - 0
 		itemInfo.style.translateY = getOffset(props.height, props.c_height, props.style.translateY) - 0
+		itemInfo.style.translateY = getOffset(props.height, props.c_height, props.style.translateY) - 0
+
 		if (itemInfo.style.borderTitleWidth) {
 			itemInfo.style.borderTitleWidth =
 				getOffset(props.width, props.c_width, itemInfo.style.borderTitleWidth) - 0
@@ -62,7 +64,7 @@ const stop = watch(
 		// 	itemInfo.style.borderTitleSize =
 		// 		getOffset(props.width, props.c_width, itemInfo.style.borderTitleSize) - 0
 		// }
-		console.log(itemInfo, 'after')
+		console.log(itemInfo, 'change border', props)
 	}),
 	{
 		deep: true

@@ -228,6 +228,7 @@ const send = (comment: string): Promise<boolean> => {
 		})
 		if (data.status) {
 			commentList.unshift(data.data)
+			status.value = '2'
 			resolve(true)
 		} else reject(false)
 	})

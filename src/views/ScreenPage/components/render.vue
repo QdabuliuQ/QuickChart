@@ -389,7 +389,7 @@ const globalClickEvent = (event) => {
 
 onMounted(() => {
 	document.getElementsByClassName('mainCanvas')[0].addEventListener('click', cancelClickEvent)
-	document.documentElement.addEventListener('click', globalClickEvent)
+	// document.documentElement.addEventListener('click', globalClickEvent)
 	proxy.$Bus.on('deleteChart', deleteChart)
 	setTimeout(() => {
 		localStorage.setItem(
@@ -405,7 +405,7 @@ onMounted(() => {
 
 onUnmounted(() => {
 	document.getElementsByClassName('mainCanvas')[0]?.removeEventListener('click', cancelClickEvent)
-	document.documentElement.removeEventListener('click', globalClickEvent)
+	// document.documentElement.removeEventListener('click', globalClickEvent)
 
 	proxy.$Bus.off('deleteChart', deleteChart)
 	stop()

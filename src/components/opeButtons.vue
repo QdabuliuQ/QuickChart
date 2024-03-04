@@ -94,8 +94,8 @@ const commentEvent = () => {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 55px;
-		height: 55px;
+		width: 60px;
+		height: 60px;
 		background-color: #424242;
 		border-radius: 50%;
 		transition: 0.2s all linear;

@@ -14,21 +14,13 @@
 					@save-event="toUpdate"
 					:share="props.share"
 					@share-event="shareVisible = true"
-					:praise="route.name !== 'mapType'"
+					:praise="route.name !== 'type'"
 					v-model:isPraise="is_praise"
 					v-model:praiseCount="praise_count"
 					:praise-event="praiseEvent"
 					:comment="route.name !== 'type'"
 					:commentCount="props.comment_count"
 					@comment-event="show = true" />
-				<!--				<info-panel-->
-				<!--					v-if="props.infoPanel"-->
-				<!--					v-model:is_praise="is_praise"-->
-				<!--					v-model:praise_count="praise_count"-->
-				<!--					:chart_id="props.chart_id"-->
-				<!--					:comment_count="props.comment_count"-->
-				<!--					:praise-event="praiseEvent"-->
-				<!--					@showDrawer="show = true" />-->
 				<chart-dom ref="chartDomRef" :key="key" />
 			</div>
 		</div>
