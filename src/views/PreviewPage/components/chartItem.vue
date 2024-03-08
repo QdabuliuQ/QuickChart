@@ -3,13 +3,11 @@
 		:style="{
 			width: '700px',
 			height: '500px',
-			transform: `scale(${getOffset(props.width, props.c_width, props.style.width) / 700}, ${
-				getOffset(props.height, props.c_height, props.style.height) / 500
-			})`,
+			transform: `scale(${props.width / 700}, ${props.height / 500})`,
 			zIndex: props.style.zIndex,
 			display: props.style.display,
-			left: `${getOffset(props.width, props.c_width, props.style.translateX)}px`,
-			top: `${getOffset(props.height, props.c_height, props.style.translateY)}px`
+			left: `${props.style.translateX}px`,
+			top: `${props.style.translateY}px`
 		}"
 		class="preview-page-chart-item">
 		<div
@@ -26,8 +24,6 @@
 import { onMounted, ref } from 'vue'
 
 import useProxy from '@/hooks/useProxy'
-
-import { getOffset } from '@/utils/screenUtil'
 
 import { oss } from '@/network'
 import { IStyle } from '@/types/screen'

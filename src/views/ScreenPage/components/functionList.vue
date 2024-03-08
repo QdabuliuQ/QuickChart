@@ -35,7 +35,7 @@ import TextButton from '@/views/ScreenPage/components/textButton.vue'
 	.el-scrollbar {
 		padding: 10px;
 	}
-	.typeContainer {
+	.type-container {
 		display: grid;
 		padding: 10px;
 		grid-template-columns: repeat(3, 1fr);

@@ -2,15 +2,9 @@
 	<div
 		class="preview-page-shape-item"
 		:style="{
-			width: getOffset(props.width, props.c_width, props.style.width) + 'px',
-			height: getOffset(props.height, props.c_height, props.style.height) + 'px',
-			transform: `translate(${getOffset(
-				props.width,
-				props.c_width,
-				props.style.translateX
-			)}px, ${getOffset(props.height, props.c_height, props.style.translateY)}px) rotate(${
-				props.style.rotate
-			}deg)`,
+			width: props.style.width + 'px',
+			height: props.style.height + 'px',
+			transform: `translate(${props.style.translateX}px, ${props.style.translateY}px) rotate(${props.style.rotate}deg)`,
 			zIndex: props.style.zIndex
 		}">
 		<div
@@ -21,10 +15,8 @@
 			}">
 			<svg width="100%" height="100%">
 				<g
-					:transform="`scale(${
-						getOffset(props.width, props.c_width, props.style.width) / props.viewBox[0]
-					}, ${
-						getOffset(props.height, props.c_height, props.style.height) / props.viewBox[1]
+					:transform="`scale(${props.style.width / props.viewBox[0]}, ${
+						props.style.height / props.viewBox[1]
 					}) translate(0,0) matrix(1,0,0,1,0,0)`">
 					<path
 						vector-effect="non-scaling-stroke"
@@ -40,8 +32,6 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { getOffset } from '@/utils/screenUtil'
-
 import { IStyle } from '@/types/screen'
 
 interface Shape {

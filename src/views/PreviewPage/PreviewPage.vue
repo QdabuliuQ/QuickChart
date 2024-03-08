@@ -1,9 +1,9 @@
 <template>
-	<div class="preview-page">
-		<div v-if="!screenData.elements.length" class="preview-page-empty">
-			<el-empty description="暂无可预览内容" />
-		</div>
-		<div v-else :style="style" class="preview-page-container">
+	<div v-if="!screenData.elements.length" class="preview-page-empty">
+		<el-empty description="暂无可预览内容" />
+	</div>
+	<template v-else>
+		<fit-container v-if="mode === 'fit'" :width="1128" :height="542" :bgStyle="style">
 			<template v-for="item in screenData.elements" :key="item.id">
 				<ChartItem
 					v-if="item.type === 'chart'"
@@ -48,14 +48,118 @@
 					:width="width"
 					:height="height" />
 			</template>
-		</div>
-	</div>
+		</fit-container>
+		<full-container v-else-if="mode === 'full'" :bg-style="style" :width="1128" :height="542">
+			<template v-for="item in screenData.elements" :key="item.id">
+				<ChartItem
+					v-if="item.type === 'chart'"
+					v-bind="item as ElementTypeProperties<'chart'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+				<MapItem
+					v-else-if="item.type === 'map'"
+					v-bind="item as ElementTypeProperties<'map'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+				<ShapeItem
+					v-else-if="item.type === 'shape'"
+					v-bind="item as ElementTypeProperties<'shape'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+				<TextItem
+					v-else-if="item.type === 'text'"
+					v-bind="item as ElementTypeProperties<'text'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+				<ImageItem
+					v-else-if="item.type === 'image'"
+					v-bind="item as ElementTypeProperties<'image'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+				<BorderItem
+					v-else-if="item.type === 'border'"
+					v-bind="item as ElementTypeProperties<'border'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+			</template>
+		</full-container>
+	</template>
+	<!--	<div class="preview-page">-->
+	<!--		-->
+	<!--				<div-->
+	<!--					v-else-->
+	<!--					:style="{-->
+	<!--						...style,-->
+	<!--						width: '1128px',-->
+	<!--						height: '542px'-->
+	<!--					}"-->
+	<!--					ref="previewPageContainerRef"-->
+	<!--					class="preview-page-container">-->
+	<!--					<template v-for="item in screenData.elements" :key="item.id">-->
+	<!--						<ChartItem-->
+	<!--							v-if="item.type === 'chart'"-->
+	<!--							v-bind="item as ElementTypeProperties<'chart'>"-->
+	<!--							:c_height="cHeight"-->
+	<!--							:c_width="cWidth"-->
+	<!--							:width="width"-->
+	<!--							:height="height" />-->
+	<!--						<MapItem-->
+	<!--							v-else-if="item.type === 'map'"-->
+	<!--							v-bind="item as ElementTypeProperties<'map'>"-->
+	<!--							:c_height="cHeight"-->
+	<!--							:c_width="cWidth"-->
+	<!--							:width="width"-->
+	<!--							:height="height" />-->
+	<!--						<ShapeItem-->
+	<!--							v-else-if="item.type === 'shape'"-->
+	<!--							v-bind="item as ElementTypeProperties<'shape'>"-->
+	<!--							:c_height="cHeight"-->
+	<!--							:c_width="cWidth"-->
+	<!--							:width="width"-->
+	<!--							:height="height" />-->
+	<!--						<TextItem-->
+	<!--							v-else-if="item.type === 'text'"-->
+	<!--							v-bind="item as ElementTypeProperties<'text'>"-->
+	<!--							:c_height="cHeight"-->
+	<!--							:c_width="cWidth"-->
+	<!--							:width="width"-->
+	<!--							:height="height" />-->
+	<!--						<ImageItem-->
+	<!--							v-else-if="item.type === 'image'"-->
+	<!--							v-bind="item as ElementTypeProperties<'image'>"-->
+	<!--							:c_height="cHeight"-->
+	<!--							:c_width="cWidth"-->
+	<!--							:width="width"-->
+	<!--							:height="height" />-->
+	<!--						<BorderItem-->
+	<!--							v-else-if="item.type === 'border'"-->
+	<!--							v-bind="item as ElementTypeProperties<'border'>"-->
+	<!--							:c_height="cHeight"-->
+	<!--							:c_width="cWidth"-->
+	<!--							:width="width"-->
+	<!--							:height="height" />-->
+	<!--					</template>-->
+	<!--				</div>-->
+	<!--	</div>-->
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
 import ChartItem from './components/chartItem.vue'
 import BorderItem from '@/views/PreviewPage/components/borderItem.vue'
+import FitContainer from '@/views/PreviewPage/components/fitContainer.vue'
 import ImageItem from '@/views/PreviewPage/components/imageItem.vue'
 import MapItem from '@/views/PreviewPage/components/mapItem.vue'
 import ShapeItem from '@/views/PreviewPage/components/shapeItem.vue'
@@ -64,6 +168,7 @@ import TextItem from '@/views/PreviewPage/components/textItem.vue'
 import { listenMsg, sendMsg } from '@/utils/previewChannel.ts'
 
 import { ElementTypeProperties, IConfig } from '@/types/screen'
+import FullContainer from '@/views/PreviewPage/components/fullContainer.vue'
 
 let style = reactive<any>(null)
 let screenData = ref<IConfig>({} as any)
@@ -71,9 +176,48 @@ const width = ref<number>(0)
 const height = ref<number>(0)
 const cWidth = ref<number>(Number(localStorage.getItem('cWidth')))
 const cHeight = ref<number>(Number(localStorage.getItem('cHeight')))
+const mode = ref<'fit' | 'fitWidth' | 'fitHeight' | 'full'>('fit')
+
+const fitStyle = {
+	position: 'relative',
+	width: '100vw',
+	height: '100vh',
+	display: 'flex',
+	'align-items': 'center',
+	'justify-content': 'center',
+	overflow: 'hidden',
+	'transform-origin': 'center center'
+}
+const fullStyle = {
+	'transform-origin': '0 0'
+}
+
+const getStyle = () => {
+	switch (mode.value) {
+		case 'fit':
+			return fitStyle
+		case 'full':
+			return fullStyle
+	}
+}
+
+const previewPageContainerRef = ref<HTMLDivElement>()
+const resizeEvent = () => {
+	let width = document.documentElement.clientWidth
+	let height = document.documentElement.clientHeight
+	if (mode.value === 'fit') {
+		const scale = Math.min(width / 1128, height / 542)
+		;(previewPageContainerRef.value as HTMLDivElement).style.transform = `scale(${scale}, ${scale})`
+	} else if (mode.value === 'full') {
+		;(previewPageContainerRef.value as HTMLDivElement).style.transform = `scale(${width / 1128}, ${
+			height / 542
+		})`
+	}
+}
 
 const setPreviewCanvas = (data: string) => {
 	screenData.value = JSON.parse(data)
+	mode.value = screenData.value.canvas.mode
 	if (screenData.value.canvas.bgType === 'color') {
 		style = {
 			backgroundColor: screenData.value.canvas.bgColor
@@ -92,7 +236,6 @@ if (localStorage.getItem('screenData')) {
 
 listenMsg((data: any) => {
 	if (data.type === 'update') {
-		console.log('update', JSON.parse(data.data))
 		setPreviewCanvas(data.data)
 	}
 })
@@ -101,7 +244,6 @@ const visibleEvent = () => {
 	if (document.visibilityState === 'visible') {
 		// 激活
 		sendMsg('active')
-	} else {
 	}
 }
 
@@ -110,10 +252,16 @@ onMounted(() => {
 	height.value = document.documentElement.clientHeight
 
 	document.addEventListener('visibilitychange', visibleEvent)
+
+	window.addEventListener('resize', resizeEvent)
+
+	resizeEvent()
 })
 
 onUnmounted(() => {
 	document.removeEventListener('visibilitychange', visibleEvent)
+
+	window.removeEventListener('resize', resizeEvent)
 })
 </script>
 <style lang="less">

@@ -40,11 +40,13 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import useProxy from '@/hooks/useProxy'
 import { onUnmounted, reactive, ref, watch } from 'vue'
-import { useLogin } from '@/hooks/useLogin'
+import { useRouter } from 'vue-router'
+
 import menuList from '@/components/menuList.vue'
+
+import { useLogin } from '@/hooks/useLogin'
+import useProxy from '@/hooks/useProxy'
 
 const router = useRouter()
 const proxy = useProxy()

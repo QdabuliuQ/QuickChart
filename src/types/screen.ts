@@ -137,6 +137,7 @@ export interface IConfig {
 	canvas: {
 		bgType: BgType
 		bgImage: string
+		mode: 'fit' | 'fitWidth' | 'fitHeight' | 'full'
 		file: any
 		bgColor: string
 		fontSize: number

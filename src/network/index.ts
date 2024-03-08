@@ -53,15 +53,17 @@ ajax.interceptors.response.use(
 			})
 			return req.data
 		} else if (req.data.status == -1 || req.data.status == -2) {
+			localStorage.removeItem('token')
+			localStorage.removeItem('id')
+			localStorage.removeItem('info')
 			ElNotification({
 				type: 'error',
 				message: req.data.msg,
 				position: 'top-left'
 			})
-			localStorage.removeItem('token')
-			localStorage.removeItem('id')
-			localStorage.removeItem('info')
-			location.href = '/'
+			setTimeout(() => {
+				location.href = '/'
+			}, 1500)
 		} else {
 			return req.data
 		}

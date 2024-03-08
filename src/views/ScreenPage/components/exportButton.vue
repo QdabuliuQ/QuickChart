@@ -5,7 +5,7 @@
 		placement="right-start"
 		trigger="click"
 		:hide-after="0">
-		<div class="typeContainer">
+		<div class="type-container">
 			<div @click="exportClick('html')" class="type-item">
 				<img src="@/assets/image/html.svg" />
 				HTML
@@ -93,13 +93,14 @@ const sizes = [
 const exportClick = async (type: string) => {
 	switch (type) {
 		case 'html':
-			let loading = proxy.$loading({
+			const loading = proxy.$loading({
 				lock: true,
 				text: '正在导出HTML，请稍后...',
 				background: 'rgba(0, 0, 0, 0.7)'
 			})
 			Promise.all([
 				postScreenHtml({
+					mode: screen.getScreenOptionOfCanvas.mode,
 					option: JSON.stringify(screen.getScreenOption),
 					c_width: document.getElementById('render')?.clientWidth as number,
 					c_height: document.getElementById('render')?.clientHeight as number

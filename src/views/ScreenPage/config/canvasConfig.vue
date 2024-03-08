@@ -1,5 +1,46 @@
 <template>
-	<div class="canvasConfig">
+	<div class="canvas-config">
+		<config-title title="配置" />
+		<series-item title="适配方案">
+			<el-select
+				v-model="screen.getScreenOptionOfCanvas.mode"
+				placeholder="请选择"
+				size="small"
+				popper-class="params-select-popper-class">
+				<el-option key="fit" value="fit" label="自适应">
+					<span>
+						<i
+							style="font-size: 14px; position: relative; top: 1px; margin-right: 5px"
+							class="iconfont i_fit"></i>
+						自适应
+					</span>
+				</el-option>
+				<el-option key="fitWidth" value="fitWidth" label="宽度适应">
+					<span>
+						<i
+							style="font-size: 14px; position: relative; top: 1px; margin-right: 5px"
+							class="iconfont i_fit_width"></i>
+						宽度适应
+					</span>
+				</el-option>
+				<el-option key="fitHeight" value="fitHeight" label="高度适应">
+					<span>
+						<i
+							style="font-size: 14px; position: relative; top: 1px; margin-right: 5px"
+							class="iconfont i_fit_height"></i>
+						高度适应
+					</span>
+				</el-option>
+				<el-option key="full" value="full" label="铺满拉伸">
+					<span>
+						<i
+							style="font-size: 14px; position: relative; top: 1px; margin-right: 5px"
+							class="iconfont i_full"></i>
+						铺满拉伸
+					</span>
+				</el-option>
+			</el-select>
+		</series-item>
 		<config-title title="画布样式" />
 		<series-item title="背景类型">
 			<el-select
@@ -123,7 +164,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="less">
-.canvasConfig {
+.canvas-config {
 	.series-item {
 		align-items: center;
 		.item-title {

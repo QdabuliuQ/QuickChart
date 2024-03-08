@@ -24,12 +24,12 @@
 						<i :class="[data.animate ? 'arrow-animation' : '', 'iconfont', 'i_right']"></i>
 					</div>
 				</div>
-				<div class="tip">
-					第一次使用
-					<span>QucikChart</span>
-					? 点击
-					<span>查看文档</span>
-				</div>
+				<!--				<div class="tip">-->
+				<!--					第一次使用-->
+				<!--					<span>QucikChart</span>-->
+				<!--					? 点击-->
+				<!--					<span>查看文档</span>-->
+				<!--				</div>-->
 			</div>
 			<div class="main-rightInfo">
 				<img class="cover" src="@/assets/image/cover.svg" alt="" />

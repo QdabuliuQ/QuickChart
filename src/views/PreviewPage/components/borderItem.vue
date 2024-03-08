@@ -6,7 +6,6 @@ import { onUnmounted, reactive, watch } from 'vue'
 
 import border from '@/views/ScreenPage/elements/borderElement/index.vue'
 
-import { getOffset } from '@/utils/screenUtil.ts'
 import { debounce } from '@/utils'
 
 import { IStyle } from '@/types/screen.ts'
@@ -46,25 +45,14 @@ const stop = watch(
 	() => props,
 	debounce(() => {
 		itemInfo.style = props.style
-		itemInfo.style.width = getOffset(props.width, props.c_width, props.style.width) - 0
-		itemInfo.style.height = getOffset(props.height, props.c_height, props.style.height) - 0
-		itemInfo.style.translateX = getOffset(props.width, props.c_width, props.style.translateX) - 0
-		itemInfo.style.translateY = getOffset(props.height, props.c_height, props.style.translateY) - 0
-		itemInfo.style.translateY = getOffset(props.height, props.c_height, props.style.translateY) - 0
+		itemInfo.style.width = Number(props.style.width)
+		itemInfo.style.height = Number(props.style.height)
+		itemInfo.style.translateX = Number(props.style.translateX)
+		itemInfo.style.translateY = Number(props.style.translateY)
 
 		if (itemInfo.style.borderTitleWidth) {
-			itemInfo.style.borderTitleWidth =
-				getOffset(props.width, props.c_width, itemInfo.style.borderTitleWidth) - 0
+			itemInfo.style.borderTitleWidth = Number(itemInfo.style.borderTitleWidth)
 		}
-		// if (itemInfo.style.borderTitleHeight) {
-		// 	itemInfo.style.borderTitleHeight =
-		// 		getOffset(props.width, props.c_width, itemInfo.style.borderTitleHeight) - 0
-		// }
-		// if (itemInfo.style.borderTitleSize) {
-		// 	itemInfo.style.borderTitleSize =
-		// 		getOffset(props.width, props.c_width, itemInfo.style.borderTitleSize) - 0
-		// }
-		console.log(itemInfo, 'change border', props)
 	}),
 	{
 		deep: true
@@ -77,7 +65,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="less">
-.preview-page {
+#preview-container {
 	.border-element {
 		position: absolute;
 	}

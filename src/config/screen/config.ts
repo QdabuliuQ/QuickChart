@@ -4,6 +4,7 @@ const config: IConfig = {
 	canvas: {
 		bgType: 'color',
 		bgColor: '#fff',
+		mode: 'fit',
 		file: null,
 		bgImage: '',
 		fontSize: 14,
