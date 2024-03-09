@@ -120,12 +120,6 @@ const getConfig = async () => {
 				}, 800)
 			}
 		)
-
-		// let res = await import(
-		// 	/* @vite-ignore */ `../../config/chart/config/chart/${parseInt(data.data.type)}_/chart${
-		// 		data.data.type
-		// 	}`
-		// )
 	} catch (err) {
 		state.value = 0
 	}

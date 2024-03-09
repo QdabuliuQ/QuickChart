@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import useResize from '@/hooks/useResize.ts'
+import { useWatchResize } from '@/hooks/useWatchResize.ts'
 const props = defineProps<{
 	width: number
 	height: number
@@ -25,7 +25,7 @@ const props = defineProps<{
 
 const scaleContainerRef = ref<HTMLDivElement>(null)
 
-useResize(() => {
+useWatchResize(() => {
 	let width = document.documentElement.clientWidth
 	let height = document.documentElement.clientHeight
 	const scale = Math.min(width / props.width, height / props.height)
