@@ -1,10 +1,10 @@
-import useStore from '@/store'
-import titleOption from '@/config/chart/commonParams/title'
 import canvasOption from '@/config/chart/commonParams/canvas'
-import gridOption from '@/config/chart/commonParams/grid'
 import colorOption from '@/config/chart/commonParams/color'
 import graphicOption from '@/config/chart/commonParams/graphic'
+import gridOption from '@/config/chart/commonParams/grid'
 import legendOption from '@/config/chart/commonParams/legend'
+import titleOption from '@/config/chart/commonParams/title'
+import { chartPath } from '@/config/chart/constant'
 import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
 import {
 	gauge_series,
@@ -16,7 +16,8 @@ import {
 	gauge_series_progress,
 	gauge_series_splitLine
 } from '@/config/chart/option'
-import { chartPath } from '@/config/chart/constant'
+
+import useStore from '@/store'
 
 const { chart }: any = useStore()
 

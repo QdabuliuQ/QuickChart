@@ -1,11 +1,12 @@
-import useStore from '@/store'
-import titleOption from '@/config/chart/commonParams/title'
 import canvasOption from '@/config/chart/commonParams/canvas'
-import gridOption from '@/config/chart/commonParams/grid'
-import graphicOption from '@/config/chart/commonParams/graphic'
 import colorOption from '@/config/chart/commonParams/color'
-import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
+import graphicOption from '@/config/chart/commonParams/graphic'
+import gridOption from '@/config/chart/commonParams/grid'
+import titleOption from '@/config/chart/commonParams/title'
 import { chartPath } from '@/config/chart/constant'
+import { conveyToExcel } from '@/config/chart/conveyUtils/conveyData'
+
+import useStore from '@/store'
 const { chart }: any = useStore()
 
 export default () => {
@@ -207,7 +208,7 @@ export default () => {
 			menuOption: true,
 			uniqueOption: true,
 			icon: 'i_tick',
-			componentPath: chartPath + 'paramsRadar/params-radar-axis-tick'
+			componentPath: chartPath + 'paramsRadar/paramsRadarAxisTick'
 		},
 		{
 			name: '轴刻尺样式',
@@ -225,7 +226,7 @@ export default () => {
 			menuOption: true,
 			uniqueOption: true,
 			icon: 'i_gsline',
-			componentPath: chartPath + 'paramsRadar/params-radar-split-line'
+			componentPath: chartPath + 'paramsRadar/paramsRadarSplitLine'
 		},
 		{
 			name: '分割域样式',

@@ -37,10 +37,13 @@
 <script setup lang="ts">
 import { onUnmounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import useProxy from '@/hooks/useProxy'
-import { useCheckState } from '@/hooks/useCheckState'
-import { getInfo } from '@/utils'
+
 import menuList from '@/components/menuList.vue'
+
+import { useCheckState } from '@/hooks/useCheckState'
+import useProxy from '@/hooks/useProxy'
+
+import { getInfo } from '@/utils'
 
 const proxy = useProxy()
 const router = useRouter()

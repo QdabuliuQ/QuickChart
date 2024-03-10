@@ -1,5 +1,6 @@
-import useProxy from '@/hooks/useProxy'
 import { onMounted, onUnmounted } from 'vue'
+
+import useProxy from '@/hooks/useProxy'
 
 export function useWatchResize(resizeEvent: (prop: any) => void) {
 	const proxy = useProxy()

@@ -24,8 +24,11 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { fileType } from '@/utils'
+
 import useProxy from '@/hooks/useProxy'
+
+import { fileType } from '@/utils'
+
 import axios from 'axios'
 
 const proxy = useProxy()

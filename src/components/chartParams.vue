@@ -118,6 +118,7 @@ const module =
 		: {
 				...import.meta.glob('../views/ChartPanel/components/**/*.vue')
 			}
+console.log(module)
 const { chart }: any = useStore()
 const proxy = useProxy()
 const height = ref<string>('0px')
@@ -135,6 +136,7 @@ const toggleItem = (e: string, p: string) => {
 		activeIndex.value = ''
 	} else {
 		activeIndex.value = e
+		console.log(p)
 		// 查看map中是否存在组件缓存
 		if (!componentsMap.has(p)) {
 			icon_loading.value = true

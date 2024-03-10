@@ -6,15 +6,21 @@
 
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
+
 import optionItems from '@/components/optionItems.vue'
-import useProxy from '@/hooks/useProxy'
-import use_commonStore from '@/store'
-import { ConfigInt } from '@/types/common'
-import { common, label } from '@/config/chart/opname'
-import { debounce, getConfigValue } from '@/utils'
+
 import { borderType, fontFamily, fontStyle, fontWeight } from '@/config/chart/constant'
+import { common, label } from '@/config/chart/opname'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
+import { debounce, getConfigValue } from '@/utils'
+
+import { ConfigInt } from '@/types/common'
 const proxy = useProxy()
-const _common: any = use_commonStore()
+const { chart }: any = useStore()
 const config = reactive<ConfigInt>({
 	show: {
 		type: 'switch',

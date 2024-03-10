@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { useWatchResize } from '@/hooks/useWatchResize.ts'
+import useResize from '@/utils/useResize.ts'
 const props = defineProps<{
 	width: number
 	height: number
@@ -25,12 +25,13 @@ const props = defineProps<{
 
 const scaleContainerRef = ref<HTMLDivElement>(null)
 
-useWatchResize(() => {
+const resize = () => {
 	let width = document.documentElement.clientWidth
 	let height = document.documentElement.clientHeight
 	const scale = Math.min(width / props.width, height / props.height)
 	;(scaleContainerRef.value as HTMLDivElement).style.transform = `scale(${scale}, ${scale})`
-})
+}
+useResize(resize)
 </script>
 <style lang="less">
 .fit-container {

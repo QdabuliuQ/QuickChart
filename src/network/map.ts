@@ -132,3 +132,19 @@ export function getMapTemplateList() {
 		method: 'get'
 	})
 }
+
+export function getMapImage(data: { option: string; adcode: string }) {
+	return ajax({
+		url: '/map/download',
+		data,
+		method: 'post'
+	})
+}
+
+export function getMapHTML(data: { option: string; adcode: string }) {
+	return ajax({
+		url: '/map/downloadHTML',
+		data,
+		method: 'post'
+	})
+}

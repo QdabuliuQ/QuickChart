@@ -16,9 +16,11 @@ const DetailPage = () =>
 	import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/DetailPage.vue')
 const _ChartPage = () => import(/* webpackChunkName:"InfoChunk" */ '@/views/InfoPage/ChartPage.vue')
 const Modify_ChartPage = () =>
-	import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/ChartPage.vue')
+	import(/* webpackChunkName:"ModifyChartChunk" */ '@/views/ModifyPage/ChartPage.vue')
 const Modify_MapPage = () =>
-	import(/* webpackChunkName:"LoginPageChunk" */ '@/views/ModifyPage/MapPage.vue')
+	import(/* webpackChunkName:"ModifyMapChunk" */ '@/views/ModifyPage/MapPage.vue')
+const Modify_ScreenPage = () =>
+	import(/* webpackChunkName:"ModifyScreenChunk" */ '@/views/ModifyPage/ScreenPage.vue')
 const CommunityPage = () =>
 	import(/* webpackChunkName:"LoginPageChunk" */ '@/views/CommunityPage/CommunityPage.vue')
 const EventPage = () =>
@@ -136,6 +138,11 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/map/:id',
 		name: 'modifyMap',
 		component: Modify_MapPage
+	},
+	{
+		path: '/screen/:id',
+		name: 'modifyScreen',
+		component: Modify_ScreenPage
 	},
 	{
 		path: '/preview',

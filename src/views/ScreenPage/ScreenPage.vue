@@ -1,5 +1,5 @@
 <template>
-	<div class="ScreenPage">
+	<div class="screen-page">
 		<function-list v-if="option" ref="functionListRef"></function-list>
 		<screen-canvas v-if="option" :width="width + 'px'" :height="height + 'px'" />
 		<config-item v-if="option" ref="configItemRef" />
@@ -26,7 +26,7 @@ const option = ref<any>(null)
 
 const getWidth = () => {
 	return (
-		document.getElementsByClassName('ScreenPage')[0].clientWidth -
+		document.getElementsByClassName('screen-page')[0].clientWidth -
 		(functionListRef.value as any).$el.clientWidth -
 		(configItemRef.value as any).$el.clientWidth
 	)
@@ -34,7 +34,6 @@ const getWidth = () => {
 
 onMounted(async () => {
 	let { default: res } = await import('@/config/screen/config')
-	console.log(res)
 	screen.initScreenOption(res)
 	option.value = res
 	nextTick(() => {
@@ -50,7 +49,7 @@ useWatchResize((h: number) => {
 </script>
 
 <style lang="less">
-.ScreenPage {
+.screen-page {
 	display: flex;
 	height: 100%;
 	.el-color-picker {

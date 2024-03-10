@@ -24,6 +24,7 @@ export interface ConfigInt {
 		suf?: string
 		imgType?: string
 		imgSize?: number
+		url?: string
 	}
 }
 

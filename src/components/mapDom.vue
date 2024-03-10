@@ -2,8 +2,7 @@
 	<div
 		:style="{
 			width: width + 'px',
-			height: height + 'px',
-			margin: '15vh auto 0'
+			height: height + 'px'
 		}"
 		class="transparent-bg">
 		<div ref="mapDomRef" id="map-dom"></div>
@@ -20,9 +19,12 @@ import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
-import { downloadFile, generateMapCode, htmlDownload } from '@/utils'
+import { stringify } from '@/utils/toJSON.ts'
+import { downloadFile, htmlDownload } from '@/utils'
 
 import { oss } from '@/network'
+import { getMapHTML, getMapImage } from '@/network/map.ts'
+import { ElLoading } from 'element-plus'
 
 const { chart }: any = useStore()
 const route = useRoute()
@@ -67,22 +69,29 @@ const canvasChange = (e: any) => {
 	// 修改pinia数据
 	chart.setOption(option)
 }
-const downloadChart = (type: string) => {
+const downloadChart = async (type: string) => {
+	const loading = ElLoading.service({
+		lock: true,
+		text: '下载中',
+		background: 'rgba(0, 0, 0, 0.7)'
+	})
 	if (type == 'png') {
-		let res = chartInstance.getDataURL({
-			pixelRatio: 2
+		const res: any = await getMapImage({
+			option: stringify(chart.getOption),
+			adcode: route.params.adcode as string
 		})
-		downloadFile('chart.png', res)
+		if (res.status) {
+			downloadFile('map.png', res.base64)
+		}
 	} else {
 		// 生成html字符串
-		const html = generateMapCode(
-			chart.getOption,
-			width.value,
-			height.value,
-			route.params.adcode as string
-		)
-		htmlDownload(html)
+		const res: any = await getMapHTML({
+			option: stringify(chart.getOption),
+			adcode: route.params.adcode as string
+		})
+		htmlDownload(res.data as string)
 	}
+	loading.close()
 }
 const dataChange = (e: any) => {
 	let piniaOption = chart.getOption
@@ -109,13 +118,10 @@ chart.setOption(option);  //设置option`
 }
 
 const initChart = () => {
-	console.log('init')
 	chartInstance = proxy.$echarts.init(mapDomRef.value as HTMLElement)
 	chart_i.value = chartInstance
 	chartInstance.clear()
-	console.log(chart)
 	proxy.$echarts.registerMap('map' + sessionStorage.getItem('curAdcode'), chart.getMapJson)
-	console.log(chart.getOption, sessionStorage.getItem('curAdcode'))
 
 	chartInstance.setOption(chart.getOption)
 	option = chart.getOption

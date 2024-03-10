@@ -153,3 +153,12 @@ export function getChartTemplatesList() {
 		url: '/qc/chartTemplatesList'
 	})
 }
+
+// 下载HTML文件
+export function getHTMLData(data: { option: string }) {
+	return ajax({
+		url: '/qc/downloadHTML',
+		data,
+		method: 'post'
+	})
+}

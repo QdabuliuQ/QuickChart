@@ -21,7 +21,7 @@
 				<chart-params :loading="params_loading" :image="image" />
 			</div>
 		</div>
-		<div v-else class="emptyContainer">
+		<div v-else class="empty-container">
 			<empty-tip />
 		</div>
 	</div>
@@ -113,29 +113,6 @@ const getConfig = async (_type: string, _option: any) => {
 				data_loading.value = false
 			}, 800)
 		})
-
-		// let res = await import(`../../config/chart/config/map/${type.value}_/map${detailType.value}`)
-		// let option = res.default()
-		// let chartConfig: any[] = []
-		// for (let item of option) {
-		// 	if (Object.prototype.hasOwnProperty.call(_option, item.opName)) {
-		// 		item.defaultOption[item.opName] = _option[item.opName]
-		// 	}
-		// 	if (item.menuOption) {
-		// 		chartConfig.push(item)
-		// 	}
-		// }
-		// chart.setOption(_option)
-		// chart.setChartConfig(chartConfig)
-		// chart.setDefaultOption(deepCopy(_option))
-		// chart.setMapJSON(JSONData)
-		// chart.setType('map')
-		//
-		// chart_loading.value = false
-		// setTimeout(() => {
-		// 	params_loading.value = false
-		// 	data_loading.value = false
-		// }, 800)
 	} catch (err) {
 		state.value = 0
 	}
@@ -162,7 +139,7 @@ getDetail()
 			width: 220px;
 		}
 	}
-	.emptyContainer {
+	.empty-container {
 		width: 100vw;
 		height: 100vh;
 	}

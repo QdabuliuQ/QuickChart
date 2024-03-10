@@ -1,5 +1,5 @@
-import { ConfigInt } from '@/types/common'
 import { oss } from '@/network'
+import { ConfigInt } from '@/types/common'
 
 export const emailPattern = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
 export const publicKey = `
@@ -66,7 +66,7 @@ export const fileType = (fileName: string) => {
 
 export const initCopyConfig = (origin: any, data: any, excludeProp?: Set<string>) => {
 	for (const key in origin) {
-		if (origin.hasOwnProperty(key)) {
+		if (Object.prototype.hasOwnProperty.call(origin, key)) {
 			if (excludeProp && excludeProp.has(key)) continue
 			if (Array.isArray(origin[key])) {
 				data[key] = [...origin[key]]

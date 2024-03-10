@@ -8,6 +8,9 @@
 			<div @click="toggleType('map')" :class="[type === 'map' ? 'active' : '', 'type-item']">
 				地图
 			</div>
+			<div @click="toggleType('screen')" :class="[type === 'screen' ? 'active' : '', 'type-item']">
+				大屏
+			</div>
 		</div>
 		<skeleton
 			:count="5"
@@ -28,8 +31,16 @@
 				<div class="chart-container">
 					<chart-item
 						v-for="(item, idx) in charts"
-						:key="item.chart_id ? item.chart_id : item.map_id"
-						:chart_id="item.chart_id ? item.chart_id : (item.map_id as string)"
+						:key="
+							item.chart_id ? item.chart_id : item.map_id ? item.map_id : (item as any).screen_id
+						"
+						:chart_id="
+							item.chart_id
+								? item.chart_id
+								: item.map_id
+									? (item.map_id as string)
+									: (item as any).screen_id
+						"
 						:name="item.name"
 						:cover="item.cover + '?tempid=' + Math.random()"
 						:option="item.option"
@@ -59,17 +70,22 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+import ChartItem from './components/chartItem.vue'
+import Skeleton from '@/components/skeleton.vue'
+
+import useProxy from '@/hooks/useProxy'
+
+import { ajaxRequest } from '@/utils'
+
 import { deleteChart, getChart, putChartName } from '@/network/chart'
 import {
+	deleteChart as deleteMap,
 	getChart as getMap,
-	putChartName as putMapName,
-	deleteChart as deleteMap
+	putChartName as putMapName
 } from '@/network/map'
-import useProxy from '@/hooks/useProxy'
-import ChartItem from './components/chartItem.vue'
-import { useRouter } from 'vue-router'
-import Skeleton from '@/components/skeleton.vue'
-import { ajaxRequest } from '@/utils'
+import { getScreens, putScreenName } from '@/network/screen.ts'
 
 const router = useRouter()
 const charts = reactive<
@@ -86,7 +102,7 @@ const charts = reactive<
 		adcode?: string
 	}[]
 >([])
-const type = ref<'map' | 'chart'>('chart')
+const type = ref<'map' | 'chart' | 'screen'>('chart')
 const offset = ref<number>(1)
 const count = ref<number>(0)
 const limit = ref<number>(0)
@@ -100,9 +116,14 @@ const getData = async () => {
 		data = await ajaxRequest(getChart, {
 			offset: offset.value
 		})
-	} else {
+	} else if (type.value === 'map') {
 		data = await ajaxRequest(getMap, {
 			offset: offset.value
+		})
+	} else if (type.value === 'screen') {
+		data = await ajaxRequest(getScreens, {
+			offset: offset.value,
+			limit: 10
 		})
 	}
 	if (!data.status || data.data.length == 0) {
@@ -129,11 +150,16 @@ const blurEvent = (newName: string, chart_id: string) => {
 				name: newName,
 				chart_id
 			})
-		} else {
+		} else if (type.value === 'map') {
 			data = await putMapName({
 				// 调用接口
 				name: newName,
 				map_id: chart_id
+			})
+		} else {
+			data = await putScreenName({
+				name: newName,
+				screen_id: chart_id
 			})
 		}
 		if (!data.status) {
@@ -151,7 +177,8 @@ const blurEvent = (newName: string, chart_id: string) => {
 
 const clickItem = (id: string) => {
 	if (type.value === 'chart') router.push('/chart/' + id)
-	else router.push('/map/' + id)
+	else if (type.value === 'map') router.push('/map/' + id)
+	else router.push('/screen/' + id)
 }
 
 // 刪除图表
@@ -185,7 +212,7 @@ const currentChange = (e: number) => {
 	getData()
 }
 
-const toggleType = (_type: 'chart' | 'map') => {
+const toggleType = (_type: 'chart' | 'map' | 'screen') => {
 	if (_type !== type.value) {
 		offset.value = 1
 		type.value = _type

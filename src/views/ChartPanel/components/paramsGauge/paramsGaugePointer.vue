@@ -5,15 +5,20 @@
 </template>
 <script setup lang="ts">
 import { reactive } from 'vue'
+
 import optionItems from '@/components/optionItems.vue'
-import useProxy from '@/hooks/useProxy'
-import useWatchData from '@/hooks/useWatchData'
-import useStore from '@/store'
-import { ConfigInt } from '@/types/common'
-import { getConfigValue } from '@/utils'
+
 import { borderType } from '@/config/chart/constant'
 
-const proxy = useProxy()
+import useWatchData from '@/hooks/useWatchData'
+
+import useStore from '@/store'
+
+import { getConfigValue } from '@/utils'
+
+import { oss } from '@/network'
+import { ConfigInt } from '@/types/common'
+
 const { chart }: any = useStore()
 const seriesPointer = chart.getOption.series.pointer
 const config = reactive<ConfigInt>({
@@ -24,8 +29,9 @@ const config = reactive<ConfigInt>({
 	icon: {
 		type: 'imgload',
 		title: '指针图标',
-		imgType: 'base64',
+		imgType: 'url',
 		imgSize: 10,
+		url: `${oss}/upload/chartImage`,
 		value: seriesPointer.icon ? seriesPointer.icon.replace('image://', '') : ''
 	},
 	offsetX: {

@@ -18,8 +18,9 @@ import { reactive, onMounted, ref, onUnmounted } from 'vue'
 import useStore from '@/store'
 import useProxy from '@/hooks/useProxy'
 import { deepCopy, htmlDownload } from '@/utils/index'
-import { postChartImage } from '@/network/chart'
+import { getHTMLData, postChartImage } from '@/network/chart'
 import { ElLoading } from 'element-plus'
+import { stringify } from '@/utils/toJSON.ts'
 
 interface comInitData {
 	options: any
@@ -209,13 +210,13 @@ const initChart = () => {
 	proxy.$Bus.on('downloadChart', async (type: string) => {
 		save_loading = ElLoading.service({
 			lock: true,
-			text: '加载中',
+			text: '下载中',
 			background: 'rgba(0, 0, 0, 0.7)'
 		})
 		if (type == 'png') {
 			postChartImage({
 				// 发起接口请求 传递 option 给后端动态生成
-				option: JSON.stringify(chart.getOption)
+				option: stringify(chart.getOption)
 			})
 				.then((res: any) => {
 					if (!res.status) throw new Error()
@@ -238,7 +239,17 @@ const initChart = () => {
 				})
 		} else {
 			// 生成html字符串 并且下载
-			htmlDownload(getHTML(getCode('js')))
+			const res: any = await getHTMLData({
+				option: stringify(chart.getOption)
+			})
+			if (res.status) {
+				htmlDownload(res.data)
+				proxy.$notice({
+					type: 'success',
+					message: res.msg,
+					position: 'top-left'
+				})
+			}
 			save_loading.close()
 		}
 	})
