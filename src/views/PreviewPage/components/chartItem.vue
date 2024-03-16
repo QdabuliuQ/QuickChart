@@ -3,7 +3,7 @@
 		:style="{
 			width: '700px',
 			height: '500px',
-			transform: `scale(${props.width / 700}, ${props.height / 500})`,
+			transform: `scale(${props.style.width / 700}, ${props.style.height / 500})`,
 			zIndex: props.style.zIndex,
 			display: props.style.display,
 			left: `${props.style.translateX}px`,
@@ -25,7 +25,8 @@ import { onMounted, ref } from 'vue'
 
 import useProxy from '@/hooks/useProxy'
 
-import { oss } from '@/network'
+import { parse } from '@/utils/toJSON.ts'
+
 import { IStyle } from '@/types/screen'
 
 interface Chart {
@@ -47,9 +48,10 @@ const proxy = useProxy()
 const chartItemRef = ref(null)
 
 onMounted(() => {
-	const chart = proxy.$echarts.init(chartItemRef.value)
-	const option = props.option.replace(/\$#url#\$/g, oss)
-	chart.setOption(JSON.parse(option))
+	try {
+		const chart = proxy.$echarts.init(chartItemRef.value)
+		chart.setOption(parse(props.option))
+	} catch (err) {}
 })
 </script>
 <style lang="less">

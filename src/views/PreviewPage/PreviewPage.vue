@@ -47,6 +47,13 @@
 					:c_width="cWidth"
 					:width="width"
 					:height="height" />
+				<MarqueeItem
+					v-else-if="item.type === 'marquee'"
+					v-bind="item as ElementTypeProperties<'marquee'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
 			</template>
 		</fit-container>
 		<full-container v-else-if="mode === 'full'" :bg-style="style" :width="1128" :height="542">
@@ -89,6 +96,13 @@
 				<BorderItem
 					v-else-if="item.type === 'border'"
 					v-bind="item as ElementTypeProperties<'border'>"
+					:c_height="cHeight"
+					:c_width="cWidth"
+					:width="width"
+					:height="height" />
+				<MarqueeItem
+					v-else-if="item.type === 'marquee'"
+					v-bind="item as ElementTypeProperties<'marquee'>"
 					:c_height="cHeight"
 					:c_width="cWidth"
 					:width="width"
@@ -160,6 +174,7 @@ import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import ChartItem from './components/chartItem.vue'
 import BorderItem from '@/views/PreviewPage/components/borderItem.vue'
 import FitContainer from '@/views/PreviewPage/components/fitContainer.vue'
+import FullContainer from '@/views/PreviewPage/components/fullContainer.vue'
 import ImageItem from '@/views/PreviewPage/components/imageItem.vue'
 import MapItem from '@/views/PreviewPage/components/mapItem.vue'
 import ShapeItem from '@/views/PreviewPage/components/shapeItem.vue'
@@ -168,7 +183,8 @@ import TextItem from '@/views/PreviewPage/components/textItem.vue'
 import { listenMsg, sendMsg } from '@/utils/previewChannel.ts'
 
 import { ElementTypeProperties, IConfig } from '@/types/screen'
-import FullContainer from '@/views/PreviewPage/components/fullContainer.vue'
+import { parse } from '@/utils/toJSON.ts'
+import MarqueeItem from '@/views/PreviewPage/components/marqueeItem.vue'
 
 let style = reactive<any>(null)
 let screenData = ref<IConfig>({} as any)
@@ -178,45 +194,8 @@ const cWidth = ref<number>(Number(localStorage.getItem('cWidth')))
 const cHeight = ref<number>(Number(localStorage.getItem('cHeight')))
 const mode = ref<'fit' | 'fitWidth' | 'fitHeight' | 'full'>('fit')
 
-const fitStyle = {
-	position: 'relative',
-	width: '100vw',
-	height: '100vh',
-	display: 'flex',
-	'align-items': 'center',
-	'justify-content': 'center',
-	overflow: 'hidden',
-	'transform-origin': 'center center'
-}
-const fullStyle = {
-	'transform-origin': '0 0'
-}
-
-const getStyle = () => {
-	switch (mode.value) {
-		case 'fit':
-			return fitStyle
-		case 'full':
-			return fullStyle
-	}
-}
-
-const previewPageContainerRef = ref<HTMLDivElement>()
-const resizeEvent = () => {
-	let width = document.documentElement.clientWidth
-	let height = document.documentElement.clientHeight
-	if (mode.value === 'fit') {
-		const scale = Math.min(width / 1128, height / 542)
-		;(previewPageContainerRef.value as HTMLDivElement).style.transform = `scale(${scale}, ${scale})`
-	} else if (mode.value === 'full') {
-		;(previewPageContainerRef.value as HTMLDivElement).style.transform = `scale(${width / 1128}, ${
-			height / 542
-		})`
-	}
-}
-
 const setPreviewCanvas = (data: string) => {
-	screenData.value = JSON.parse(data)
+	screenData.value = parse(data)
 	mode.value = screenData.value.canvas.mode
 	if (screenData.value.canvas.bgType === 'color') {
 		style = {
@@ -252,16 +231,10 @@ onMounted(() => {
 	height.value = document.documentElement.clientHeight
 
 	document.addEventListener('visibilitychange', visibleEvent)
-
-	window.addEventListener('resize', resizeEvent)
-
-	resizeEvent()
 })
 
 onUnmounted(() => {
 	document.removeEventListener('visibilitychange', visibleEvent)
-
-	window.removeEventListener('resize', resizeEvent)
 })
 </script>
 <style lang="less">

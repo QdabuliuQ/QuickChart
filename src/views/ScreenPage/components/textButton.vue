@@ -33,7 +33,7 @@ import ButtonItem from './buttonItem.vue'
 
 import useStore from '@/store'
 
-import { getTextConfig } from '@/utils/screenUtil'
+import { getMarqueeConfig, getTextConfig } from '@/utils/screenUtil'
 
 const shapePopoverRef = ref()
 const { screen } = useStore()
@@ -43,7 +43,8 @@ const normalTextClick = () => {
 }
 
 const scrollTextClick = () => {
-	console.log(111)
+	screen.addScreenOptionOfElements(getMarqueeConfig())
+	shapePopoverRef.value.hide()
 }
 </script>
 

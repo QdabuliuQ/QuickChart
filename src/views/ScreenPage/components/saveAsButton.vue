@@ -1,5 +1,10 @@
 <template>
-	<button-item @click-event="clickEvent" title="另存" icon="i_save1" tip="另存图表" />
+	<button-item
+		@click-event="clickEvent"
+		:verify="true"
+		title="另存"
+		icon="i_save1"
+		tip="另存图表" />
 	<save-chart-dialog @save-chart="saveChart" v-model:visible="saveDialogVisible" />
 </template>
 <script setup lang="ts">

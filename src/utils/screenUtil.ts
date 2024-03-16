@@ -2,7 +2,7 @@ import useStore from '@/store'
 
 import { uuid } from '@/utils/index'
 
-import { Map, Border, Elements, ElementTypeProperties } from '@/types/screen'
+import { Border, Elements, ElementTypeProperties, Map, Marquee } from '@/types/screen'
 
 const { screen } = useStore()
 export function setCommonStyle(baseInfo: any, info: any) {
@@ -69,6 +69,40 @@ export function getTextConfig(config?: ElementTypeProperties<'text'>) {
 			height: 50,
 			translateX: 0,
 			translateY: 0,
+			rotate: 0,
+			zIndex: 1,
+			textAlign: 'center',
+			letterSpacing: 0,
+			fontStyle: 'normal',
+			lineHeight: 16,
+			textDecorationLine: 'none',
+			textDecorationColor: '#000',
+			textDecorationStyle: 'solid',
+			backgroundColor: 'rgba(0,0,0,0)'
+		}
+	}
+	if (config) {
+		resetConfig(originConfig, config)
+	}
+	return originConfig
+}
+
+export const getMarqueeConfig = (config?: Partial<Marquee>) => {
+	const originConfig: ElementTypeProperties<'marquee'> = {
+		id: uuid(6, 36),
+		type: 'marquee',
+		content: '请输入内容 请输入内容',
+		isLock: false,
+		speed: 1,
+		style: {
+			display: 'block',
+			fontSize: 14,
+			fontWeight: 'normal',
+			color: '#000',
+			width: 200,
+			height: 130,
+			translateX: 100,
+			translateY: 100,
 			rotate: 0,
 			zIndex: 1,
 			textAlign: 'center',

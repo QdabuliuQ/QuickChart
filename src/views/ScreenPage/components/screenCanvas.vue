@@ -110,9 +110,12 @@ const contextmenu = (point: [number, number]) => {
 }
 
 onMounted(() => {
-	let container = document.getElementsByClassName('screenCanvas')[0]
-	size[0] = container.clientWidth * 0.95
-	size[1] = (size[0] * document.documentElement.clientHeight) / document.documentElement.clientWidth
+	// let container = document.getElementsByClassName('screenCanvas')[0]
+	// size[0] = container.clientWidth * 0.95
+	// size[1] = (size[0] * document.documentElement.clientHeight) / document.documentElement.clientWidth
+
+	size[0] = 1127
+	size[1] = 542
 })
 
 onUnmounted(() => {

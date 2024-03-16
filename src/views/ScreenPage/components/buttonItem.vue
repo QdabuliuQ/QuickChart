@@ -1,5 +1,9 @@
 <template>
-	<div @click="clickEvent" class="button-item" :title="props.tip">
+	<div v-if="verify" v-login="clickEvent" class="button-item" :title="props.tip">
+		<i :class="['iconfont', props.icon]"></i>
+		{{ props.title }}
+	</div>
+	<div v-else @click="clickEvent" class="button-item" :title="props.tip">
 		<i :class="['iconfont', props.icon]"></i>
 		{{ props.title }}
 	</div>
@@ -9,6 +13,7 @@ interface IProps {
 	icon: string
 	title: string
 	tip: string
+	verify?: boolean
 }
 const props = defineProps<IProps>()
 const emits = defineEmits(['clickEvent'])

@@ -67,3 +67,16 @@ export function getScreen(params: { screen_id: string }) {
 		params
 	})
 }
+
+export function putScreen(data: {
+	screen_id: string
+	option: string
+	c_width: number
+	c_height: number
+}) {
+	return ajax({
+		url: '/sc/screen',
+		method: 'put',
+		data
+	})
+}

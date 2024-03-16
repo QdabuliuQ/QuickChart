@@ -1,7 +1,8 @@
 <template>
 	<el-scrollbar style="background: #424242" height="100vh">
-		<div class="functionList">
+		<div class="function-list">
 			<layer-button />
+			<save-button v-if="props.save" />
 			<save-as-button />
 			<image-button />
 			<text-button />
@@ -24,8 +25,13 @@ import LayerButton from '@/views/ScreenPage/components/layerButton.vue'
 import MapButton from '@/views/ScreenPage/components/mapButton.vue'
 import PreviewButton from '@/views/ScreenPage/components/previewButton.vue'
 import SaveAsButton from '@/views/ScreenPage/components/saveAsButton.vue'
+import SaveButton from '@/views/ScreenPage/components/saveButton.vue'
 import ShapeButton from '@/views/ScreenPage/components/shapeButton.vue'
 import TextButton from '@/views/ScreenPage/components/textButton.vue'
+
+const props = defineProps<{
+	save?: boolean
+}>()
 </script>
 
 <style lang="less">
@@ -111,7 +117,7 @@ import TextButton from '@/views/ScreenPage/components/textButton.vue'
 		}
 	}
 }
-.functionList {
+.function-list {
 	display: flex;
 	flex-direction: column;
 	padding: 20px 3px 20px 0;

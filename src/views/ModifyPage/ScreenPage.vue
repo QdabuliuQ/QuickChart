@@ -1,22 +1,12 @@
 <template>
-	<div
-		style="
-			width: 100vw;
-			height: 100vh;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		">
-		建设中...
+	<div v-if="status === 1" class="screen-page">
+		<function-list v-if="option" :save="authorId === curId" ref="functionListRef"></function-list>
+		<screen-canvas v-if="option" :width="width + 'px'" :height="height + 'px'" />
+		<config-item v-if="option" ref="configItemRef" />
 	</div>
-	<!--	<div v-if="status === 1" class="screen-page">-->
-	<!--		<function-list v-if="option" ref="functionListRef"></function-list>-->
-	<!--		<screen-canvas v-if="option" :width="width + 'px'" :height="height + 'px'" />-->
-	<!--		<config-item v-if="option" ref="configItemRef" />-->
-	<!--	</div>-->
-	<!--	<div v-else-if="status === 0" class="empty-container">-->
-	<!--		<empty-tip />-->
-	<!--	</div>-->
+	<div v-else-if="status === 0" class="empty-container">
+		<empty-tip />
+	</div>
 </template>
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
@@ -29,8 +19,9 @@ import ScreenCanvas from '@/views/ScreenPage/components/screenCanvas.vue'
 
 import useStore from '@/store'
 
-import { getScreen } from '@/network/screen.ts'
 import { parse } from '@/utils/toJSON.ts'
+
+import { getScreen } from '@/network/screen.ts'
 
 const width = ref<number>(0)
 const height = ref<number>(0)
@@ -41,8 +32,9 @@ const option = ref<any>(null)
 const status = ref<number>(-1)
 
 const route = useRoute()
-const screen_id = route.params.id
-console.log(screen_id)
+const screen_id = route.params.id as string
+const authorId = ref<string>('')
+const curId = ref<string>(localStorage.getItem('id') as string)
 
 const getWidth = () => {
 	return (
@@ -62,6 +54,7 @@ onMounted(async () => {
 		screen.initScreenOption(res.data.option)
 		option.value = res.data.option
 	}
+	authorId.value = res.data.user_id
 	nextTick(() => {
 		width.value = getWidth()
 		height.value = document.documentElement.clientHeight

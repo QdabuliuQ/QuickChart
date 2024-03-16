@@ -4,13 +4,11 @@
 		:style="{
 			width: '700px',
 			height: '500px',
-			transform: `scale(${getOffset(props.width, props.c_width, props.style.width) / 700}, ${
-				getOffset(props.height, props.c_height, props.style.height) / 500
-			})`,
+			transform: `scale(${props.style.width / 700}, ${props.style.height / 500})`,
 			zIndex: props.style.zIndex,
 			display: props.style.display,
-			left: `${getOffset(props.width, props.c_width, props.style.translateX)}px`,
-			top: `${getOffset(props.height, props.c_height, props.style.translateY)}px`
+			left: `${props.style.translateX}px`,
+			top: `${props.style.translateY}px`
 		}">
 		<div
 			:style="{
@@ -28,7 +26,7 @@ import { onMounted, ref } from 'vue'
 
 import useProxy from '@/hooks/useProxy'
 
-import { getOffset } from '@/utils/screenUtil'
+import { parse } from '@/utils/toJSON.ts'
 
 import { oss } from '@/network'
 import { IStyle } from '@/types/screen'
@@ -52,18 +50,19 @@ const mapItemRef = ref(null)
 const proxy = useProxy()
 
 onMounted(async () => {
-	let mapJSON = null
-	if (localStorage.getItem(props.adcode)) {
-		mapJSON = JSON.parse(localStorage.getItem(props.adcode) as string)
-	} else {
-		let res = await fetch(`${oss}/map/${props.adcode}.json`)
-		mapJSON = await res.json()
-		localStorage.setItem(props.adcode, JSON.stringify(mapJSON))
-	}
-	const option = JSON.parse(props.option.replace(/\$#url#\$/g, oss))
-	const chart = proxy.$echarts.init(mapItemRef.value)
-	proxy.$echarts.registerMap(`map${props.adcode}`, mapJSON)
-	chart.setOption(option)
+	try {
+		let mapJSON = null
+		if (localStorage.getItem(props.adcode)) {
+			mapJSON = JSON.parse(localStorage.getItem(props.adcode) as string)
+		} else {
+			let res = await fetch(`${oss}/map/${props.adcode}.json`)
+			mapJSON = await res.json()
+			localStorage.setItem(props.adcode, JSON.stringify(mapJSON))
+		}
+		const chart = proxy.$echarts.init(mapItemRef.value)
+		proxy.$echarts.registerMap(`map${props.adcode}`, mapJSON)
+		chart.setOption(parse(props.option))
+	} catch (err) {}
 })
 </script>
 

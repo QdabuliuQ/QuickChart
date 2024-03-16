@@ -2,28 +2,22 @@
 	<div
 		class="preview-page-text-item"
 		:style="{
-			width: getOffset(props.width, props.c_width, props.style.width) + 'px',
-			height: getOffset(props.height, props.c_height, props.style.height) + 'px',
-			transform: `translate(${getOffset(
-				props.width,
-				props.c_width,
-				props.style.translateX
-			)}px, ${getOffset(props.height, props.c_height, props.style.translateY)}px) rotate(${
-				props.style.rotate
-			}deg)`,
+			width: props.style.width + 'px',
+			height: props.style.height + 'px',
+			transform: `translate(${props.style.translateX}px, ${props.style.translateY}px) rotate(${props.style.rotate}deg)`,
 			zIndex: props.style.zIndex
 		}">
 		<div
 			:style="{
 				width: '100%',
 				height: '100%',
-				fontSize: getOffset(props.height, props.c_height, props.style.fontSize) + 'px',
+				fontSize: props.style.fontSize + 'px',
 				fontWeight: props.style.fontWeight,
 				color: props.style.color,
 				textAlign: props.style.textAlign,
 				letterSpacing: props.style.letterSpacing,
 				fontStyle: props.style.fontStyle,
-				lineHeight: getOffset(props.height, props.c_height, style.lineHeight) + 'px',
+				lineHeight: props.style.lineHeight + 'px',
 				textDecorationLine: props.style.textDecorationLine,
 				textDecorationColor: props.style.textDecorationColor,
 				textDecorationStyle: props.style.textDecorationStyle,
@@ -35,8 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { getOffset } from '@/utils/screenUtil'
-
 import { IStyle } from '@/types/screen'
 
 interface Text {
