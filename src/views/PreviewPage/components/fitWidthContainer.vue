@@ -1,6 +1,6 @@
 <template>
-	<div class="full-container">
-		<div ref="scaleContainerRef" class="scale-container">
+	<div class="fit-width-container">
+		<div ref="scaleContainerRef" id="scale-container">
 			<div
 				:style="{
 					width: props.width + 'px',
@@ -27,21 +27,20 @@ const props = defineProps<{
 const scaleContainerRef = ref<HTMLDivElement>()
 
 useResize(() => {
-	let width = document.documentElement.clientWidth
-	let height = document.documentElement.clientHeight
-	;(scaleContainerRef.value as HTMLDivElement).style.transform = `scale(${width / props.width}, ${
-		height / props.height
-	})`
+	let width = document.documentElement.clientWidth as number
+	;(scaleContainerRef.value.style as any).zoom = width / props.width
 })
 </script>
 <style lang="less">
-.full-container {
-	overflow: hidden;
+body {
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+.fit-width-container {
 	width: 100vw;
 	height: 100vh;
-
-	.scale-container {
-		transform-origin: 0 0;
+	#scale-container {
+		position: relative;
 	}
 }
 </style>
