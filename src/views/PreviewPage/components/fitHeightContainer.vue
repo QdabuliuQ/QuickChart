@@ -14,7 +14,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 
 import useResize from '@/utils/useResize.ts'
 
@@ -24,11 +24,15 @@ const props = defineProps<{
 	bgStyle: any
 }>()
 
-const scaleContainerRef = ref<HTMLDivElement>()
+const scaleContainerRef = ref<HTMLDivElement>(null as any)
 
 useResize(() => {
 	let height = document.documentElement.clientHeight as number
 	;(scaleContainerRef.value.style as any).zoom = height / props.height
+})
+
+onUnmounted(() => {
+	document.body.style.overflow = 'visible'
 })
 </script>
 <style lang="less">

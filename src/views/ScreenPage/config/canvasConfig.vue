@@ -57,7 +57,7 @@
 				@deleteImage="() => screen.updateScreenOptionOfCanvasByKey('bgImage', '')"
 				@imageChange="imageChange"
 				:value="screen.getScreenOptionOfCanvas.bgImage"
-				:imgType="'base64'"
+				:imgType="'url'"
 				:imgSize="2000"
 				:url="`${oss}/upload/chartImage`" />
 		</series-item>
@@ -101,7 +101,7 @@
 			</div>
 		</div>
 		<div v-show="screen.getScreenOptionOfCanvas.bgType === 'image'" class="imagePanel">
-			<div v-for="item in 41" class="image">
+			<div :key="item" v-for="item in 41" class="image">
 				<img
 					@click="
 						screen.getScreenOptionOfCanvas.bgImage = `https://ss1.dycharts.com/canvas_bg/${
@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, reactive, watch } from 'vue'
+import { onMounted, onUnmounted, reactive, watch } from 'vue'
 
 import ImageUpload from '@/components/imageUpload.vue'
 import SeriesItem from '@/components/seriesItem.vue'
@@ -137,6 +137,10 @@ const colors = [
 	['#fbffbd', '#f3f18e', '#ebe45f', '#e2d630', '#dac801']
 ]
 
+onMounted(() => {
+	console.log(screen.getScreenOptionOfCanvas, '----')
+})
+
 let stop = watch(
 	() => canvas,
 	debounce(() => {
@@ -148,8 +152,9 @@ let stop = watch(
 )
 
 const imageChange = (e: any) => {
-	screen.updateScreenOptionOfCanvasByKey('bgImage', e.base64)
-	screen.updateScreenOptionOfCanvasByKey('file', e.file)
+	screen.updateScreenOptionOfCanvasByKey('bgImage', e)
+	// screen.updateScreenOptionOfCanvasByKey('bgImage', e.base64)
+	// screen.updateScreenOptionOfCanvasByKey('file', e.file)
 }
 
 const selectColor = (e: Event) => {

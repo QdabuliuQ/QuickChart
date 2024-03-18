@@ -118,7 +118,6 @@ const module =
 		: {
 				...import.meta.glob('../views/ChartPanel/components/**/*.vue')
 			}
-console.log(module)
 const { chart }: any = useStore()
 const proxy = useProxy()
 const height = ref<string>('0px')
@@ -136,7 +135,6 @@ const toggleItem = (e: string, p: string) => {
 		activeIndex.value = ''
 	} else {
 		activeIndex.value = e
-		console.log(p)
 		// 查看map中是否存在组件缓存
 		if (!componentsMap.has(p)) {
 			icon_loading.value = true
@@ -210,9 +208,9 @@ onUnmounted(() => {
 		width: 90%;
 		margin: 10px auto;
 		background-repeat: repeat;
-		background-size: cover;
+		background-size: 10px 10px;
 		border-radius: 8px;
-		background-image: url('../assets/image/bg.jpg');
+		background-image: url('../assets/image/transparent.png');
 
 		img {
 			width: 100%;

@@ -42,7 +42,6 @@ import { useRoute, useRouter } from 'vue-router'
 
 import ChartDom from '@/components/chartDom.vue'
 import CommentDrawer from '@/components/commentDrawer.vue'
-import InfoPanel from '@/components/infoPanel.vue'
 import Loading from '@/components/loading.vue'
 import OpeButtons from '@/components/opeButtons.vue'
 import SaveChartDialog from '@/components/saveChartDialog.vue'

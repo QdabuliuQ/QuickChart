@@ -41,10 +41,10 @@ import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
+import { importChartFile } from '@/utils/importFile.ts'
 import { createImage, deepCopy } from '@/utils'
 
 import { getChartDetail, getComment } from '@/network/chart'
-import { importChartFile } from '@/utils/importFile.ts'
 
 const { chart }: any = useStore()
 const proxy = useProxy()
@@ -83,16 +83,17 @@ const getConfig = async () => {
 	if (typeof data.data.option.backgroundColor === 'object') {
 		// 处理背景颜色
 		let src = data.data.option.backgroundColor.image
-		data.data.option.backgroundColor.image = createImage(src)
+
+		data.data.option.backgroundColor.image = src
 		data.data.option.backgroundColor.url = src
 	}
 	if (data.data.option.graphic.length) {
 		// 处理图形组件
 		for (let item of data.data.option.graphic) {
 			if (item.type === 'image') {
-				let src = item.style.image
-				item.style.image = createImage(src)
-				item.style.url = src
+				// let src = item.style.image
+				// item.style.image = createImage(src)
+				item.style.url = item.style.image
 			}
 		}
 	}

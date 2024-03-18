@@ -294,7 +294,7 @@ onUnmounted(() => {
 
 .transparent-bg {
 	background-repeat: repeat;
-	background-size: cover;
-	background-image: url('../assets/image/bg.jpg');
+	background-size: 10px 10px;
+	background-image: url('../assets/image/transparent.png');
 }
 </style>

@@ -1,36 +1,38 @@
 <template>
 	<div class="info-chart-item">
-		<div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="box">
-			<div
-				:style="{
-					opacity
-				}"
-				@click="toModify"
-				class="mask">
-				<el-popover
-					popper-class="chart-item-popover-class"
-					placement="bottom-start"
-					:hide-after="0"
-					trigger="hover">
-					<div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="menu-list">
-						<div @click="renameEvent" class="menu-item">
-							<i class="iconfont i_rename"></i>
-							重命名
+		<div class="loading-box">
+			<div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="box">
+				<div
+					:style="{
+						opacity
+					}"
+					@click="toModify"
+					class="mask">
+					<el-popover
+						popper-class="chart-item-popover-class"
+						placement="bottom-start"
+						:hide-after="0"
+						trigger="hover">
+						<div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="menu-list">
+							<div @click="renameEvent" class="menu-item">
+								<i class="iconfont i_rename"></i>
+								重命名
+							</div>
+							<div @click="deleteEvent" class="menu-item">
+								<i class="iconfont i_delete_2"></i>
+								删除
+							</div>
 						</div>
-						<div @click="deleteEvent" class="menu-item">
-							<i class="iconfont i_delete_2"></i>
-							删除
-						</div>
-					</div>
-					<template #reference>
-						<div class="more">
-							<i class="iconfont i_more"></i>
-						</div>
-					</template>
-				</el-popover>
-				<div class="edit">编辑</div>
+						<template #reference>
+							<div class="more">
+								<i class="iconfont i_more"></i>
+							</div>
+						</template>
+					</el-popover>
+					<div class="edit">编辑</div>
+				</div>
+				<img class="cover" :src="props.cover" />
 			</div>
-			<img class="cover" :src="props.cover" />
 		</div>
 		<div v-show="!isSetName" class="name">{{ name }}</div>
 		<div v-show="isSetName" class="input">
@@ -40,7 +42,9 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import useProxy from '@/hooks/useProxy'
+
 import { ElMessageBox } from 'element-plus'
 
 const props = defineProps<{
@@ -53,7 +57,7 @@ const props = defineProps<{
 	type?: string
 	user_id: string
 	idx?: number
-	blur?: Function
+	blur?: (name: string, chart_id: string) => any
 }>()
 const emits = defineEmits(['deleteItem', 'clickItem'])
 const isSetName = ref<boolean>(false)
@@ -120,20 +124,6 @@ const deleteEvent = () => {
 			idx: props.idx,
 			id: props.chart_id
 		})
-		// let data = await deleteChart({
-		//   chart_id: props.chart_id
-		// })
-		// if(!data.status) return proxy.$notice({
-		//   type: 'error',
-		//   message: data.msg,
-		//   position: 'top-left'
-		// })
-		//
-		// proxy.$notice({
-		//   type: 'success',
-		//   message: data.msg,
-		//   position: 'top-left'
-		// })
 	})
 }
 </script>
@@ -163,13 +153,14 @@ const deleteEvent = () => {
 .info-chart-item {
 	width: 100%;
 	.box {
+		width: 100%;
 		position: relative;
 		overflow: hidden;
 		background-repeat: repeat;
-		background-size: cover;
 		border-radius: 10px;
 		cursor: pointer;
-		background-image: url('../../../assets/image/bg.jpg');
+		background-size: 10px 10px;
+		background-image: url('../../../assets/image/transparent.png');
 	}
 	.mask {
 		position: absolute;
@@ -209,7 +200,7 @@ const deleteEvent = () => {
 	.cover {
 		width: 100%;
 		height: 125px;
-		object-fit: cover;
+		object-fit: contain;
 		vertical-align: middle;
 	}
 	.name {

@@ -25,15 +25,20 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import useProxy from '@/hooks/useProxy'
-import { ConfigInt } from '@/types/common'
-import { common, label } from '@/config/chart/opname'
-import useStore from '@/store'
-import { ElMessageBox } from 'element-plus'
-import { IOption, TOption } from '@/types/option'
-import { oss } from '@/network'
-import OptionItems from '@/components/optionItems.vue'
+
 import GraphicComItem from '@/components/graphicComItem.vue'
+import OptionItems from '@/components/optionItems.vue'
+
+import { common, label } from '@/config/chart/opname'
+
+import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
+import { oss } from '@/network'
+import { ConfigInt } from '@/types/common'
+import { IOption, TOption } from '@/types/option'
+import { ElMessageBox } from 'element-plus'
 
 const proxy = useProxy()
 const { chart }: any = useStore()
@@ -69,7 +74,7 @@ const conveyConfigToOption = (config: ConfigInt[]): any[] => {
 	for (let item of config) {
 		let option: any = {}
 		for (let key in item) {
-			if (item[key].hasOwnProperty('attr')) {
+			if (Object.prototype.hasOwnProperty.call(item[key], 'attr')) {
 				let attrs: string[] = (item[key]['attr'] as string).split('.')
 				let p = option
 				for (let prop of attrs) {
@@ -164,7 +169,7 @@ const getConfigs = (options: any[]) => {
 				image: {
 					type: 'imgload',
 					title: '图片上传',
-					value: item.style.image,
+					value: item.style.url,
 					attr: 'style',
 					imgType: 'url',
 					url: `${oss}/upload/graphic`

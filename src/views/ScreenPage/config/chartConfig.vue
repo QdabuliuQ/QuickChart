@@ -22,9 +22,9 @@
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 import SeriesItem from '@/components/seriesItem.vue'
-import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
 import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
+import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 
 import useProxy from '@/hooks/useProxy'
 
@@ -98,10 +98,10 @@ onUnmounted(() => {
 		overflow: hidden;
 		width: 100%;
 		background-repeat: repeat;
-		background-size: cover;
+		background-size: 10px 10px;
 		border-radius: 10px;
 		aspect-ratio: 1/0.7;
-		background-image: url('../../../assets/image/bg.jpg');
+		background-image: url('../../../assets/image/transparent.png');
 		img {
 			width: 100%;
 			height: 100%;

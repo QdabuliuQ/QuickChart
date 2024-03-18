@@ -5,19 +5,21 @@
 </template>
 
 <script setup lang="ts">
-import { watch, reactive, onUnmounted } from 'vue'
-import useProxy from '@/hooks/useProxy'
-import { ConfigInt } from '@/types/common'
-import { common } from '@/config/chart/opname'
-import useStore from '@/store'
-import optionItems from '@/components/optionItems.vue'
-import { createImage, debounce, getConfigValue } from '@/utils'
-import { IOption, TOption } from '@/types/option'
-import { oss } from '@/network'
-import useWatchData from '@/hooks/useWatchData'
-const { chart }: any = useStore()
-const proxy = useProxy()
+import { reactive } from 'vue'
 
+import optionItems from '@/components/optionItems.vue'
+
+import { common } from '@/config/chart/opname'
+
+import useWatchData from '@/hooks/useWatchData'
+
+import useStore from '@/store'
+
+import { getConfigValue } from '@/utils'
+
+import { oss } from '@/network'
+import { IOption } from '@/types/option'
+const { chart }: any = useStore()
 interface IConfig {
 	backgroundColor: IOption<'color_picker'>
 	bgImage: IOption<'imgload'>
