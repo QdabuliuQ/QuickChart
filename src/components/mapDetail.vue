@@ -147,17 +147,12 @@ const shareEvent = async (content: string) => {
 		d_type: parseInt(props.type).toString()
 	})
 	shareVisible.value = false
-	if (data.status !== 1)
-		return proxy.$notice({
-			type: 'error',
+	if (data.status === 1)
+		proxy.$notice({
+			type: 'success',
 			message: data.msg,
 			position: 'top-left'
 		})
-	proxy.$notice({
-		type: 'success',
-		message: data.msg,
-		position: 'top-left'
-	})
 }
 
 const praiseEvent = (is_praise: string): Promise<boolean> => {

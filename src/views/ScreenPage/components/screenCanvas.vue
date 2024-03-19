@@ -91,7 +91,6 @@ const selectItem = ({ label }: { label: string }) => {
 				element.style.translateX = lastPoint[0]
 				element.style.translateY = lastPoint[1]
 				screen.addScreenOptionOfElements(element)
-				console.log(element, 'element')
 				screen.setTmpElement(null) // 清空粘贴的元素
 			}
 			break
@@ -129,9 +128,9 @@ onUnmounted(() => {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	overflow: scroll;
 	flex: 1;
-	margin: 40px auto;
+	top: 50%;
+	transform: translateY(-50%);
 	.scroll-container();
 
 	.btn-container {

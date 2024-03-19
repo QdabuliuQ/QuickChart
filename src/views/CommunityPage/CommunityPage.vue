@@ -182,13 +182,14 @@ const toLogin = () => {
 		box-shadow: 0 0 9px 0 #0d0d0d;
 
 		.type-item {
-			padding: 12px 75px 12px 20px;
 			cursor: pointer;
 			transition: 0.2s all linear;
 			font-size: 14px;
+			padding: 12px 20px;
+			width: 130px;
 
 			i {
-				margin-right: 7px;
+				margin-right: 15px;
 			}
 
 			&:hover {

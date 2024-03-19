@@ -14,13 +14,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted, ref, onUnmounted } from 'vue'
-import useStore from '@/store'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
+
 import useProxy from '@/hooks/useProxy'
+
+import useStore from '@/store'
+
 import { deepCopy, htmlDownload } from '@/utils/index'
+import { stringify } from '@/utils/toJSON.ts'
+
 import { getHTMLData, postChartImage } from '@/network/chart'
 import { ElLoading } from 'element-plus'
-import { stringify } from '@/utils/toJSON.ts'
 
 interface comInitData {
 	options: any
@@ -49,52 +53,6 @@ const data: comInitData = reactive({
 defineExpose({
 	chartInstance: chart_i
 })
-
-const getHTML = (jsCode: string) => {
-	return (
-		`<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js" integrity="sha512-VdqgeoWrVJcsDXFlQEKqE5MyhaIgB9yXUVaiUa8DR2J4Lr1uWcFm+ZH/YnzV5WqgKf4GPyHQ64vVLgzqGIchyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></scrip` +
-		`t>
-    <style>
-      #chart {
-        width: ${data.width}px;
-        height: ${data.height}px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="chart"></div>
-    <script>
-      ${jsCode}
-    </scrip` +
-		`t>
-  </body>
-</html>
-`
-	)
-}
-
-//下载
-// const downloadFile = (fileName: string, content: string) => {
-// 	let aLink = document.createElement('a')
-// 	let blob = base64ToBlob(content) //new Blob([content]);
-// 	let evt = document.createEvent('HTMLEvents')
-// 	evt.initEvent('click', true, true) //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
-// 	aLink.download = fileName
-// 	aLink.href = URL.createObjectURL(blob)
-// 	aLink.dispatchEvent(
-// 		new MouseEvent('click', {
-// 			bubbles: true,
-// 			cancelable: true,
-// 			view: window
-// 		})
-// 	)
-// }
 
 /**
  * 触发浏览器下载文件。

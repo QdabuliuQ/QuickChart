@@ -18,7 +18,7 @@ export function postPraise(data: { event_id: string; type: string }) {
 export function postEvent(data: {
 	chart_id: string
 	content: string
-	type: 'chart' | 'map'
+	type: 'chart' | 'map' | 'screen'
 	d_type: string
 }) {
 	return ajax({

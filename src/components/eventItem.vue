@@ -140,7 +140,7 @@ const status = ref<'1' | '2' | '3'>('1')
 
 const commentList = reactive<CommentInt[]>([])
 const toDetail = () => {
-	router.push((props.type === 'chart' ? `/chart/` : '/map/') + props.chart_id)
+	router.push(`/${props.type}/` + props.chart_id)
 }
 
 /**

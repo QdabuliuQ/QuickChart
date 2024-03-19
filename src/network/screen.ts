@@ -68,6 +68,7 @@ export function getScreen(params: { screen_id: string }) {
 	})
 }
 
+// 修改大屏
 export function putScreen(data: {
 	screen_id: string
 	option: string
@@ -77,6 +78,24 @@ export function putScreen(data: {
 	return ajax({
 		url: '/sc/screen',
 		method: 'put',
+		data
+	})
+}
+
+// 获取大屏信息
+export function getDetail(params: { screen_id: string }) {
+	return ajax({
+		url: '/sc/detail',
+		method: 'get',
+		params
+	})
+}
+
+// 大屏点赞
+export function postPraise(data: { screen_id: string; type: 0 | 1 }) {
+	return ajax({
+		url: '/sc/praise',
+		method: 'post',
 		data
 	})
 }

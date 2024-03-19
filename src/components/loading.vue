@@ -9,10 +9,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, defineProps } from 'vue'
+import { reactive } from 'vue'
 
 const props = defineProps<{
-	text: string
+	text?: string
 	bgc?: string
 }>()
 
