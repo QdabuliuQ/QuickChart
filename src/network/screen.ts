@@ -99,3 +99,39 @@ export function postPraise(data: { screen_id: string; type: 0 | 1 }) {
 		data
 	})
 }
+
+// 发表评论
+export function postComment(data: { screen_id: string; content: string }) {
+	return ajax({
+		url: '/sc/comment',
+		method: 'post',
+		data
+	})
+}
+
+// 获取评论
+export function getComment(params: { screen_id: string; limit: number; offset: number }) {
+	return ajax({
+		url: '/sc/comment',
+		method: 'get',
+		params
+	})
+}
+
+// 删除评论
+export function deleteComment(data: { comment_id: string }) {
+	return ajax({
+		url: '/sc/comment',
+		method: 'delete',
+		data
+	})
+}
+
+// 评论点赞/取消点赞
+export function postCommentPraise(data: { comment_id: string; type: '0' | '1' }) {
+	return ajax({
+		url: '/sc/commentPraise',
+		method: 'post',
+		data
+	})
+}
