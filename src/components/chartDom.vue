@@ -3,17 +3,17 @@
 		:style="{
 			width: data.width + 'px',
 			height: data.height + 'px',
-			margin: '15vh auto 0'
+			transform: `scale(${zoom})`
 		}"
 		class="transparent-bg">
-		<div ref="chartDomRef" id="chart-dom"></div>
+		<div id="chart-dom" ref="chartDomRef"></div>
 	</div>
-	<el-dialog class="code-dialog-class" v-model="data.codeDialog" title="代码配置" width="50%">
-		<highlightjs class="language-javascript" language="javascript" :code="data.code" />
+	<el-dialog v-model="data.codeDialog" class="code-dialog-class" title="代码配置" width="50%">
+		<highlightjs :code="data.code" class="language-javascript" language="javascript" />
 	</el-dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
 import useProxy from '@/hooks/useProxy'
@@ -109,7 +109,7 @@ chart.setOption(option);  //设置option`
 	return data.code
 }
 const initChart = () => {
-	let chartInstance = proxy.$echarts.init(chartDomRef.value)
+	let chartInstance = proxy.$echarts.init(chartDomRef.value, null, { renderer: 'svg' })
 	chart_i.value = chartInstance
 	chartInstance.setOption(chart.getOption)
 	data.option = chart.getOption
@@ -223,8 +223,17 @@ const initChart = () => {
 	})
 }
 
+const zoom = ref<number>(1)
+const resizeEvent = () => {
+	const width = document.getElementsByClassName('chart-container')[0].clientWidth
+	zoom.value = (width * 0.6) / 700
+}
+
 onMounted(() => {
+	resizeEvent()
 	initChart()
+
+	window.addEventListener('resize', resizeEvent)
 })
 
 onUnmounted(() => {
@@ -239,6 +248,8 @@ onUnmounted(() => {
 	proxy.$Bus.off('createCode')
 	proxy.$Bus.off('downloadChart')
 	proxy.$Bus.off('resetChartData')
+
+	window.removeEventListener('resize', resizeEvent)
 })
 </script>
 

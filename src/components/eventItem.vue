@@ -21,7 +21,11 @@
 							<span>{{ props.au_nickname }}</span>
 						</div>
 					</div>
-					<i :class="['iconfont', props.type === 'chart' ? 'i_bar' : 'i_map']"></i>
+					<i
+						:class="[
+							'iconfont',
+							props.type === 'chart' ? 'i_bar' : props.type === 'map' ? 'i_map' : 'i_screen'
+						]"></i>
 				</div>
 				<img class="cover" :alt="props.name" :src="props.cover" />
 			</div>

@@ -1,12 +1,12 @@
 <template>
 	<el-popover
 		ref="mapPopoverRef"
-		popper-class="functionListPopoverClass"
+		:hide-after="0"
 		placement="right-start"
-		trigger="click"
-		:hide-after="0">
+		popper-class="functionListPopoverClass"
+		trigger="click">
 		<el-scrollbar height="400px">
-			<skeleton :count="4" :status="mapInfo.status" :loading-class="['cover', 'name']">
+			<skeleton :count="4" :loading-class="['cover', 'name']" :status="mapInfo.status">
 				<template v-slot:template="{ setSlotRef }">
 					<div class="item">
 						<div class="cover" style="width: 100%; aspect-ratio: 2/1.3"></div>
@@ -15,20 +15,20 @@
 				</template>
 				<template v-slot:content>
 					<div class="functionListChartContainer">
-						<div @click="itemClick(item)" class="item" v-for="item in mapList" :key="item.cover">
+						<div v-for="item in mapList" :key="item.cover" class="item" @click="itemClick(item)">
 							<div class="mask">插入图表</div>
-							<el-image style="width: 100%; aspect-ratio: 2/1.3" :src="item.cover" fit="cover" />
+							<el-image :src="item.cover" fit="cover" style="width: 100%; aspect-ratio: 2/1.3" />
 							<div class="name">{{ item.name }}</div>
 						</div>
 					</div>
 					<el-pagination
-						class="pagination-class"
 						v-model:current-page="mapInfo.offset"
-						hide-on-single-page
-						background
-						layout="prev, pager, next"
 						:page-size="mapInfo.limit"
 						:total="mapInfo.count"
+						background
+						class="pagination-class"
+						hide-on-single-page
+						layout="prev, pager, next"
 						@current-change="mapCurrentChange" />
 				</template>
 				<template v-slot:empty>
@@ -37,11 +37,11 @@
 			</skeleton>
 		</el-scrollbar>
 		<template #reference>
-			<button-item @click-event="getData" title="地图" icon="i_map" tip="插入地图" />
+			<button-item icon="i_map" tip="插入地图" title="地图" @click-event="getData" />
 		</template>
 	</el-popover>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { reactive, ref } from 'vue'
 
 import Skeleton from '@/components/skeleton.vue'
@@ -49,17 +49,20 @@ import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
 
 import useStore from '@/store'
 
-import { getMapConfig } from '@/utils/screenUtil.ts'
+import { getMapConfig, getRecordOption } from '@/utils/screenUtil.ts'
 import { ajaxRequest } from '@/utils'
 
 import { getChart } from '@/network/map'
 
 type STATUS = '1' | '2' | '3'
+
 interface IItem {
 	cover: string
 	name: string
+
 	[propName: string]: any
 }
+
 interface IInfo {
 	status: STATUS
 	offset: number
@@ -86,6 +89,8 @@ const itemClick = (info: any) => {
 			adcode: info.adcode
 		})
 	)
+
+	screen.addOperationRecordItem(getRecordOption('add', 'map'))
 }
 
 const getData = async () => {

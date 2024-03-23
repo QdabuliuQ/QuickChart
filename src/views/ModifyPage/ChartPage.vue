@@ -42,7 +42,7 @@ import useProxy from '@/hooks/useProxy'
 import useStore from '@/store'
 
 import { importChartFile } from '@/utils/importFile.ts'
-import { createImage, deepCopy } from '@/utils'
+import { deepCopy } from '@/utils'
 
 import { getChartDetail, getComment } from '@/network/chart'
 

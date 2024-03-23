@@ -5,45 +5,45 @@
 		<common-config :info="baseInfo" />
 		<config-title title="边框配置" />
 		<series-item title="层级">
-			<el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
+			<el-input-number v-model="info.style.zIndex" :max="100" :min="1" size="small" />
 		</series-item>
 		<series-item title="颜色一">
-			<el-color-picker size="small" v-model="info.style.color1" show-alpha />
+			<el-color-picker v-model="info.style.color1" show-alpha size="small" />
 		</series-item>
 		<series-item title="颜色二">
-			<el-color-picker size="small" v-model="info.style.color2" show-alpha />
+			<el-color-picker v-model="info.style.color2" show-alpha size="small" />
 		</series-item>
 		<series-item v-if="info.code === 1" title="动画持续时间">
 			<el-input-number
-				:min="1"
+				v-model="info.style.duration"
 				:max="100"
+				:min="1"
 				:precision="2"
-				size="small"
-				v-model="info.style.duration" />
+				size="small" />
 		</series-item>
 		<series-item v-if="info.code === 4" title="标题文本">
-			<el-input size="small" maxlength="20" type="text" v-model="info.style.borderTitle" />
+			<el-input v-model="info.style.borderTitle" maxlength="20" size="small" type="text" />
 		</series-item>
 		<series-item v-if="info.code === 4" title="标题宽度">
-			<el-input-number :min="1" :max="1000" size="small" v-model="info.style.borderTitleWidth" />
+			<el-input-number v-model="info.style.borderTitleWidth" :max="1000" :min="1" size="small" />
 		</series-item>
 		<series-item v-if="info.code === 4" title="标题高度">
-			<el-input-number :min="1" :max="100" size="small" v-model="info.style.borderTitleHeight" />
+			<el-input-number v-model="info.style.borderTitleHeight" :max="100" :min="1" size="small" />
 		</series-item>
 		<series-item v-if="info.code === 4" title="字体颜色">
-			<el-color-picker size="small" v-model="info.style.borderTitleColor" show-alpha />
+			<el-color-picker v-model="info.style.borderTitleColor" show-alpha size="small" />
 		</series-item>
 		<series-item v-if="info.code === 4" title="字体大小">
-			<el-input-number :min="1" :max="500" size="small" v-model="info.style.borderTitleSize" />
+			<el-input-number v-model="info.style.borderTitleSize" :max="500" :min="1" size="small" />
 		</series-item>
 		<config-btn
-			:icon="'i_delete_2'"
 			:bg-color="'rgb(255, 66, 66)'"
-			@btn-click="deleteEvent"
-			label="删除元素" />
+			:icon="'i_delete_2'"
+			label="删除元素"
+			@btn-click="deleteEvent" />
 	</div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import SeriesItem from '@/components/seriesItem.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
 import ConfigCover from '@/views/ScreenPage/components/configCover.vue'
@@ -52,7 +52,7 @@ import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 
 import { useElementConfig } from '@/hooks/useElementConfig.ts'
 
-import { Image } from '@/types/screen.ts'
+import { Border } from '@/types/screen.ts'
 
-const { baseInfo, info, deleteEvent } = useElementConfig<Image>()
+const { baseInfo, info, deleteEvent } = useElementConfig<Border>()
 </script>

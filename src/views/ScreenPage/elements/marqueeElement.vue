@@ -1,5 +1,6 @@
 <template>
 	<div
+		ref="marqueeRef"
 		:class="[
 			'marquee-element',
 			'drag-item',
@@ -23,13 +24,12 @@
 			textDecorationColor: props.style.textDecorationColor,
 			textDecorationStyle: props.style.textDecorationStyle
 		}"
-		@click="clickEvent($event)"
-		ref="marqueeRef"
-		class="marquee-element">
+		class="marquee-element"
+		@click="clickEvent($event)">
 		<span ref="marqueeTextRef" class="marquee-text">{{ props.content }}</span>
 	</div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 
 import useElementClick from '@/hooks/useElementClick.ts'

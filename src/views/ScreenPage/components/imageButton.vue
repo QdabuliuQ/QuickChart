@@ -1,13 +1,13 @@
 <template>
-	<button-item @click-event="clickEvent" title="图片" icon="i_img" tip="插入图片" />
+	<button-item icon="i_img" tip="插入图片" title="图片" @click-event="clickEvent" />
 	<input
-		@change="selectFile"
-		style="display: none"
+		ref="inputRef"
 		accept=".jpg,.png,.jpeg"
+		style="display: none"
 		type="file"
-		ref="inputRef" />
+		@change="selectFile" />
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import ButtonItem from './buttonItem.vue'
@@ -16,7 +16,7 @@ import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
-import { getImageConfig } from '@/utils/screenUtil'
+import { getImageConfig, getRecordOption } from '@/utils/screenUtil'
 import { fileType } from '@/utils'
 
 const inputRef = ref()
@@ -45,6 +45,7 @@ const selectFile = () => {
 						file: img
 					})
 				)
+				screen.addOperationRecordItem(getRecordOption('add', 'image'))
 			}
 		}
 	} else {

@@ -2,9 +2,17 @@ import useStore from '@/store'
 
 import { uuid } from '@/utils/index'
 
-import { Border, Elements, ElementTypeProperties, Map, Marquee } from '@/types/screen'
+import {
+	Border,
+	Elements,
+	ElementTypeProperties,
+	Map,
+	Marquee,
+	OperationType
+} from '@/types/screen'
 
 const { screen } = useStore()
+
 export function setCommonStyle(baseInfo: any, info: any) {
 	info.value!.style['width'] = baseInfo.value.style['width']
 	info.value!.style['height'] = baseInfo.value.style['height']
@@ -54,6 +62,7 @@ export function getMapConfig(config?: Partial<Map>) {
 	}
 	return originConfig
 }
+
 export function getTextConfig(config?: ElementTypeProperties<'text'>) {
 	const originConfig: ElementTypeProperties<'text'> = {
 		id: uuid(6, 36),
@@ -150,6 +159,7 @@ export const getShapeConfig = (config?: ElementTypeProperties<'shape'>) => {
 	}
 	return originConfig
 }
+
 export function getImageConfig(config?: any) {
 	const originConfig: ElementTypeProperties<'image'> = {
 		id: uuid(6, 36),
@@ -179,6 +189,7 @@ export function getImageConfig(config?: any) {
 	}
 	return originConfig
 }
+
 export function getBorderConfig(config?: Partial<Border>) {
 	const originConfig: Border = {
 		id: uuid(6, 36),
@@ -206,13 +217,57 @@ export function getBorderConfig(config?: Partial<Border>) {
 export function cutElement(i: number) {
 	screen.setTmpElement(screen.deleteScreenOptionOfElements(i)[0])
 }
+
 export function lockElement(i: number) {
 	screen.updateElementOfItem(i, 'isLock', true)
 	screen.updateCurElementIdx(-1)
 }
+
 export function unlockElement(i: number) {
 	screen.updateElementOfItem(i, 'isLock', false)
 }
+
 export function getOffset(val1: number, val2: number, val3: number) {
 	return ((val1 * val3) / val2).toFixed(2)
+}
+
+export function getRecordOption(type: OperationType, element: Elements) {
+	return {
+		type,
+		element,
+		time: Date.now()
+	}
+}
+
+export const typeFilter = (type: string) => {
+	switch (type) {
+		case 'add':
+			return '添加'
+		case 'modify':
+			return '修改'
+		case 'delete':
+			return '刪除'
+		case 'copy':
+			return '复制'
+		case 'paste':
+			return '粘贴'
+	}
+}
+export const elementFilter = (element: string) => {
+	switch (element) {
+		case 'chart':
+			return '图表'
+		case 'map':
+			return '地图'
+		case 'border':
+			return '边框'
+		case 'text':
+			return '文本'
+		case 'shape':
+			return '图形'
+		case 'image':
+			return '图片'
+		case 'marquee':
+			return '滚动文本'
+	}
 }

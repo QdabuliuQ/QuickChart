@@ -5,7 +5,7 @@
 				<el-input v-model="form.email" placeholder="请输入邮箱" />
 			</el-form-item>
 			<el-form-item v-if="type == 'password'" prop="password">
-				<el-input type="password" show-password v-model="form.password" placeholder="请输入密码" />
+				<el-input v-model="form.password" placeholder="请输入密码" show-password type="password" />
 			</el-form-item>
 			<el-form-item v-else-if="type == 'code'" prop="code">
 				<el-input v-model="form.code" placeholder="验证码">
@@ -22,25 +22,24 @@
 					</template>
 				</el-input>
 			</el-form-item>
-			<drag-verify :key="type" class="drag-item" v-model:value="verify"></drag-verify>
+			<drag-verify :key="type" v-model:value="verify" class="drag-item"></drag-verify>
 			<div class="tip">
-				<span @click="typeToggle('password')" class="toggle" v-show="type == 'code'">密码登录</span>
-				<span @click="typeToggle('code')" class="toggle" v-show="type == 'password'">
+				<span v-show="type == 'code'" class="toggle" @click="typeToggle('password')">密码登录</span>
+				<span v-show="type == 'password'" class="toggle" @click="typeToggle('code')">
 					验证码登录
 				</span>
-				<span @click="emits('forgeted')" class="forget">忘记密码？</span>
+				<span class="forget" @click="emits('forgeted')">忘记密码？</span>
 			</div>
 		</el-form>
-		<button @click="toLogin" class="login">登录</button>
+		<button class="login" @click="toLogin">登录</button>
 	</div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onUnmounted, reactive, ref, watch } from 'vue'
-
-import dragVerify from '@/components/dragVerify.vue'
 
 import useProxy from '@/hooks/useProxy'
 
+import dragVerify from './dragVerify.vue'
 import { emailPattern, publicKey } from '@/utils'
 
 import { getCode, login, loginByCode } from '@/network/login'
@@ -168,20 +167,16 @@ const toLogin = () => {
 				email: form.email,
 				code: form.code
 			})
-			if (!data.status)
-				return proxy.$notice({
-					type: 'error',
+			if (data.status) {
+				saveData(data.token, data.id, data.data)
+				proxy.$notice({
+					type: 'success',
 					message: data.msg,
 					position: 'top-left'
 				})
-			saveData(data.token, data.id, data.data)
-			proxy.$notice({
-				type: 'success',
-				message: data.msg,
-				position: 'top-left'
-			})
-			emits('finished')
-			proxy.$Bus.emit('logined')
+				emits('finished')
+				proxy.$Bus.emit('logined')
+			}
 		} else {
 			// 密码登录
 			const data: any = await login({
@@ -217,21 +212,26 @@ onUnmounted(() => {
 	display: flex;
 	flex-direction: column;
 	.input-style();
+
 	.tip {
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 15px;
 		font-size: 13px;
+
 		span {
 			cursor: pointer;
 		}
+
 		.forget {
 			color: @grey;
 		}
+
 		.toggle {
 			color: @theme;
 		}
 	}
+
 	.login {
 		width: 100%;
 		height: 40px;
@@ -239,24 +239,25 @@ onUnmounted(() => {
 		border: 0;
 		border-radius: 8px;
 		cursor: pointer;
+
 		&:hover {
 			background-color: @hover;
 		}
 	}
+
 	.drag-item {
 		margin-bottom: 15px;
 	}
+
 	.el-input-group__append {
 		overflow: hidden;
 		padding: 0;
 		font-size: 13px;
 		background-color: @grey2;
-		box-shadow:
-			0 1px 0 0 @grey2 inset,
-			0 -1px 0 0 @grey2 inset,
-			-1px 0 0 0 @grey2 inset;
+		box-shadow: 0 1px 0 0 @grey2 inset, 0 -1px 0 0 @grey2 inset, -1px 0 0 0 @grey2 inset;
 		cursor: pointer;
 	}
+
 	.code-btn {
 		display: flex;
 		align-items: center;
@@ -264,6 +265,7 @@ onUnmounted(() => {
 		height: 100%;
 		padding: 0 20px;
 	}
+
 	.el-form-item {
 		margin-bottom: 22px;
 	}

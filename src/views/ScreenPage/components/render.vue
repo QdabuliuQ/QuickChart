@@ -91,7 +91,7 @@ import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
-import { cutElement, lockElement, unlockElement } from '@/utils/screenUtil'
+import { cutElement, getRecordOption, lockElement, unlockElement } from '@/utils/screenUtil'
 import { debounce, deepCopy } from '@/utils'
 
 import { IStyle } from '@/types/screen'
@@ -153,7 +153,10 @@ const selectElement = (info: any, idx: number) => {
 			screen.updateCurElementIdx(-1)
 			break
 		case '复制':
-			screen.setTmpElement(deepCopy(screen.getScreenOptionOfElements[idx]))
+			// eslint-disable-next-line no-case-declarations
+			const element = deepCopy(screen.getScreenOptionOfElements[idx])
+			screen.setTmpElement(element)
+			screen.addOperationRecordItem(getRecordOption('copy', element.type as any))
 			break
 		case '锁定':
 			lockElement(idx)
@@ -171,7 +174,7 @@ const itemClick = ({ idx, e }: { idx: number; e: MouseEvent }) => {
 	e.stopPropagation()
 	if (target.value)
 		updateElementStyle(
-			target.value,
+			target.value as HTMLElement,
 			screen.getCurElementIdx,
 			target.value?.cloneNode() as HTMLElement
 		)
@@ -189,6 +192,7 @@ const updateElementStyle = (target: HTMLElement, idx: number, preNode: HTMLEleme
 	let styleInfo: {
 		[propName: string]: any
 	} = {}
+	console.log('change')
 	while (target.style[i]) {
 		styleInfo[target.style[i]] = target.style[target.style[i] as any]
 		i++
@@ -305,9 +309,10 @@ const setElementGuidelines = () => {
 
 const deleteChart = (idx: number = screen.getCurElementIdx) => {
 	// 删除图表回调
-	screen.deleteScreenOptionOfElements(idx)
+	const element: Array<any> = screen.deleteScreenOptionOfElements(idx)
 	target.value = null // 选中元素设置为 null
 	screen.updateCurElementIdx(-1)
+	screen.addOperationRecordItem(getRecordOption('delete', element[0].type as any))
 }
 
 // 停止拖动
@@ -381,15 +386,8 @@ let stop = watch(
 	}
 )
 
-const globalClickEvent = (event) => {
-	console.log(event.target)
-	target.value = null // 选中元素设置为 null
-	screen.updateCurElementIdx(-1)
-}
-
 onMounted(() => {
 	document.getElementsByClassName('mainCanvas')[0].addEventListener('click', cancelClickEvent)
-	// document.documentElement.addEventListener('click', globalClickEvent)
 	proxy.$Bus.on('deleteChart', deleteChart)
 	setTimeout(() => {
 		localStorage.setItem(
@@ -427,10 +425,11 @@ onUnmounted(() => {
 
 	@keyframes borderAnimate {
 		0% {
-			border: 1px dashed @theme;
+			//border: 1px dashed @theme;
+			box-shadow: 0 0 0 1px @theme;
 		}
 		100% {
-			border: 1px dashed transparent;
+			box-shadow: 0 0 0 0 @theme;
 		}
 	}
 }

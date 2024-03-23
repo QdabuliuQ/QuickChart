@@ -1,6 +1,8 @@
-import { Elements, ElementTypeProperties, IConfig, IStyle } from '@/types/screen'
+import { Elements, ElementTypeProperties, IConfig, IOperation, IStyle } from '@/types/screen'
 import { defineStore } from 'pinia'
+
 export interface IStore {
+	operationRecord: Array<IOperation>
 	screenOption: IConfig | null
 	curElementIdx: number
 	activeElementIdx: number
@@ -10,6 +12,7 @@ export interface IStore {
 const useScreenStore = defineStore('screen', {
 	state: (): IStore => {
 		return {
+			operationRecord: [], // 操作记录
 			screenOption: null, // 大屏配置
 			curElementIdx: -1, // 选择元素索引
 			activeElementIdx: -1, // 激活元素索引
@@ -18,6 +21,9 @@ const useScreenStore = defineStore('screen', {
 	},
 
 	getters: {
+		getOperationRecord(state: any): Array<IOperation> {
+			return state.operationRecord
+		},
 		getTmpElement(state: any): IConfig | null {
 			return state.tmpElement
 		},
@@ -39,6 +45,9 @@ const useScreenStore = defineStore('screen', {
 	},
 
 	actions: {
+		addOperationRecordItem(record: IOperation) {
+			this.operationRecord.unshift(record)
+		},
 		setTmpElement(element: IConfig | null) {
 			this.tmpElement = element
 		},

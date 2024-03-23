@@ -3,10 +3,12 @@
 	<div v-else class="map-detail">
 		<div class="chart-container">
 			<div class="scroll-container">
-				<el-button v-if="props.back" @click="router.go(-1)" class="back-btn" type="info">
-					<i class="iconfont i_exit"></i>
-					返回
-				</el-button>
+				<circle-button
+					v-if="props.back"
+					style="position: absolute; top: 10px; left: 10px"
+					icon="i_back"
+					title="返回"
+					@clickEvent="router.go(-1)" />
 				<ope-buttons
 					:save-as="true"
 					@save-as-event="visible = true"
@@ -40,6 +42,7 @@
 import { onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import CircleButton from '@/components/circleButton.vue'
 import CommentDrawer from '@/components/commentDrawer.vue'
 import Loading from '@/components/loading.vue'
 import MapDom from '@/components/mapDom.vue'
@@ -276,15 +279,6 @@ onUnmounted(() => {
 			justify-content: center;
 
 			.scroll-container();
-			.back-btn {
-				position: absolute;
-				top: 8px;
-				left: 8px;
-				.iconfont {
-					margin-right: 5px;
-					font-size: 14px;
-				}
-			}
 		}
 	}
 }

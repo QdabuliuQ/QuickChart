@@ -4,7 +4,7 @@ import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
-import { setCommonStyle } from '@/utils/screenUtil'
+import { getRecordOption, setCommonStyle } from '@/utils/screenUtil'
 import { debounce } from '@/utils'
 
 import { Border, Chart, ElementTypeProperties, Image, Shape, Text } from '@/types/screen'
@@ -40,6 +40,7 @@ export function useElementConfig<T extends Image | Chart | Text | Shape | Border
 				JSON.parse(JSON.stringify(info.value!.style)),
 				idx.value
 			)
+			screen.addOperationRecordItem(getRecordOption('modify', info.value.type as any))
 		}),
 		{
 			deep: true

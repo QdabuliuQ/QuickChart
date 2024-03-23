@@ -228,7 +228,7 @@ const toggleType = (_type: 'chart' | 'map' | 'screen') => {
 		grid-gap: 20px;
 		.loading-box {
 			width: 100%;
-			height: 125px;
+			aspect-ratio: 2/1.3;
 		}
 	}
 	.el-empty {

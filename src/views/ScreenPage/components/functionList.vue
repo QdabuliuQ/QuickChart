@@ -1,6 +1,7 @@
 <template>
-	<el-scrollbar style="background: #424242" height="100vh">
+	<el-scrollbar height="100vh" style="background: #424242">
 		<div class="function-list">
+			<history-button />
 			<layer-button />
 			<save-button v-if="props.save" />
 			<save-as-button />
@@ -16,10 +17,11 @@
 	</el-scrollbar>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import BorderButton from '@/views/ScreenPage/components/borderButton.vue'
 import ChartButton from '@/views/ScreenPage/components/chartButton.vue'
 import ExportButton from '@/views/ScreenPage/components/exportButton.vue'
+import HistoryButton from '@/views/ScreenPage/components/historyButton.vue'
 import ImageButton from '@/views/ScreenPage/components/imageButton.vue'
 import LayerButton from '@/views/ScreenPage/components/layerButton.vue'
 import MapButton from '@/views/ScreenPage/components/mapButton.vue'
@@ -38,14 +40,17 @@ const props = defineProps<{
 .functionListPopoverClass {
 	width: auto !important;
 	padding: 0 !important;
+
 	.el-scrollbar {
 		padding: 10px;
 	}
+
 	.type-container {
 		display: grid;
 		padding: 10px;
 		grid-template-columns: repeat(3, 1fr);
 		grid-gap: 15px;
+
 		.type-item {
 			display: flex;
 			align-items: center;
@@ -54,29 +59,35 @@ const props = defineProps<{
 			border-radius: 10px;
 			flex-direction: column;
 			cursor: pointer;
+
 			img {
 				width: 50px;
 				margin-bottom: 10px;
 			}
+
 			&:hover {
 				background-color: #ffffff17;
 			}
 		}
 	}
+
 	.skeleton-loading {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 20px;
 	}
+
 	.el-empty {
 		width: 400px;
 	}
+
 	.functionListChartContainer {
 		display: grid;
 		width: 400px;
 		padding: 0 !important;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 20px;
+
 		.el-image {
 			overflow: hidden;
 			background-color: #fff;
@@ -84,16 +95,20 @@ const props = defineProps<{
 			border-radius: 10px;
 			box-sizing: border-box;
 		}
+
 		.item {
 			position: relative;
+
 			.name {
 				margin-top: 5px;
 				font-size: 14px;
 				text-align: center;
 			}
+
 			&:hover .mask {
 				opacity: 1;
 			}
+
 			.mask {
 				position: absolute;
 				z-index: 2;
@@ -117,10 +132,12 @@ const props = defineProps<{
 		}
 	}
 }
+
 .function-list {
 	display: flex;
 	flex-direction: column;
 	padding: 20px 3px 20px 0;
+
 	.active {
 		color: @theme !important;
 		background-color: #4d4d4d !important;

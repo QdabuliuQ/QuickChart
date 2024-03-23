@@ -1,4 +1,6 @@
 import ajax from '@/network/index'
+import { ResponseType } from '@/types/request'
+import { AxiosResponse } from 'axios'
 
 export function postScreenImage(data: {
 	option: any
@@ -7,7 +9,7 @@ export function postScreenImage(data: {
 	c_width: string
 	c_height: string
 	type: string
-}) {
+}): ResponseType {
 	return ajax({
 		url: '/sc/screenImage',
 		method: 'post',
@@ -33,7 +35,7 @@ export function postScreen(data: {
 	option: string
 	c_width: number
 	c_height: number
-}) {
+}): ResponseType {
 	return ajax({
 		url: '/sc/screen',
 		method: 'post',
@@ -42,7 +44,7 @@ export function postScreen(data: {
 }
 
 // 获取保存的大屏
-export function getScreens(params: { offset: number; limit: number }) {
+export function getScreens(params: { offset: number; limit: number }): ResponseType {
 	return ajax({
 		url: '/sc/screens',
 		method: 'get',
@@ -51,7 +53,7 @@ export function getScreens(params: { offset: number; limit: number }) {
 }
 
 // 修改名称
-export function putScreenName(data: { name: string; screen_id: string }) {
+export function putScreenName(data: { name: string; screen_id: string }): ResponseType {
 	return ajax({
 		url: '/sc/screenName',
 		method: 'put',
@@ -60,7 +62,7 @@ export function putScreenName(data: { name: string; screen_id: string }) {
 }
 
 // 获取大屏信息
-export function getScreen(params: { screen_id: string }) {
+export function getScreen(params: { screen_id: string }): ResponseType {
 	return ajax({
 		url: '/sc/screen',
 		method: 'get',

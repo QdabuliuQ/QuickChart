@@ -1,46 +1,49 @@
 <template>
 	<div class="info-chart-item">
 		<div class="loading-box">
-			<div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="box">
+			<div class="box" @mouseenter="opacity = 1" @mouseleave="opacity = 0">
 				<div
 					:style="{
 						opacity
 					}"
-					@click="toModify"
-					class="mask">
+					class="mask"
+					@click="toModify">
 					<el-popover
-						popper-class="chart-item-popover-class"
-						placement="bottom-start"
 						:hide-after="0"
-						trigger="hover">
-						<div @mouseenter="opacity = 1" @mouseleave="opacity = 0" class="menu-list">
-							<div @click="renameEvent" class="menu-item">
+						:teleported="false"
+						placement="bottom-start"
+						popper-class="chart-item-popover-class"
+						trigger="hover"
+						@mouseenter="opacity = 1"
+						@mouseleave="opacity = 0">
+						<div class="menu-list" @mouseenter="opacity = 1" @mouseleave="opacity = 0">
+							<div class="menu-item" @click="renameEvent">
 								<i class="iconfont i_rename"></i>
 								重命名
 							</div>
-							<div @click="deleteEvent" class="menu-item">
+							<div class="menu-item" @click="deleteEvent">
 								<i class="iconfont i_delete_2"></i>
 								删除
 							</div>
 						</div>
 						<template #reference>
-							<div class="more">
+							<div class="more" @click.stop>
 								<i class="iconfont i_more"></i>
 							</div>
 						</template>
 					</el-popover>
 					<div class="edit">编辑</div>
 				</div>
-				<img class="cover" :src="props.cover" />
+				<img :src="props.cover" class="cover" />
 			</div>
 		</div>
 		<div v-show="!isSetName" class="name">{{ name }}</div>
 		<div v-show="isSetName" class="input">
-			<input @blur="blurEvent" v-model="newName" type="text" />
+			<input v-model="newName" type="text" @blur="blurEvent" />
 		</div>
 	</div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import useProxy from '@/hooks/useProxy'
@@ -111,7 +114,6 @@ const blurEvent = async () => {
 
 const toModify = () => {
 	emits('clickItem', props.chart_id)
-	// router.push('/chart/'+props.chart_id)
 }
 
 const deleteEvent = () => {
@@ -132,17 +134,31 @@ const deleteEvent = () => {
 	width: 100px !important;
 	min-width: 100px !important;
 	padding: 0 !important;
+
 	.menu-list {
 		padding: 12px 0 !important;
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 10px;
+			background: transparent;
+			top: -10px;
+		}
+
 		.menu-item {
 			display: flex;
 			align-items: center;
 			padding: 7px 10px;
 			font-size: 13px;
 			cursor: pointer;
+
 			.iconfont {
 				margin-right: 8px;
 			}
+
 			&:hover {
 				color: @theme;
 				background-color: #414141;
@@ -150,8 +166,10 @@ const deleteEvent = () => {
 		}
 	}
 }
+
 .info-chart-item {
 	width: 100%;
+
 	.box {
 		width: 100%;
 		position: relative;
@@ -162,6 +180,7 @@ const deleteEvent = () => {
 		background-size: 10px 10px;
 		background-image: url('../../../assets/image/transparent.png');
 	}
+
 	.mask {
 		position: absolute;
 		z-index: 1;
@@ -180,6 +199,7 @@ const deleteEvent = () => {
 			border-radius: 15px;
 			transform: translate(-50%, -50%);
 		}
+
 		.more {
 			position: absolute;
 			top: 5px;
@@ -192,17 +212,20 @@ const deleteEvent = () => {
 			color: #000;
 			background-color: #fff;
 			border-radius: 4px;
+
 			.iconfont {
 				font-size: 18px;
 			}
 		}
 	}
+
 	.cover {
 		width: 100%;
-		height: 125px;
+		aspect-ratio: 2/1.3;
 		object-fit: contain;
 		vertical-align: middle;
 	}
+
 	.name {
 		overflow: hidden;
 		width: 100%;
@@ -215,6 +238,7 @@ const deleteEvent = () => {
 		white-space: nowrap;
 		line-height: 30px;
 	}
+
 	.input {
 		display: flex;
 		justify-content: center;
@@ -223,6 +247,7 @@ const deleteEvent = () => {
 		margin-top: 5px;
 		line-height: 23px;
 		border-bottom: 1px solid #636363;
+
 		input {
 			width: 90%;
 			font-size: 14px;

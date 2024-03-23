@@ -1,13 +1,13 @@
 <template>
 	<button-item
-		@click-event="clickEvent"
 		:verify="true"
-		title="另存"
 		icon="i_save1"
-		tip="另存图表" />
-	<save-chart-dialog @save-chart="saveChart" v-model:visible="saveDialogVisible" />
+		tip="另存图表"
+		title="另存"
+		@click-event="clickEvent" />
+	<save-chart-dialog v-model:visible="saveDialogVisible" @save-chart="saveChart" />
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import ButtonItem from './buttonItem.vue'
@@ -16,6 +16,8 @@ import SaveChartDialog from '@/components/saveChartDialog.vue'
 import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
+
+import { stringify } from '@/utils/toJSON'
 
 import { postScreen } from '@/network/screen'
 
@@ -32,19 +34,29 @@ const saveChart = async (name: string) => {
 		text: '正在保存...',
 		background: 'rgba(0, 0, 0, 0.7)'
 	})
-	let res: any = await postScreen({
-		name,
-		option: JSON.stringify(screen.getScreenOption),
-		c_width: document.getElementById('render')?.clientWidth as number,
-		c_height: document.getElementById('render')?.clientHeight as number
-	})
-	if (res.status) {
+	console.log(screen.getScreenOptionOfElements)
+	if (screen.getScreenOptionOfElements.length === 0) {
 		proxy.$notice({
-			type: 'success',
-			message: res.msg,
+			type: 'error',
+			message: '请添加页面元素',
 			position: 'top-left'
 		})
+	} else {
+		let res: any = await postScreen({
+			name,
+			option: stringify(screen.getScreenOption),
+			c_width: document.getElementById('render')?.clientWidth as number,
+			c_height: document.getElementById('render')?.clientHeight as number
+		})
+		if (res.status) {
+			proxy.$notice({
+				type: 'success',
+				message: res.msg,
+				position: 'top-left'
+			})
+		}
 	}
+
 	saveDialogVisible.value = false
 	loading.close()
 }

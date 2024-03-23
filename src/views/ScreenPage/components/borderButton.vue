@@ -1,29 +1,29 @@
 <template>
 	<el-popover
 		ref="borderPopoverRef"
-		popper-class="functionListPopoverClass"
+		:hide-after="0"
 		placement="right-start"
-		trigger="click"
-		:hide-after="0">
+		popper-class="functionListPopoverClass"
+		trigger="click">
 		<el-scrollbar height="400px">
 			<div class="functionListChartContainer">
-				<div @click="borderClick(index + 1)" v-for="(item, index) in 12" :key="index" class="item">
+				<div v-for="(item, index) in 12" :key="index" class="item" @click="borderClick(index + 1)">
 					<el-image
-						class="border-image"
-						style="width: 100%; aspect-ratio: 2/1.3"
 						:src="borders[index]"
-						fit="cover" />
+						class="border-image"
+						fit="cover"
+						style="width: 100%; aspect-ratio: 2/1.3" />
 					<div class="name">边框 - {{ index + 1 }}</div>
 				</div>
 			</div>
 		</el-scrollbar>
 		<template #reference>
-			<button-item title="边框" icon="i_border" tip="插入边框" />
+			<button-item icon="i_border" tip="插入边框" title="边框" />
 		</template>
 	</el-popover>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import ButtonItem from '@/views/ScreenPage/components/buttonItem.vue'
@@ -43,7 +43,7 @@ import border12 from '@/assets/image/border12.png'
 
 import useStore from '@/store'
 
-import { getBorderConfig } from '@/utils/screenUtil'
+import { getBorderConfig, getRecordOption } from '@/utils/screenUtil'
 
 const borders = [
 	border1,
@@ -84,6 +84,7 @@ const borderClick = (idx: number) => {
 		}
 	}
 	screen.addScreenOptionOfElements(getBorderConfig(option))
+	screen.addOperationRecordItem(getRecordOption('add', 'border'))
 }
 </script>
 
@@ -92,6 +93,7 @@ const borderClick = (idx: number) => {
 	.item {
 		cursor: pointer;
 	}
+
 	.border-image {
 		border: 1px solid #3b3b3b !important;
 	}

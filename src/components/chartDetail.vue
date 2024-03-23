@@ -3,25 +3,27 @@
 	<div v-else class="chartDetail">
 		<div class="chart-container">
 			<div class="scroll-container">
-				<el-button v-if="props.back" @click="router.go(-1)" class="back-btn" type="info">
-					<i class="iconfont i_exit"></i>
-					返回
-				</el-button>
+				<circle-button
+					v-if="props.back"
+					icon="i_back"
+					style="position: absolute; top: 10px; left: 10px"
+					title="返回"
+					@clickEvent="router.go(-1)" />
 				<ope-buttons
-					:save-as="true"
-					@save-as-event="visible = true"
-					:save="props.update"
-					@save-event="toUpdate"
-					:share="props.share"
-					@share-event="shareVisible = true"
-					:praise="route.name !== 'type'"
 					v-model:isPraise="is_praise"
 					v-model:praiseCount="praise_count"
-					:praise-event="praiseEvent"
 					:comment="route.name !== 'type'"
 					:commentCount="props.comment_count"
+					:praise="route.name !== 'type'"
+					:praise-event="praiseEvent"
+					:save="props.update"
+					:save-as="true"
+					:share="props.share"
+					@save-as-event="visible = true"
+					@save-event="toUpdate"
+					@share-event="shareVisible = true"
 					@comment-event="show = true" />
-				<chart-dom ref="chartDomRef" :key="key" />
+				<chart-dom :key="key" ref="chartDomRef" />
 			</div>
 		</div>
 	</div>
@@ -29,18 +31,19 @@
 		v-if="props.infoPanel"
 		v-model:drawer="show"
 		:chart_id="props.chart_id"
-		:post-comment="_postComment"
 		:delete-comment="_deleteComment"
-		:praise-comment="_praiseComment"
-		:get-data="_getComment" />
+		:get-data="_getComment"
+		:post-comment="_postComment"
+		:praise-comment="_praiseComment" />
 	<share-chart-dialog v-model:visible="shareVisible" @share-event="shareEvent" />
 	<save-chart-dialog v-model:visible="visible" @save-chart="saveChart" />
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import ChartDom from '@/components/chartDom.vue'
+import CircleButton from '@/components/circleButton.vue'
 import CommentDrawer from '@/components/commentDrawer.vue'
 import Loading from '@/components/loading.vue'
 import OpeButtons from '@/components/opeButtons.vue'
@@ -131,21 +134,13 @@ const saveChart = async (name: string) => {
 		type: props.detailType
 	})
 		.then((data: any) => {
-			if (!data.status) {
-				throw new Error()
+			if (data.status) {
+				proxy.$notice({
+					type: 'success',
+					message: data.msg,
+					position: 'top-left'
+				})
 			}
-			proxy.$notice({
-				type: 'success',
-				message: data.msg,
-				position: 'top-left'
-			})
-		})
-		.catch(() => {
-			proxy.$notice({
-				type: 'error',
-				message: '保存图片失败',
-				position: 'top-left'
-			})
 		})
 		.finally(() => {
 			save_loading.close()
@@ -248,6 +243,7 @@ onUnmounted(() => {
 .chartDetail {
 	width: 100%;
 	height: 100%;
+
 	.chart-container {
 		height: 100%;
 
@@ -267,17 +263,7 @@ onUnmounted(() => {
 			overflow: auto;
 			width: 100%;
 			height: 100%;
-
-			.back-btn {
-				position: absolute;
-				top: 8px;
-				left: 8px;
-
-				.iconfont {
-					margin-right: 5px;
-					font-size: 14px;
-				}
-			}
+			.flex();
 
 			.scroll-container();
 		}

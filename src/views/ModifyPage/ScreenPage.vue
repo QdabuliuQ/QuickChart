@@ -1,7 +1,12 @@
 <template>
 	<div v-if="status === 1" class="screen-page">
 		<function-list v-if="option" :save="authorId === curId" ref="functionListRef"></function-list>
-		<div style="position: relative" v-if="option">
+		<div style="position: relative; flex: 1" v-if="option">
+			<circle-button
+				style="position: absolute; top: 20px; left: 20px"
+				icon="i_back"
+				title="返回"
+				@clickEvent="router.go(-1)" />
 			<screen-canvas :width="width + 'px'" :height="height + 'px'" />
 			<ope-buttons
 				:shape="true"
@@ -30,8 +35,9 @@
 </template>
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+import CircleButton from '@/components/circleButton.vue'
 import CommentDrawer from '@/components/commentDrawer.vue'
 import EmptyTip from '@/components/emptyTip.vue'
 import ShareChartDialog from '@/components/shareChartDialog.vue'
@@ -67,6 +73,7 @@ const option = ref<any>(null)
 const status = ref<number>(-1)
 const visible = ref<boolean>(false)
 
+const router = useRouter()
 const route = useRoute()
 const screen_id = route.params.id as string
 const authorId = ref<string>('')

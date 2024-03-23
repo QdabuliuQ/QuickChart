@@ -1,6 +1,13 @@
 <template>
 	<div class="screenCanvas">
-		<context-menu @contextmenu="contextmenu" @select="selectItem" :menu="menu">
+		<context-menu
+			:style="{
+				transform: `scale(${zoom})`,
+				transformOrigin: 'center center'
+			}"
+			@contextmenu="contextmenu"
+			@select="selectItem"
+			:menu="menu">
 			<div
 				class="opacityBg"
 				:style="{
@@ -26,15 +33,16 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-import render from './render.vue'
+import Render from './render.vue'
 import ContextMenu from '@/components/contextMenu.vue'
 
 import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
+import { getRecordOption } from '@/utils/screenUtil'
 import { uuid } from '@/utils'
 
 import { postScreenImage } from '@/network/screen'
@@ -92,6 +100,7 @@ const selectItem = ({ label }: { label: string }) => {
 				element.style.translateY = lastPoint[1]
 				screen.addScreenOptionOfElements(element)
 				screen.setTmpElement(null) // 清空粘贴的元素
+				screen.addOperationRecordItem(getRecordOption('paste', element.type))
 			}
 			break
 		case '清空剪切板':
@@ -106,19 +115,31 @@ const lastPoint: [number, number] = [0, 0]
 const contextmenu = (point: [number, number]) => {
 	lastPoint[0] = point[0]
 	lastPoint[1] = point[1]
+	console.log(lastPoint, 'lastPoint')
 }
 
+const resizeEvent = () => {
+	let container = document.getElementsByClassName('screenCanvas')[0]
+	zoom.value = (container.clientWidth * 0.9) / 1127
+	sessionStorage.setItem('ratio', zoom.value.toString())
+}
+
+const zoom = ref<number>(1)
 onMounted(() => {
-	// let container = document.getElementsByClassName('screenCanvas')[0]
+	resizeEvent()
 	// size[0] = container.clientWidth * 0.95
 	// size[1] = (size[0] * document.documentElement.clientHeight) / document.documentElement.clientWidth
 
 	size[0] = 1127
 	size[1] = 542
+
+	window.addEventListener('resize', resizeEvent)
 })
 
 onUnmounted(() => {
 	proxy.$Bus.off('exportImage', exportImage)
+
+	window.removeEventListener('resize', resizeEvent)
 })
 </script>
 
@@ -141,8 +162,8 @@ onUnmounted(() => {
 
 	.opacityBg {
 		background-repeat: repeat;
-		background-size: cover;
-		background-image: url('../../../assets/image/bg.jpg');
+		background-size: 10px 10px;
+		background-image: url('../../../assets/image/transparent.png');
 	}
 
 	.mainCanvas {

@@ -1,6 +1,7 @@
 import { BorderType } from '@/types/element'
 
 export type Elements = 'chart' | 'map' | 'text' | 'shape' | 'image' | 'marquee' | 'border'
+
 export interface IStyle {
 	width: number
 	height: number
@@ -10,6 +11,7 @@ export interface IStyle {
 	zIndex: number
 	display: 'none' | 'block'
 }
+
 export type Border = {
 	id: string
 	type: 'border'
@@ -133,6 +135,7 @@ export type ElementTypeProperties<T extends ElementType['type']> = T extends 'ch
 						: T extends 'border'
 							? Border
 							: never
+
 export interface IConfig {
 	canvas: {
 		bgType: BgType
@@ -147,4 +150,12 @@ export interface IConfig {
 		backgroundRepeat: 'no-repeat' | 'repeat'
 	}
 	elements: Array<ElementTypeProperties<Elements>>
+}
+
+export type OperationType = 'add' | 'delete' | 'modify' | 'copy' | 'paste'
+
+export interface IOperation {
+	type: OperationType
+	element: Elements
+	time: number
 }

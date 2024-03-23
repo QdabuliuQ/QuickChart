@@ -1,19 +1,19 @@
 <template>
 	<el-popover
 		ref="shapePopoverRef"
-		popper-class="functionListPopoverClass"
+		:hide-after="0"
 		placement="right-start"
-		trigger="click"
-		:hide-after="0">
+		popper-class="functionListPopoverClass"
+		trigger="click">
 		<el-scrollbar height="350px">
 			<div class="popover-text-list">
-				<div @click="normalTextClick" class="text-item text-item-normal">
+				<div class="text-item text-item-normal" @click="normalTextClick">
 					<div class="text-item-cover">
 						<i class="iconfont i_text"></i>
 					</div>
 					<div class="text-item-title">普通文本</div>
 				</div>
-				<div @click="scrollTextClick" class="text-item text-item-scroll">
+				<div class="text-item text-item-scroll" @click="scrollTextClick">
 					<div class="text-item-cover">
 						<i class="iconfont i_scroll_text"></i>
 					</div>
@@ -22,28 +22,30 @@
 			</div>
 		</el-scrollbar>
 		<template #reference>
-			<button-item title="文本" icon="i_text" tip="插入文本" />
+			<button-item icon="i_text" tip="插入文本" title="文本" />
 		</template>
 	</el-popover>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 import ButtonItem from './buttonItem.vue'
 
 import useStore from '@/store'
 
-import { getMarqueeConfig, getTextConfig } from '@/utils/screenUtil'
+import { getMarqueeConfig, getRecordOption, getTextConfig } from '@/utils/screenUtil'
 
 const shapePopoverRef = ref()
 const { screen } = useStore()
 const normalTextClick = () => {
 	screen.addScreenOptionOfElements(getTextConfig())
+	screen.addOperationRecordItem(getRecordOption('add', 'text'))
 	shapePopoverRef.value.hide()
 }
 
 const scrollTextClick = () => {
 	screen.addScreenOptionOfElements(getMarqueeConfig())
+	screen.addOperationRecordItem(getRecordOption('add', 'marquee'))
 	shapePopoverRef.value.hide()
 }
 </script>
@@ -55,12 +57,15 @@ const scrollTextClick = () => {
 		width: 400px;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 15px;
+
 		.text-item {
 			cursor: pointer;
+
 			&:hover .text-item-cover {
 				border: 1px solid @theme;
 			}
 		}
+
 		.text-item-cover {
 			display: flex;
 			justify-content: center;
@@ -74,10 +79,12 @@ const scrollTextClick = () => {
 			border-radius: 10px;
 			transition: all 0.2s linear;
 			box-sizing: border-box;
+
 			.iconfont {
 				font-size: 50px;
 			}
 		}
+
 		.text-item-title {
 			font-size: 13px;
 			text-align: center;

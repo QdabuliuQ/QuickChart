@@ -6,28 +6,28 @@
 			<common-config :info="baseInfo" />
 			<config-title title="文本配置" />
 			<series-item title="文本内容">
-				<el-input size="small" v-model="content" maxlength="100" />
+				<el-input v-model="info.content" maxlength="100" size="small" />
 			</series-item>
 			<series-item title="滚动速度">
-				<el-input-number :min="0.1" :max="10" :step="0.1" size="small" v-model="speed" />
+				<el-input-number v-model="info.speed" :max="10" :min="0.1" :step="0.1" size="small" />
 			</series-item>
 			<series-item title="层级">
-				<el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
+				<el-input-number v-model="info.style.zIndex" :max="100" :min="1" size="small" />
 			</series-item>
 			<series-item title="字体大小">
-				<el-input-number :min="1" :max="100" size="small" v-model="info.style.fontSize" />
+				<el-input-number v-model="info.style.fontSize" :max="100" :min="1" size="small" />
 			</series-item>
 			<series-item title="字体间距">
-				<el-input-number :min="0" :max="100" size="small" v-model="info.style.letterSpacing" />
+				<el-input-number v-model="info.style.letterSpacing" :max="100" :min="0" size="small" />
 			</series-item>
 			<series-item title="字体高度">
-				<el-input-number :min="10" :max="50" size="small" v-model="info.style.lineHeight" />
+				<el-input-number v-model="info.style.lineHeight" :max="50" :min="10" size="small" />
 			</series-item>
 			<series-item title="字体粗细">
 				<el-select
-					popper-class="params-select-popper-class"
 					v-model="info.style.fontWeight"
 					placeholder="请选择"
+					popper-class="params-select-popper-class"
 					size="small">
 					<el-option key="lighter" label="lighter" value="lighter" />
 					<el-option key="normal" label="normal" value="normal" />
@@ -37,9 +37,9 @@
 			</series-item>
 			<series-item title="字体对齐">
 				<el-select
-					popper-class="params-select-popper-class"
 					v-model="info.style.textAlign"
 					placeholder="请选择"
+					popper-class="params-select-popper-class"
 					size="small">
 					<el-option key="left" label="左对齐" value="left" />
 					<el-option key="renter" label="居中" value="center" />
@@ -48,9 +48,9 @@
 			</series-item>
 			<series-item title="字体样式">
 				<el-select
-					popper-class="params-select-popper-class"
 					v-model="info.style.fontStyle"
 					placeholder="请选择"
+					popper-class="params-select-popper-class"
 					size="small">
 					<el-option key="normal" label="正常" value="normal" />
 					<el-option key="italic" label="斜体" value="italic" />
@@ -58,9 +58,9 @@
 			</series-item>
 			<series-item title="字体线段">
 				<el-select
-					popper-class="params-select-popper-class"
 					v-model="info.style.textDecorationLine"
 					placeholder="请选择"
+					popper-class="params-select-popper-class"
 					size="small">
 					<el-option key="none" label="无线段" value="none" />
 					<el-option key="underline" label="下划线" value="underline" />
@@ -70,9 +70,9 @@
 			</series-item>
 			<series-item title="线段类型">
 				<el-select
-					popper-class="params-select-popper-class"
 					v-model="info.style.textDecorationStyle"
 					placeholder="请选择"
+					popper-class="params-select-popper-class"
 					size="small">
 					<el-option key="solid" label="实线" value="solid" />
 					<el-option key="double" label="双划线" value="double" />
@@ -82,36 +82,36 @@
 				</el-select>
 			</series-item>
 			<series-item title="线段颜色">
-				<el-color-picker size="small" v-model="info.style.textDecorationColor" show-alpha />
+				<el-color-picker v-model="info.style.textDecorationColor" show-alpha size="small" />
 			</series-item>
 			<series-item title="字体颜色">
-				<el-color-picker size="small" v-model="info.style.color" show-alpha />
+				<el-color-picker v-model="info.style.color" show-alpha size="small" />
 			</series-item>
 			<series-item title="背景颜色">
-				<el-color-picker size="small" v-model="info.style.backgroundColor" show-alpha />
+				<el-color-picker v-model="info.style.backgroundColor" show-alpha size="small" />
 			</series-item>
 			<config-btn
-				:icon="'i_delete_2'"
 				:bg-color="'rgb(255, 66, 66)'"
-				@btn-click="deleteEvent"
-				label="删除元素" />
+				:icon="'i_delete_2'"
+				label="删除元素"
+				@btn-click="deleteEvent" />
 		</template>
 	</div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 import SeriesItem from '@/components/seriesItem.vue'
-import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
 import ConfigCover from '@/views/ScreenPage/components/configCover.vue'
 import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
+import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 
 import useProxy from '@/hooks/useProxy'
 
 import useStore from '@/store'
 
-import { setCommonStyle } from '@/utils/screenUtil'
+import { getRecordOption, setCommonStyle } from '@/utils/screenUtil'
 import { debounce } from '@/utils'
 
 import { ElementTypeProperties, Marquee } from '@/types/screen'
@@ -128,6 +128,7 @@ const speed = ref<number>(0)
 const baseInfo = ref(
 	screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'marquee'>
 )
+const update = ref<boolean>(true)
 const updateInfo = () => {
 	if (screen.getCurElementIdx !== -1) {
 		idx.value = screen.getCurElementIdx
@@ -145,8 +146,14 @@ const updateInfo = () => {
 let stop1 = watch(
 	() => info,
 	debounce(() => {
-		setCommonStyle(baseInfo, info)
-		screen.updateScreenOptionOfElementStyle(info.value!.style, idx.value)
+		if (update.value) {
+			setCommonStyle(baseInfo, info)
+			screen.updateScreenOptionOfElementStyle(info.value!.style, idx.value)
+			screen.updateScreenOptionOfElementProperty(idx.value, 'content', (info.value as any).content)
+			screen.updateScreenOptionOfElementProperty(idx.value, 'speed', (info.value as any).speed)
+			screen.addOperationRecordItem(getRecordOption('modify', 'marquee'))
+		}
+		update.value = true
 	}),
 	{
 		deep: true
@@ -162,14 +169,6 @@ let stop2 = watch(
 	}
 )
 
-let stop3 = watch(
-	[content, speed],
-	debounce(() => {
-		screen.updateScreenOptionOfElementProperty(idx.value, 'content', content.value)
-		screen.updateScreenOptionOfElementProperty(idx.value, 'speed', speed.value)
-	})
-)
-
 const proxy = useProxy()
 const deleteEvent = () => {
 	// 删除图表
@@ -177,12 +176,12 @@ const deleteEvent = () => {
 }
 
 onMounted(() => {
+	update.value = false
 	updateInfo()
 })
 
 onUnmounted(() => {
 	stop1()
 	stop2()
-	stop3()
 })
 </script>

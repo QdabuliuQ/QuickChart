@@ -1,494 +1,502 @@
 @font-face {
-	font-family: "iconfont"; /* Project id 3670180 */
-	src: url('//at.alicdn.com/t/c/font_3670180_dpqt0ha346p.woff2?t=1709888976471') format('woff2'),
-	url('//at.alicdn.com/t/c/font_3670180_dpqt0ha346p.woff?t=1709888976471') format('woff'),
-	url('//at.alicdn.com/t/c/font_3670180_dpqt0ha346p.ttf?t=1709888976471') format('truetype');
+    font-family: "iconfont"; /* Project id 3670180 */
+    src: url('//at.alicdn.com/t/c/font_3670180_f9jgn9x1u2o.woff2?t=1711178309289') format('woff2'),
+    url('//at.alicdn.com/t/c/font_3670180_f9jgn9x1u2o.woff?t=1711178309289') format('woff'),
+    url('//at.alicdn.com/t/c/font_3670180_f9jgn9x1u2o.ttf?t=1711178309289') format('truetype');
 }
 
 .iconfont {
-	font-family: "iconfont" !important;
-	font-size: 16px;
-	font-style: normal;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.i_history:before {
+    content: "\e63c";
+}
+
+.i_back:before {
+    content: "\e6a9";
 }
 
 .i_fit:before {
-	content: "\e68b";
+    content: "\e68b";
 }
 
 .i_full:before {
-	content: "\ec49";
+    content: "\ec49";
 }
 
 .i_fit_height:before {
-	content: "\e600";
+    content: "\e600";
 }
 
 .i_fit_width:before {
-	content: "\ee1b";
+    content: "\ee1b";
 }
 
 .i_border:before {
-	content: "\e631";
+    content: "\e631";
 }
 
 .i_scroll_text:before {
-	content: "\e616";
+    content: "\e616";
 }
 
 .i_preview:before {
-	content: "\e678";
+    content: "\e678";
 }
 
 .i_layer:before {
-	content: "\e677";
+    content: "\e677";
 }
 
 .i_clear:before {
-	content: "\e613";
+    content: "\e613";
 }
 
 .i_see:before {
-	content: "\ebcc";
+    content: "\ebcc";
 }
 
 .i_unsee:before {
-	content: "\ebcd";
+    content: "\ebcd";
 }
 
 .i_copy:before {
-	content: "\e63e";
+    content: "\e63e";
 }
 
 .i_sunburst:before {
-	content: "\ecc0";
+    content: "\ecc0";
 }
 
 .i_loudoutu:before {
-	content: "\e74e";
+    content: "\e74e";
 }
 
 .i_sankey:before {
-	content: "\e62f";
+    content: "\e62f";
 }
 
 .i_radar:before {
-	content: "\e64b";
+    content: "\e64b";
 }
 
 .i_kline:before {
-	content: "\e675";
+    content: "\e675";
 }
 
 .i_point:before {
-	content: "\e62c";
+    content: "\e62c";
 }
 
 .i_upload:before {
-	content: "\e81d";
+    content: "\e81d";
 }
 
 .i_download:before {
-	content: "\e86f";
+    content: "\e86f";
 }
 
 .i_export:before {
-	content: "\e62b";
+    content: "\e62b";
 }
 
 .i_img:before {
-	content: "\e623";
+    content: "\e623";
 }
 
 .i_delete_2:before {
-	content: "\e629";
+    content: "\e629";
 }
 
 .i_paste:before {
-	content: "\e63f";
+    content: "\e63f";
 }
 
 .i_cut:before {
-	content: "\e620";
+    content: "\e620";
 }
 
 .i_zIndex:before {
-	content: "\eb73";
+    content: "\eb73";
 }
 
 .i_lock:before {
-	content: "\e61b";
+    content: "\e61b";
 }
 
 .i_unlock:before {
-	content: "\e61c";
+    content: "\e61c";
 }
 
 .i_shape:before {
-	content: "\e7f7";
+    content: "\e7f7";
 }
 
 .i_rotate:before {
-	content: "\e66a";
+    content: "\e66a";
 }
 
 .i_scale:before {
-	content: "\e60c";
+    content: "\e60c";
 }
 
 .i_move:before {
-	content: "\e698";
+    content: "\e698";
 }
 
 .i_height:before {
-	content: "\e61f";
+    content: "\e61f";
 }
 
 .i_width:before {
-	content: "\ee1a";
+    content: "\ee1a";
 }
 
 .i_bar:before {
-	content: "\e61a";
+    content: "\e61a";
 }
 
 .i_map:before {
-	content: "\e619";
+    content: "\e619";
 }
 
 .i_screen:before {
-	content: "\e617";
+    content: "\e617";
 }
 
 .i_threeD:before {
-	content: "\e651";
+    content: "\e651";
 }
 
 .i_mapping:before {
-	content: "\e61e";
+    content: "\e61e";
 }
 
 .i_block:before {
-	content: "\e693";
+    content: "\e693";
 }
 
 .i_map_2:before {
-	content: "\e8ad";
+    content: "\e8ad";
 }
 
 .i_share:before {
-	content: "\e626";
+    content: "\e626";
 }
 
 .i_comment:before {
-	content: "\e612";
+    content: "\e612";
 }
 
 .i_praise:before {
-	content: "\e62a";
+    content: "\e62a";
 }
 
 .i_all:before {
-	content: "\e684";
+    content: "\e684";
 }
 
 .i_rename:before {
-	content: "\e63a";
+    content: "\e63a";
 }
 
 .i_more:before {
-	content: "\e611";
+    content: "\e611";
 }
 
 .i_save1:before {
-	content: "\e6cb";
+    content: "\e6cb";
 }
 
 .i_email:before {
-	content: "\e60b";
+    content: "\e60b";
 }
 
 .i_clock:before {
-	content: "\e64e";
+    content: "\e64e";
 }
 
 .i_update:before {
-	content: "\e7cb";
+    content: "\e7cb";
 }
 
 .i_collect:before {
-	content: "\e625";
+    content: "\e625";
 }
 
 .i_exit:before {
-	content: "\e892";
+    content: "\e892";
 }
 
 .i_chart:before {
-	content: "\eb96";
+    content: "\eb96";
 }
 
 .i_event:before {
-	content: "\e610";
+    content: "\e610";
 }
 
 .i_success:before {
-	content: "\e60a";
+    content: "\e60a";
 }
 
 .i_slide_right:before {
-	content: "\e679";
+    content: "\e679";
 }
 
 .i_close_line:before {
-	content: "\e6ea";
+    content: "\e6ea";
 }
 
 .i_register:before {
-	content: "\e6d6";
+    content: "\e6d6";
 }
 
 .i_login:before {
-	content: "\e609";
+    content: "\e609";
 }
 
 .i_circle_item:before {
-	content: "\e843";
+    content: "\e843";
 }
 
 .i_pointer:before {
-	content: "\e642";
+    content: "\e642";
 }
 
 .i_progress:before {
-	content: "\e614";
+    content: "\e614";
 }
 
 .i_gauge_chart:before {
-	content: "\e60d";
+    content: "\e60d";
 }
 
 .i_funnel:before {
-	content: "\e8bf";
+    content: "\e8bf";
 }
 
 .i_triangle:before {
-	content: "\e63b";
+    content: "\e63b";
 }
 
 .i_rect:before {
-	content: "\e64a";
+    content: "\e64a";
 }
 
 .i_html:before {
-	content: "\e6e8";
+    content: "\e6e8";
 }
 
 .i_png:before {
-	content: "\e627";
+    content: "\e627";
 }
 
 .i_object:before {
-	content: "\e663";
+    content: "\e663";
 }
 
 .i_js:before {
-	content: "\e60f";
+    content: "\e60f";
 }
 
 .i_component:before {
-	content: "\e652";
+    content: "\e652";
 }
 
 .i_close:before {
-	content: "\e66f";
+    content: "\e66f";
 }
 
 .i_jia:before {
-	content: "\e606";
+    content: "\e606";
 }
 
 .i_manage:before {
-	content: "\e641";
+    content: "\e641";
 }
 
 .i_radar_line:before {
-	content: "\e666";
+    content: "\e666";
 }
 
 .i_sarea:before {
-	content: "\e615";
+    content: "\e615";
 }
 
 .i_gsline:before {
-	content: "\e858";
+    content: "\e858";
 }
 
 .i_num:before {
-	content: "\e640";
+    content: "\e640";
 }
 
 .i_tick:before {
-	content: "\e9cd";
+    content: "\e9cd";
 }
 
 .i_sline:before {
-	content: "\e62d";
+    content: "\e62d";
 }
 
 .i_kline_chart:before {
-	content: "\e60e";
+    content: "\e60e";
 }
 
 .i_line:before {
-	content: "\ee19";
+    content: "\ee19";
 }
 
 .i_bg:before {
-	content: "\e8fa";
+    content: "\e8fa";
 }
 
 .i_angleAxis:before {
-	content: "\e628";
+    content: "\e628";
 }
 
 .i_point_chart:before {
-	content: "\e622";
+    content: "\e622";
 }
 
 .i_pie_chart:before {
-	content: "\e602";
+    content: "\e602";
 }
 
 .i_bar_chart:before {
-	content: "\e929";
+    content: "\e929";
 }
 
 .i_line_chart:before {
-	content: "\e70f";
+    content: "\e70f";
 }
 
 .i_gline:before {
-	content: "\e8a9";
+    content: "\e8a9";
 }
 
 .i_text:before {
-	content: "\e649";
+    content: "\e649";
 }
 
 .i_pie:before {
-	content: "\eb95";
+    content: "\eb95";
 }
 
 .i_canvas:before {
-	content: "\e746";
+    content: "\e746";
 }
 
 .i_params:before {
-	content: "\e607";
+    content: "\e607";
 }
 
 .i_angle:before {
-	content: "\e621";
+    content: "\e621";
 }
 
 .i_radiusAxis:before {
-	content: "\e604";
+    content: "\e604";
 }
 
 .i_circle:before {
-	content: "\e653";
+    content: "\e653";
 }
 
 .i_home:before {
-	content: "\e62e";
+    content: "\e62e";
 }
 
 .i_step_right:before {
-	content: "\e608";
+    content: "\e608";
 }
 
 .i_document:before {
-	content: "\e7d0";
+    content: "\e7d0";
 }
 
 .i_right:before {
-	content: "\e624";
+    content: "\e624";
 }
 
 .i_refresh:before {
-	content: "\e67b";
+    content: "\e67b";
 }
 
 .i_save:before {
-	content: "\e67c";
+    content: "\e67c";
 }
 
 .i_top:before {
-	content: "\e665";
+    content: "\e665";
 }
 
 .i_down:before {
-	content: "\e66b";
+    content: "\e66b";
 }
 
 .i_edit:before {
-	content: "\e8ac";
+    content: "\e8ac";
 }
 
 .i_data:before {
-	content: "\e8b9";
+    content: "\e8b9";
 }
 
 .i_delete:before {
-	content: "\e601";
+    content: "\e601";
 }
 
 .i_plus:before {
-	content: "\eb89";
+    content: "\eb89";
 }
 
 .i_legend:before {
-	content: "\e762";
+    content: "\e762";
 }
 
 .i_color:before {
-	content: "\e630";
+    content: "\e630";
 }
 
 .i_grid:before {
-	content: "\e655";
+    content: "\e655";
 }
 
 .i_mark:before {
-	content: "\e662";
+    content: "\e662";
 }
 
 .i_Y:before {
-	content: "\e6eb";
+    content: "\e6eb";
 }
 
 .i_X:before {
-	content: "\e6ec";
+    content: "\e6ec";
 }
 
 .i_title:before {
-	content: "\e61d";
+    content: "\e61d";
 }
 
 .i_loading:before {
-	content: "\e676";
+    content: "\e676";
 }
 
 .i_code:before {
-	content: "\e7ae";
+    content: "\e7ae";
 }
 
 .i_hide:before {
-	content: "\e603";
+    content: "\e603";
 }
 
 .i_show:before {
-	content: "\e6bb";
+    content: "\e6bb";
 }

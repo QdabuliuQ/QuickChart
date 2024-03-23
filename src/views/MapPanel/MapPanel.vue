@@ -6,8 +6,7 @@
 					:loading="chart_loading"
 					:detail-type="detailType"
 					:type="type"
-					:adcode="router.currentRoute.value.params.adcode as string" 
-				/>
+					:adcode="router.currentRoute.value.params.adcode as string" />
 			</div>
 			<div class="rightParamsContainer">
 				<div class="panelBtnList">

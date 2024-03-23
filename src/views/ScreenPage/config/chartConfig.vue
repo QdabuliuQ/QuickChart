@@ -8,89 +8,27 @@
 			<common-config :info="baseInfo" />
 			<config-title title="图表配置" />
 			<series-item title="层级">
-				<el-input-number :min="1" :max="100" size="small" v-model="info.style.zIndex" />
+				<el-input-number v-model="info.style.zIndex" :max="100" :min="1" size="small" />
 			</series-item>
 			<config-btn
-				:icon="'i_delete_2'"
 				:bg-color="'rgb(255, 66, 66)'"
-				@btn-click="deleteEvent"
-				label="删除元素" />
+				:icon="'i_delete_2'"
+				label="删除元素"
+				@btn-click="deleteEvent" />
 		</template>
 	</div>
 </template>
-<script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
-
+<script lang="ts" setup>
 import SeriesItem from '@/components/seriesItem.vue'
 import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
 import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
 import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 
-import useProxy from '@/hooks/useProxy'
+import { useElementConfig } from '@/hooks/useElementConfig'
 
-import useStore from '@/store'
+import { Chart } from '@/types/screen'
 
-import { setCommonStyle } from '@/utils/screenUtil'
-import { debounce } from '@/utils'
-
-import { Chart, ElementTypeProperties } from '@/types/screen'
-
-const props = defineProps<{
-	id: string
-}>()
-const proxy = useProxy()
-const { screen } = useStore()
-const baseInfo = ref(
-	screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'chart'>
-)
-const idx = ref<number>(-1)
-let info = ref<Chart | null>(null)
-const deleteEvent = () => {
-	// 删除图表
-	proxy.$Bus.emit('deleteChart', screen.curElementIdx)
-}
-
-const updateInfo = () => {
-	if (screen.getCurElementIdx !== -1) {
-		idx.value = screen.getCurElementIdx
-		info.value = JSON.parse(
-			JSON.stringify(
-				screen.getScreenOptionOfElements[screen.getCurElementIdx] as ElementTypeProperties<'chart'>
-			)
-		)
-	}
-}
-let stop = watch(
-	() => info,
-	debounce(() => {
-		setCommonStyle(baseInfo, info)
-		screen.updateScreenOptionOfElementStyle(
-			JSON.parse(JSON.stringify(info.value!.style)),
-			idx.value
-		)
-	}),
-	{
-		deep: true
-	}
-)
-let stop2 = watch(
-	() => screen.curElementIdx,
-	(newVal: number) => {
-		if (newVal !== -1 && screen.getScreenOptionOfElements[newVal].id === props.id) {
-			baseInfo.value = screen.getScreenOptionOfElements[screen.getCurElementIdx]
-			updateInfo()
-		}
-	}
-)
-
-onMounted(() => {
-	updateInfo()
-})
-
-onUnmounted(() => {
-	stop()
-	stop2()
-})
+const { baseInfo, info, deleteEvent } = useElementConfig<Chart>()
 </script>
 <style lang="less">
 .chart-config {
@@ -102,6 +40,7 @@ onUnmounted(() => {
 		border-radius: 10px;
 		aspect-ratio: 1/0.7;
 		background-image: url('../../../assets/image/transparent.png');
+
 		img {
 			width: 100%;
 			height: 100%;

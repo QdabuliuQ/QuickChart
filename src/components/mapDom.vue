@@ -2,16 +2,17 @@
 	<div
 		:style="{
 			width: width + 'px',
-			height: height + 'px'
+			height: height + 'px',
+			transform: `scale(${zoom})`
 		}"
 		class="transparent-bg">
-		<div ref="mapDomRef" id="map-dom"></div>
-		<el-dialog class="code-dialog-class" v-model="codeDialog" title="代码配置" width="50%">
-			<highlightjs class="language-javascript" language="javascript" :code="code" />
+		<div id="map-dom" ref="mapDomRef" :style="{}"></div>
+		<el-dialog v-model="codeDialog" class="code-dialog-class" title="代码配置" width="50%">
+			<highlightjs :code="code" class="language-javascript" language="javascript" />
 		</el-dialog>
 	</div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -118,7 +119,7 @@ chart.setOption(option);  //设置option`
 }
 
 const initChart = () => {
-	chartInstance = proxy.$echarts.init(mapDomRef.value as HTMLElement)
+	chartInstance = proxy.$echarts.init(mapDomRef.value as HTMLElement, null, { renderer: 'svg' })
 	chart_i.value = chartInstance
 	chartInstance.clear()
 	proxy.$echarts.registerMap('map' + sessionStorage.getItem('curAdcode'), chart.getMapJson)
@@ -133,8 +134,16 @@ const initChart = () => {
 	proxy.$Bus.on('createCode', createCode)
 }
 
+const zoom = ref<number>(1)
+const resizeEvent = () => {
+	const width = document.getElementsByClassName('chart-container')[0].clientWidth
+	zoom.value = (width * 0.6) / 700
+}
+
 onMounted(() => {
 	initChart()
+	resizeEvent()
+	window.addEventListener('resize', resizeEvent)
 })
 
 onUnmounted(() => {
@@ -142,6 +151,8 @@ onUnmounted(() => {
 	proxy.$Bus.off('optionChange', optionChange)
 	proxy.$Bus.off('canvasChange', canvasChange)
 	proxy.$Bus.off('downloadChart', downloadChart)
+
+	window.removeEventListener('resize', resizeEvent)
 })
 </script>
 <style lang="less">
@@ -149,11 +160,13 @@ onUnmounted(() => {
 	background-repeat: repeat;
 	background-size: 10px 10px;
 	background-image: url('../assets/image/transparent.png');
+
 	#map-dom {
 		position: relative;
 		width: 100%;
 		height: 100%;
 		margin: 0 auto;
+		transform-origin: 0 0;
 	}
 }
 </style>
