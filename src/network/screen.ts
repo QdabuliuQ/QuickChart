@@ -1,6 +1,5 @@
 import ajax from '@/network/index'
 import { ResponseType } from '@/types/request'
-import { AxiosResponse } from 'axios'
 
 export function postScreenImage(data: {
 	option: any

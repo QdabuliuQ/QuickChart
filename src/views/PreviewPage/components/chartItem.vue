@@ -48,10 +48,8 @@ const proxy = useProxy()
 const chartItemRef = ref(null)
 
 onMounted(() => {
-	try {
-		const chart = proxy.$echarts.init(chartItemRef.value)
-		chart.setOption(parse(props.option))
-	} catch (err) {}
+	const chart = proxy.$echarts.init(chartItemRef.value)
+	chart.setOption(parse(props.option))
 })
 </script>
 <style lang="less">

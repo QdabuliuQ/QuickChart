@@ -115,7 +115,6 @@ const lastPoint: [number, number] = [0, 0]
 const contextmenu = (point: [number, number]) => {
 	lastPoint[0] = point[0]
 	lastPoint[1] = point[1]
-	console.log(lastPoint, 'lastPoint')
 }
 
 const resizeEvent = () => {

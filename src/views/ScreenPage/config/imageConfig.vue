@@ -1,51 +1,75 @@
 <template>
-	<div class="imageConfig">
-		<template v-if="info && baseInfo">
-			<div class="configInfo">
-				<img :src="info.url" />
-			</div>
-			<config-title title="图表参数" />
-			<common-config :info="baseInfo" />
-			<config-title title="图表配置" />
-			<series-item title="层级">
-				<el-input-number v-model="info.style.zIndex" :max="100" :min="1" size="small" />
-			</series-item>
-			<series-item title="阴影颜色">
-				<el-color-picker v-model="info.style.shadowColor" show-alpha size="small" />
-			</series-item>
-			<series-item title="阴影偏移X">
-				<el-input-number v-model="info.style.shadowX" :max="200" :min="-200" size="small" />
-			</series-item>
-			<series-item title="阴影偏移Y">
-				<el-input-number v-model="info.style.shadowY" :max="200" :min="-200" size="small" />
-			</series-item>
-			<series-item title="阴影模糊">
-				<el-input-number v-model="info.style.shadowBlur" :max="100" :min="0" size="small" />
-			</series-item>
-			<series-item title="边框颜色">
-				<el-color-picker v-model="info.style.borderColor" show-alpha size="small" />
-			</series-item>
-			<series-item title="边框宽度">
-				<el-input-number v-model="info.style.borderWidth" :max="100" :min="0" size="small" />
-			</series-item>
-			<series-item title="边框类型">
-				<el-select
-					v-model="info.style.borderType"
-					placeholder="请选择"
-					popper-class="params-select-popper-class"
-					size="small">
-					<el-option key="none" label="无边框" value="none" />
-					<el-option key="dotted" label="点线" value="dotted" />
-					<el-option key="dashed" label="线段" value="dashed" />
-					<el-option key="solid" label="实线" value="solid" />
-				</el-select>
-			</series-item>
-			<config-btn
-				:bg-color="'rgb(255, 66, 66)'"
-				:icon="'i_delete_2'"
-				label="删除元素"
-				@btn-click="deleteEvent" />
-		</template>
+	<div class="image-config">
+		<div class="configInfo">
+			<img :src="screen.getScreenOptionOfElements[screen.getCurElementIdx].url" />
+		</div>
+		<config-title title="图表参数" />
+		<common-config :info="screen.getScreenOptionOfElements[screen.getCurElementIdx]" />
+		<config-title title="图表配置" />
+		<series-item title="层级">
+			<el-input-number
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.zIndex"
+				:max="100"
+				:min="1"
+				size="small" />
+		</series-item>
+		<series-item title="阴影颜色">
+			<el-color-picker
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.shadowColor"
+				show-alpha
+				size="small" />
+		</series-item>
+		<series-item title="阴影偏移X">
+			<el-input-number
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.shadowX"
+				:max="200"
+				:min="-200"
+				size="small" />
+		</series-item>
+		<series-item title="阴影偏移Y">
+			<el-input-number
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.shadowY"
+				:max="200"
+				:min="-200"
+				size="small" />
+		</series-item>
+		<series-item title="阴影模糊">
+			<el-input-number
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.shadowBlur"
+				:max="100"
+				:min="0"
+				size="small" />
+		</series-item>
+		<series-item title="边框颜色">
+			<el-color-picker
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.borderColor"
+				show-alpha
+				size="small" />
+		</series-item>
+		<series-item title="边框宽度">
+			<el-input-number
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.borderWidth"
+				:max="100"
+				:min="0"
+				size="small" />
+		</series-item>
+		<series-item title="边框类型">
+			<el-select
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.borderType"
+				placeholder="请选择"
+				popper-class="params-select-popper-class"
+				size="small">
+				<el-option key="none" label="无边框" value="none" />
+				<el-option key="dotted" label="点线" value="dotted" />
+				<el-option key="dashed" label="线段" value="dashed" />
+				<el-option key="solid" label="实线" value="solid" />
+			</el-select>
+		</series-item>
+		<config-btn
+			:bg-color="'rgb(255, 66, 66)'"
+			:icon="'i_delete_2'"
+			label="删除元素"
+			@btn-click="deleteEvent" />
 	</div>
 </template>
 <script lang="ts" setup>
@@ -54,14 +78,12 @@ import ConfigBtn from '@/views/ScreenPage/components/configBtn.vue'
 import ConfigTitle from '@/views/ScreenPage/components/configTitle.vue'
 import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 
-import { useElementConfig } from '@/hooks/useElementConfig'
+import { useElementConfig } from '@/hooks/useElementConfig.ts'
 
-import { Image } from '@/types/screen'
-
-const { baseInfo, info, deleteEvent } = useElementConfig<Image>()
+const { deleteEvent, screen } = useElementConfig()
 </script>
 <style lang="less">
-.imageConfig {
+.image-config {
 	.configInfo {
 		overflow: hidden;
 		width: 100%;

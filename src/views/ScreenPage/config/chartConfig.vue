@@ -1,21 +1,23 @@
 <template>
 	<div class="chart-config">
-		<template v-if="info">
-			<div class="cover">
-				<img :src="info.cover" />
-			</div>
-			<config-title title="图表参数" />
-			<common-config :info="baseInfo" />
-			<config-title title="图表配置" />
-			<series-item title="层级">
-				<el-input-number v-model="info.style.zIndex" :max="100" :min="1" size="small" />
-			</series-item>
-			<config-btn
-				:bg-color="'rgb(255, 66, 66)'"
-				:icon="'i_delete_2'"
-				label="删除元素"
-				@btn-click="deleteEvent" />
-		</template>
+		<div class="cover">
+			<img :src="screen.getScreenOptionOfElements[screen.getCurElementIdx].cover" />
+		</div>
+		<config-title title="图表参数" />
+		<common-config :info="screen.getScreenOptionOfElements[screen.getCurElementIdx]" />
+		<config-title title="图表配置" />
+		<series-item title="层级">
+			<el-input-number
+				v-model="screen.getScreenOptionOfElements[screen.getCurElementIdx].style.zIndex"
+				:max="100"
+				:min="1"
+				size="small" />
+		</series-item>
+		<config-btn
+			:bg-color="'rgb(255, 66, 66)'"
+			:icon="'i_delete_2'"
+			label="删除元素"
+			@btn-click="deleteEvent" />
 	</div>
 </template>
 <script lang="ts" setup>
@@ -26,9 +28,7 @@ import CommonConfig from '@/views/ScreenPage/config/commonConfig.vue'
 
 import { useElementConfig } from '@/hooks/useElementConfig'
 
-import { Chart } from '@/types/screen'
-
-const { baseInfo, info, deleteEvent } = useElementConfig<Chart>()
+const { deleteEvent, screen } = useElementConfig()
 </script>
 <style lang="less">
 .chart-config {

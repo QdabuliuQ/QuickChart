@@ -192,7 +192,6 @@ const updateElementStyle = (target: HTMLElement, idx: number, preNode: HTMLEleme
 	let styleInfo: {
 		[propName: string]: any
 	} = {}
-	console.log('change')
 	while (target.style[i]) {
 		styleInfo[target.style[i]] = target.style[target.style[i] as any]
 		i++
@@ -206,7 +205,7 @@ const updateElementStyle = (target: HTMLElement, idx: number, preNode: HTMLEleme
 		height: styleInfo.height ? parseFloat(styleInfo.height) : 0,
 		translateX: x ? x : 0,
 		translateY: y ? y : 0,
-		rotate: d ? d : 0,
+		rotate: d ? (d + 360) % 360 : 0,
 		zIndex: parseInt(styleInfo['z-index'])
 	}
 	if (

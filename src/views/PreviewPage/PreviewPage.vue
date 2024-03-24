@@ -49,6 +49,7 @@
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
 import FitContainer from '@/views/PreviewPage/components/fitContainer.vue'
+import FitHeightContainer from '@/views/PreviewPage/components/fitHeightContainer.vue'
 import FitWidthContainer from '@/views/PreviewPage/components/fitWidthContainer.vue'
 import FullContainer from '@/views/PreviewPage/components/fullContainer.vue'
 import Render from '@/views/PreviewPage/components/render.vue'
@@ -57,7 +58,6 @@ import { listenMsg, sendMsg } from '@/utils/previewChannel.ts'
 import { parse } from '@/utils/toJSON.ts'
 
 import { IConfig } from '@/types/screen'
-import FitHeightContainer from '@/views/PreviewPage/components/fitHeightContainer.vue'
 
 let style = reactive<any>(null)
 let screenData = ref<IConfig>({} as any)
