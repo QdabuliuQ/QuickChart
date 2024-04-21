@@ -39,6 +39,7 @@ const props = defineProps<Chart>()
 const itemClick = (event: MouseEvent) => {
 	emits('itemClick', {
 		idx: props.idx,
+		id: props.id,
 		e: event
 	})
 }

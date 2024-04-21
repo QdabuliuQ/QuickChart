@@ -65,6 +65,7 @@ const { screen } = useStore()
 const itemClick = (e: MouseEvent) => {
 	emits('itemClick', {
 		idx: props.idx,
+		id: props.id,
 		e
 	})
 }

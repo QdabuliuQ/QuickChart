@@ -62,5 +62,5 @@ const { screen } = useStore()
 const props = defineProps<Shape>()
 console.log(props, 'create')
 const emits = defineEmits(['itemClick'])
-const clickEvent = useElementClick(props.idx, emits)
+const clickEvent = useElementClick(props.idx, props.id, emits)
 </script>

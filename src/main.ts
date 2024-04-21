@@ -35,3 +35,5 @@ import router from './router'
 import { createPinia } from 'pinia'
 
 app.use(ElementPlus).use(hljsVuePlugin).use(createPinia()).use(router).mount('#app')
+
+// app.use(hljsVuePlugin).use(createPinia()).use(router).mount('#app')

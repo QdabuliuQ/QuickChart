@@ -78,7 +78,7 @@ type Border = {
 const emits = defineEmits(['itemClick'])
 const props = defineProps<Border>()
 const { screen } = useStore()
-const clickEvent = useElementClick(props.idx, emits)
+const clickEvent = useElementClick(props.idx, props.id, emits)
 </script>
 <style lang="less">
 .go-border-box {

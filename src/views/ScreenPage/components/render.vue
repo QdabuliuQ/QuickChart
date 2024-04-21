@@ -170,7 +170,7 @@ const selectElement = (info: any, idx: number) => {
 	}
 }
 
-const itemClick = ({ idx, e }: { idx: number; e: MouseEvent }) => {
+const itemClick = ({ idx, id, e }: { idx: number; id: string; e: MouseEvent }) => {
 	e.stopPropagation()
 	if (target.value)
 		updateElementStyle(
@@ -178,11 +178,16 @@ const itemClick = ({ idx, e }: { idx: number; e: MouseEvent }) => {
 			screen.getCurElementIdx,
 			target.value?.cloneNode() as HTMLElement
 		)
-	if (screen.getScreenOptionOfElements[idx].isLock) {
-		target.value = null // 清空
-	} else {
-		target.value = e.currentTarget as HTMLElement // 设置为选定的元素
-		screen.updateCurElementIdx(idx) // 设置选中元素索引值
+	for (let i = 0; i < screen.getScreenOptionOfElements.length; i++) {
+		if (screen.getScreenOptionOfElements[i].id === id) {
+			if (screen.getScreenOptionOfElements[i].isLock) {
+				target.value = null // 清空
+			} else {
+				target.value = e.currentTarget as HTMLElement // 设置为选定的元素
+				screen.updateCurElementIdx(i) // 设置选中元素索引值
+			}
+			break
+		}
 	}
 }
 

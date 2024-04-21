@@ -1,7 +1,5 @@
 <template>
 	<div class="index-page">
-		<span>{{ obj.a }}</span>
-		<button @click="update">修改</button>
 		<div class="header">
 			<div class="left">
 				<div class="logo" @click="router.push('/')">
@@ -52,13 +50,6 @@ import useProxy from '@/hooks/useProxy'
 
 const router = useRouter()
 const proxy = useProxy()
-
-const obj = ref({
-	a: 111
-})
-const update = () => {
-	obj.value.a = 666
-}
 
 const isLogin = ref(false)
 const active = ref<string>('home')

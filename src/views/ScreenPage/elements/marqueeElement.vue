@@ -105,7 +105,7 @@ onMounted(() => {
 })
 
 const emits = defineEmits(['itemClick'])
-const clickEvent = useElementClick(props.idx, emits)
+const clickEvent = useElementClick(props.idx, props.id, emits)
 </script>
 
 <style lang="less">
